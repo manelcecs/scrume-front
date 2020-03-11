@@ -16,7 +16,7 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
 
-app.use(express.static(__dirname, 'dist/scrume-front', {index: false}));
+app.use(express.static(__dirname + "dist/scrume-front", {index: false}));
 
 
 server.listen(port, function() {
