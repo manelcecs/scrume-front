@@ -16,7 +16,7 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
 
-app.use(express.static(__dirname));/* + "dist/scrume-front"));*/
+app.use(express.static(__dirname + "dist/"));/* + "dist/scrume-front"));*/
 
 
 server.listen(port, function() {
