@@ -16,7 +16,9 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
 
-app.use(express.static(__dirname + "/dist/scrume-front"));
+const dist_dir = "app/dist/scrume-front";
+
+app.use(express.static(dist_dir));
 server.listen(port, function() {
     console.log("App running on port " + port);
     console.log("Current dir: "+__dirname);
@@ -25,9 +27,9 @@ server.listen(port, function() {
 // PathLocationStrategy
 
 app.get('', function(req, res) {
-    res.sendFile(path.join(__dirname+'/dist/scrume-front/index.html'));
+    res.sendFile(path.join(dist_dir+'/index.html'));
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname+'/dist/scrume-front/index.html'));
+    res.sendFile(path.join(dist_dir+'/index.html'));
 });
