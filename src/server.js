@@ -16,20 +16,21 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
 
-const dist_dir = "./app/dist/scrume-front";
+const dist_dir = "/../dist/scrume-front";
 
-app.use(express.static(dist_dir));
+app.use(express.static(__dirname + dist_dir));
+
 server.listen(port, function() {
     console.log("App running on port " + port);
-    console.log("Current dir: "+dist_dir);
+    console.log("Current dir: "+__dirname + dist_dir);
 })
 
 // PathLocationStrategy
 
 app.get('', function(req, res) {
-    res.sendFile(path.join(dist_dir+'/index.html'));
+    res.sendFile(path.join(__dirname + dist_dir+'/index.html'));
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(dist_dir+'/index.html'));
+    res.sendFile(path.join(__dirname + dist_dir+'/index.html'));
 });
