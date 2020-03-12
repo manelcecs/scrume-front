@@ -13,15 +13,15 @@ app.listen(process.env.PORT || 3000);
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
 
-const dist_dir = "app/dist/scrume-front";
+const dist_dir = "./app/dist/scrume-front";
 
 app.use(express.static(dist_dir));
 server.listen(port, function() {
     console.log("App running on port " + port);
-    console.log("Current dir: "+__dirname);
+    console.log("Current dir: "+dist_dir);
 })
 
 // PathLocationStrategy
