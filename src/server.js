@@ -16,11 +16,12 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 const server = require('http').Server(app);
 
-app.use(express.static(__dirname + "dist/scrume-front", {index: false}));
+app.use(express.static(__dirname + "dist/scrume-front", {index: true}));
 
 
 server.listen(port, function() {
     console.log("App running on port " + port);
+    console.log("Current dir: "+__dirname);
 })
 
 // PathLocationStrategy
