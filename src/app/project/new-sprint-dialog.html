@@ -1,0 +1,21 @@
+<h4>Crear sprint</h4>
+<div>
+        <mat-form-field>
+                <mat-label>Fecha de inicio</mat-label>
+                <input matInput [matDatepicker]="pickerStar">
+                <mat-datepicker-toggle matSuffix [for]="pickerStar"></mat-datepicker-toggle>
+                <mat-datepicker #pickerStar></mat-datepicker>
+        </mat-form-field>
+</div>
+<div>
+        <mat-form-field>
+                <mat-label>Fecha de fin</mat-label>
+                <input matInput [matDatepicker]="pickerEnd">
+                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+</div>
+<div id="buttons-dialog">
+        <button id="cancel-dialog" mat-button (click)="onNoClick()">Cancelar</button>
+        <button id="save-dialog" mat-button [mat-dialog-close]="" cdkFocusInitial>Guardar</button>
+</div>

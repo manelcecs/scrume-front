@@ -26,11 +26,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
-import { ProjectComponent } from './project/project.component'; 
+import { ProjectComponent, NewSprintDialog } from './project/project.component'; 
 import { MatButtonModule } from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SprintComponent } from './sprint/sprint.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -39,8 +44,11 @@ import { HttpClientModule } from '@angular/common/http';
     WellcomeComponent,
     ProjectComponent,
     CreateProjectComponent,
+    SprintComponent,
+    NewSprintDialog
   ],
   imports: [
+    MatFormFieldModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -48,7 +56,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
     MatRadioModule,
@@ -63,8 +70,13 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatTooltipModule,
     HttpClientModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatNativeDateModule,
+    
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

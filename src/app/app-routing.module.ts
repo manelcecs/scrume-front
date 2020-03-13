@@ -4,6 +4,7 @@ import { WellcomeComponent } from './wellcome/wellcome.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
+import { SprintComponent } from './sprint/sprint.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'wellcome', component: WellcomeComponent},
   {path: 'project', component: ProjectComponent},
   {path: 'project/create', component: CreateProjectComponent},
+  {path: 'sprint', component: SprintComponent},
 
 ];
 
