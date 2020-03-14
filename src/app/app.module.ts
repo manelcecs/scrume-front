@@ -9,8 +9,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-import {MatToolbarModule} from '@angular/material/toolbar'; 
-import {MatSidenavModule} from '@angular/material/sidenav'; 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -22,19 +22,24 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon'; 
+import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
-import { ProjectComponent } from './project/project.component'; 
 import { TeamComponent } from './team/team.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ProjectComponent, NewSprintDialog } from './project/project.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SprintComponent } from './sprint/sprint.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -44,9 +49,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProjectComponent,
     CreateProjectComponent,
     TeamComponent,
-    TeamCreateComponent
+    TeamCreateComponent,
+    NewSprintDialog,
+    SprintComponent
   ],
   imports: [
+    MatFormFieldModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -54,7 +62,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
     MatRadioModule,
@@ -72,8 +79,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatNativeDateModule,
+
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
