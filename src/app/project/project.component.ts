@@ -25,4 +25,8 @@ export class ProjectComponent implements OnInit {
      this.sprints = this.sprintService.getSprintsOfProject(0);
   }
 
+  openBacklog(proj: ProjectDto): void{
+    this.router.navigate(['backlog'], {queryParams: {id: proj.id}});
+  }
+
 }
