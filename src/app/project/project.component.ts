@@ -4,7 +4,7 @@ import { ProjectService } from '../servicio/project.service';
 import { ProjectDto } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SprintDisplay } from '../dominio/sprint.domain';
+import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -39,14 +39,16 @@ export class ProjectComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log(result)
     });
   }
 
 
   navigateTo(route: String): void{
-    console.log(route);
     this.router.navigate([route]);
+  }
+
+  navigateToSprint(sprint : Sprint) : void {
+    this.router.navigate(["sprint"], {queryParams: {id : sprint.id}});
   }
 
   editProject(project : ProjectDto){
@@ -75,12 +77,14 @@ export interface newSprint {
 export class NewSprintDialog implements OnInit{
 
   project: number;
+  sprint: Sprint;
   startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
   endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: newSprint) {}
+    @Inject(MAT_DIALOG_DATA) public data: newSprint,
+    private sprintService: SprintService) {}
 
 
   ngOnInit(): void {
@@ -92,19 +96,19 @@ export class NewSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-
+    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value, proyecto:this.project}
+    this.sprintService.createSprint(this.sprint);
+    console.log(this.sprint);
+    this.dialogRef.close();
 
   }
 
   getErrorMessageStartDate() : String {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':
-    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
-    this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
+    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
   };
 
   getErrorMessageEndDate() : String {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':
-    this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
+    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
   }
 
   validForm():boolean {
@@ -117,8 +121,10 @@ export class NewSprintDialog implements OnInit{
   }
 
   validateToday(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      console.log("Prueba 2")
       let isValid = true;
+
       if (control.value.getTime() < Date.now()) {
         isValid = false;
       }

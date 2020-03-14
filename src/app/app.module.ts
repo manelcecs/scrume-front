@@ -9,8 +9,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-import {MatToolbarModule} from '@angular/material/toolbar'; 
-import {MatSidenavModule} from '@angular/material/sidenav'; 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -22,14 +22,13 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon'; 
+import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
-import { ProjectComponent } from './project/project.component'; 
 import { TeamComponent } from './team/team.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import { ProjectComponent, NewSprintDialog } from './project/project.component'; 
+import { ProjectComponent, NewSprintDialog } from './project/project.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './create-project/create-project.component';
@@ -50,7 +49,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     ProjectComponent,
     CreateProjectComponent,
     TeamComponent,
-    TeamCreateComponent
+    TeamCreateComponent,
+    NewSprintDialog,
+    SprintComponent
   ],
   imports: [
     MatFormFieldModule,
@@ -81,7 +82,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatExpansionModule,
     MatDialogModule,
     MatNativeDateModule,
-    
+
   ],
   providers: [],
   bootstrap: [AppComponent],
