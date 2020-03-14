@@ -16,7 +16,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(
      private router: Router,
-     private projectService: ProjectService, 
+     private projectService: ProjectService,
      private sprintService : SprintService
     ) { }
 
@@ -25,4 +25,16 @@ export class ProjectComponent implements OnInit {
      this.sprints = this.sprintService.getSprintsOfProject(0);
   }
 
+  navigateTo(route: String): void{
+    console.log(route);
+    this.router.navigate([route]);
+  }
+
+  editProject(project : ProjectDto){
+    this.router.navigate(['project/create'], {queryParams: {id: project.id, action:"edit"}});
+  }
+
+  deleteProject(idProject : number) {
+    this.projectService.deleteProject(idProject);
+  }
 }
