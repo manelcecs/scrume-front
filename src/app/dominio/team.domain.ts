@@ -6,3 +6,9 @@ export interface Team {
     projects: ProjectDto[];
 
 }
+
+export interface TeamName {
+    name: String;
+
+}
+

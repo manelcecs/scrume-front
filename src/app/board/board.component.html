@@ -1,0 +1,13 @@
+
+<mat-list-item *ngFor="let colum of colums">
+    <div>
+      <h3 matLine>{{colum.name}}</h3>
+    </div>
+    <div>
+      <mat-list-item *ngFor="let tareas of colum.tareas">
+    
+        <div>
+            <h3 matLine>{{tareas.title}}</h3>
+        </div>
+
+      </mat-list-item>

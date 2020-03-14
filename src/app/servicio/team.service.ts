@@ -17,10 +17,12 @@ export class TeamService {
             name: "Olimpia",
             projects: [{
                 id: 2,
-                name: "Dpppppppppppppp"
+                name: "Dpppppppppppppp",
+                idBoard: 4
             },{
                 id: 3,
-                name: "Dp2"
+                name: "Dp2",
+                idBoard: 4
             }],
         };
         let team2: Team = {
@@ -28,10 +30,12 @@ export class TeamService {
             name: "Scrume",
             projects: [{
                 id: 5,
-                name: "Dp3"
+                name: "Dp3",
+                idBoard: 4
             },{
                 id: 6,
-                name: "Dp4"
+                name: "Dp4",
+                idBoard: 4
             }],
         };
         let team3: Team = {
@@ -39,13 +43,16 @@ export class TeamService {
             name: "Gamus",
             projects: [{
                 id: 8,
-                name: "Dp5"
+                name: "Dp5",
+                idBoard: 4
             },{
                 id: 9,
-                name: "Dp6"
+                name: "Dp6",
+                idBoard: 4
             },{
                 id: 10,
-                name: "ispp"
+                name: "ispp",
+                idBoard: 4
             }],
         };
         let teams:Team[]=[];
@@ -82,10 +89,12 @@ export class TeamService {
             name: "Olimpia",
             projects: [{
                 id: 2,
-                name: "Dp"
+                name: "Dp",
+                idBoard: 4
             },{
                 id: 3,
-                name: "Dp2"
+                name: "Dp2",
+                idBoard: 4
             }],
         };
         return team1;

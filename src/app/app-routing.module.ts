@@ -6,6 +6,7 @@ import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { TeamComponent } from './team/team.component';
 import { TeamCreateComponent } from './team-create/team-create.component';
+import { BoardComponent } from './board/board.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'teams', component: TeamComponent},
   {path: 'teamsCreate', component: TeamCreateComponent},
   {path: 'project', component: ProjectComponent},
-  {path: 'project/create', component: CreateProjectComponent}
+  {path: 'project/create', component: CreateProjectComponent},
+  {path: 'board', component: BoardComponent}
 
 ];
 

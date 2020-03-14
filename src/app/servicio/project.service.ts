@@ -14,6 +14,7 @@ export class ProjectService {
             id: 1,
             name: "Acme-Madrugá",
             description: "Proyecto para la asignatura de Diseño y Pruebas 2. El objetivo es que los usuarios (hermandades de semana santa) puedan organizar sus cofradías y los hermanos puedan apuntarse. El A+ para este proyecto es la inclusión de un sistema de gráficos en el dashboard.",
+            idBoard: 4,
         }
         return project;
     }
