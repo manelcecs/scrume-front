@@ -36,6 +36,7 @@ import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BacklogComponent } from './backlog/backlog.component';
+import { FilterPipe } from './backlog/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BacklogComponent } from './backlog/backlog.component';
     CreateProjectComponent,
     TeamComponent,
     TeamCreateComponent,
-    BacklogComponent
+    BacklogComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

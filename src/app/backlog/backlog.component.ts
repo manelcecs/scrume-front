@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BacklogService } from '../servicio/backlog.service';
 import { Team } from '../dominio/team.domain';
-import { ProjectDto } from '../dominio/project.domain';
+import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
 
@@ -16,9 +15,10 @@ export class BacklogComponent implements OnInit {
 
   idProject: number;
   team: Team;
-  project: ProjectDto;
+  project: ProjectComplete;
+  searchValue;
 
-  constructor(private router: Router, private backlogService: BacklogService, private activatedRoute: ActivatedRoute,
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
     private projectService: ProjectService, private teamService: TeamService) { }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class BacklogComponent implements OnInit {
 
           this.team = team;
           
-          this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
+          this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
             this.project = project;
           });
 
