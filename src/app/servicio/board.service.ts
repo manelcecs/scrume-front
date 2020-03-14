@@ -60,12 +60,57 @@ export class BoardService {
             }],
         };
         let colums:ColumDto[]=[];
+        let todo: String[];
+        let progress: String[];
+        let done: String[];
         colums.push(colum1);
         colums.push(colum2);
         colums.push(colum3);
+
+        // for (let i = 0; i < colum1.tareas.length; i++) {
+        //     todo.push(colum1.tareas[i].title);
+        // }
+        // for (let i = 0; i < colum2.tareas.length; i++) {
+        //     progress.push(colum2.tareas[i].title);
+        // }
+        // for (let i = 0; i < colum3.tareas.length; i++) {
+        //     done.push(colum3.tareas[i].title);
+        // }
+
+        // colums.push(todo);
+        // colums.push(progress);
+        // colums.push(done);
+
         return colums;
     }
 
-    
+    getToDoArray() {
+        // return this.httpClient.get<Task>(this.cabeceraService.getCabecera() + "/taskToDo");
+        let todo = [
+            'Get to work',
+            'Pick up groceries',
+            'Go home',
+            'Fall asleep'
+          ];
+        return todo;
+    }
+
+    getProgressArray() {
+        // return this.httpClient.get<Task>(this.cabeceraService.getCabecera() + "/taskToDo");
+        let review = [
+            'puto',
+            'asco'
+          ];
+        return review;
+    }
+
+    getDoneArray() {
+        // return this.httpClient.get<Task>(this.cabeceraService.getCabecera() + "/taskToDo");
+        let done = [
+            'te odio',
+            'no te soporto'
+          ];
+        return done;
+    }
 
 }
