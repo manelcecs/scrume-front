@@ -1,5 +1,6 @@
 export interface ProjectDto {
-    id?: Number;
+    id?: number;
+    equipo: number,
     name: String;
     description?: String;
 
