@@ -5,7 +5,7 @@ import { ProjectDto } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay } from '../dominio/sprint.domain';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-project',
@@ -47,6 +47,7 @@ export class ProjectComponent implements OnInit {
 }
 
 
+// DIALOGO PARA CREAR UN SPRINT
 
 export interface newSprint {
   project: number,
@@ -59,19 +60,81 @@ export interface newSprint {
   templateUrl: 'new-sprint-dialog.html',
   styleUrls: ['./new-sprint-dialog.css']
 })
-export class NewSprintDialog {
+export class NewSprintDialog implements OnInit{
 
   project: number;
-  startDate = new FormControl('', []);
-  endDate = new FormControl('', []);
+  startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
+  endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: newSprint) {}
 
 
+  ngOnInit(): void {
+    this.project = this.data.project;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  onSaveClick() : void {
+
+
+  }
+
+  getErrorMessageStartDate() : String {
+    return this.startDate.hasError('required')?'Este campo es obligatorio':
+    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
+    this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
+  };
+
+  getErrorMessageEndDate() : String {
+    return this.startDate.hasError('required')?'Este campo es obligatorio':
+    this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
+  }
+
+  validForm():boolean {
+
+    let valid: boolean;
+
+    valid = this.endDate.valid && this.startDate.valid;
+    return valid;
+
+  }
+
+  validateToday(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      let isValid = true;
+      if (control.value.getTime() < Date.now()) {
+        isValid = false;
+      }
+      return isValid ? null : { 'past': 'the date cant be past' }
+    };
+  }
+
+  validateStartBeforeEnd(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      let isValid = true;
+      if (control.value.getTime() > this.endDate.value.getTime()) {
+        isValid = false;
+      }
+      return isValid ? null : { 'invalid': 'Invalid dates' }
+
+    };
+  }
+
+    //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
+  // validateStartBeforeEnd(): ValidatorFn {
+  //   return (control: AbstractControl): { [key: string]: any } => {
+  //     let isValid = true;
+  //     if (control.value.getTime() > this.endDate.value.getTime()) {
+  //       isValid = false;
+  //     }
+  //     return isValid ? null : { 'invalid': 'Invalid dates' }
+
+  //   };
+  // }
 
 }
