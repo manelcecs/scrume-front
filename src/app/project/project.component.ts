@@ -2,9 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectService } from '../servicio/project.service';
 import { ProjectDto } from '../dominio/project.domain';
-import { Sprint } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SprintDisplay } from '../dominio/sprint.domain';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-project',
@@ -13,14 +14,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class ProjectComponent implements OnInit {
   project : ProjectDto;
-  sprints : Sprint[];
+  sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
 
   constructor(
      private router: Router,
-     private projectService: ProjectService, 
-     private sprintService : SprintService, 
+     private projectService: ProjectService,
+     private sprintService : SprintService,
      public dialog: MatDialog
     ) { }
 
@@ -29,11 +30,11 @@ export class ProjectComponent implements OnInit {
      this.sprints = this.sprintService.getSprintsOfProject(0);
   }
 
-  
+
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {
       width: '250px',
-      data: {startDate: this.startDate, endDate: this.endDate}
+      data: {project:this.project.id,startDate: this.startDate, endDate: this.endDate}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -42,12 +43,13 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  
+
 }
 
 
 
 export interface newSprint {
+  project: number,
   startDate: Date,
   endDate: Date,
 }
@@ -59,9 +61,14 @@ export interface newSprint {
 })
 export class NewSprintDialog {
 
+  project: number;
+  startDate = new FormControl('', []);
+  endDate = new FormControl('', []);
+
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: newSprint) {}
+
 
   onNoClick(): void {
     this.dialogRef.close();
