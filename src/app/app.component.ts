@@ -17,22 +17,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
     this.cargarMenu();
-
-    // Promise.resolve().then(()=> {
-    //   let idm = localStorage.getItem("idioma");
-    //   if (idm == null){
-    //     localStorage.setItem("idioma", this.idioma);
-    //   }else{
-    //     this.idioma = idm;
-    //   }
-
-    //   if(this.idioma == "es"){
-    //     this.router.navigate(["bienvenida"]);
-    //   }else{
-    //     this.router.navigate(["wellcome"]);
-    //   }
-
-    // });
   }
 
   ngOnDestroy(): void {
@@ -56,8 +40,13 @@ export class AppComponent implements OnInit, OnDestroy {
         route: '/wellcome',
         icon: 'home',
         visible: 'true'
+    },{
+        title: 'Equipo',
+        route: '/teams',
+        icon: 'people',
+        visible: 'true'
     }
   ];
-  }
+  } 
 
 }

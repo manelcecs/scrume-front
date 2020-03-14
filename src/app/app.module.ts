@@ -26,11 +26,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
+import { ProjectComponent } from './project/project.component'; 
+import { TeamComponent } from './team/team.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import { ProjectComponent, NewSprintDialog } from './project/project.component'; 
 import { MatButtonModule } from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CreateProjectComponent } from './create-project/create-project.component';
+import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SprintComponent } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -44,8 +49,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     WellcomeComponent,
     ProjectComponent,
     CreateProjectComponent,
-    SprintComponent,
-    NewSprintDialog
+    TeamComponent,
+    TeamCreateComponent
   ],
   imports: [
     MatFormFieldModule,
@@ -69,6 +74,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatListModule,
     MatButtonModule,
     MatTooltipModule,
+    ScrollingModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatExpansionModule,
     MatDialogModule,

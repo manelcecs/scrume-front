@@ -44,6 +44,18 @@ export class ProjectComponent implements OnInit {
   }
 
 
+  navigateTo(route: String): void{
+    console.log(route);
+    this.router.navigate([route]);
+  }
+
+  editProject(project : ProjectDto){
+    this.router.navigate(['project/create'], {queryParams: {id: project.id, action:"edit"}});
+  }
+
+  deleteProject(idProject : number) {
+    this.projectService.deleteProject(idProject);
+  }
 }
 
 
