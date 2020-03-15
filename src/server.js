@@ -19,8 +19,10 @@ server.listen(port, function() {
     console.log("App running on port " + port);
     console.log("Current dir: "+__dirname + dist_dir);
 })
+
 app.use((req, res, next)=>{
     res.header(cors, "*");
+    console.log("habilitado cors");
     next();
 });
 
