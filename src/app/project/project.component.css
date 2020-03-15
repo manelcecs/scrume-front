@@ -84,6 +84,11 @@ section > * {
     width: 30%;
 }
 
+
+.name-sprint-project :hover {
+  cursor: pointer;
+}
+
 .progress-project{
     float: right;
     width: 70%;
