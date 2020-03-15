@@ -9,7 +9,7 @@ const dist_dir = "/../dist/scrume-front";
 
 const back = "https://api-scrume.cleverapps.io/api";
 const front = "https://scrume-brand.herokuapp.com";
-const cosr = "Access-Control-Allow-Origin";
+const cors = "Access-Control-Allow-Origin";
 
 app.use(express.static(__dirname + dist_dir));
 
