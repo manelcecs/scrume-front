@@ -3,7 +3,8 @@ const app = express();
 const path = require('path');
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
-const request = require('request');
+const proxy = require('express-http-proxy');
+
 
 const dist_dir = "/../dist/scrume-front";
 
@@ -20,8 +21,11 @@ server.listen(port, function() {
 
 app.use((req, res, next) => {
     res.header(cors, "*");
+    let url = req.originalUrl.split(front)[0];
+    proxy(front+url).pipe(res);
     next();
 });
+
 
 // PathLocationStrategy
 
@@ -33,10 +37,4 @@ app.get('', function(req, res) {
 app.get('/', function(req, res) {
 
     res.sendFile(path.join(__dirname + dist_dir+'/index.html'));
-});
-
-app.all('/api/*', function(req, res, next){
-    let url = req.originalUrl.split(front);
-    request(front+url).pipe(res);
-    next();
 });
