@@ -1,5 +1,5 @@
 import { ProjectName } from './project.domain';
-import { TeamName } from './team.domain';
+import { UserName } from './user.domain';
 
 export interface TaskDto {
     id?: Number;
@@ -7,6 +7,6 @@ export interface TaskDto {
     descripcion: String;
     points: Number;
     project: ProjectName;
-    team: TeamName;
+    user: UserName;
 
 }

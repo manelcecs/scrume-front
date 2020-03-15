@@ -7,8 +7,3 @@ export interface Team {
 
 }
 
-export interface TeamName {
-    name: String;
-
-}
-
