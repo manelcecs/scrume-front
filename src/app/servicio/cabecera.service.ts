@@ -24,6 +24,8 @@ export class CabeceraService {
         //headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers = headers.append("Access-Control-Allow-Origin", '*');
         
+        console.log(JSON.stringify(headers));
+
         return headers;
     }
 

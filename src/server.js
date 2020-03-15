@@ -24,7 +24,7 @@ app.use((req, res, next)=>{
     req.header(cors, "*");
     res.header(cors, "*");
     console.log("habilitado cors");
-    console.log("headers: "+res.);
+    console.log("headers: "+res.header);
     next();
 });
 
