@@ -35,7 +35,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SprintComponent } from './sprint/sprint.component';
+import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -51,7 +51,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     TeamComponent,
     TeamCreateComponent,
     NewSprintDialog,
-    SprintComponent
+    SprintComponent,
+    EditSprintDialog
   ],
   imports: [
     MatFormFieldModule,
