@@ -15,7 +15,7 @@
             <div id="buttons-project">
                 <button class="button-sprints" mat-flat-button (click)="editProject(project)">Editar proyecto</button>
                 <button class="button-sprints" mat-flat-button>Nuevo Sprint</button>
-                <button class="button-sprints" mat-flat-button>Product Backlog</button>
+                <button class="button-sprints" mat-flat-button (click)="openBacklog()">Product Backlog</button>
                 <button class="button-delete-sprints" (click)="deleteProject(project.id)" mat-flat-button>Borrar</button>
             </div>
         </div>
