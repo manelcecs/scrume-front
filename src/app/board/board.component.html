@@ -4,14 +4,16 @@
     class="example-list"
     [cdkDropListData]="colum.name"
     (cdkDropListDropped)="drop($event)">
-
-    <div class="example-container">
-        <h2>{{colum.name}}</h2>
+  <div class="colum">
+    <div class="nameColum" class="example-container">
+        <div class="nameColum"><h2 >{{colum.name}}</h2></div>
     </div>
     
-    <mat-list-item *ngFor="let tarea of colum.tareas" cdkDrag>
-      <p>{{ tarea.title}}</p>
+    <mat-list-item class="listaTareas" *ngFor="let tarea of colum.tareas" cdkDrag>
+      <div class="nombreTarea">
+        <p class="nombreTarea">{{tarea.title}}</p>
+      </div>
     </mat-list-item>
-
+  </div>
 </div>
     
