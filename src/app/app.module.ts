@@ -53,7 +53,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     TeamComponent,
     TeamCreateComponent,
     NewSprintDialog,
-    SprintComponent
+    SprintComponent,
     BacklogComponent,
     FilterPipe
   ],

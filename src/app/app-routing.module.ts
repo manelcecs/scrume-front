@@ -21,7 +21,6 @@ const routes: Routes = [
   {path: 'sprint', component: SprintComponent},
   {path: 'backlog', component: BacklogComponent}
 
-
 ];
 
 @NgModule({

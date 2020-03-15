@@ -2,7 +2,7 @@ import { Task } from './task.domain';
 
 export interface ProjectDto {
     id?: number;
-    equipo: number,
+    team: number,
     name: String;
     description?: String;
 }

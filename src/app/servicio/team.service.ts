@@ -18,11 +18,11 @@ export class TeamService {
             projects: [{
                 id: 2,
                 name: "Dpppppppppppppp",
-                equipo: 1
+                team: 1
             },{
                 id: 3,
                 name: "Dp2",
-                equipo: 1
+                team: 1
             }],
         };
         let team2: Team = {
@@ -31,11 +31,11 @@ export class TeamService {
             projects: [{
                 id: 5,
                 name: "Dp3",
-                equipo: 1
+                team: 1
             },{
                 id: 6,
                 name: "Dp4",
-                equipo: 1
+                team: 1
             }],
         };
         let team3: Team = {
@@ -44,15 +44,15 @@ export class TeamService {
             projects: [{
                 id: 8,
                 name: "Dp5",
-                equipo: 1
+                team: 1
             },{
                 id: 9,
                 name: "Dp6",
-                equipo: 1
+                team: 1
             },{
                 id: 10,
                 name: "ispp",
-                equipo: 1
+                team: 1
             }],
         };
         let teams:Team[]=[];
@@ -90,11 +90,11 @@ export class TeamService {
             projects: [{
                 id: 2,
                 name: "Dp",
-                equipo: 1
+                team: 1
             },{
                 id: 3,
                 name: "Dp2",
-                equipo: 1
+                team: 1
             }],
         };
 
@@ -130,9 +130,6 @@ export class TeamService {
         let response = new Observable(obs => {
 
             setTimeout(() => {}, 1000);
-
-
-            }, 1000);
 
         });
         return response;
