@@ -24,12 +24,7 @@ app.use((req, res, next)=>{
     next();
 });
 
-app.all("/api/*", function(req, res){
-    console.log("Petición al back");
-    let url = req.originalUrl.split(front)[0];
-    console.log(url);
-    apiProxy.web(req, res, {target: front+url});
-});
+
 // PathLocationStrategy
 
 app.get('', function(req, res) {

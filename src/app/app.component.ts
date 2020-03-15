@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ChangeDetectorRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     this.cargarMenu();
 
-    this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
+    this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
       console.log(JSON.stringify(res));
     });
 
