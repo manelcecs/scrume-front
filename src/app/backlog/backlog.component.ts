@@ -7,8 +7,9 @@ import { TeamService } from '../servicio/team.service';
 import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Task } from '../dominio/task.domain';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
+import { isNumber } from 'util';
 
 
 @Component({
@@ -87,17 +88,16 @@ export class NewTaskDialog implements OnInit{
   task: Task;
   name = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: [Validators.required]});
-  estimate = new FormControl('',  { validators: [Validators.required]});
+  estimate = new FormControl('',  { validators: [this.validateNumber()]});
   // endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) newTask: Task,
+    @Inject(MAT_DIALOG_DATA) public data: Task,
     private taskService: TaskService,
   ) { }
 
   ngOnInit(): void {
-    //this.project = this.data.project;
   }
 
   onNoClick(): void {
@@ -111,55 +111,46 @@ export class NewTaskDialog implements OnInit{
     this.dialogRef.close();
   }
 
-  // getErrorMessageStartDate() : String {
-  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
-  // };
+  getErrorMessageName() : String {
+    return this.name.hasError('required')?'Este campo es obligatorio':'';
+  };
 
-  // getErrorMessageEndDate() : String {
-  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
-  // }
+  getErrorMessageDescription() : String {
+    return this.description.hasError('required')?'Este campo es obligatorio':'';
+  };
 
-  // validForm():boolean {
+  getErrorMessageEstimate() : String {
+    return this.estimate.hasError('number')?'Debe ser un número':this.estimate.hasError('negative')?'Debe ser mayor o igual a 0':'';
+  };
 
-  //   let valid: boolean;
+  validForm():boolean {
 
-  //   valid = this.endDate.valid && this.startDate.valid;
-  //   return valid;
+    let valid: boolean;
 
-  // }
+    valid = this.estimate.valid && this.name.valid && this.description.valid;
+    return valid;
 
-  // validateToday(): ValidatorFn {
-  //   return (control: AbstractControl): {[key: string]: any} | null => {
-  //     console.log("Prueba 2")
-  //     let isValid = true;
+  }
 
-  //     if (control.value.getTime() < Date.now()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'past': 'the date cant be past' }
-  //   };
-  // }
+  validateNumber(): ValidatorFn {
+      return (control: AbstractControl): {[key: string]: any} | null => {
+       let isValid = true;
 
-  // validateStartBeforeEnd(): ValidatorFn {
-  //   return (control: AbstractControl): { [key: string]: any } => {
-  //     let isValid = true;
-  //     if (control.value.getTime() > this.endDate.value.getTime()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'invalid': 'Invalid dates' }
+       if (!isNumber(this.estimate)) {
+         isValid = false;
+       }
+       return isValid ? null : { 'number': 'the estimate must be a number' }
+     };
+  }
 
-  //   };
-  // }
+  validatePositive(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+     let isValid = true;
 
-    //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
-  // validateStartBeforeEnd(): ValidatorFn {
-  //   return (control: AbstractControl): { [key: string]: any } => {
-  //     let isValid = true;
-  //     if (control.value.getTime() > this.endDate.value.getTime()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'invalid': 'Invalid dates' }
-
-  //   };
-  // }
+     if (this.estimate.value < 0) {
+       isValid = false;
+     }
+     return isValid ? null : { 'negative': 'the estimate must be a number' }
+   };
+}
 }
