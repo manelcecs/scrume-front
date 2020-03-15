@@ -22,6 +22,7 @@ export class CabeceraService {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa(environment.login.user+":"+environment.login.pass));
         headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
+        headers = headers.append("Access-Control-Allow-Origin", '*');
 
         return headers;
     }
