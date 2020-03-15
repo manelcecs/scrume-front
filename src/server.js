@@ -4,7 +4,8 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
 
-const herokuProxy = require('heroku-proxy');
+const httpProxy = require('http-proxy');
+const apiProxy = httpProxy.createProxyServer();
 
 const dist_dir = "/../dist/scrume-front";
 
@@ -18,12 +19,17 @@ server.listen(port, function() {
     console.log("App running on port " + port);
     console.log("Current dir: "+__dirname + dist_dir);
 })
+app.use((req, res, next)=>{
+    res.header(cors, "*");
+    next();
+});
 
-app.use(herokuProxy({
-    hostname: back,
-    protocol: 'https'
-}));
-
+app.all("/api/*", function(req, res){
+    console.log("Petición al back");
+    let url = req.originalUrl.split(front)[0];
+    console.log(url);
+    apiProxy.web(req, res, {target: front});
+});
 // PathLocationStrategy
 
 app.get('', function(req, res) {
