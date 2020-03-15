@@ -131,9 +131,6 @@ export class TeamService {
 
             setTimeout(() => {}, 1000);
 
-
-            }, 1000);
-
         });
         return response;
     }

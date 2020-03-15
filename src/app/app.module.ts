@@ -35,7 +35,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BacklogComponent } from './backlog/backlog.component';
+import { BacklogComponent, NewTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
 import { SprintComponent } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -54,10 +54,11 @@ import { CreateTaskComponent } from './create-task/create-task.component';
     TeamComponent,
     TeamCreateComponent,
     NewSprintDialog,
-    SprintComponent
+    SprintComponent,
     BacklogComponent,
     FilterPipe,
-    CreateTaskComponent
+    CreateTaskComponent,
+    NewTaskDialog
   ],
   imports: [
     MatFormFieldModule,

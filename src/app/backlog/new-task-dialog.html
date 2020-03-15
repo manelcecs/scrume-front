@@ -1,0 +1,30 @@
+<h4>Crear tarea</h4>
+<div>
+  <form id="prueba" action="" method="POST">
+    <div>
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput [formControl]="name"/>
+        <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessageStartDate() }}</mat-error> -->
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Descripción</mat-label>
+        <textarea matInput [formControl]="description"></textarea>
+        <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessageStartDate() }}</mat-error> -->
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Estimación</mat-label>
+        <input type="number" min="0" matInput [formControl]="estimate"/>
+        <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessageStartDate() }}</mat-error> -->
+      </mat-form-field>
+    </div>
+    <div id="buttons-dialog">
+      <button id="cancel-dialog" mat-button (click)="onNoClick()">
+        Cancelar
+      </button>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial>
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

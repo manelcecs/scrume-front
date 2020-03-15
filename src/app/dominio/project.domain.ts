@@ -1,15 +1,16 @@
 import { Task } from './task.domain';
+import { Team } from './team.domain';
 
 export interface ProjectDto {
     id?: number;
-    equipo: number,
-    name: String;
-    description?: String;
+    name: string;
+    equipo?: number,
+    description?: string;
 }
 
 export interface ProjectComplete {
-    id?: Number;
-    name: String;
-    description?: String;
+    id?: number;
+    name: string;
+    description?: string;
     tasks: Task[];
 }
