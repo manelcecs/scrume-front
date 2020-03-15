@@ -38,7 +38,7 @@ export class TeamComponent implements OnInit {
   }
 
   createProject(team: Team): void{
-    this.router.navigate(['project/create'], {queryParams: {id: team.id}});
+    this.router.navigate(['project/create'], {queryParams: {id: team.id, action: "create"}});
   }
 
 }

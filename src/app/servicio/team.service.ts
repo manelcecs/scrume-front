@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({providedIn:'root'})
 
 export class TeamService {
-
+    
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getAllTeams()/*:Observable<Team>*/{
@@ -17,10 +17,12 @@ export class TeamService {
             name: "Olimpia",
             projects: [{
                 id: 2,
-                name: "Dpppppppppppppp"
+                name: "Dpppppppppppppp",
+                equipo: 1
             },{
                 id: 3,
-                name: "Dp2"
+                name: "Dp2",
+                equipo: 1
             }],
         };
         let team2: Team = {
@@ -28,10 +30,12 @@ export class TeamService {
             name: "Scrume",
             projects: [{
                 id: 5,
-                name: "Dp3"
+                name: "Dp3",
+                equipo: 1
             },{
                 id: 6,
-                name: "Dp4"
+                name: "Dp4",
+                equipo: 1
             }],
         };
         let team3: Team = {
@@ -39,13 +43,16 @@ export class TeamService {
             name: "Gamus",
             projects: [{
                 id: 8,
-                name: "Dp5"
+                name: "Dp5",
+                equipo: 1
             },{
                 id: 9,
-                name: "Dp6"
+                name: "Dp6",
+                equipo: 1
             },{
                 id: 10,
-                name: "ispp"
+                name: "ispp",
+                equipo: 1
             }],
         };
         let teams:Team[]=[];
@@ -75,24 +82,32 @@ export class TeamService {
         return response;
     }
 
-    getTeam(id: number):Team{
+    getTeam(id: number):any{
         // return this.httpClient.get<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id);
         let team1: Team = {
             id: 1,
             name: "Olimpia",
             projects: [{
                 id: 2,
-                name: "Dp"
+                name: "Dp",
+                equipo: 1
             },{
                 id: 3,
-                name: "Dp2"
+                name: "Dp2",
+                equipo: 1
             }],
         };
-        return team1;
+
+        let response = new Observable(obs => {
+            setTimeout(() => {
+                obs.next(team1);
+            }, 1000);
+        });
+        return response;
     }
 
     editTeam(id: number, team: Team):any {
-        // return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id, team);
+        // return this.httpClient.put<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id, team);
         let response = new Observable(obs => {
 
             setTimeout(() => {
@@ -105,18 +120,23 @@ export class TeamService {
         return response;
       }
 
-      deleteTeam(id: number):any {
+    getTeamByProjectID(idProject: number): any {
+        //return this.httpClient.get<Team>(this.this.cabeceraService.getCabecera() + "/team?idProject=" + idProject);
+        return this.getTeam(1);
+    }
+    
+    deleteTeam(id: number):any {
         // return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id, team);
         let response = new Observable(obs => {
 
-            setTimeout(() => {
+            setTimeout(() => {}, 1000);
 
 
             }, 1000);
 
         });
         return response;
-      }
+    }
 
 }
 

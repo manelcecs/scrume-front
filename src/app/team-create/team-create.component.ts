@@ -43,7 +43,7 @@ export class TeamCreateComponent implements OnInit {
   validForm():Boolean {
 
     let valid: Boolean = true;
-    
+
     valid = valid && this.name.valid;
     return valid;
 
@@ -78,14 +78,14 @@ export class TeamCreateComponent implements OnInit {
   }
 
   private _editTeam(id: number):any/*Observable<Team>*/{
-    
+
     this.team.projects = this.projects;
     return this.teamService.editTeam(id, this.team);
 
   }
 
   private _createTeam():any/*Observable<Team>*/{
-    
+
     this.team.projects = this.projects;
     return this.teamService.createTeam(this.team);
 
@@ -104,7 +104,6 @@ export class TeamCreateComponent implements OnInit {
   }
 
   getErrorMessageName(): String {
-
     return this.name.hasError('required')?'Este campo es requerido.':this.name.hasError('maxlength')?'Este campo no permite más de 15 caracteres.':'';
 
   }

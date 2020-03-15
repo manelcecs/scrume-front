@@ -16,13 +16,35 @@ export class ProjectComponent implements OnInit {
 
   constructor(
      private router: Router,
-     private projectService: ProjectService, 
+     private projectService: ProjectService,
      private sprintService : SprintService
     ) { }
 
   ngOnInit(): void {
-     this.project = this.projectService.getProject(0);
-     this.sprints = this.sprintService.getSprintsOfProject(0);
+    this.projectService.getProject(0).subscribe((project:ProjectDto)=>{
+        this.project = project;
+        console.log(JSON.stringify(this.project));
+        this.sprints = this.sprintService.getSprintsOfProject(0);
+        console.log("Init " + this.project.id);
+    });
+
   }
 
+  openBacklog(): void{
+    console.log("openBacklog" + this.project.id);
+    this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
+  }
+
+  navigateTo(route: String): void{
+    console.log(route);
+    this.router.navigate([route]);
+  }
+
+  editProject(project : ProjectDto){
+    this.router.navigate(['project/create'], {queryParams: {id: project.id, action:"edit"}});
+  }
+
+  deleteProject(idProject : number) {
+    this.projectService.deleteProject(idProject);
+  }
 }
