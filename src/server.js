@@ -37,7 +37,6 @@ app.get('/', function(req, res) {
 
 app.all('/api/*', function(req, res, next){
     let url = req.originalUrl.split(front);
-    console.log(url);
-    request(front);
+    request(front+url).pipe(res);
     next();
 });
