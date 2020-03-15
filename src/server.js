@@ -21,8 +21,10 @@ server.listen(port, function() {
 })
 
 app.use((req, res, next)=>{
+    req.header(cors, "*");
     res.header(cors, "*");
     console.log("habilitado cors");
+    console.log("headers: "+res.);
     next();
 });
 
