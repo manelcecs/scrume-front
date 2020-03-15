@@ -21,8 +21,10 @@ server.listen(port, function() {
 })
 
 app.use((req, res, next)=>{
-    req.header(cors, "*");
-    res.header(cors, "*");
+    res.setHeader('Access-Control-Allow-Origin', front);
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     console.log("habilitado cors");
     console.log("headers: "+res.header);
     next();
