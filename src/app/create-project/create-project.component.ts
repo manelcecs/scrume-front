@@ -48,7 +48,7 @@ export class CreateProjectComponent implements OnInit {
       } else if (params.action === "create") {
         this.action = "create";
 
-        this.project.equipo = params.id;
+        this.project.team = params.id;
       }
 
     });
@@ -57,7 +57,7 @@ export class CreateProjectComponent implements OnInit {
 
   createProject(): void {
 
-    this.project = {name: this.name.value,description: this.desc.value, equipo: this.idEquipo};
+    this.project = {name: this.name.value,description: this.desc.value, team: this.idEquipo};
 
     if (this.idProyecto != undefined){
 

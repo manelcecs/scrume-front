@@ -49,7 +49,7 @@ export class BacklogComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  openProject(proj: ProjectDto): void{
+  openProject(proj: ProjectComplete): void{
     this.router.navigate(['project'], {queryParams: {id: proj.id}});
   }
 

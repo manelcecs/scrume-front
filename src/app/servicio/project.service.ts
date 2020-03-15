@@ -14,6 +14,7 @@ export class ProjectService {
     getProject(idProject : number):any{
         let project : ProjectDto = {
             id: 1,
+            team: 2,
             name: "Acme-Madrugá",
             description: "Proyecto para la asignatura de Diseño y Pruebas 2. El objetivo es que los usuarios (hermandades de semana santa) puedan organizar sus cofradías y los hermanos puedan apuntarse. El A+ para este proyecto es la inclusión de un sistema de gráficos en el dashboard.",
         }
@@ -70,7 +71,7 @@ export class ProjectService {
     createProject(project: ProjectDto) : any {
         // return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "/project/create", project);
         let project1 : ProjectDto;
-        project1 = {id : 1, name : project.name, description : project.description, equipo: project.equipo};
+        project1 = {id : 1, name : project.name, description : project.description, team: project.team};
 
         let response = new Observable(obs => {
             setTimeout(() => {
