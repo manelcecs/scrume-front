@@ -3,7 +3,9 @@ const app = express();
 const path = require('path');
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
-const proxy = require('express-http-proxy');
+const httpProxy = require('http-proxy');
+
+const proxy = new httpProxy.RoutingProxy();
 
 
 const dist_dir = "/../dist/scrume-front";
@@ -19,13 +21,23 @@ server.listen(port, function() {
     console.log("Current dir: "+__dirname + dist_dir);
 })
 
-app.use((req, res, next) => {
-    res.header(cors, "*");
-    let url = req.originalUrl.split(front)[0];
-    proxy(front+url).pipe(res);
-    next();
-});
 
+function apiProxy(host, port) {
+    return function(req, res, next) {
+      if(req.url.match(new RegExp('^\/api\/'))) {
+        proxy.proxyRequest(req, res, {host: host, port: port});
+      } else {
+        next();
+      }
+    }
+  }
+  
+  app.configure(function() {
+    app.use(express.static(process.cwd() + "/generated"));
+    app.use(apiProxy(back));
+    app.use(express.bodyParser());
+    app.use(express.errorHandler());
+  });
 
 // PathLocationStrategy
 
