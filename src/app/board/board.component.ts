@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDto } from '../dominio/task.domain';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-board',
@@ -23,16 +24,25 @@ export class BoardComponent implements OnInit {
     
   }
 
+  var: string = "To Do";
+
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
+
+      let col = new String(event.container.data);
+
       // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      if (col == "To Do") {
+        this.moveInArray(this.colums[0] , event.previousIndex , event.currentIndex);
+      }
+      
     } else {
       // transferArrayItem(event.previousContainer.data,
       //                   event.container.data,
       //                   event.previousIndex,
       //                   event.currentIndex);
     }
-    console.log("Previous container " + event.previousContainer.data);
+    console.log("Previous container " + event.container.data);
     console.log("Previous index " +event.previousIndex);
     console.log("container " + event.container.data);
     console.log("Current index " + event.currentIndex);
@@ -50,9 +60,6 @@ export class BoardComponent implements OnInit {
   }
 
   private moveInArray(container: ColumDto, preIndex: number, newIndex: number) {
-
-    let i: number = this.colums.indexOf(container);
-    console.log("id del container " + i);
 
   }
 
