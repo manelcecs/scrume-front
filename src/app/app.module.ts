@@ -35,13 +35,14 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BacklogComponent } from './backlog/backlog.component';
+import { BacklogComponent, NewTaskDialog, EditTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
 import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CreateTaskComponent } from './create-task/create-task.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     FilterPipe,
     SprintComponent,
     EditSprintDialog
+    CreateTaskComponent,
+    NewTaskDialog,
+    EditTaskDialog
   ],
   imports: [
     MatFormFieldModule,
