@@ -9,8 +9,8 @@ export interface SprintDisplay {
 }
 
 export interface Sprint {
-  id: number;
-  proyecto: number;
+  id?: number;
+  project?: number;
   starDate: Date;
   endDate: Date;
 }

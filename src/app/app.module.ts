@@ -37,7 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BacklogComponent } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
-import { SprintComponent } from './sprint/sprint.component';
+import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -55,7 +55,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     NewSprintDialog,
     SprintComponent,
     BacklogComponent,
-    FilterPipe
+    FilterPipe,
+    SprintComponent,
+    EditSprintDialog
   ],
   imports: [
     MatFormFieldModule,
