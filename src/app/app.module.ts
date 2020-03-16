@@ -43,6 +43,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
+import { BoardComponent } from './board/board.component';
+import {Component} from '@angular/core';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,8 @@ import { CreateTaskComponent } from './create-task/create-task.component';
     EditSprintDialog,
     CreateTaskComponent,
     NewTaskDialog,
-    EditTaskDialog
+    EditTaskDialog,
+    BoardComponent
   ],
   imports: [
     MatFormFieldModule,
@@ -89,10 +93,10 @@ import { CreateTaskComponent } from './create-task/create-task.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    DragDropModule,
     MatExpansionModule,
     MatDialogModule,
     MatNativeDateModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-import { Task } from './task.domain';
+import { TaskSimple } from './task.domain';
 import { Team } from './team.domain';
 
 export interface ProjectDto {
@@ -12,5 +12,12 @@ export interface ProjectComplete {
     id?: number;
     name: string;
     description?: string;
-    tasks: Task[];
+    tasks: TaskSimple[];
+}
+
+
+export interface ProjectName {
+    id: number;
+    name: String;
+
 }

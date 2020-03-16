@@ -4,8 +4,8 @@
     <div>
       <mat-form-field>
         <mat-label>Nombre</mat-label>
-        <input matInput [formControl]="name"/>
-        <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
+        <input matInput [formControl]="title"/>
+        <mat-error *ngIf="title.invalid">{{ getErrorMessageTitle() }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Descripción</mat-label>

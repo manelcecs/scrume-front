@@ -3,6 +3,7 @@ import { Team } from '../dominio/team.domain';
 import { Router } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
+import { Board } from '../dominio/board.domain';
 
 @Component({
   selector: 'app-team',
@@ -40,5 +41,9 @@ export class TeamComponent implements OnInit {
   createProject(team: Team): void{
     this.router.navigate(['project/create'], {queryParams: {id: team.id, action: "create"}});
   }
+
+  // openBoard(proj: ProjectDto): void{
+  //   this.router.navigate(['project.idBoard'], {queryParams: {id: proj.id}});
+  // }
 
 }

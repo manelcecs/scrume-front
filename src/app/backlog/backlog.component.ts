@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Team } from '../dominio/team.domain';
-import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
+import { ProjectDto, ProjectComplete, ProjectName } from '../dominio/project.domain';
 import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
 import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Task } from '../dominio/task.domain';
+import { TaskDto, TaskSimple } from '../dominio/task.domain';
 import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
 import { isNumber } from 'util';
@@ -74,7 +74,7 @@ export class BacklogComponent implements OnInit {
     });
   }
 
-  openEditTask(task: Task): void {
+  openEditTask(task: TaskDto): void {
     const dialogRef = this.dialog.open(EditTaskDialog, {
       width: '250px',
       data: task
@@ -94,15 +94,16 @@ export class BacklogComponent implements OnInit {
 })
 export class NewTaskDialog implements OnInit{
 
+  projectComplete: ProjectName;
   project: number;
-  task: Task;
-  name = new FormControl('',  { validators: [Validators.required]});
+  task: TaskDto;
+  title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
   estimate = new FormControl('',  { validators: [this.validateNumberOptional(), this.validatePositiveOptional()]});
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Task,
+    @Inject(MAT_DIALOG_DATA) public data: TaskDto,
     private taskService: TaskService,
   ) { }
 
@@ -114,14 +115,14 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, name:this.name.value, description:this.description.value, estimate:this.estimate.value}
+    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value, project:this.projectComplete}
     this.taskService.createTask(this.task);
     console.log(this.task);
     this.dialogRef.close();
   }
 
-  getErrorMessageName() : String {
-    return this.name.hasError('required')?'Este campo es obligatorio':'';
+  getErrorMessageTitle() : String {
+    return this.title.hasError('required')?'Este campo es obligatorio':'';
   };
 
   getErrorMessageDescription() : String {
@@ -136,7 +137,7 @@ export class NewTaskDialog implements OnInit{
 
     let valid: boolean;
 
-    valid = this.estimate.valid && this.name.valid && this.description.valid;
+    valid = this.estimate.valid && this.title.valid && this.description.valid;
     return valid;
 
   }
@@ -169,21 +170,22 @@ export class NewTaskDialog implements OnInit{
   styleUrls: ['./edit-task-dialog.css']
 })
 export class EditTaskDialog implements OnInit{
+  project: ProjectComplete;
   idTask: number;
-  task: Task;
-  name = new FormControl('',  { validators: [Validators.required]});
+  task: TaskSimple;
+  title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
   estimate = new FormControl('',  { validators: [this.validateNumberOptional(), this.validatePositiveOptional()]});
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Task,
+    @Inject(MAT_DIALOG_DATA) public data: TaskDto,
     private taskService: TaskService,
   ) { }
 
   ngOnInit(): void {
     this.idTask = this.data.id;
-    this.name.setValue(this.data.name);
+    this.title.setValue(this.data.title);
     this.description.setValue(this.data.description);
     this.estimate.setValue(this.data.estimate);
   }
@@ -193,14 +195,14 @@ export class EditTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, name:this.name.value, description:this.description.value, estimate:this.estimate.value}
+    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value}
     this.taskService.editTask(this.idTask, this.task);
     console.log(this.task);
     this.dialogRef.close();
   }
 
-  getErrorMessageName() : String {
-    return this.name.hasError('required')?'Este campo es obligatorio':'';
+  getErrorMessageTitle() : String {
+    return this.title.hasError('required')?'Este campo es obligatorio':'';
   };
 
   getErrorMessageDescription() : String {
@@ -215,7 +217,7 @@ export class EditTaskDialog implements OnInit{
 
     let valid: boolean;
 
-    valid = this.estimate.valid && this.name.valid && this.description.valid;
+    valid = this.estimate.valid && this.title.valid && this.description.valid;
     return valid;
 
   }

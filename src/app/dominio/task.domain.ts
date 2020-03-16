@@ -1,9 +1,17 @@
-import { ProjectComplete } from './project.domain';
+import { ProjectName } from './project.domain';
+import { UserName } from './user.domain';
 
-export interface Task {
+export interface TaskDto {
     id?: number;
-    project?: number;
-    name: string;
-    estimate?: number;
+    title: string;
+    description: string;
+    estimate: number;
+    project: ProjectName;
+}
+
+export interface TaskSimple {
+    id?: number;
+    title: string;
     description?: string;
+    estimate?: number;
 }
