@@ -64,7 +64,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     EditSprintDialog,
     CreateTaskComponent,
     NewTaskDialog,
-    EditTaskDialog
+    EditTaskDialog,
     BoardComponent
   ],
   imports: [

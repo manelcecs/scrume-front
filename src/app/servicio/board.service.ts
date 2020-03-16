@@ -16,24 +16,20 @@ export class BoardService {
          tareas: [{
               id: 2,
              title: "Presentación",
-             descripcion: "Preparar la presentación",
-             points: 12,
+             description: "Preparar la presentación",
+             estimate: 12,
              project: {
+                 id: 1,
                  name: "DP"
-             },
-             user: {
-                 name: "zeki"
              }
          },{
             id: 2,
            title: "Presentación 2",
-           descripcion: "Preparar la presentación",
-           points: 12,
+           description: "Preparar la presentación",
+           estimate: 12,
            project: {
+                id: 1,
                name: "DP"
-           },
-           user: {
-               name: "zeki"
            }
        }],
      };
@@ -43,24 +39,20 @@ export class BoardService {
          tareas: [{
              id: 2,
              title: "Integración",
-             descripcion: "Integra node.js y spring",
-             points: 12,
+             description: "Integra node.js y spring",
+             estimate: 12,
              project: {
+                id: 1,
                  name: "DP"
-             },
-             user: {
-                 name: "zeki"
              }
          },{
             id: 2,
            title: "Presentación 2",
-           descripcion: "Preparar la presentación",
-           points: 12,
+           description: "Preparar la presentación",
+           estimate: 12,
            project: {
+                id: 1,
                name: "DP"
-           },
-           user: {
-               name: "zeki"
            }
        }],
      };
@@ -70,24 +62,20 @@ export class BoardService {
          tareas: [{
              id: 2,
              title: "Aprobar DP",
-             descripcion: "Regalar un jamón",
-             points: 12,
+             description: "Regalar un jamón",
+             estimate: 12,
              project: {
+                id: 1,
                  name: "DP"
-             },
-             user: {
-                 name: "zeki"
              }
          },{
             id: 2,
            title: "Presentación 2",
-           descripcion: "Preparar la presentación",
-           points: 12,
+           description: "Preparar la presentación",
+           estimate: 12,
            project: {
+               id: 1,
                name: "DP"
-           },
-           user: {
-               name: "zeki"
            }
        }],
      };

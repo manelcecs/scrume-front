@@ -38,20 +38,20 @@ export class ProjectService {
             tasks:[
                 {
                     id: 2,
-                    name: 'Tarea 1',
+                    title: 'Tarea 1',
                 },
                 {
                     id: 3,
-                    name: 'Tarea 2',
+                    title: 'Tarea 2',
                     estimate: 19,
                 },
                 {
                     id: 4,
-                    name: 'Tarea 3',
+                    title: 'Tarea 3',
                 },
                 {
                     id: 5,
-                    name: 'Tarea 4',
+                    title: 'Tarea 4',
                     estimate: 24,
                 },
             ]

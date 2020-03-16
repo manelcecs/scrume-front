@@ -20,7 +20,7 @@ const routes: Routes = [
   {path: 'project', component: ProjectComponent},
   {path: 'project/create', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
-  {path: 'backlog', component: BacklogComponent}
+  {path: 'backlog', component: BacklogComponent},
   {path: 'project/create', component: CreateProjectComponent},
   {path: 'board', component: BoardComponent}
 

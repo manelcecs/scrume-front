@@ -25,7 +25,7 @@
                 <mat-list-item class="task-row" *ngFor="let task of project.tasks | filter:searchValue">
     
                     <li class="list-group-item d-flex justify-content-between align-items-center task-row">
-                        {{task.name}}
+                        {{task.title}}
                       <span>{{task.estimate!=undefined?task.estimate + ' PH':'Sin estimación'}}</span>
                       <button class="button-sprints" (click)="openEditTask(task)" mat-flat-button>Editar tarea</button>
                       <button class="button-sprints" (click)="openEditTask(task)" mat-flat-button>Eliminar tarea</button>
