@@ -25,12 +25,12 @@ export class BoardComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      // transferArrayItem(event.previousContainer.data,
+      //                   event.container.data,
+      //                   event.previousIndex,
+      //                   event.currentIndex);
     }
     console.log("Previous container " + event.previousContainer.data);
     console.log("Previous index " +event.previousIndex);
@@ -46,6 +46,13 @@ export class BoardComponent implements OnInit {
     let i: number = origen.indexOf(item);
     origen.splice(i, 1);
     destiny.splice(index, 0, item);
+
+  }
+
+  private moveInArray(container: ColumDto, preIndex: number, newIndex: number) {
+
+    let i: number = this.colums.indexOf(container);
+    console.log("id del container " + i);
 
   }
 

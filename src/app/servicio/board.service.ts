@@ -24,7 +24,18 @@ export class BoardService {
              user: {
                  name: "zeki"
              }
-         }],
+         },{
+            id: 2,
+           title: "Presentación 2",
+           descripcion: "Preparar la presentación",
+           points: 12,
+           project: {
+               name: "DP"
+           },
+           user: {
+               name: "zeki"
+           }
+       }],
      };
      let colum2: ColumDto = {
          id: 1,
