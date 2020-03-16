@@ -23,7 +23,7 @@
     cdkDropList
     #todoList="cdkDropList"
     [cdkDropListData]="colum.name"
-    [cdkDropListConnectedTo]="[doneList]"
+  
     class="example-list"
     (cdkDropListDropped)="drop($event)">
 
@@ -36,4 +36,4 @@
     </div>
 
   </div>
-    
+    <!-- [cdkDropListConnectedTo]="[doneList]" -->

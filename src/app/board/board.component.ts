@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDto } from '../dominio/task.domain';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-board',
@@ -60,6 +59,12 @@ export class BoardComponent implements OnInit {
   }
 
   private moveInArray(container: ColumDto, preIndex: number, newIndex: number) {
+
+    let arrayTareas = container.tareas;
+    let save = arrayTareas[preIndex];
+    arrayTareas.splice(preIndex, 1);
+    arrayTareas.splice(newIndex, 0, save);
+    console.log(arrayTareas)
 
   }
 
