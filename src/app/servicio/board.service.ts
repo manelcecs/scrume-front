@@ -51,7 +51,18 @@ export class BoardService {
              user: {
                  name: "zeki"
              }
-         }],
+         },{
+            id: 2,
+           title: "Presentación 2",
+           descripcion: "Preparar la presentación",
+           points: 12,
+           project: {
+               name: "DP"
+           },
+           user: {
+               name: "zeki"
+           }
+       }],
      };
      let colum3: ColumDto = {
          id: 1,
@@ -67,7 +78,18 @@ export class BoardService {
              user: {
                  name: "zeki"
              }
-         }],
+         },{
+            id: 2,
+           title: "Presentación 2",
+           descripcion: "Preparar la presentación",
+           points: 12,
+           project: {
+               name: "DP"
+           },
+           user: {
+               name: "zeki"
+           }
+       }],
      };
      let colums:ColumDto[]=[];
      colums.push(colum1);
