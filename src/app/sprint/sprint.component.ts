@@ -1,98 +1,77 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProjectService } from '../servicio/project.service';
-import { ProjectDto } from '../dominio/project.domain';
+import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
+import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { NewSprintDialog } from '../project/project.component';
 import { SprintService } from '../servicio/sprint.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css', './new-sprint-dialog.css']
+  selector: 'app-sprint',
+  templateUrl: './sprint.component.html',
+  styleUrls: ['./sprint.component.css']
 })
-export class ProjectComponent implements OnInit {
-  project : ProjectDto;
-  sprints : SprintDisplay[];
-  startDate: Date;
-  endDate: Date;
+export class SprintComponent implements OnInit {
 
-  constructor(
-     private router: Router,
-     private projectService: ProjectService,
-     private sprintService : SprintService,
-     public dialog: MatDialog
-    ) { }
+  sprint : SprintDisplay;
+  idSprint : number;
+
+  constructor(private sprintService : SprintService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.projectService.getProject(0).subscribe((project:ProjectDto)=>{
-        this.project = project;
-        console.log(JSON.stringify(this.project));
-        this.sprints = this.sprintService.getSprintsOfProject(0);
-        console.log("Init " + this.project.id);
-    });
+    this.activatedRoute.queryParams.subscribe(param => {
 
-  }
+      if(param.id != undefined){
+        this.idSprint = param.id;
 
-  openBacklog(): void{
-    console.log("openBacklog" + this.project.id);
-    this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
-  }
+        this.sprint = this.sprintService.getSprint(this.idSprint);
 
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(NewSprintDialog, {
-      width: '250px',
-      data: {project:this.project.id,startDate: this.startDate, endDate: this.endDate}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
+      } else{
+        this.navigateTo("bienvenida");
+      }
+    }
+    )}
 
   navigateTo(route: String): void{
     this.router.navigate([route]);
   }
 
-  navigateToSprint(sprint : Sprint) : void {
-    this.router.navigate(["sprint"], {queryParams: {id : sprint.id}});
+  openDialog(): void {
+    const dialogRef = this.dialog.open(EditSprintDialog, {
+      width: '250px',
+      data: this.sprint
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
-  editProject(project : ProjectDto){
-    this.router.navigate(['project/create'], {queryParams: {id: project.id, action:"edit"}});
-  }
-
-  deleteProject(idProject : number) {
-    this.projectService.deleteProject(idProject);
-  }
 }
 
 
-// DIALOGO PARA CREAR UN SPRINT
-
 @Component({
-  selector: 'new-sprint-dialog',
-  templateUrl: 'new-sprint-dialog.html',
-  styleUrls: ['./new-sprint-dialog.css']
+  selector: 'edit-sprint-dialog',
+  templateUrl: 'edit-sprint-dialog.html',
+  styleUrls: ['./edit-sprint-dialog.css']
 })
-export class NewSprintDialog implements OnInit{
+export class EditSprintDialog implements OnInit{
 
-  project: number;
-  sprint: Sprint;
+  idSprint: number;
+  sprint : Sprint;
   startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
   endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
   constructor(
-    public dialogRef: MatDialogRef<NewSprintDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Sprint,
+    public dialogRef: MatDialogRef<EditSprintDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
     private sprintService: SprintService) {}
 
 
   ngOnInit(): void {
-    this.project = this.data.project;
+    this.idSprint = this.data.id;
+    this.startDate.setValue(this.data.starDate);
+    this.endDate.setValue(this.data.endDate);
+
   }
 
   onNoClick(): void {
@@ -100,8 +79,8 @@ export class NewSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value, project:this.project}
-    this.sprintService.createSprint(this.sprint);
+    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value}
+    this.sprintService.editSprint(this.idSprint, this.sprint);
     console.log(this.sprint);
     this.dialogRef.close();
 

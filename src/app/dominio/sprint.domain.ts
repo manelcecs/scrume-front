@@ -1,4 +1,4 @@
-export interface Sprint {
+export interface SprintDisplay {
     id: number;
     starDate: Date;
     endDate: Date;
@@ -6,5 +6,11 @@ export interface Sprint {
     completedTasks: number;
     totalHP: number;
     completedHP: number;
+}
 
+export interface Sprint {
+  id?: number;
+  project?: number;
+  starDate: Date;
+  endDate: Date;
 }

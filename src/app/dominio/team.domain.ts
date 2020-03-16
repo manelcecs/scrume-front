@@ -2,7 +2,7 @@ import { ProjectDto } from "./project.domain";
 
 export interface Team {
     id?: number;
-    name: String;
+    name: string;
     projects: ProjectDto[];
 
 }

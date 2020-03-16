@@ -12,15 +12,15 @@ import { Board } from '../dominio/board.domain';
 })
 export class TeamComponent implements OnInit {
 
-  teams: Team [];
+  teams: Team[];
 
   constructor(private router: Router, private teamService: TeamService) { }
 
   ngOnInit(): void {
-    sessionStorage.setItem("user", "Jonh Doe");
-    sessionStorage.setItem("pass", "constrasenya");
-    this.teams = this.teamService.getAllTeams(); //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
-  }
+    this.teamService.getAllTeams().subscribe((teams : Team[] )=>{this.teams = teams});
+    console.log("Equipos", this.teams);
+    }; //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
+
 
   createTeam(): void {
     this.router.navigate(['teamsCreate']);
@@ -39,7 +39,7 @@ export class TeamComponent implements OnInit {
   }
 
   createProject(team: Team): void{
-    this.router.navigate(['project/create'], {queryParams: {id: team.id}});
+    this.router.navigate(['project/create'], {queryParams: {id: team.id, action: "create"}});
   }
 
   // openBoard(proj: ProjectDto): void{

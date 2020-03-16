@@ -7,6 +7,4 @@ export interface TaskDto {
     descripcion: String;
     points: Number;
     project: ProjectName;
-    user: UserName;
-
 }

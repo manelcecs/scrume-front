@@ -43,7 +43,7 @@ export class TeamCreateComponent implements OnInit {
   validForm():Boolean {
 
     let valid: Boolean = true;
-    
+
     valid = valid && this.name.valid;
     return valid;
 
@@ -67,32 +67,38 @@ export class TeamCreateComponent implements OnInit {
 
         this.team = resp;
 
+      },(error) => {
+        this.team = undefined;
       });
+      console.log("Equipo creado",this.team)
 
     }
 
   }
 
+  deleteTeam(team: Team): void{
+    this._deleteTeam(team.id);
+  }
+
   private _editTeam(id: number):any/*Observable<Team>*/{
-    
+
     this.team.projects = this.projects;
     return this.teamService.editTeam(id, this.team);
 
   }
 
-  private _createTeam():any/*Observable<Team>*/{
-    
+  private _createTeam():Observable<Team>{
+
     this.team.projects = this.projects;
     return this.teamService.createTeam(this.team);
 
   }
 
-  //private _deleteTeam(id: number):any/*Observable<Team>*/{
-    
-  //  this.team.projects = this.projects;
-  //  return this.teamService.deleteTeam(id, this.team);
+  private _deleteTeam(id: number):any/*Observable<Team>*/{
 
-  //}
+    return this.teamService.deleteTeam(id);
+
+  }
 
   cancelCreateteam(): void {
 
@@ -101,7 +107,6 @@ export class TeamCreateComponent implements OnInit {
   }
 
   getErrorMessageName(): String {
-
     return this.name.hasError('required')?'Este campo es requerido.':this.name.hasError('maxlength')?'Este campo no permite más de 15 caracteres.':'';
 
   }
