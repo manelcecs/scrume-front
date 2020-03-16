@@ -3,23 +3,26 @@
         <div>
             <h3><a href="/">Olimpia</a> > <a href="/">Acme-Madrugá</a> > Sprint</h3>
         </div>
-    </section>
-    <section id="progress-sprint">
+      </section>
+      <section id="progress-sprint">
+          <button id="edit-sprint" mat-button (click)="openDialog()">
+              Editar
+            </button>
         <table id="progress-table-sprint">
             <tr>
                 <td class="date-sprint">
-                    <p>12/02/2019</p>
+                    <p>{{sprint.starDate}}</p>
                 </td>
                 <td style="width:50%">
                     <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuemin="0"
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{sprint.completedHP/sprint.totalHP}}%" aria-valuemin="0"
                             aria-valuemax="100"></div>
                         <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuemin="0"
                             aria-valuemax="100"></div>
                     </div>
                 </td>
                 <td class="date-sprint">
-                    <p>12/03/2019</p>
+                    <p>{{sprint.endDate}}</p>
                 </td>
             </tr>
         </table>

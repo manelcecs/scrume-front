@@ -73,12 +73,6 @@ export class ProjectComponent implements OnInit {
 
 // DIALOGO PARA CREAR UN SPRINT
 
-export interface newSprint {
-  project: number,
-  startDate: Date,
-  endDate: Date,
-}
-
 @Component({
   selector: 'new-sprint-dialog',
   templateUrl: 'new-sprint-dialog.html',
@@ -93,7 +87,7 @@ export class NewSprintDialog implements OnInit{
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: newSprint,
+    @Inject(MAT_DIALOG_DATA) public data: Sprint,
     private sprintService: SprintService) {}
 
 
@@ -106,7 +100,7 @@ export class NewSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value, proyecto:this.project}
+    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value, project:this.project}
     this.sprintService.createSprint(this.sprint);
     console.log(this.sprint);
     this.dialogRef.close();

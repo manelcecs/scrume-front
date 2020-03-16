@@ -49,7 +49,7 @@ export class SprintService {
 
     createSprint(sprint : Sprint){
       let sprint1 : Sprint;
-      sprint1 = {id : 1, starDate: sprint.starDate, endDate: sprint.endDate, proyecto: 1};
+      sprint1 = {id : 1, starDate: sprint.starDate, endDate: sprint.endDate, project: 1};
 
       let response = new Observable(obs => {
           setTimeout(() => {
@@ -73,6 +73,20 @@ export class SprintService {
 
     deleteSprint(id: number):any {
       // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/sprint?id=" + id, sprint);
+    }
+
+    getSprint(id: number) : SprintDisplay {
+      let sprint1 : SprintDisplay = {
+        id: 1,
+        starDate: new Date("2019-01-16"),
+        endDate: new Date("2019-02-16"),
+        totalTasks: 20,
+        completedTasks: 15,
+        totalHP: 100,
+        completedHP: 76,
+      }
+      return sprint1;
+      // return this.httpClient.get<Sprint>(this.cabeceraService.getCabecera() + "/sprint?id=" + id, sprint);
     }
 
 }
