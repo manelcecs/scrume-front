@@ -58,7 +58,7 @@ import { CreateTaskComponent } from './create-task/create-task.component';
     BacklogComponent,
     FilterPipe,
     SprintComponent,
-    EditSprintDialog
+    EditSprintDialog,
     CreateTaskComponent,
     NewTaskDialog,
     EditTaskDialog
