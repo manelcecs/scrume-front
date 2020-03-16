@@ -41,7 +41,11 @@ export class CreateProjectComponent implements OnInit {
       if (params.action == "edit") {
         this.action = "edit";
 
-        this.project = this.projectService.getProject(params.id);
+        this.projectService.getProject(params.id).subscribe(res => {
+          this.project = res;
+        }
+
+        );
         this.name.setValue(this.project.name);
         this.desc.setValue(this.project.description);
         this.idProyecto = params.id

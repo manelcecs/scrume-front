@@ -67,7 +67,10 @@ export class TeamCreateComponent implements OnInit {
 
         this.team = resp;
 
+      },(error) => {
+        this.team = undefined;
       });
+      console.log("Equipo creado",this.team)
 
     }
 
@@ -84,7 +87,7 @@ export class TeamCreateComponent implements OnInit {
 
   }
 
-  private _createTeam():any/*Observable<Team>*/{
+  private _createTeam():Observable<Team>{
 
     this.team.projects = this.projects;
     return this.teamService.createTeam(this.team);
@@ -92,7 +95,7 @@ export class TeamCreateComponent implements OnInit {
   }
 
   private _deleteTeam(id: number):any/*Observable<Team>*/{
-    
+
     return this.teamService.deleteTeam(id);
 
   }
