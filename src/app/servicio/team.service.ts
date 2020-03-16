@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Team } from '../dominio/team.domain';
 import { Observable } from 'rxjs';
-import { Options } from 'selenium-webdriver/ie';
 
 @Injectable({providedIn:'root'})
 
@@ -66,7 +65,7 @@ export class TeamService {
 
 
     createTeam(team: Team): Observable<Team> {
-        return this.httpClient.post<Team>("/api/team/save",team, {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "api/team/save", team, {headers: this.cabeceraService.getBasicAuthentication()});
         // let team1: Team;
         // team1 = {id: 1, name: team.name, projects: []};
 
@@ -85,41 +84,13 @@ export class TeamService {
 
     getTeam(id: number):any{
         // return this.httpClient.get<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id);
-        let team1: Team = {
-            id: 1,
-            name: "Olimpia",
-            projects: [{
-                id: 2,
-                name: "Dp",
-                team: 1
-            },{
-                id: 3,
-                name: "Dp2",
-                team: 1
-            }],
-        };
-
-        let response = new Observable(obs => {
-            setTimeout(() => {
-                obs.next(team1);
-            }, 1000);
-        });
-        return response;
+        
     }
 
     editTeam(id: number, team: Team):any {
-        // return this.httpClient.put<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id, team);
-        let response = new Observable(obs => {
-
-            setTimeout(() => {
-
-                obs.next(team);
-
-            }, 1000);
-
-        });
-        return response;
-      }
+        //FIXME: a cambiar post por put
+        return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "api/team/update?idTeam=" + id, team, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 
     getTeamByProjectID(idProject: number): any {
         //return this.httpClient.get<Team>(this.this.cabeceraService.getCabecera() + "/team?idProject=" + idProject);
@@ -127,13 +98,8 @@ export class TeamService {
     }
 
     deleteTeam(id: number):any {
-        // return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id, team);
-        let response = new Observable(obs => {
-
-            setTimeout(() => {}, 1000);
-
-        });
-        return response;
+        return this.httpClient.delete<Team>(this.cabeceraService.getCabecera() + "api/team/delete?idTeam=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+        
     }
 
 }

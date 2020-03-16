@@ -27,8 +27,8 @@
 
             <mat-card class="div2">
 
-              <mat-icon matListIcon>table_chart</mat-icon>
-              <mat-icon matListIcon>insert_chart</mat-icon>
+              <mat-icon matListIcon (click)="openBoard(project)">table_chart</mat-icon>
+              <mat-icon matListIcon (click)="openSprint(project)">insert_chart</mat-icon>
               <mat-icon (click)="openProject(project)" matListIcon>work</mat-icon>
 
             </mat-card>

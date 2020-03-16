@@ -1,11 +1,11 @@
 import { TaskSimple } from './task.domain';
-import { Team } from './team.domain';
+import { Team, TeamSimple } from './team.domain';
 
 export interface ProjectDto {
     id?: number;
-    description?: String;
+    description?: string;
     name: string;
-    team: number,
+    team: TeamSimple,
 }
 
 export interface ProjectComplete {
@@ -18,6 +18,6 @@ export interface ProjectComplete {
 
 export interface ProjectName {
     id: number;
-    name: String;
+    name: string;
 
 }

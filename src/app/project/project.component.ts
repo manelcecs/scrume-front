@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../servicio/project.service';
 import { ProjectDto } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
@@ -18,7 +18,9 @@ export class ProjectComponent implements OnInit {
   startDate: Date;
   endDate: Date;
 
-  constructor(
+  idProject : number;
+
+  constructor(private activatedRoute: ActivatedRoute,
      private router: Router,
      private projectService: ProjectService,
      private sprintService : SprintService,
@@ -26,12 +28,26 @@ export class ProjectComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.projectService.getProject(0).subscribe((project:ProjectDto)=>{
-        this.project = project;
-        console.log(JSON.stringify(this.project));
-        this.sprints = this.sprintService.getSprintsOfProject(0);
-        console.log("Init " + this.project.id);
+    
+    this.activatedRoute.queryParams.subscribe(params =>{
+
+      if(params.id != undefined){
+        this.idProject = params.id;
+        
+        this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
+          this.project = project;
+          console.log(JSON.stringify(this.project));
+          this.sprints = this.sprintService.getSprintsOfProject(0);
+          console.log("Init " + this.project.id);
+        });
+
+      }else{
+        console.log("Nice try...");
+        this.navigateTo("teams");
+      }
+
     });
+    
 
   }
 
@@ -107,11 +123,11 @@ export class NewSprintDialog implements OnInit{
 
   }
 
-  getErrorMessageStartDate() : String {
+  getErrorMessageStartDate() : string {
     return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
   };
 
-  getErrorMessageEndDate() : String {
+  getErrorMessageEndDate() : string {
     return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
   }
 

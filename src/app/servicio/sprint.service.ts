@@ -10,7 +10,7 @@ export class SprintService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    getSprintsOfProject(idProject : Number){
+    getSprintsOfProject(idProject : Number): any{
         let sprint1 : SprintDisplay = {
             id: 1,
             starDate: new Date("2019-01-16"),

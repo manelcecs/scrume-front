@@ -47,6 +47,7 @@ import { BoardComponent } from './board/board.component';
 import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +66,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     CreateTaskComponent,
     NewTaskDialog,
     EditTaskDialog,
-    BoardComponent
+    BoardComponent,
   ],
   imports: [
     MatFormFieldModule,

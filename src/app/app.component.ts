@@ -19,10 +19,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
     this.cargarMenu();
-
-    this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-      console.log(JSON.stringify(res));
-    });
+    this.navigateTo('teams');
+    // this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
+    //   console.log(JSON.stringify(res));
+    // });
 
   }
 
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
     
   }
 
-  navigateTo(route: String): void{
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
@@ -43,18 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'home',
         visible: 'true'
     },{
-        title: 'Wellcome',
-        route: '/wellcome',
-        icon: 'home',
-        visible: 'true'
-    },{
         title: 'Equipo',
         route: '/teams',
-        icon: 'people',
-        visible: 'true'
-    },{
-        title: 'Tablero',
-        route: '/board',
         icon: 'people',
         visible: 'true'
     }

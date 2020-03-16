@@ -14,14 +14,12 @@ import { BoardComponent } from './board/board.component';
 const routes: Routes = [
 
   {path: 'bienvenida', component: BienvenidaComponent},
-  {path: 'wellcome', component: WellcomeComponent},
   {path: 'teams', component: TeamComponent},
   {path: 'teamsCreate', component: TeamCreateComponent},
   {path: 'project', component: ProjectComponent},
-  {path: 'project/create', component: CreateProjectComponent},
+  {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
   {path: 'backlog', component: BacklogComponent},
-  {path: 'project/create', component: CreateProjectComponent},
   {path: 'board', component: BoardComponent}
 
 ];

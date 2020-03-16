@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
-import { Validators } from '@angular/forms';
 
 @Injectable({providedIn:'root'})
 
@@ -12,21 +11,7 @@ export class ProjectService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getProject(idProject : number) : Observable<ProjectDto>{
-        // let project : ProjectDto = {
-        //     id: 1,
-        //     team: 2,
-        //     name: "Acme-Madrugá",
-        //     description: "Proyecto para la asignatura de Diseño y Pruebas 2. El objetivo es que los usuarios (hermandades de semana santa) puedan organizar sus cofradías y los hermanos puedan apuntarse. El A+ para este proyecto es la inclusión de un sistema de gráficos en el dashboard.",
-        // }
-        // let response = new Observable(obs => {
-
-        //     setTimeout(() => {
-
-        //         obs.next(project);
-
-        //     }, 1000);
-
-        // });
+        
         return this.httpClient.get<ProjectDto>("/api/project/list?id=688", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
@@ -69,35 +54,22 @@ export class ProjectService {
     }
 
     createProject(project: ProjectDto) : Observable<ProjectDto> {
-        // return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "/project/create", project);
-        // let project1 : ProjectDto;
-        // project1 = {id : 1, name : project.name, description : project.description, team: project.team};
-
-        // let response = new Observable(obs => {
-        //     setTimeout(() => {
-        //         obs.next(project1);
-        //     }, 1000);
-        // });
-
-        return this.httpClient.post<ProjectDto>("/api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
+        
+        return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() +"api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editProject(id: number, project : ProjectDto) : any {
-        // return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "/project?id=" + id, project);
-        let response = new Observable(obs => {
-            setTimeout(() => {
-                obs.next(project);
-            }, 1000);
-        });
+        return this.httpClient.put<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/update?id=" + id, project, {headers: this.cabeceraService.getBasicAuthentication()});
+        
+    }
+      
+    deleteProject(id: number):any {
+        return this.httpClient.delete<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/delete?id=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 
-        return response;
-      }
-
-      deleteProject(id: number):any {
-      //   // return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "/project?id=" + id, project);
-      }
-
-
+    getProjects(id: number): Observable<ProjectDto[]>{
+        return this.httpClient.get<ProjectDto[]>("/api/project/list?id="+id, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 
 }
 
