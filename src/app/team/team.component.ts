@@ -11,15 +11,15 @@ import { ProjectDto } from '../dominio/project.domain';
 })
 export class TeamComponent implements OnInit {
 
-  teams: Team [];
+  teams: Team[];
 
   constructor(private router: Router, private teamService: TeamService) { }
 
   ngOnInit(): void {
-    sessionStorage.setItem("user", "Jonh Doe");
-    sessionStorage.setItem("pass", "constrasenya");
-    this.teams = this.teamService.getAllTeams(); //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
-  }
+    this.teamService.getAllTeams().subscribe((teams : Team[] )=>{this.teams = teams});
+    console.log("Equipos", this.teams);
+    }; //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
+
 
   createTeam(): void {
     this.router.navigate(['teamsCreate']);
