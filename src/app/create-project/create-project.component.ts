@@ -92,12 +92,15 @@ export class CreateProjectComponent implements OnInit {
   }
 
   navigateTo(route: String): void{
-    console.log(route);
     this.router.navigate([route]);
   }
 
   cancel(): void {
-    this.navigateTo("project\?id\=" + this.project.id)
+    if (this.action == "create") {
+      this.router.navigate(["teams"]);
+    } else if (this.action == "edit") {
+      this.router.navigate(["project"], {queryParams:{id:this.project.id}});
+    }
   }
 
   validForm():Boolean {
