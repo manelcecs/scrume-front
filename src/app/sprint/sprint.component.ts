@@ -69,7 +69,7 @@ export class EditSprintDialog implements OnInit{
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
-    this.startDate.setValue(this.data.starDate);
+    this.startDate.setValue(this.data.startDate);
     this.endDate.setValue(this.data.endDate);
 
   }
@@ -79,7 +79,7 @@ export class EditSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value}
+    this.sprint = {id:0, startDate:this.startDate.value, endDate:this.endDate.value}
     this.sprintService.editSprint(this.idSprint, this.sprint);
     console.log(this.sprint);
     this.dialogRef.close();

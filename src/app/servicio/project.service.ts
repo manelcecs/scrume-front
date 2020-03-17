@@ -11,7 +11,7 @@ export class ProjectService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getProject(idProject : number) : Observable<ProjectDto>{
-        
+
         return this.httpClient.get<ProjectDto>("/api/project/get?id=" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
@@ -54,17 +54,17 @@ export class ProjectService {
     }
 
     createProject(project: ProjectDto) : Observable<ProjectDto> {
-        
+        console.log(project);
         return this.httpClient.post<ProjectDto>("/api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    editProject(id: number, project : ProjectDto) : any {
-        return this.httpClient.put<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/update?id=" + id, project, {headers: this.cabeceraService.getBasicAuthentication()});
-        
+    editProject(id: number, project : ProjectDto) : Observable<ProjectDto> {
+        return this.httpClient.put<ProjectDto>("api/project/update?id=" + id, project, {headers: this.cabeceraService.getBasicAuthentication()});
+
     }
-      
-    deleteProject(id: number):any {
-        return this.httpClient.delete<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/delete?id=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+
+    deleteProject(id: number): Observable<ProjectDto> {
+        return this.httpClient.delete<ProjectDto>("api/project/delete?id=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     getProjects(id: number): Observable<ProjectDto[]>{
