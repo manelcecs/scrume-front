@@ -1,10 +1,10 @@
-import { ProjectName } from './project.domain';
+import { ProjectName, ProjectDto } from './project.domain';
 
 export interface SprintDisplay {
     id: number;
     startDate: Date;
     endDate: Date;
-    project?: number;
+    project?: ProjectDto;
     totalTasks: number;
     completedTasks: number;
     totalHP: number;

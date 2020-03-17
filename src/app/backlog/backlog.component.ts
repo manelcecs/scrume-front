@@ -32,18 +32,9 @@ export class BacklogComponent implements OnInit {
 
       if(param.id != undefined){
         this.idProject = param.id;
-
-        this.teamService.getTeamByProjectID(this.idProject).subscribe((team:Team)=>{
-
-          this.team = team;
-          
-          this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-            this.project = project;
-          });
-
+        this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+          this.project = project;
         });
-
-
       } else{
         this.navigateTo("bienvenida");
       }
