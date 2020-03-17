@@ -8,18 +8,19 @@ import { SprintComponent } from './sprint/sprint.component';
 import { TeamComponent } from './team/team.component';
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { BacklogComponent } from './backlog/backlog.component';
+import { BoardComponent } from './board/board.component';
 
 
 const routes: Routes = [
 
   {path: 'bienvenida', component: BienvenidaComponent},
-  {path: 'wellcome', component: WellcomeComponent},
   {path: 'teams', component: TeamComponent},
   {path: 'teamsCreate', component: TeamCreateComponent},
   {path: 'project', component: ProjectComponent},
-  {path: 'project/create', component: CreateProjectComponent},
+  {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
-  {path: 'backlog', component: BacklogComponent}
+  {path: 'backlog', component: BacklogComponent},
+  {path: 'board', component: BoardComponent}
 
 ];
 

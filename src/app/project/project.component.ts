@@ -1,11 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../servicio/project.service';
-import { ProjectDto } from '../dominio/project.domain';
+import { ProjectDto, ProjectName } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
+import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { error } from '@angular/compiler/src/util';
+import { WrappedNodeExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-project',
@@ -14,11 +16,13 @@ import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from
 })
 export class ProjectComponent implements OnInit {
   project : ProjectDto;
-  sprints : SprintDisplay[];
+  sprints : Sprint[];
   startDate: Date;
   endDate: Date;
 
-  constructor(
+  idProject : number;
+
+  constructor(private activatedRoute: ActivatedRoute,
      private router: Router,
      private projectService: ProjectService,
      private sprintService : SprintService,
@@ -26,13 +30,29 @@ export class ProjectComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.projectService.getProject(0).subscribe((project:ProjectDto)=>{
-        this.project = project;
-        console.log(JSON.stringify(this.project));
-        this.sprints = this.sprintService.getSprintsOfProject(0);
-        console.log("Init " + this.project.id);
-    });
 
+    this.activatedRoute.queryParams.subscribe(params =>{
+
+      console.log(JSON.stringify(params));
+      if(params.id != undefined){
+        this.idProject = params.id;
+
+        this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
+          this.project = project;
+          console.log(JSON.stringify(this.project));
+          this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:Sprint[])=>{
+            this.sprints = sprint;
+          });
+
+          // TODO: Añadir información sobre el sprint
+
+          console.log("Init " + this.project.id);
+        });
+      }else{
+        console.log("Nice try...");
+        //this.navigateTo("teams");
+      }
+    });
   }
 
   openBacklog(): void{
@@ -44,7 +64,7 @@ export class ProjectComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {
       width: '250px',
-      data: {project:this.project.id,startDate: this.startDate, endDate: this.endDate}
+      data: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -62,11 +82,13 @@ export class ProjectComponent implements OnInit {
   }
 
   editProject(project : ProjectDto){
-    this.router.navigate(['project/create'], {queryParams: {id: project.id, action:"edit"}});
+    this.router.navigate(['createProject'], {queryParams: {id: project.id, action:"edit"}});
   }
 
   deleteProject(idProject : number) {
-    this.projectService.deleteProject(idProject);
+    this.projectService.deleteProject(idProject).subscribe((project : ProjectDto) => {
+      this.navigateTo("teams");
+    });
   }
 }
 
@@ -80,15 +102,15 @@ export class ProjectComponent implements OnInit {
 })
 export class NewSprintDialog implements OnInit{
 
-  project: number;
-  sprint: Sprint;
+  project: ProjectName;
+  sprint: SprintJsonDates;
   startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
   endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Sprint,
-    private sprintService: SprintService) {}
+    private sprintService: SprintService, private router: Router) {}
 
 
   ngOnInit(): void {
@@ -100,18 +122,22 @@ export class NewSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, starDate:this.startDate.value, endDate:this.endDate.value, project:this.project}
-    this.sprintService.createSprint(this.sprint);
+    this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
     console.log(this.sprint);
-    this.dialogRef.close();
+
+    this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
+      this.dialogRef.close();
+      //FIXME: Recargar la pagina
+      this.router.navigate(["project"], {queryParams:{id:this.project.id}})
+    });
 
   }
 
-  getErrorMessageStartDate() : String {
+  getErrorMessageStartDate() : string {
     return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
   };
 
-  getErrorMessageEndDate() : String {
+  getErrorMessageEndDate() : string {
     return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
   }
 
