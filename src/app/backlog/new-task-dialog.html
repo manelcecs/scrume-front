@@ -14,7 +14,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Estimación</mat-label>
-        <input type="number" min="0" matInput [formControl]="estimate"/>
+        <input matInput [formControl]="estimate"/>
         <mat-error *ngIf="estimate.invalid">{{ getErrorMessageEstimate() }}</mat-error>
       </mat-form-field>
     </div>

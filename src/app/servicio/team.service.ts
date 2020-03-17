@@ -25,7 +25,7 @@ export class TeamService {
 
     }
 
-    editTeam(id: number, team: Team):any {
+    editTeam(id: number, team: Team): Observable<Team> {
         //FIXME: a cambiar post por put
         return this.httpClient.post<Team>(this.cabeceraService.getCabecera() + "api/team/update?idTeam=" + id, team, {headers: this.cabeceraService.getBasicAuthentication()});
     }
@@ -37,7 +37,6 @@ export class TeamService {
 
     deleteTeam(id: number): Observable<Team> {
         return this.httpClient.delete<Team>(this.cabeceraService.getCabecera() + "api/team/delete?idTeam=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
-
     }
 
 }

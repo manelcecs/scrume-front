@@ -72,8 +72,8 @@ export class EditSprintDialog implements OnInit{
   idSprint: number;
   sprint : SprintJsonDates;
   //FIXME: Arreglar los validators
-  startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
-  endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
+  startDate = new FormControl('',  { validators: [Validators.required, this.validateToday]});
+  endDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd] });
 
   constructor(
     public dialogRef: MatDialogRef<EditSprintDialog>,
@@ -83,7 +83,6 @@ export class EditSprintDialog implements OnInit{
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
-
     this.startDate.setValue(new Date(this.data.startDate));
     this.endDate.setValue(new Date(this.data.endDate));
   }
@@ -111,23 +110,19 @@ export class EditSprintDialog implements OnInit{
   }
 
   validForm():boolean {
-
     let valid: boolean;
-
     valid = this.endDate.valid && this.startDate.valid;
     return valid;
-
   }
 
   validateToday(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
-      console.log("Prueba 2")
       let isValid = true;
 
-      if (control.value.getTime() < Date.now()) {
+      if (control.value.getTime() < new Date(Date.now()).getTime()) {
         isValid = false;
       }
-      return isValid ? null : { 'past': 'the date cant be past' }
+      return isValid ? null : { 'past': 'the date cant be past' };
     };
   }
 
@@ -137,7 +132,7 @@ export class EditSprintDialog implements OnInit{
       if (control.value.getTime() > this.endDate.value.getTime()) {
         isValid = false;
       }
-      return isValid ? null : { 'invalid': 'Invalid dates' }
+      return isValid ? null : { 'invalid': 'Invalid dates' };
 
     };
   }
