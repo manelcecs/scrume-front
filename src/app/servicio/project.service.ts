@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
-import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
+import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 
 @Injectable({providedIn:'root'})
 
