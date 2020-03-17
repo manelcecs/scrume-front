@@ -14,7 +14,7 @@ import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from
 })
 export class ProjectComponent implements OnInit {
   project : ProjectDto;
-  sprints : SprintDisplay[];
+  sprints : Sprint[];
   startDate: Date;
   endDate: Date;
 
@@ -31,19 +31,23 @@ export class ProjectComponent implements OnInit {
     
     this.activatedRoute.queryParams.subscribe(params =>{
 
+      console.log(JSON.stringify(params));
       if(params.id != undefined){
         this.idProject = params.id;
         
         this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
           this.project = project;
+          this.project.id = 147; //Quitar cuando este arreglado back
           console.log(JSON.stringify(this.project));
-          this.sprints = this.sprintService.getSprintsOfProject(0);
+          this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:Sprint[])=>{
+            this.sprints = sprint;
+          });
           console.log("Init " + this.project.id);
         });
 
       }else{
         console.log("Nice try...");
-        this.navigateTo("teams");
+        //this.navigateTo("teams");
       }
 
     });

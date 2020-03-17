@@ -12,7 +12,7 @@ export class ProjectService {
 
     getProject(idProject : number) : Observable<ProjectDto>{
         
-        return this.httpClient.get<ProjectDto>("/api/project/list?id=688", {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.get<ProjectDto>("/api/project/get?id=" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     getProjectWithTasks(idProject : number):any{
@@ -55,7 +55,7 @@ export class ProjectService {
 
     createProject(project: ProjectDto) : Observable<ProjectDto> {
         
-        return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() +"api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.post<ProjectDto>("/api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editProject(id: number, project : ProjectDto) : any {

@@ -57,7 +57,8 @@ export class TeamComponent implements OnInit {
   }
 
   openProject(proj: ProjectDto): void{
-    this.router.navigate(['project'], {queryParams: {id: proj.id}});
+    console.log(JSON.stringify(proj));
+    this.router.navigate(['project'], {queryParams: {id: 147}});
   }
 
   createProject(team: Team): void{
@@ -65,7 +66,7 @@ export class TeamComponent implements OnInit {
   }
 
   openBoard(proj: ProjectDto): void{
-    this.router.navigate(['project'], {queryParams: {id: proj.id}});
+    this.router.navigate(['project'], {queryParams: {id: 147}});
   }
 
   openSprint(proj: ProjectDto): void{

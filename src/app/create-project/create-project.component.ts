@@ -59,7 +59,7 @@ export class CreateProjectComponent implements OnInit {
 
   createProject(): void {
 
-    this.project = {description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name:"Olimpia"}};
+    this.project = {id: this.idProyecto, description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name:"Olimpia"}};
 
     if (this.idProyecto != undefined){
 
@@ -92,7 +92,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private _createProject():Observable<ProjectDto>{
-    this.project = {description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name: "Olimpia"}};
+    this.project = {id: 0, description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name: "Olimpia"}};
     return this.projectService.createProject(this.project);
 
   }
