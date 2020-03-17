@@ -8,7 +8,7 @@ export const environment = {
     "user": "testuser@gmail.com",
     "pass": "123456"
   },
-  "backend": 'https://api-scrume.cleverapps.io/'
+  "backend": '/'
 };
 
 /*'https://api-scrume.cleverapps.io/'

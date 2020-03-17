@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
+import { Sprint, SprintDisplay, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { NewSprintDialog } from '../project/project.component';
@@ -24,7 +24,9 @@ export class SprintComponent implements OnInit {
       if(param.id != undefined){
         this.idSprint = param.id;
 
-        this.sprint = this.sprintService.getSprint(this.idSprint);
+        this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
+          this.sprint = sprintDisplay;
+        });
 
       } else{
         this.navigateTo("bienvenida");
@@ -41,10 +43,21 @@ export class SprintComponent implements OnInit {
       width: '250px',
       data: this.sprint
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
+      this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
+        this.sprint = sprintDisplay;
+      });
     });
   }
+
+  openProject(proj: number): void{
+    this.router.navigate(['project'], {queryParams: {id: proj}});
+  }
+
+  openTeam(team: number): void{
+    this.router.navigate(['team'], {queryParams: {id: team}});
+  }
+
 
 }
 
@@ -57,7 +70,8 @@ export class SprintComponent implements OnInit {
 export class EditSprintDialog implements OnInit{
 
   idSprint: number;
-  sprint : Sprint;
+  sprint : SprintJsonDates;
+  //FIXME: Arreglar los validators
   startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
   endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
 
@@ -69,9 +83,9 @@ export class EditSprintDialog implements OnInit{
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
-    this.startDate.setValue(this.data.startDate);
-    this.endDate.setValue(this.data.endDate);
 
+    this.startDate.setValue(new Date(this.data.startDate));
+    this.endDate.setValue(new Date(this.data.endDate));
   }
 
   onNoClick(): void {
@@ -79,10 +93,12 @@ export class EditSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, startDate:this.startDate.value, endDate:this.endDate.value}
-    this.sprintService.editSprint(this.idSprint, this.sprint);
-    console.log(this.sprint);
-    this.dialogRef.close();
+    this.sprint = {id:this.idSprint, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString()}
+    this.sprintService.editSprint(this.idSprint, this.sprint).subscribe((sprint : Sprint) => {
+      console.log(sprint);
+      //FIXME: Recargar la pagina
+      this.dialogRef.close();
+    });
 
   }
 

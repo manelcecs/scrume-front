@@ -55,3 +55,9 @@ section {
 #dashboard-sprint > *{
     width: 100%;
 }
+
+.cell-statistics-project {
+  width: 10%;
+  padding: 0.1%;
+  font-size: smaller;
+}

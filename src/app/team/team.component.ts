@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
 import { Board } from '../dominio/board.domain';
-import { Sprint } from '../dominio/sprint.domain';
+import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { ProjectService } from '../servicio/project.service';
 import { Observable } from 'rxjs';
@@ -71,7 +71,7 @@ export class TeamComponent implements OnInit {
 
   openSprint(proj: ProjectDto): void{
     let idSprint : number;
-    this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: Sprint[])=>{
+    this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[])=>{
       idSprint = sprints[sprints.length].id;
       this.router.navigate(['sprint'], {queryParams:{id : idSprint}});
     });

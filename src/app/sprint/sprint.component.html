@@ -1,7 +1,7 @@
 <div id="main-sprint">
     <section id="header-sprint">
         <div>
-            <h3><a href="/">Olimpia</a> > <a href="/">Acme-Madrugá</a> > Sprint</h3>
+          <h3><a href="" (click)="openTeam(sprint.project.team.id)">{{sprint.project.team.name}}</a> > <a href=""  (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a> > Sprint</h3>
         </div>
       </section>
       <section id="progress-sprint">
@@ -15,10 +15,9 @@
                 </td>
                 <td style="width:50%">
                     <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: {{sprint.completedHP/sprint.totalHP}}%" aria-valuemin="0"
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{(sprint.completedHP/sprint.totalHP) * 100}}%" aria-valuemin="0"
                             aria-valuemax="100"></div>
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuemin="0"
-                            aria-valuemax="100"></div>
+
                     </div>
                 </td>
                 <td class="date-sprint">
@@ -28,7 +27,7 @@
         </table>
     </section>
 
-    <section id="list-section-workspace-sprint">
+    <!-- <section id="list-section-workspace-sprint">
         <mat-list>
             <h4>Tableros</h4>
             <mat-list-item>
@@ -41,7 +40,7 @@
             </mat-list-item>
         </mat-list>
 
-    </section>
+    </section> -->
 <br/>
     <section id="dashboard-sprint">
         <mat-accordion>
@@ -51,7 +50,14 @@
                         Métricas y gráficos
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <img src="https://i.pinimg.com/originals/bd/33/6c/bd336ca558b5ab6613b0530c43f4e8a7.png" alt="Burndown">
+                <tr>
+                  <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
+                  <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
+                </tr>
+                <tr>
+                  <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
+                  <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
+                </tr>
             </mat-expansion-panel>
         </mat-accordion>
 
