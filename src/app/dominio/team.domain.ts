@@ -9,6 +9,6 @@ export interface Team {
 
 export interface TeamSimple{
     id: number;
-    name: string;
+    name?: string;
 }
 

@@ -22,8 +22,8 @@ export class TeamComponent implements OnInit {
 };
   teams: Team[];
 
-  constructor(private router: Router, 
-    private teamService: TeamService, 
+  constructor(private router: Router,
+    private teamService: TeamService,
     private sprintService: SprintService,
     private projectService: ProjectService
     ) { }
@@ -58,7 +58,7 @@ export class TeamComponent implements OnInit {
 
   openProject(proj: ProjectDto): void{
     console.log(JSON.stringify(proj));
-    this.router.navigate(['project'], {queryParams: {id: 147}});
+    this.router.navigate(['project'], {queryParams: {id: proj.id}});
   }
 
   createProject(team: Team): void{
@@ -66,7 +66,7 @@ export class TeamComponent implements OnInit {
   }
 
   openBoard(proj: ProjectDto): void{
-    this.router.navigate(['project'], {queryParams: {id: 147}});
+    this.router.navigate(['project'], {queryParams: {id: proj.id}});
   }
 
   openSprint(proj: ProjectDto): void{
@@ -80,6 +80,12 @@ export class TeamComponent implements OnInit {
   getProjectsOfTeam(id: number): Observable<ProjectDto[]>{
     return this.projectService.getProjects(id);
   }
-    
+
+  deleteTeam(idTeam : number) {
+    this.teamService.deleteTeam(idTeam).subscribe((team : Team) => {
+      window.location.reload();
+    });
+  }
+
 
 }

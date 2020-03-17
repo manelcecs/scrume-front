@@ -84,7 +84,7 @@ export class TeamService {
 
     getTeam(id: number):any{
         // return this.httpClient.get<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id);
-        
+
     }
 
     editTeam(id: number, team: Team):any {
@@ -97,9 +97,9 @@ export class TeamService {
         return this.getTeam(1);
     }
 
-    deleteTeam(id: number):any {
+    deleteTeam(id: number): Observable<Team> {
         return this.httpClient.delete<Team>(this.cabeceraService.getCabecera() + "api/team/delete?idTeam=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
-        
+
     }
 
 }

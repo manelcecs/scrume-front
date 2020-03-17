@@ -21,7 +21,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   name = new FormControl('', { validators: [Validators.required] });
-  desc = new FormControl('', { validators: [this.validateNotBlank()] });
+  desc = new FormControl('', { validators: [Validators.required] });
 
   constructor(private router: Router, private projectService: ProjectService, private activatedRoute: ActivatedRoute) { }
 
@@ -32,17 +32,18 @@ export class CreateProjectComponent implements OnInit {
       if(params.action != undefined){
         if (params.action == "edit") {
           this.action = "edit";
-  
+
           this.projectService.getProject(params.id).subscribe(res => {
             this.project = res;
             this.name.setValue(this.project.name);
             this.desc.setValue(this.project.description);
+
             this.idProyecto = params.id;
           });
-          
+
         } else if (params.action === "create") {
           this.action = "create";
-          
+
           this.idEquipo = params.id;
         }else{
           console.log("Nice try...");
@@ -52,22 +53,19 @@ export class CreateProjectComponent implements OnInit {
         console.log("Nice try...");
         this.navigateTo("teams");
       }
-      
+
     });
 
   };
 
   createProject(): void {
 
-    this.project = {id: this.idProyecto, description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name:"Olimpia"}};
-
     if (this.idProyecto != undefined){
 
-      this._editProject(this.idProyecto).subscribe((resp: ProjectDto) => {
+      this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
         this.project = resp;
-        this.navigateTo("project");
-        
+        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
       });
 
     }else{
@@ -75,24 +73,23 @@ export class CreateProjectComponent implements OnInit {
       this._createProject().subscribe((resp: ProjectDto) => {
 
         this.project = resp;
-        this.navigateTo("project");
+        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
 
       });
 
     }
 
-    
-
   }
 
   private _editProject(id: number):Observable<ProjectDto>{
-
+    this.project.name = this.name.value;
+    this.project.description = this.desc.value;
     return this.projectService.editProject(id, this.project);
 
   }
 
   private _createProject():Observable<ProjectDto>{
-    this.project = {id: 0, description: this.desc.value, name: this.name.value, team: {id: this.idEquipo, name: "Olimpia"}};
+    this.project = {description: this.desc.value, name: this.name.value, team: {id: this.idEquipo}};
     return this.projectService.createProject(this.project);
 
   }
@@ -125,18 +122,9 @@ export class CreateProjectComponent implements OnInit {
   }
 
   getErrorMessageDesc(): String {
-    return this.desc.hasError('whitespace')?'Este campo no admite solo caracteres en blanco':'';
+    return this.desc.hasError('required')?'Este campo es requerido.':'';
   }
 
-  validateNotBlank(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-      let isValid = true;
-      if (control.value !== '') {
-        isValid = (control.value || '').trim().length !== 0;
-      }
-      return isValid ? null : { 'whitespace': 'value is only whitespace' }
-
-    };
   }
 
-}
+

@@ -63,6 +63,7 @@ export class TeamCreateComponent implements OnInit {
       this._editTeam(this.id).subscribe((resp: Team) => {
 
         this.team = resp;
+        this.navigateTo("teams");
       });
 
     }else{
@@ -70,13 +71,13 @@ export class TeamCreateComponent implements OnInit {
       this._createTeam().subscribe((resp: Team) => {
 
         this.team = resp;
+        this.navigateTo("teams");
       },(error) => {
         this.team = undefined;
       });
 
     }
-    
-    this.navigateTo("teams");
+
 
   }
 
@@ -98,7 +99,7 @@ export class TeamCreateComponent implements OnInit {
   private _createTeam():Observable<Team>{
 
     this.team = {name: this.name.value, projects: this.projects}
-   
+
     return this.teamService.createTeam(this.team);
 
   }
