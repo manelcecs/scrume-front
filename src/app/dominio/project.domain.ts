@@ -11,6 +11,7 @@ export interface ProjectDto {
 export interface ProjectComplete {
     id?: number;
     name: string;
+    team?: TeamSimple;
     project: ProjectComplete;
     description?: string;
     tasks: TaskSimple[];

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Team } from '../dominio/team.domain';
+import { Team, TeamSimple } from '../dominio/team.domain';
 import { ProjectDto, ProjectComplete, ProjectName } from '../dominio/project.domain';
 import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
@@ -20,21 +20,26 @@ import { isNumber } from 'util';
 export class BacklogComponent implements OnInit {
 
   idProject: number;
-  team: Team;
   project: ProjectComplete;
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog) { }
+    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, private taskService: TaskService) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
 
       if(param.id != undefined){
         this.idProject = param.id;
+      
         this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
           this.project = project;
+          this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
+            this.project.team = {id: project.team.id, name: project.team.name};
+            console.log("Proyecto " + this.project);
+          });
         });
+
       } else{
         this.navigateTo("bienvenida");
       }
@@ -50,8 +55,16 @@ export class BacklogComponent implements OnInit {
     this.router.navigate(['project'], {queryParams: {id: proj.id}});
   }
 
-  openTeam(team: Team): void{
+  openTeam(team: TeamSimple): void{
     this.router.navigate(['team'], {queryParams: {id: team.id}});
+  }
+
+  deleteTask(task: TaskSimple): void{
+    this.taskService.deleteTask(task.id).subscribe(()=>{
+      this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+        this.project.tasks = project.tasks;
+      });
+    });
   }
 
   openCreateTask(): void {
@@ -61,6 +74,9 @@ export class BacklogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+        this.project = project;
+      });
       console.log('The dialog was closed');
     });
   }
@@ -72,6 +88,9 @@ export class BacklogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+        this.project = project;
+      });
       console.log('The dialog was closed');
     });
   }
@@ -90,7 +109,7 @@ export class NewTaskDialog implements OnInit{
   task: TaskDto;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
-  estimate = new FormControl('',  { validators: [this.validateNumberOptional(), this.validatePositiveOptional()]});
+  estimate = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
@@ -106,10 +125,10 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value, project:this.projectComplete}
-    this.taskService.createTask(this.task);
-    console.log(this.task);
-    this.dialogRef.close();
+    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value, project:this.projectComplete};
+    this.taskService.createTask(this.task).subscribe(()=>{
+      this.dialogRef.close();
+    });
   }
 
   getErrorMessageTitle() : String {
@@ -121,38 +140,14 @@ export class NewTaskDialog implements OnInit{
   };
 
   getErrorMessageEstimate() : String {
-    return this.estimate.hasError('number')?'Debe ser un número':this.estimate.hasError('negative')?'Debe ser mayor o igual a 0':'';
+    return this.estimate.hasError('pattern')?'Debe ser un número mayor que 0':'';
   };
 
   validForm():boolean {
-
     let valid: boolean;
-
     valid = this.estimate.valid && this.title.valid && this.description.valid;
     return valid;
-
   }
-
-  validateNumberOptional(): ValidatorFn {
-      return (control: AbstractControl): {[key: string]: any} | null => {
-       let isValid = true;
-       if (control.value !== '' && !isNumber(this.estimate)) {
-         isValid = false;
-       }
-       return isValid ? null : { 'number': 'the estimate must be a number' }
-     };
-  }
-
-  validatePositiveOptional(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-     let isValid = true;
-
-     if (control.value !== '' && control.value < 0) {
-       isValid = false;
-     }
-     return isValid ? null : { 'negative': 'the estimate must be a number' }
-   };
-}
 }
 
 @Component({
@@ -166,7 +161,7 @@ export class EditTaskDialog implements OnInit{
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
-  estimate = new FormControl('',  { validators: [this.validateNumberOptional(), this.validatePositiveOptional()]});
+  estimate = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
@@ -186,10 +181,10 @@ export class EditTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value}
-    this.taskService.editTask(this.idTask, this.task);
-    console.log(this.task);
-    this.dialogRef.close();
+    this.task = {id:this.idTask, title:this.title.value, description:this.description.value, estimate:this.estimate.value};
+    this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
+      this.dialogRef.close();
+    });
   }
 
   getErrorMessageTitle() : String {
@@ -201,40 +196,12 @@ export class EditTaskDialog implements OnInit{
   };
 
   getErrorMessageEstimate() : String {
-    return this.estimate.hasError('number')?'Debe ser un número':this.estimate.hasError('negative')?'Debe ser mayor o igual a 0':'';
+    return this.estimate.hasError('pattern')?'Debe ser un número mayor que 0':'';
   };
 
   validForm():boolean {
-
     let valid: boolean;
-
     valid = this.estimate.valid && this.title.valid && this.description.valid;
     return valid;
-
   }
-
-  validateNumberOptional(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-     let isValid = true;
-     console.log("ndfndndnvdvnnvd " + control.value);
-     if(control.value != undefined){
-      console.log("Hola " + control.value);
-      if (isNumber(this.estimate)) { //FIXME DEJA PASAR NUMEROS, LETRAS Y HASTA A BORJA IGLESIAS
-        isValid = false;
-      }
-     }
-     return isValid ? null : { 'number': 'the estimate must be a number' }
-   };
-  }
-
-  validatePositiveOptional(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-    let isValid = true;
-
-    if (control.value !== '' && control.value < 0) {
-      isValid = false;
-    }
-    return isValid ? null : { 'negative': 'the estimate must be a number' }
-  };
-}
 }

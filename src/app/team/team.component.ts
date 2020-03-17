@@ -72,7 +72,7 @@ export class TeamComponent implements OnInit {
   openSprint(proj: ProjectDto): void{
     let idSprint : number;
     this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[])=>{
-      idSprint = sprints[sprints.length].id;
+      idSprint = sprints[sprints.length-1].id;
       this.router.navigate(['sprint'], {queryParams:{id : idSprint}});
     });
   }
@@ -81,11 +81,16 @@ export class TeamComponent implements OnInit {
     return this.projectService.getProjects(id);
   }
 
-  deleteTeam(idTeam : number) {
-    this.teamService.deleteTeam(idTeam).subscribe((team : Team) => {
-      window.location.reload();
+  deleteTeam(idTeam : number): void {
+    this.teamService.deleteTeam(idTeam).subscribe(() => {
+      this.teamService.getAllTeams().subscribe((teams : Team[] )=>{
+        this.teams = teams;
+        for(let t of this.teams){
+            this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
+            t.projects = projects;
+          });
+        }
+      });
     });
   }
-
-
 }

@@ -11,19 +11,15 @@ export class ProjectService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getProject(idProject : number) : Observable<ProjectDto>{
-
-        return this.httpClient.get<ProjectDto>("/api/project/get?id=" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.get<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/get?id=" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-
     createProject(project: ProjectDto) : Observable<ProjectDto> {
-        console.log(project);
         return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/save", project, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editProject(id: number, project : ProjectDto) : Observable<ProjectDto> {
         return this.httpClient.put<ProjectDto>(this.cabeceraService.getCabecera() + "api/project/update?id=" + id, project, {headers: this.cabeceraService.getBasicAuthentication()});
-
     }
 
     deleteProject(id: number): Observable<ProjectDto> {
