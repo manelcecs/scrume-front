@@ -11,7 +11,9 @@ const dist_dir = "/../dist/scrume-front";
 
 const back = "https://api-scrume.cleverapps.io/api";
 const front = "https://scrume-brand.herokuapp.com";
-const cors = "Access-Control-Allow-Origin";
+const corsName = "Access-Control-Allow-Origin";
+
+var cors = require('cors');
 
 app.use(express.static(__dirname + dist_dir));
 
@@ -21,8 +23,7 @@ server.listen(port, function() {
 })
 
 app.use((req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', front);
-    res.setHeader('Access-Control-Allow-Origin', back);
+    res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
