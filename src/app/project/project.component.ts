@@ -16,7 +16,7 @@ import { WrappedNodeExpr } from '@angular/compiler';
 })
 export class ProjectComponent implements OnInit {
   project : ProjectDto;
-  sprints : Sprint[];
+  sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
 
@@ -40,13 +40,10 @@ export class ProjectComponent implements OnInit {
         this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
           this.project = project;
           console.log(JSON.stringify(this.project));
-          this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:Sprint[])=>{
+          this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
             this.sprints = sprint;
           });
 
-          // TODO: Añadir información sobre el sprint
-
-          console.log("Init " + this.project.id);
         });
       }else{
         console.log("Nice try...");
@@ -67,8 +64,10 @@ export class ProjectComponent implements OnInit {
       data: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
+      this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
+        this.sprints = sprint;
+      });
     });
   }
 

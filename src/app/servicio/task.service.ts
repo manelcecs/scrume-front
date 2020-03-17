@@ -12,32 +12,15 @@ export class TaskService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     createTask(task : TaskSimple){
-      let task1 : TaskSimple;
-      task1 = {id : 1, title: task.title};
-
-      let response = new Observable(obs => {
-          setTimeout(() => {
-              obs.next(task1);
-          }, 1000);
-      });
-
-      return response;
+      return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/save?id=" + task.id, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editTask(id: number, task : TaskSimple) : any {
-      // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/task?id=" + id, task);
-      let response = new Observable(obs => {
-          setTimeout(() => {
-              obs.next(task);
-          }, 1000);
-      });
-
-      return response;
+     return this.httpClient.put<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/update?id=" + id, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    deleteSprint(id: number):any {
-      // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/task?id=" + id, task);
+    deleteTask(id: number):any {
+     return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/delete?id=" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }
-
