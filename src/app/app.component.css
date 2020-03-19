@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 mat-sidenav-container, mat-sidenav {
     height: 100%;
 }
@@ -57,6 +58,38 @@ a {
     color:  #019CDD;
     align-content: flex-start;
 }
+=======
+.menu{
+    background-color: black;
+}
+
+/* Boton de desplegar */
+
+/* ------------------- */
+
+/* LOGO */
+
+
+/* ----------------------------- */
+
+
+/* Deplegable */
+
+mat-sidenav {
+    height: 100%;
+    width: 20%;
+    background-color: whitesmoke;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+
+a:hover {
+    cursor: pointer;
+}
+>>>>>>> integration
  
 .mat-list-item{
     list-style-type: none;
@@ -72,12 +105,15 @@ a {
 mat-toolbar{
     border-radius: 3px;
 }
+<<<<<<< HEAD
  
 @media(max-width: 959px){
     mat-toolbar{
         border-radius: 0px;
     }
 }
+=======
+>>>>>>> integration
 
 button {
     background-color: darkslategray;
@@ -86,4 +122,22 @@ button {
 
 .mat-list-item-content{
     margin-left: 1%;
+<<<<<<< HEAD
 }
+=======
+}
+
+/* ----------------------------- */
+
+
+/* Responsive css
+@media only screen and (max-width: 600px) {
+    .menu > div > img {
+        height: 60%;
+        background-color: lightblue;
+    }
+    .menu > div {
+        margin-right: 5%;
+    }
+  } */
+>>>>>>> integration
