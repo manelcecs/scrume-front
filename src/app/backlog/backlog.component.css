@@ -42,4 +42,8 @@
     background-color:#18A1F0;
 }
 
+mat-icon{
+    cursor: pointer;
+  }
+
 /* ---------------------------------- */
