@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*const express = require('express');
 const path = require('path');
 const app = express();
@@ -33,7 +32,7 @@ app.get('', function(req, res) {
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
-=======
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -82,4 +81,3 @@ app.get('/', function(req, res) {
 
     res.sendFile(path.join(__dirname + dist_dir+'/index.html'));
 });
->>>>>>> integration

@@ -9,13 +9,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-<<<<<<< HEAD
-import {MatToolbarModule} from '@angular/material/toolbar'; 
-import {MatSidenavModule} from '@angular/material/sidenav'; 
-=======
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
->>>>>>> integration
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -27,12 +22,6 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-<<<<<<< HEAD
-import {MatIconModule} from '@angular/material/icon'; 
-import {MatListModule} from '@angular/material/list';
-import { BienvenidaComponent } from './bienvenida/bienvenida.component';
-import { WellcomeComponent } from './wellcome/wellcome.component'; 
-=======
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
@@ -57,18 +46,12 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
->>>>>>> integration
 
 
 @NgModule({
   declarations: [
     AppComponent,
     BienvenidaComponent,
-<<<<<<< HEAD
-    WellcomeComponent
-  ],
-  imports: [
-=======
     WellcomeComponent,
     ProjectComponent,
     CreateProjectComponent,
@@ -87,7 +70,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
   ],
   imports: [
     MatFormFieldModule,
->>>>>>> integration
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -95,10 +77,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
-<<<<<<< HEAD
-    MatFormFieldModule,
-=======
->>>>>>> integration
     MatInputModule,
     MatGridListModule,
     MatRadioModule,
@@ -109,12 +87,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
-<<<<<<< HEAD
-    MatListModule, 
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-=======
     MatListModule,
     MatButtonModule,
     MatTooltipModule,
@@ -130,6 +102,5 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
   providers: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
->>>>>>> integration
 })
 export class AppModule { }
