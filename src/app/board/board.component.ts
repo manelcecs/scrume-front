@@ -57,13 +57,13 @@ export class BoardComponent implements OnInit {
       let col = new String(event.previousContainer.data);
       let col2 = new String(event.container.data);
 
-      if (col == "To Do" && col2 == "In Progress") {
+      if (col == "To Do" && col2 == "In progress") {
         this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
       } else if (col == "To Do" && col2 == "Done"){
         this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
-      } else if (col == "In Progress" && col2 == "To Do"){
+      } else if (col == "In progress" && col2 == "To Do"){
         this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
-      } else if (col == "In Progress" && col2 == "Done"){
+      } else if (col == "In progress" && col2 == "Done"){
         this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
       } else if (col == "Done" && col2 == "To Do"){
         this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
@@ -88,15 +88,8 @@ export class BoardComponent implements OnInit {
     destiny.splice(newIndex, 0, save);
     console.log("origen  " + origen)
     console.log("destino  " +destiny)
-    
 
   }
-
-  // private _moveTasks(idTask, idColumn, id):Observable<TaskMove>{
-  //   this.task = {id: id, destiny: idColumn, task: idTask};
-  //   return this.task
-
-  // }
 
   private moveInArray(container: ColumDto, preIndex: number, newIndex: number) {
 

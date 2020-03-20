@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { TaskSimple, TaskDto } from '../dominio/task.domain';
+import { TaskSimple, TaskDto, TaskMove } from '../dominio/task.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -21,6 +21,10 @@ export class TaskService {
 
     deleteTask(id: number): Observable<TaskSimple>{
      return this.httpClient.delete<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    moveTask(): Observable<TaskMove> {
+      return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }

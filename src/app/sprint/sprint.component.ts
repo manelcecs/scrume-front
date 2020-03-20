@@ -30,11 +30,12 @@ export class SprintComponent implements OnInit {
         this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
           this.sprint = sprintDisplay;
 
-          this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
-            this.board = board;
-            console.log("este es el tablero"+ board);
-          });
+        });
 
+        console.log("casi entro");
+        this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+          this.board = board;
+          console.log("este es el tablero"+ board);
         });
 
       } else{
@@ -73,12 +74,12 @@ export class SprintComponent implements OnInit {
     this.router.navigate(['board'], {queryParams: {id: board}});
   }
 
-  createBoard(): void {
-    this.router.navigate(['boardsCreate']);
+  createBoard(id: number): void {
+    this.router.navigate(['createBoard'], {queryParams: {idSprint: this.idSprint}});
   }
   
   editBoard(row: BoardSimple): void{
-    this.router.navigate(['boardsCreate'], {queryParams: {id: row.id}});
+    this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
   }
 
 

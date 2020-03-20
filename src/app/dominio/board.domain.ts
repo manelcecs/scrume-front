@@ -14,3 +14,9 @@ export interface BoardSimple {
     name: string;
     sprint: Sprint;
 }
+
+export interface BoardNumber {
+    id?: number;
+    name: string;
+    sprint: number;
+}
