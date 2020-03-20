@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
-import { Team } from '../dominio/team.domain';
+import { Team, TeamSimple } from '../dominio/team.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { ProjectDto } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
@@ -89,25 +89,21 @@ export class TeamCreateComponent implements OnInit {
     });
   }
 
-  private _editTeam(id: number):any/*Observable<Team>*/{
-
+  private _editTeam(id: number):Observable<TeamSimple>{
     this.team.name = this.name.value;
-    return this.teamService.editTeam(id, this.team);
+    this.team.id = id;
+    return this.teamService.editTeam(this.team);
 
   }
 
-  private _createTeam():Observable<Team>{
-
-    this.team = {name: this.name.value, projects: this.projects}
-
+  private _createTeam():Observable<TeamSimple>{
+    //this.team = {name: this.name.value, projects: this.projects}
+    this.team = {id:0, name: this.name.value}
     return this.teamService.createTeam(this.team);
-
   }
 
-  private _deleteTeam(id: number): Observable<Team>{
-
+  private _deleteTeam(id: number): Observable<TeamSimple>{
     return this.teamService.deleteTeam(id);
-
   }
 
   cancelCreateteam(): void {
