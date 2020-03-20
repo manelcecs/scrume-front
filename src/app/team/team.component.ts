@@ -78,7 +78,7 @@ export class TeamComponent implements OnInit {
   }
 
   getProjectsOfTeam(id: number): Observable<ProjectDto[]>{
-    return this.projectService.getProjects(id);
+    return this.projectService.getProjectsByTeam(id);
   }
 
   deleteTeam(idTeam : number): void {
