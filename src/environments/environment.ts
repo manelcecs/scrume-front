@@ -12,9 +12,9 @@ export const environment = {
   production: false,
   "login": {
     "user": "testuser@gmail.com",
-    "pass": "123456"
+    "pass": "1234563"
   },
-  "backend": '/'
+  "backend": 'https://api-scrume-s2.cleverapps.io/'
 };
 
 /*'https://api-scrume.cleverapps.io/'

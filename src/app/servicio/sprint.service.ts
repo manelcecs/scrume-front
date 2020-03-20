@@ -10,25 +10,24 @@ export class SprintService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    getSprintsOfProject(idProject : number): Observable<SprintDisplay[]>{
-      return this.httpClient.get<SprintDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/list?idProject=" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
-    }
-
-    getSprint(idSprint : number): Observable<SprintDisplay>{
-      return this.httpClient.get<SprintDisplay>(this.cabeceraService.getCabecera() + "api/sprint/statistics?idSprint=" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
-    }
-
     createSprint(sprint : SprintJsonDates) : Observable<Sprint>{
-      return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "api/sprint/save", sprint, {headers: this.cabeceraService.getBasicAuthentication()});
-
+      return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "api/sprint", sprint, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editSprint(id: number, sprint : SprintJsonDates) : Observable<Sprint> {
-      return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "api/sprint/update?idSprint=" + id, sprint, {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.put<Sprint>(this.cabeceraService.getCabecera() + "api/sprint/" + id, sprint, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     deleteSprint(id: number):any {
       // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/sprint?id=" + id, sprint);
+    }
+
+    getSprint(idSprint : number): Observable<SprintDisplay>{
+      return this.httpClient.get<SprintDisplay>(this.cabeceraService.getCabecera() + "api/sprint/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getSprintsOfProject(idProject : number): Observable<SprintDisplay[]>{
+      return this.httpClient.get<SprintDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/list/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 
