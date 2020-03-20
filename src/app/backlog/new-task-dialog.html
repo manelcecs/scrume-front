@@ -14,8 +14,8 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Estimación</mat-label>
-        <input matInput [formControl]="estimate"/>
-        <mat-error *ngIf="estimate.invalid">{{ getErrorMessageEstimate() }}</mat-error>
+        <input matInput [formControl]="points"/>
+        <mat-error *ngIf="points.invalid">{{ getErrorMessageEstimate() }}</mat-error>
       </mat-form-field>
     </div>
     <div id="buttons-dialog">

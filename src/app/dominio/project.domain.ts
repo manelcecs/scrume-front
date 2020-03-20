@@ -21,5 +21,4 @@ export interface ProjectComplete {
 export interface ProjectName {
     id: number;
     name: string;
-
 }

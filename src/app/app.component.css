@@ -15,6 +15,10 @@ mat-sidenav-container, mat-sidenav {
     font-size: 50px;
 }
 
+mat-icon:hover{
+    cursor: pointer;
+}
+
 .menu > span {
     margin-left: 1%;
 }

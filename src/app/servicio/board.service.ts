@@ -17,7 +17,7 @@ export class BoardService {
               id: 2,
              title: "Presentación",
              description: "Preparar la presentación",
-             estimate: 12,
+             points: 12,
              project: {
                  id: 1,
                  name: "DP"
@@ -26,7 +26,7 @@ export class BoardService {
             id: 2,
            title: "Presentación 2",
            description: "Preparar la presentación",
-           estimate: 12,
+           points: 12,
            project: {
                 id: 1,
                name: "DP"
@@ -40,7 +40,7 @@ export class BoardService {
              id: 2,
              title: "Integración",
              description: "Integra node.js y spring",
-             estimate: 12,
+             points: 12,
              project: {
                 id: 1,
                  name: "DP"
@@ -49,7 +49,7 @@ export class BoardService {
             id: 2,
            title: "Presentación 2",
            description: "Preparar la presentación",
-           estimate: 12,
+           points: 12,
            project: {
                 id: 1,
                name: "DP"
@@ -63,7 +63,7 @@ export class BoardService {
              id: 2,
              title: "Aprobar DP",
              description: "Regalar un jamón",
-             estimate: 12,
+             points: 12,
              project: {
                 id: 1,
                  name: "DP"
@@ -72,7 +72,7 @@ export class BoardService {
             id: 2,
            title: "Presentación 2",
            description: "Preparar la presentación",
-           estimate: 12,
+           points: 12,
            project: {
                id: 1,
                name: "DP"
