@@ -5,7 +5,7 @@ export interface TaskDto {
     id?: number;
     title: string;
     description: string;
-    estimate: number;
+    points: number;
     project: ProjectName;
 }
 
@@ -13,5 +13,5 @@ export interface TaskSimple {
     id?: number;
     title: string;
     description?: string;
-    estimate?: number;
+    points?: number;
 }

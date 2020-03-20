@@ -70,7 +70,7 @@ export class BacklogComponent implements OnInit {
   openCreateTask(): void {
     const dialogRef = this.dialog.open(NewTaskDialog, {
       width: '250px',
-      data: {project:this.project.id}
+      data: this.project
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -104,20 +104,20 @@ export class BacklogComponent implements OnInit {
 })
 export class NewTaskDialog implements OnInit{
 
-  projectComplete: ProjectName;
-  project: number;
+  project: ProjectName;
   task: TaskDto;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
-  estimate = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
+  points = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TaskDto,
+    @Inject(MAT_DIALOG_DATA) public data: ProjectName,
     private taskService: TaskService,
   ) { }
 
   ngOnInit(): void {
+    this.project = this.data
   }
 
   onNoClick(): void {
@@ -125,7 +125,7 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, title:this.title.value, description:this.description.value, estimate:this.estimate.value, project:this.projectComplete};
+    this.task = {id:0, title:this.title.value, description:this.description.value, points:this.points.value, project:this.project};
     this.taskService.createTask(this.task).subscribe(()=>{
       this.dialogRef.close();
     });
@@ -140,12 +140,12 @@ export class NewTaskDialog implements OnInit{
   };
 
   getErrorMessageEstimate() : String {
-    return this.estimate.hasError('pattern')?'Debe ser un número mayor que 0':'';
+    return this.points.hasError('pattern')?'Debe ser un número mayor que 0':'';
   };
 
   validForm():boolean {
     let valid: boolean;
-    valid = this.estimate.valid && this.title.valid && this.description.valid;
+    valid = this.points.valid && this.title.valid && this.description.valid;
     return valid;
   }
 }
@@ -155,17 +155,17 @@ export class NewTaskDialog implements OnInit{
   templateUrl: 'edit-task-dialog.html',
   styleUrls: ['./edit-task-dialog.css']
 })
+
 export class EditTaskDialog implements OnInit{
-  project: ProjectComplete;
   idTask: number;
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
-  estimate = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
+  points = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TaskDto,
+    @Inject(MAT_DIALOG_DATA) public data: TaskSimple,
     private taskService: TaskService,
   ) { }
 
@@ -173,7 +173,7 @@ export class EditTaskDialog implements OnInit{
     this.idTask = this.data.id;
     this.title.setValue(this.data.title);
     this.description.setValue(this.data.description);
-    this.estimate.setValue(this.data.estimate);
+    this.points.setValue(this.data.points);
   }
 
   onNoClick(): void {
@@ -181,7 +181,7 @@ export class EditTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:this.idTask, title:this.title.value, description:this.description.value, estimate:this.estimate.value};
+    this.task = {id:this.idTask, title:this.title.value, description:this.description.value, points:this.points.value};
     this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
       this.dialogRef.close();
     });
@@ -196,12 +196,12 @@ export class EditTaskDialog implements OnInit{
   };
 
   getErrorMessageEstimate() : String {
-    return this.estimate.hasError('pattern')?'Debe ser un número mayor que 0':'';
+    return this.points.hasError('pattern')?'Debe ser un número mayor que 0':'';
   };
 
   validForm():boolean {
     let valid: boolean;
-    valid = this.estimate.valid && this.title.valid && this.description.valid;
+    valid = this.points.valid && this.title.valid && this.description.valid;
     return valid;
   }
 }
