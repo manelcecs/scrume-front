@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDto } from '../dominio/task.domain';
+import { BoardSimple } from '../dominio/board.domain';
 
 @Component({
   selector: 'app-board',
@@ -95,5 +96,24 @@ export class BoardComponent implements OnInit {
         res = "[doneList,todoList]"
     }
  }
+
+ createBoard(): void {
+  this.router.navigate(['boardsCreate']);
+}
+
+editBoard(row: BoardSimple): void{
+  this.router.navigate(['boardsCreate'], {queryParams: {id: row.id}});
+}
+
+navigateTo(route: String): void{
+  this.router.navigate([route]);
+}
+
+deleteBord(idBoard : number): void {
+  this.boardService.deleteBoard(idBoard).subscribe((board : BoardSimple) => {
+    this.navigateTo("sprint");
+  });
+}
+
 
 }

@@ -6,3 +6,10 @@ export interface Board {
     colums: ColumDto[];
 
 }
+
+export interface BoardSimple {
+    id?: number;
+    name: String;
+    sprint: number;
+
+}
