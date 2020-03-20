@@ -3,12 +3,6 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-<<<<<<< HEAD
-  production: false
-};
-
-/*
-=======
   production: false,
   "login": {
     "user": "testuser@gmail.com",
@@ -18,7 +12,6 @@ export const environment = {
 };
 
 /*'https://api-scrume.cleverapps.io/'
->>>>>>> integration
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *
