@@ -5,6 +5,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { NewSprintDialog } from '../project/project.component';
 import { SprintService } from '../servicio/sprint.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BoardSimple } from '../dominio/board.domain';
+import { BoardService } from '../servicio/board.service';
 
 @Component({
   selector: 'app-sprint',
@@ -15,8 +17,9 @@ export class SprintComponent implements OnInit {
 
   sprint : SprintDisplay;
   idSprint : number;
+  board: BoardSimple[];
 
-  constructor(private sprintService : SprintService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
+  constructor(private sprintService : SprintService, private boardService:BoardService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -26,6 +29,12 @@ export class SprintComponent implements OnInit {
 
         this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
           this.sprint = sprintDisplay;
+
+          this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+            this.board = board;
+            console.log("este es el tablero"+ board);
+          });
+
         });
 
       } else{
@@ -56,6 +65,20 @@ export class SprintComponent implements OnInit {
 
   openTeam(team: number): void{
     this.router.navigate(['team'], {queryParams: {id: team}});
+  }
+
+  //Board
+
+  openBoard(board: number): void {
+    this.router.navigate(['board'], {queryParams: {id: board}});
+  }
+
+  createBoard(): void {
+    this.router.navigate(['boardsCreate']);
+  }
+  
+  editBoard(row: BoardSimple): void{
+    this.router.navigate(['boardsCreate'], {queryParams: {id: row.id}});
   }
 
 

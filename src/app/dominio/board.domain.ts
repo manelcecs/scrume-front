@@ -1,15 +1,16 @@
 import { ColumDto } from './colum.domian';
+import { SprintComponent } from '../sprint/sprint.component';
+import { SprintDisplay, Sprint } from './sprint.domain';
 
 export interface Board {
     id?: Number;
-    name: String;
-    colums: ColumDto[];
+    name: string;
+    columns: ColumDto[];
 
 }
 
 export interface BoardSimple {
     id?: number;
-    name: String;
-    sprint: number;
-
+    name: string;
+    sprint: Sprint;
 }

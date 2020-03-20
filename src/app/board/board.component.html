@@ -1,5 +1,5 @@
 <div cdkDropListGroup>
-  <div *ngFor="let colum of colums"
+  <div *ngFor="let colum of board.columns"
     cdkDropList
     [cdkDropListData]="colum.name"
     class="example-list"
@@ -9,7 +9,7 @@
       <h2>{{colum.name}}</h2>
     </div>
 
-    <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tareas" cdkDrag>
+    <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
       <p class="nombreTarea">{{tarea.title}}</p>
     </div>
 

@@ -15,3 +15,9 @@ export interface TaskSimple {
     description?: string;
     points?: number;
 }
+
+export interface TaskMove {
+    id?: number;
+    destiny: number;
+    task: number;
+}
