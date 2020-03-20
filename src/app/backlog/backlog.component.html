@@ -3,7 +3,7 @@
     <section id="header">
 
         <div>
-            <h3><a href="" (click)="openTeam(team)">{{team.name}}</a> > <a href=""  (click)="openProject(project)">{{project.name}}</a> > Product Backlog</h3> 
+            <h3><a href="" (click)="openTeam(project.team)">{{project.team.name}}</a> > <a href=""  (click)="openProject(project)">{{project.name}}</a> > Product Backlog</h3>
         </div>
 
     </section>
@@ -14,7 +14,7 @@
             <mat-form-field>
                 <input matInput placeholder="Buscar" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
-          
+
             <div id="button-container">
                 <button class="button-sprints" (click)="openCreateTask()" mat-flat-button>Nueva tarea</button>
             </div>
@@ -23,14 +23,16 @@
         <div id="task-list">
             <ul class="list-group list-group-flush">
                 <mat-list-item class="task-row" *ngFor="let task of project.tasks | filter:searchValue">
-    
+
                     <li class="list-group-item d-flex justify-content-between align-items-center task-row">
-                        {{task.name}}
-                      <span>{{task.estimate!=undefined?task.estimate + ' PH':'Sin estimación'}}</span>
-                      <button class="button-sprints" (click)="openEditTask(task)" mat-flat-button>Editar tarea</button>
-                      <button class="button-sprints" (click)="openEditTask(task)" mat-flat-button>Eliminar tarea</button>
-                    </li> 
-          
+                        {{task.title}}
+                        <span>{{task.points!=0?task.points + ' PH':'Sin estimación'}}</span>
+                        <div>
+                            <mat-icon matListIcon (click)="openEditTask(task)">create</mat-icon> 
+                            <mat-icon matListIcon (click)="deleteTask(task)">delete</mat-icon> 
+                        </div>
+                    </li>
+
                 </mat-list-item>
             </ul>
         </div>

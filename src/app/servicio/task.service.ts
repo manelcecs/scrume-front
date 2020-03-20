@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { Task } from '../dominio/task.domain';
+import { TaskSimple, TaskDto } from '../dominio/task.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -11,33 +11,16 @@ export class TaskService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    createTask(task : Task){
-      let task1 : Task;
-      task1 = {id : 1, name: task.name};
-
-      let response = new Observable(obs => {
-          setTimeout(() => {
-              obs.next(task1);
-          }, 1000);
-      });
-
-      return response;
+    createTask(task : TaskDto): Observable<TaskDto>{
+      return this.httpClient.post<TaskDto>(this.cabeceraService.getCabecera() + "api/task/" + task.project.id, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    editTask(id: number, task : Task) : any {
-      // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/task?id=" + id, task);
-      let response = new Observable(obs => {
-          setTimeout(() => {
-              obs.next(task);
-          }, 1000);
-      });
-
-      return response;
+    editTask(id: number, task : TaskSimple): Observable<TaskSimple>{
+     return this.httpClient.put<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + id, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    deleteSprint(id: number):any {
-      // return this.httpClient.post<Sprint>(this.cabeceraService.getCabecera() + "/task?id=" + id, task);
+    deleteTask(id: number): Observable<TaskSimple>{
+     return this.httpClient.delete<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }
-

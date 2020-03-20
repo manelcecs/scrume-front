@@ -3,6 +3,8 @@ import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from
 import { ProjectService } from '../servicio/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectDto } from '../dominio/project.domain';
+import { Observable } from 'rxjs';
+import { Team } from '../dominio/team.domain';
 
 @Component({
   selector: 'app-create-project',
@@ -10,17 +12,6 @@ import { ProjectDto } from '../dominio/project.domain';
   styleUrls: ['./create-project.component.css']
 })
 export class CreateProjectComponent implements OnInit {
-
-  validateNotBlank(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-      let isValid = true;
-      if (control.value !== '') {
-        isValid = (control.value || '').trim().length !== 0;
-      }
-      return isValid ? null : { 'whitespace': 'value is only whitespace' }
-
-    };
-  }
 
   action : string;
 
@@ -30,7 +21,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   name = new FormControl('', { validators: [Validators.required] });
-  desc = new FormControl('', { validators: [this.validateNotBlank()] });
+  desc = new FormControl('', { validators: [Validators.required] });
 
   constructor(private router: Router, private projectService: ProjectService, private activatedRoute: ActivatedRoute) { }
 
@@ -38,17 +29,29 @@ export class CreateProjectComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
 
-      if (params.action == "edit") {
-        this.action = "edit";
+      if(params.action != undefined){
+        if (params.action == "edit") {
+          this.action = "edit";
 
-        this.project = this.projectService.getProject(params.id);
-        this.name.setValue(this.project.name);
-        this.desc.setValue(this.project.description);
-        this.idProyecto = params.id
-      } else if (params.action === "create") {
-        this.action = "create";
+          this.projectService.getProject(params.id).subscribe(res => {
+            this.project = res;
+            this.name.setValue(this.project.name);
+            this.desc.setValue(this.project.description);
 
-        this.project.equipo = params.id;
+            this.idProyecto = params.id;
+          });
+
+        } else if (params.action === "create") {
+          this.action = "create";
+
+          this.idEquipo = params.id;
+        }else{
+          console.log("Nice try...");
+          this.navigateTo("teams");
+        }
+      }else{
+        console.log("Nice try...");
+        this.navigateTo("teams");
       }
 
     });
@@ -57,21 +60,20 @@ export class CreateProjectComponent implements OnInit {
 
   createProject(): void {
 
-    this.project = {name: this.name.value,description: this.desc.value, equipo: this.idEquipo};
-
     if (this.idProyecto != undefined){
 
-      this._editProject(this.idProyecto).subscribe((resp: ProjectDto) => {
+      this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
         this.project = resp;
-
+        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
       });
 
     }else{
-
+      console.log("proyecto: "+ JSON.stringify(this.project));
       this._createProject().subscribe((resp: ProjectDto) => {
 
         this.project = resp;
+        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
 
       });
 
@@ -79,25 +81,29 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
-  private _editProject(id: number):any/*Observable<Proj>*/{
-
+  private _editProject(id: number):Observable<ProjectDto>{
+    this.project.name = this.name.value;
+    this.project.description = this.desc.value;
     return this.projectService.editProject(id, this.project);
 
   }
 
-  private _createProject():any/*Observable<Team>*/{
-
+  private _createProject():Observable<ProjectDto>{
+    this.project = {description: this.desc.value, name: this.name.value, team: {id: this.idEquipo}};
     return this.projectService.createProject(this.project);
 
   }
 
-  navigateTo(route: String): void{
-    console.log(route);
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
   cancel(): void {
-    this.navigateTo("project\?id\=" + this.project.id)
+    if (this.action == "create") {
+      this.router.navigate(["teams"]);
+    } else if (this.action == "edit") {
+      this.router.navigate(["project"], {queryParams:{id:this.project.id}});
+    }
   }
 
   validForm():Boolean {
@@ -116,6 +122,9 @@ export class CreateProjectComponent implements OnInit {
   }
 
   getErrorMessageDesc(): String {
-    return this.desc.hasError('whitespace')?'Este campo no admite solo caracteres en blanco':'';
+    return this.desc.hasError('required')?'Este campo es requerido.':'';
   }
-}
+
+  }
+
+
