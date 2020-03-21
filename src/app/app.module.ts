@@ -47,6 +47,7 @@ import { BoardComponent } from './board/board.component';
 import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     EditTaskDialog,
     BoardComponent,
     NotificationsComponent,
+    CreateInvitationComponent,
   ],
   imports: [
     MatFormFieldModule,

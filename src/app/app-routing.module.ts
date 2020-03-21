@@ -9,6 +9,7 @@ import { TeamComponent } from './team/team.component';
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { BoardComponent } from './board/board.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
   {path: 'backlog', component: BacklogComponent},
-  {path: 'board', component: BoardComponent}
+  {path: 'board', component: BoardComponent},
+  {path: 'invitation', component: CreateInvitationComponent}
 
 ];
 
