@@ -6,11 +6,11 @@
     (cdkDropListDropped)="drop($event)">
 
     <div class="nameColum">
-      <h2>{{colum.name}}</h2>
+      <h2>{{colum.name}}{{colum.id}}</h2>
     </div>
 
     <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
-      <p class="nombreTarea">{{tarea.title}}</p>
+      <p class="nombreTarea">{{tarea.title}}{{tarea.id}}</p>
     </div>
 
   </div>

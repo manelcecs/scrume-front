@@ -23,8 +23,8 @@ export class TaskService {
      return this.httpClient.delete<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    moveTask(): Observable<TaskMove> {
-      return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", {headers: this.cabeceraService.getBasicAuthentication()});
+    moveTask(task: TaskMove): Observable<TaskMove> {
+      return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }

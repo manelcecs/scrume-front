@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { TaskDto, TaskMove } from '../dominio/task.domain';
 import { BoardSimple, Board } from '../dominio/board.domain';
 import { Observable } from 'rxjs';
+import { TaskService } from '../servicio/task.service';
 
 @Component({
   selector: 'app-board',
@@ -17,8 +18,9 @@ export class BoardComponent implements OnInit {
   board: Board;
   idBoard: number;
   task: TaskMove;
+  n: number;
 
-  constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute, private taskservice: TaskService) { }
 
   ngOnInit(): void {
 
@@ -30,6 +32,7 @@ export class BoardComponent implements OnInit {
 
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
+             console.log("el json del tablero " + JSON.stringify(this.board))
           });
 
        }
@@ -68,7 +71,8 @@ export class BoardComponent implements OnInit {
       } else if (col == "Done" && col2 == "To Do"){
         this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
       }else{
-        this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
+        this.n = this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[1].id, this.n);
       }
 
     }
@@ -78,7 +82,7 @@ export class BoardComponent implements OnInit {
     console.log("Current index " + event.currentIndex);
     console.log("Distanse " + JSON.stringify(event.distance));
     console.log("Pointer over container " + event.isPointerOverContainer);
-    console.log("item " + event.item.data);
+    console.log("item " + event.item.element.nativeElement.id);
   }
 
   private transferTaskToArray(origen: TaskDto[], destiny: TaskDto[], preIndex: number, newIndex: number) {
@@ -86,8 +90,7 @@ export class BoardComponent implements OnInit {
     let save = origen[preIndex];
     origen.splice(preIndex, 1);
     destiny.splice(newIndex, 0, save);
-    console.log("origen  " + origen)
-    console.log("destino  " +destiny)
+    return save.id;
 
   }
 
@@ -113,6 +116,16 @@ export class BoardComponent implements OnInit {
 
 navigateTo(route: String): void{
   this.router.navigate([route]);
+}
+
+moveTask(idDest: Number, idtask: number):Observable<TaskMove> {
+  this.task = {destiny: idDest, task: idtask};
+  console.log("la task a enviar " + JSON.stringify(this.task))
+  return this.taskservice.moveTask(this.task);
+}
+
+onClick(event): any {
+  console.log(event.target.dataset.index);
 }
 
 deleteBord(idBoard : number): void {

@@ -17,7 +17,6 @@ export interface TaskSimple {
 }
 
 export interface TaskMove {
-    id?: number;
-    destiny: number;
+    destiny: Number;
     task: number;
 }
