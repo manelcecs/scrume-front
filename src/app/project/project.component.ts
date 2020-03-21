@@ -53,7 +53,6 @@ export class ProjectComponent implements OnInit {
   }
 
   openBacklog(): void{
-    console.log("openBacklog" + this.project.id);
     this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
   }
 
@@ -93,7 +92,6 @@ export class ProjectComponent implements OnInit {
 
 
 // DIALOGO PARA CREAR UN SPRINT
-
 @Component({
   selector: 'new-sprint-dialog',
   templateUrl: 'new-sprint-dialog.html',

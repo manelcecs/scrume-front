@@ -18,6 +18,9 @@
             <div id="button-container">
                 <button class="button-sprints" (click)="openCreateTask()" mat-flat-button>Nueva tarea</button>
             </div>
+            <div id="button-container">
+                <button class="button-sprints" (click)="moveTaskToSprint()" mat-flat-button>Mover tarea</button>
+            </div>
         </div>
 
         <div id="task-list">
@@ -28,7 +31,7 @@
                         <span>{{task.title}}</span>
                         <span>{{task.points!=0?task.points + ' PH':'Sin estimación'}}</span>
                         <div>
-                            <button *ngIf="task.column != undefined" mat-raised-button (click)="openSelectSprint(task.id)">Mover</button>
+                            <button *ngIf="task.column == undefined" mat-raised-button (click)="openSelectSprint(task.id)">Mover</button>
                             <span *ngIf="task.column != undefined ">Ya esta en un sprint</span>
                         </div>
                         

@@ -40,6 +40,7 @@ export class BacklogComponent implements OnInit {
       
         this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
           this.project = project;
+          this.project.tasks = project.tasks;
           this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
             this.project.team = {id: project.team.id, name: project.team.name};
           });
@@ -65,14 +66,15 @@ export class BacklogComponent implements OnInit {
   }
 
   openSelectSprint(idTask: number): void {
-    console.log("Tarea " + idTask);
-    this.sprintService.listTodoColumnsOfAProject(this.project.id).subscribe((sprints:SprintWorkspace[])=>{
-      this.bottomSheet.open(SelectSprintBottomSheet,
-        {
-          data: {idTask,sprints}
-        }
-        );
-    });
+    this.bottomSheet.open(SelectSprintBottomSheet,
+      {
+        data: {"idTask": idTask, "idProject": this.idProject}
+      }
+      ).afterDismissed().subscribe(() => {
+        this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+          this.project = project;
+        });
+      });  
   }
 
   deleteTask(task: TaskSimple): void{
@@ -88,10 +90,9 @@ export class BacklogComponent implements OnInit {
       width: '250px',
       data: this.project
     });
-
-    dialogCreate.afterClosed().subscribe(() => {
+    dialogCreate.afterClosed().subscribe((task: TaskSimple) => {
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-        this.project = project;
+        this.project.tasks = project.tasks;
       });
     });
   }
@@ -104,8 +105,14 @@ export class BacklogComponent implements OnInit {
 
     dialogEdit.afterClosed().subscribe(() => {
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-        this.project = project;
+        this.project.tasks = project.tasks;
       });
+    });
+  }
+
+//QUitar
+  moveTaskToSprint(): void{
+    this.taskService.moveTaskToSprint(367, 391).subscribe(()=>{
     });
   }
 
@@ -118,18 +125,22 @@ export class BacklogComponent implements OnInit {
 })
 export class SelectSprintBottomSheet implements OnInit{
   constructor(private bottomSheetRef: MatBottomSheetRef<SelectSprintBottomSheet>, private taskService: TaskService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: TaskBacklog,) {}
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,  private router: Router, private sprintService:SprintService) {}
 
-  sprints: SprintWorkspace[]
+  sprints: SprintWorkspace[];
   taskId: number;
 
   ngOnInit(): void {
-    this.sprints = this.data.sprints;
-    this.taskId = this.data.idTask;
+    this.sprintService.listTodoColumnsOfAProject(this.data.idProject).subscribe((sprints: SprintWorkspace[])=>{
+      this.sprints = sprints;
+      console.log("Sprints" + JSON.stringify(this.sprints));
+      this.taskId = this.data.idTask;
+      console.log("Task" + this.taskId);
+    });
   }
 
-  moveTaskToSprint(idColumn: number): void{
-    this.taskService.moveTaskToSprint(idColumn, this.taskId).subscribe(()=>{
+  moveTaskToSprint(idColumn: number, idTask:number): void{
+    this.taskService.moveTaskToSprint(idColumn,idTask).subscribe(()=>{
       this.bottomSheetRef.dismiss();
     });
   }
@@ -144,7 +155,7 @@ export class SelectSprintBottomSheet implements OnInit{
 export class NewTaskDialog implements OnInit{
 
   project: ProjectName;
-  task: TaskDto;
+  task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: []});
   points = new FormControl('',  { validators: [Validators.pattern('^([1-9]){1}$|([0-9]{2,})$')]});
@@ -153,10 +164,11 @@ export class NewTaskDialog implements OnInit{
     public dialogRef: MatDialogRef<NewTaskDialog>,
     @Inject(MAT_DIALOG_DATA) public data: ProjectName,
     private taskService: TaskService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.project = this.data
+    this.project = this.data;
   }
 
   onNoClick(): void {
@@ -164,8 +176,8 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:0, title:this.title.value, description:this.description.value, points:this.points.value, project:this.project};
-    this.taskService.createTask(this.task).subscribe(()=>{
+    this.task = {title:this.title.value, description:this.description.value, points:this.points.value};
+    this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
       this.dialogRef.close();
     });
   }

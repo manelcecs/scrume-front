@@ -13,13 +13,14 @@ export class TaskService {
   
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    moveTaskToSprint(idColumn: number, idTask: number): Observable<TaskDto>{
+    moveTaskToSprint(idColumn: number, idTask: number): Observable<TaskSimple>{
       console.log("Esta tarea " + idTask + "se mueve a " + idColumn);
-      return this.httpClient.post<TaskDto>(this.cabeceraService.getCabecera() + "/api/history-task/move" + {destiny: idColumn, task: idTask}, {headers: this.cabeceraService.getBasicAuthentication()}); 
+      return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/history-task/move" + {"destiny": idColumn, "task": idTask}, {headers: this.cabeceraService.getBasicAuthentication()}); 
     }
 
-    createTask(task : TaskDto): Observable<TaskDto>{
-      return this.httpClient.post<TaskDto>(this.cabeceraService.getCabecera() + "api/task/" + task.project.id, task, {headers: this.cabeceraService.getBasicAuthentication()});
+    createTask(idProyect:number, task : TaskSimple): Observable<TaskSimple>{
+      console.log("Tarea:" + JSON.stringify(task));
+      return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + idProyect, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     editTask(id: number, task : TaskSimple): Observable<TaskSimple>{
