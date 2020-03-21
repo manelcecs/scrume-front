@@ -52,10 +52,10 @@
 
 
     <div class="tableBoard">
-        <h5>Tableros<mat-icon (click)="createBoard(idSprint)" matListIcon>add</mat-icon></h5>
+        <h5>Tableros<mat-icon (click)="createBoard(sprint)" matListIcon>add</mat-icon></h5>
         <div *ngFor="let t of board">
             <mat-list-item>
-                <p mat-line>{{t.name}} <mat-icon (click)="openBoard(t.id)" mat-list-icon>view_week</mat-icon><mat-icon (click)="editBoard(t.id)" matListIcon>create</mat-icon> </p>
+                <p mat-line>{{t.name}} <mat-icon (click)="openBoard(t.id)" mat-list-icon>view_week</mat-icon><mat-icon (click)="editBoard(t)" matListIcon>create</mat-icon> </p>
             </mat-list-item>
         </div> 
     </div>

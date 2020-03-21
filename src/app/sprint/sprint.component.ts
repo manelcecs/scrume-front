@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { NewSprintDialog } from '../project/project.component';
 import { SprintService } from '../servicio/sprint.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoardSimple } from '../dominio/board.domain';
+import { BoardSimple, BoardNumber } from '../dominio/board.domain';
 import { BoardService } from '../servicio/board.service';
 
 @Component({
@@ -32,11 +32,11 @@ export class SprintComponent implements OnInit {
 
         });
 
-        console.log("casi entro");
-        this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
-          this.board = board;
-          console.log("este es el tablero"+ board);
-        });
+         console.log("casi entro");
+         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+           this.board = board;
+           console.log("este es el tablero"+ board);
+         });
 
       } else{
         this.navigateTo("bienvenida");
@@ -74,13 +74,13 @@ export class SprintComponent implements OnInit {
     this.router.navigate(['board'], {queryParams: {id: board}});
   }
 
-  createBoard(id: number): void {
-    this.router.navigate(['createBoard'], {queryParams: {idSprint: this.idSprint}});
-  }
+   createBoard(row: SprintDisplay): void {
+     this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
+   }
   
-  editBoard(row: BoardSimple): void{
-    this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
-  }
+   editBoard(row: BoardNumber): void{
+     this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
+   }
 
 
 }
