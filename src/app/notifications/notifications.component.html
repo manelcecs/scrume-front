@@ -1,0 +1,37 @@
+
+<div *ngIf="invitations.length == 0" id="empty-notifications">
+  <img src="../../assets/book.png" alt="empty">
+  <div id="empty-notifications-text">
+    <p>No tienes notificaciones :(</p>
+  </div>
+</div>
+
+<div *ngIf="invitations.length != 0" id=notifications>
+  <div class="notfication">
+      <mat-card class="card-notification" *ngFor="let invitation of invitations">
+          <mat-card-header>
+            <div mat-card-avatar class="profile-sender-invitation"><img src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/igiH.aOSe7Eg/v1/1200x-1.jpg" alt="Photo of a Shiba Inu"></div>
+            <mat-card-title style="font-size: 90%;">{{invitation}} quiere que te unas a su equipo</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              {{invitation.message}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+              <table class="buttons-invitation">
+                  <tr>
+                      <td>
+                        <button class="accept-invitation" mat-button (click)="acceptInvitation(invitation)"><mat-icon>done</mat-icon></button>
+                      </td>
+                      <td>
+                        <button class="reject-invitation" mat-button (click)="acceptInvitation(invitation)"><mat-icon>close</mat-icon></button>
+                      </td>
+                  </tr>
+              </table>
+          </mat-card-actions>
+        </mat-card>
+
+  </div>
+
+</div>
