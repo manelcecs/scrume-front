@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
+import { SprintDisplay, Sprint, SprintJsonDates, SprintWorkspace } from '../dominio/sprint.domain';
 
 @Injectable({providedIn:'root'})
 
 export class SprintService {
+   
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
@@ -28,6 +29,10 @@ export class SprintService {
 
     getSprintsOfProject(idProject : number): Observable<SprintDisplay[]>{
       return this.httpClient.get<SprintDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/list/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    listTodoColumnsOfAProject(idProject: number): Observable<SprintWorkspace[]> {
+      return this.httpClient.get<SprintWorkspace[]>(this.cabeceraService.getCabecera() + "api/workspace/list-todo-columns/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 

@@ -6,10 +6,14 @@ import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
 import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TaskDto, TaskSimple } from '../dominio/task.domain';
+import { TaskDto, TaskSimple, TaskBacklog } from '../dominio/task.domain';
 import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
-import { isNumber } from 'util';
+import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
+import {MatListModule} from '@angular/material/list';
+import { Sprint, SprintDisplay, SprintWorkspace } from '../dominio/sprint.domain';
+import { SprintService } from '../servicio/sprint.service';
+import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 
 
 @Component({
@@ -24,7 +28,9 @@ export class BacklogComponent implements OnInit {
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, private taskService: TaskService) { }
+    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, 
+    private taskService: TaskService, private bottomSheet: MatBottomSheet,
+    private sprintService: SprintService) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -36,7 +42,6 @@ export class BacklogComponent implements OnInit {
           this.project = project;
           this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
             this.project.team = {id: project.team.id, name: project.team.name};
-            console.log("Proyecto " + this.project);
           });
         });
 
@@ -59,6 +64,17 @@ export class BacklogComponent implements OnInit {
     this.router.navigate(['team'], {queryParams: {id: team.id}});
   }
 
+  openSelectSprint(idTask: number): void {
+    console.log("Tarea " + idTask);
+    this.sprintService.listTodoColumnsOfAProject(this.project.id).subscribe((sprints:SprintWorkspace[])=>{
+      this.bottomSheet.open(SelectSprintBottomSheet,
+        {
+          data: {idTask,sprints}
+        }
+        );
+    });
+  }
+
   deleteTask(task: TaskSimple): void{
     this.taskService.deleteTask(task.id).subscribe(()=>{
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
@@ -68,30 +84,53 @@ export class BacklogComponent implements OnInit {
   }
 
   openCreateTask(): void {
-    const dialogRef = this.dialog.open(NewTaskDialog, {
+    const dialogCreate = this.dialog.open(NewTaskDialog, {
       width: '250px',
       data: this.project
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogCreate.afterClosed().subscribe(() => {
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
         this.project = project;
       });
-      console.log('The dialog was closed');
     });
   }
 
   openEditTask(task: TaskDto): void {
-    const dialogRef = this.dialog.open(EditTaskDialog, {
+    const dialogEdit = this.dialog.open(EditTaskDialog, {
       width: '250px',
       data: task
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogEdit.afterClosed().subscribe(() => {
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
         this.project = project;
       });
-      console.log('The dialog was closed');
+    });
+  }
+
+}
+
+@Component({
+  selector: 'bottom-sheet-select-sprint',
+  templateUrl: 'bottom-sheet-select-sprint.html',
+  styleUrls: ['./bottom-sheet-select-sprint.css']
+})
+export class SelectSprintBottomSheet implements OnInit{
+  constructor(private bottomSheetRef: MatBottomSheetRef<SelectSprintBottomSheet>, private taskService: TaskService,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: TaskBacklog,) {}
+
+  sprints: SprintWorkspace[]
+  taskId: number;
+
+  ngOnInit(): void {
+    this.sprints = this.data.sprints;
+    this.taskId = this.data.idTask;
+  }
+
+  moveTaskToSprint(idColumn: number): void{
+    this.taskService.moveTaskToSprint(idColumn, this.taskId).subscribe(()=>{
+      this.bottomSheetRef.dismiss();
     });
   }
 
