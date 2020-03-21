@@ -50,15 +50,14 @@
 
     </section>
 
-    <h3>HOLAAAAAAAAAAA</h3><mat-icon (click)="openBoard(171)" mat-list-icon>view_week</mat-icon>
 
-    <h4>Tableros<mat-icon (click)="createBoard(idSprint)" matListIcon>add</mat-icon></h4>
+    <div class="tableBoard">
+        <h5>Tableros<mat-icon (click)="createBoard(idSprint)" matListIcon>add</mat-icon></h5>
         <div *ngFor="let t of board">
             <mat-list-item>
-                <mat-icon (click)="openBoard(171)" mat-list-icon>view_week</mat-icon>
-                <mat-icon (click)="editBoard(t.id)" matListIcon>create</mat-icon>
-                <h4 mat-line>{{t.name}}</h4>  
+                <p mat-line>{{t.name}} <mat-icon (click)="openBoard(t.id)" mat-list-icon>view_week</mat-icon><mat-icon (click)="editBoard(t.id)" matListIcon>create</mat-icon> </p>
             </mat-list-item>
         </div> 
+    </div>
 
 </div>

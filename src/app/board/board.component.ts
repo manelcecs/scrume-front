@@ -26,7 +26,7 @@ export class BoardComponent implements OnInit {
 
        if(param.id != undefined){
          //TODO
-         this.idBoard = 171;
+         this.idBoard = param.id;
 
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
