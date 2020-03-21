@@ -14,9 +14,11 @@ export class CreateBoardComponent implements OnInit {
 
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute) { }
 
-  private id: number;
+  private idSprint: number;
+  private idBoard: number;
   board: Board;
   boardCreate: BoardNumber;
+  boardEdit: BoardNumber;
 
   name: FormControl = new FormControl('',{validators: [Validators.required, Validators.maxLength(15)]});
 
@@ -25,14 +27,18 @@ export class CreateBoardComponent implements OnInit {
      this.activatedRoute.queryParams.subscribe(params => {
 
        if (params.id != undefined){
-         this.id = params.id;
+         this.idSprint = params.id;
+         console.log("id del sprint " + this.idSprint)
 
-         this.boardService.getBoard(this.id).subscribe((board: Board)=>{
+         this.boardService.getBoard(this.idSprint).subscribe((board: Board)=>{
            this.board = board;
          });
 
           this.name.setValue(this.board.name);
-         }
+        }else{
+          this.idBoard = params.id;
+          console.log("id del board " + this.idBoard)
+        }
 
      });
 
@@ -49,20 +55,20 @@ export class CreateBoardComponent implements OnInit {
 
   createBoard(): void {
 
-    if (this.id != undefined){
+    if (this.idSprint != undefined){
 
-      // this._editBoard(this.id).subscribe((resp: Board) => {
+       this._editBoard(this.idSprint).subscribe((resp: BoardNumber) => {
 
-      //   this.board = resp;
-      //   this.navigateTo("teams");
-      // });
+         this.boardEdit = resp;
+         this.router.navigate(["board"], {queryParams: {id:this.boardEdit.id}});
+       });
 
     }else{
 
       this._createBoard().subscribe((resp: BoardNumber) => {
 
         this.boardCreate = resp;
-        this.navigateTo("createBoard");
+        this.router.navigate(["board"], {queryParams: {id:this.boardCreate.id}});
       });
 
     }
@@ -70,17 +76,14 @@ export class CreateBoardComponent implements OnInit {
 
   }
 
-  // private _editBoard(id: number):Observable<Board>{
-  //   this.board.name = this.name.value;
-  //   this.board.id = id;
-  //   return this.boardService.editBoard(this.board);
+  private _editBoard(id: number): Observable<BoardNumber>{
+    this.boardEdit  = {id:id, name: this.name.value, sprint: this.idSprint};
+    return this.boardService.editBoard(this.boardEdit);
 
-  // }
+   }
 
-  private _createBoard():Observable<BoardNumber>{
-    console.log("name" + name)
-    console.log("sprint" + this.id)
-    this.boardCreate = {id:0, name: this.name.value, sprint: this.id}
+  private _createBoard(): Observable<BoardNumber>{
+    this.boardCreate = {id:0, name: this.name.value, sprint: this.idSprint};
     return this.boardService.createBoard(this.boardCreate);
   }
 
@@ -89,9 +92,7 @@ export class CreateBoardComponent implements OnInit {
   }
 
   cancelCreateBoard(): void {
-
     this.router.navigate(['sprint']);
-
   }
 
   getErrorMessageName(): String {
