@@ -12,11 +12,6 @@
         <textarea matInput [formControl]="description"></textarea>
         <mat-error *ngIf="description.invalid">{{ getErrorMessageDescription() }}</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>Estimación</mat-label>
-        <input matInput [formControl]="estimate"/>
-        <mat-error *ngIf="estimate.invalid">{{ getErrorMessageEstimate() }}</mat-error>
-      </mat-form-field>
     </div>
     <div id="buttons-dialog">
       <button id="cancel-dialog" mat-button (click)="onNoClick()">

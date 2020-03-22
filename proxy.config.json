@@ -1,11 +1,11 @@
 {   
     "/api/*": {
-      "target": "https://api-scrume.cleverapps.io",
+      "target": "https://api-scrume-sp2.herokuapp.com",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug",
       "pathRewrite":{
-        "^/api" : "https://api-scrume.cleverapps.io/api"
+        "^/api" : "https://api-scrume-sp2.herokuapp.com/api"
       }
     }
   }
