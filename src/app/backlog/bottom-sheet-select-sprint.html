@@ -4,7 +4,6 @@
     <a *ngFor="let board of sprint.workspaces;" mat-list-item (click)="moveTaskToSprint(board.column, taskId)">
       <span mat-line>Sprint {{i+1}} | Tablero: {{board.name}}</span>
       <span mat-line>Esta tarea pasara al tablero {{board.name}} del Sprint {{i +1}}</span>
-      <span mat-line>Voy a mover las tarea {{taskId}} a la columna {{board.column}}</span>
     </a>
   </div>
 

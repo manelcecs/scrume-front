@@ -23,3 +23,8 @@ export interface TaskBacklog{
     idTask: number;
     sprints: SprintWorkspace[];
 }
+
+export interface TaskMove{
+    destiny: number;
+    task: number;
+}

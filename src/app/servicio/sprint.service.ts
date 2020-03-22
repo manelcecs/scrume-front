@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint, SprintJsonDates, SprintWorkspace } from '../dominio/sprint.domain';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({providedIn:'root'})
 
@@ -34,8 +35,29 @@ export class SprintService {
     listTodoColumnsOfAProject(idProject: number): Observable<SprintWorkspace[]> {
       return this.httpClient.get<SprintWorkspace[]>(this.cabeceraService.getCabecera() + "api/workspace/list-todo-columns/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
-
-
-
 }
 
+@Injectable({providedIn:'root'})
+
+export class SprintResolverService implements Resolve<any>{
+
+    constructor(private sprintService: SprintService){
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        console.log("Iniciando el resolver");
+        return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
+    }
+}
+
+@Injectable({providedIn:'root'})
+export class SprintWorkspaceResolverService implements Resolve<any>{
+
+    constructor(private sprintService: SprintService){
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        console.log("Iniciando el resolver");
+        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.id);
+    }
+}

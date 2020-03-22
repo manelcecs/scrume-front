@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { TaskSimple, TaskDto } from '../dominio/task.domain';
+import { TaskSimple, TaskDto, TaskMove } from '../dominio/task.domain';
 import { Board } from '../dominio/board.domain';
 
 @Injectable({providedIn:'root'})
@@ -13,9 +13,8 @@ export class TaskService {
   
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    moveTaskToSprint(idColumn: number, idTask: number): Observable<TaskSimple>{
-      console.log("Esta tarea " + idTask + "se mueve a " + idColumn);
-      return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/history-task/move" + {"destiny": idColumn, "task": idTask}, {headers: this.cabeceraService.getBasicAuthentication()}); 
+    moveTaskToSprint(taskMove: TaskMove): Observable<TaskMove>{
+      return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", taskMove, {headers: this.cabeceraService.getBasicAuthentication()}); 
     }
 
     createTask(idProyect:number, task : TaskSimple): Observable<TaskSimple>{

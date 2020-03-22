@@ -6,7 +6,7 @@ import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
 import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TaskDto, TaskSimple, TaskBacklog } from '../dominio/task.domain';
+import { TaskDto, TaskSimple, TaskBacklog, TaskMove } from '../dominio/task.domain';
 import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
 import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -25,32 +25,21 @@ export class BacklogComponent implements OnInit {
 
   idProject: number;
   project: ProjectComplete;
+  sprints: SprintWorkspace[];
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
     private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, 
     private taskService: TaskService, private bottomSheet: MatBottomSheet,
-    private sprintService: SprintService) { }
+    private sprintService: SprintService) { 
+
+      this.idProject = this.activatedRoute.snapshot.data.project.id;
+      this.project = this.activatedRoute.snapshot.data.project;
+      this.project.team = this.activatedRoute.snapshot.data.projectWithTeam.team;
+      this.sprints = this.activatedRoute.snapshot.data.sprints;
+    }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(param => {
-
-      if(param.id != undefined){
-        this.idProject = param.id;
-      
-        this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-          this.project = project;
-          this.project.tasks = project.tasks;
-          this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
-            this.project.team = {id: project.team.id, name: project.team.name};
-          });
-        });
-
-      } else{
-        this.navigateTo("bienvenida");
-      }
-
-    });
   }
 
   navigateTo(route: String): void{
@@ -68,13 +57,13 @@ export class BacklogComponent implements OnInit {
   openSelectSprint(idTask: number): void {
     this.bottomSheet.open(SelectSprintBottomSheet,
       {
-        data: {"idTask": idTask, "idProject": this.idProject}
+        data: {"idTask": idTask, "sprints": this.sprints}
       }
       ).afterDismissed().subscribe(() => {
         this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-          this.project = project;
+          this.project.tasks = project.tasks;
         });
-      });  
+      });
   }
 
   deleteTask(task: TaskSimple): void{
@@ -110,12 +99,6 @@ export class BacklogComponent implements OnInit {
     });
   }
 
-//QUitar
-  moveTaskToSprint(): void{
-    this.taskService.moveTaskToSprint(367, 391).subscribe(()=>{
-    });
-  }
-
 }
 
 @Component({
@@ -129,18 +112,16 @@ export class SelectSprintBottomSheet implements OnInit{
 
   sprints: SprintWorkspace[];
   taskId: number;
+  taskMove: TaskMove;
 
   ngOnInit(): void {
-    this.sprintService.listTodoColumnsOfAProject(this.data.idProject).subscribe((sprints: SprintWorkspace[])=>{
-      this.sprints = sprints;
-      console.log("Sprints" + JSON.stringify(this.sprints));
       this.taskId = this.data.idTask;
-      console.log("Task" + this.taskId);
-    });
+      this.sprints = this.data.sprints;
   }
 
   moveTaskToSprint(idColumn: number, idTask:number): void{
-    this.taskService.moveTaskToSprint(idColumn,idTask).subscribe(()=>{
+    this.taskMove = {destiny: idColumn, task: idTask};
+    this.taskService.moveTaskToSprint(this.taskMove).subscribe(()=>{
       this.bottomSheetRef.dismiss();
     });
   }
