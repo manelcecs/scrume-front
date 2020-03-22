@@ -20,8 +20,8 @@ editBoard(board: BoardNumber): Observable<BoardNumber> {
     return this.httpClient.put<BoardNumber>(this.cabeceraService.getCabecera() + "api/workspace/" + board.id, board, {headers: this.cabeceraService.getBasicAuthentication()});
 }
 
-deleteBoard(id: number): Observable<BoardSimple> {
-    return this.httpClient.delete<BoardSimple>(this.cabeceraService.getCabecera() + "api/workspace/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+deleteBoard(id: number): Observable<BoardNumber> {
+    return this.httpClient.delete<BoardNumber>(this.cabeceraService.getCabecera() + "api/workspace/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
 }
 
 getBoard(id: number): Observable<Board> {

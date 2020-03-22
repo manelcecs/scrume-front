@@ -27,18 +27,23 @@ export class CreateBoardComponent implements OnInit {
      this.activatedRoute.queryParams.subscribe(params => {
 
        if (params.id != undefined){
-         this.idSprint = params.id;
-         console.log("id del sprint " + this.idSprint)
 
-         this.boardService.getBoard(this.idSprint).subscribe((board: Board)=>{
-           this.board = board;
-         });
+        this.idSprint = params.id;
+
+      }else{
+
+        this.idBoard = params.idBoard;
+        this.idSprint = params.idSprint;
+
+        this.boardService.getBoard(this.idBoard).subscribe((board: Board)=>{
+          this.board = board;
 
           this.name.setValue(this.board.name);
-        }else{
-          this.idBoard = params.id;
-          console.log("id del board " + this.idBoard)
-        }
+
+        });
+
+        
+      }
 
      });
 
@@ -55,12 +60,12 @@ export class CreateBoardComponent implements OnInit {
 
   createBoard(): void {
 
-    if (this.idSprint != undefined){
+    if (this.idBoard != undefined){
 
-       this._editBoard(this.idSprint).subscribe((resp: BoardNumber) => {
+       this._editBoard().subscribe((resp: BoardNumber) => {
 
          this.boardEdit = resp;
-         this.router.navigate(["board"], {queryParams: {id:this.boardEdit.id}});
+         this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
        });
 
     }else{
@@ -68,7 +73,7 @@ export class CreateBoardComponent implements OnInit {
       this._createBoard().subscribe((resp: BoardNumber) => {
 
         this.boardCreate = resp;
-        this.router.navigate(["board"], {queryParams: {id:this.boardCreate.id}});
+        this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
       });
 
     }
@@ -76,8 +81,8 @@ export class CreateBoardComponent implements OnInit {
 
   }
 
-  private _editBoard(id: number): Observable<BoardNumber>{
-    this.boardEdit  = {id:id, name: this.name.value, sprint: this.idSprint};
+  private _editBoard(): Observable<BoardNumber>{
+    this.boardEdit  = {id:this.idBoard, name: this.name.value, sprint: this.idSprint};
     return this.boardService.editBoard(this.boardEdit);
 
    }

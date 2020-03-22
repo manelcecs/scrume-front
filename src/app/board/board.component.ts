@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDto, TaskMove } from '../dominio/task.domain';
-import { BoardSimple, Board } from '../dominio/board.domain';
+import { BoardSimple, Board, BoardNumber } from '../dominio/board.domain';
 import { Observable } from 'rxjs';
 import { TaskService } from '../servicio/task.service';
 
@@ -133,12 +133,5 @@ moveTask(idDest: Number, idtask: number): void {
 onClick(event): any {
   console.log(event.target.dataset.index);
 }
-
-deleteBord(idBoard : number): void {
-  this.boardService.deleteBoard(idBoard).subscribe((board : BoardSimple) => {
-    this.navigateTo("sprint");
-  });
-}
-
 
 }
