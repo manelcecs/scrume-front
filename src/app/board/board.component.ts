@@ -123,7 +123,7 @@ navigateTo(route: String): void{
   this.router.navigate([route]);
 }
 
-moveTask(idDest: Number, idtask: number): void {
+moveTask(idDest: number, idtask: number): void {
   this.taskSend = {destiny: idDest, task: idtask};
   this.taskservice.moveTask(this.taskSend).subscribe((task : TaskMove) => {
     console.log(JSON.stringify(task));
