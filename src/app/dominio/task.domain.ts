@@ -1,5 +1,7 @@
 import { ProjectName } from './project.domain';
 import { UserName } from './user.domain';
+import { ColumDto } from './colum.domian';
+import { SprintWorkspace } from './sprint.domain';
 
 export interface TaskDto {
     id?: number;
@@ -14,9 +16,15 @@ export interface TaskSimple {
     title: string;
     description?: string;
     points?: number;
+    column?: ColumDto;
 }
 
-export interface TaskMove {
+export interface TaskBacklog{
+    idTask: number;
+    sprints: SprintWorkspace[];
+}
+
+export interface TaskMove{
     destiny: number;
     task: number;
 }

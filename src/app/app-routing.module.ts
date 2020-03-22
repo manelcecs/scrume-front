@@ -10,6 +10,8 @@ import { TeamCreateComponent } from './team-create/team-create.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { BoardComponent } from './board/board.component';
 import { CreateBoardComponent } from './create-board/create-board.component';
+import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
+import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 
 
 const routes: Routes = [
@@ -20,9 +22,9 @@ const routes: Routes = [
   {path: 'project', component: ProjectComponent},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
-  {path: 'backlog', component: BacklogComponent},
-  {path: 'board', component: BoardComponent},
   {path: 'createBoard', component: CreateBoardComponent}
+  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, projectWithTeam: ProjectResolverService, sprints: SprintWorkspaceResolverService}},
+  {path: 'board', component: BoardComponent}
 
 ];
 

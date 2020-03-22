@@ -7,6 +7,10 @@ export interface Board {
     name: string;
     columns: ColumDto[];
 
+export interface BoardColumnTODO {
+    id?: number;
+    name: string;
+    column: number;
 }
 
 export interface BoardSimple {

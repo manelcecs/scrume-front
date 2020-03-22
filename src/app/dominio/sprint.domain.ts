@@ -1,4 +1,5 @@
 import { ProjectName, ProjectDto } from './project.domain';
+import { Board, BoardColumnTODO } from './board.domain';
 
 export interface SprintDisplay {
     id: number;
@@ -23,4 +24,9 @@ export interface SprintJsonDates {
   project?: ProjectName;
   startDate: string;
   endDate: string;
+}
+
+export interface SprintWorkspace {
+  id: number;
+  workspaces: BoardColumnTODO[];
 }

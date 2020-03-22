@@ -35,7 +35,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BacklogComponent, NewTaskDialog, EditTaskDialog } from './backlog/backlog.component';
+import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
 import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -46,6 +46,7 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 
 
@@ -69,6 +70,7 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     EditTaskDialog,
     BoardComponent,
     CreateBoardComponent,
+    SelectSprintBottomSheet
   ],
   imports: [
     MatFormFieldModule,
@@ -100,6 +102,8 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     MatExpansionModule,
     MatDialogModule,
     MatNativeDateModule,
+    MatBottomSheetModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent],
