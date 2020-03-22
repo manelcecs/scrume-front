@@ -1,0 +1,20 @@
+<h4>Estimar tarea</h4>
+<div>
+  <form id="prueba" action="" method="POST">
+    <div>
+      <mat-form-field>
+        <mat-label>Estimación</mat-label>
+        <input matInput [formControl]="points"/>
+        <mat-error *ngIf="points.invalid">{{ getErrorMessageEstimate() }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div id="buttons-dialog">
+      <button id="cancel-dialog" mat-button (click)="onNoClick()">
+        Cancelar
+      </button>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="!validForm()" cdkFocusInitial>
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>
