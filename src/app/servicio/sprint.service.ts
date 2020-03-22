@@ -45,7 +45,7 @@ export class SprintWorkspaceResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        console.log("Iniciando el resolver");
+        console.log("Iniciando el resolver: Sprints");
         return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.id);
     }
 }

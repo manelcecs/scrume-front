@@ -7,7 +7,6 @@ export interface TaskDto {
     id?: number;
     title: string;
     description: string;
-    points: number;
     project: ProjectName;
 }
 
@@ -15,7 +14,8 @@ export interface TaskSimple {
     id?: number;
     title: string;
     description?: string;
-    points?: number;
+    estimatedPoints?: number;
+    finalPoints?: number;
     column?: ColumDto;
 }
 
@@ -26,5 +26,10 @@ export interface TaskBacklog{
 
 export interface TaskMove{
     destiny: number;
+    task: number;
+}
+
+export interface TaskEstimate{
+    points: number;
     task: number;
 }

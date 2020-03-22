@@ -64,7 +64,7 @@ export class ProjectWithTaskResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
-        console.log("Iniciando el resolver");
+        console.log("Iniciando el resolver: Tasks");
         return this.projectService.getProjectWithTasks(activatedRoute.queryParams.id);
     }
 }

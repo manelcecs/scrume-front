@@ -35,7 +35,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet } from './backlog/backlog.component';
+import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet, EstimateTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
 import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -73,7 +73,8 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     EditTaskDialog,
     BoardComponent,
     CreateBoardComponent,
-    SelectSprintBottomSheet
+    SelectSprintBottomSheet,
+    EstimateTaskDialog
   ],
   imports: [
     MatFormFieldModule,

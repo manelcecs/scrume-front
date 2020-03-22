@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { TaskSimple, TaskDto, TaskMove } from '../dominio/task.domain';
+import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
 import { Board } from '../dominio/board.domain';
 
 @Injectable({providedIn:'root'})
@@ -12,10 +12,6 @@ export class TaskService {
 
   
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
-
-    moveTaskToSprint(taskMove: TaskMove): Observable<TaskMove>{
-      return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", taskMove, {headers: this.cabeceraService.getBasicAuthentication()}); 
-    }
 
     createTask(idProyect:number, task : TaskSimple): Observable<TaskSimple>{
       console.log("Tarea:" + JSON.stringify(task));
@@ -33,5 +29,10 @@ export class TaskService {
     moveTask(task: TaskMove): Observable<TaskMove> {
       return this.httpClient.post<TaskMove>(this.cabeceraService.getCabecera() + "api/history-task/move", task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    estimateTask(taskEstimate: TaskEstimate):Observable<TaskEstimate>{
+      return this.httpClient.post<TaskEstimate>(this.cabeceraService.getCabecera() +  "api/task/estimate/" + taskEstimate.task, taskEstimate, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
 
 }
