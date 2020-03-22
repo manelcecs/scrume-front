@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'project', component: ProjectComponent},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
-  {path: 'createBoard', component: CreateBoardComponent}
+  {path: 'createBoard', component: CreateBoardComponent},
   {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, projectWithTeam: ProjectResolverService, sprints: SprintWorkspaceResolverService}},
   {path: 'board', component: BoardComponent}
 
