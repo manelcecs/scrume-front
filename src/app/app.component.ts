@@ -1,5 +1,5 @@
-import { Component, OnDestroy, ChangeDetectorRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit,  } from '@angular/core';
+import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
 
@@ -13,9 +13,25 @@ export class AppComponent implements OnInit, OnDestroy {
   routes: Object[] = [];
   idioma: string  = "es";
 
+  loading = false;
+
 
   //constructor(private router: Router) {}
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+    this.router.events.subscribe((event: RouterEvent) =>{
+      switch(true){
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+      }
+    });
   }
 
   ngOnInit(): void{
@@ -37,13 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     });
     this.navigateTo('teams');
-    // this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-    //   console.log(JSON.stringify(res));
-    // });
-
-    // this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-    //   console.log(JSON.stringify(res));
-    // });
+  
 
   }
 

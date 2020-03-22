@@ -19,11 +19,11 @@ const routes: Routes = [
   {path: 'bienvenida', component: BienvenidaComponent},
   {path: 'teams', component: TeamComponent},
   {path: 'teamsCreate', component: TeamCreateComponent},
-  {path: 'project', component: ProjectComponent},
+  {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
+  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, projectWithTeam: ProjectResolverService,}},
   {path: 'createBoard', component: CreateBoardComponent},
-  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, projectWithTeam: ProjectResolverService, sprints: SprintWorkspaceResolverService}},
   {path: 'board', component: BoardComponent}
 
 ];
