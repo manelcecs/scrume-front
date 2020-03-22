@@ -3,12 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
 
 @Injectable({providedIn:'root'})
 
 export class ProjectService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
+
+    
 
     createProject(project: ProjectDto) : Observable<ProjectDto> {
         return this.httpClient.post<ProjectDto>(this.cabeceraService.getCabecera() + "api/project", project, {headers: this.cabeceraService.getBasicAuthentication()});
@@ -35,3 +39,33 @@ export class ProjectService {
   }
 }
 
+
+@Injectable({providedIn:'root'})
+
+export class ProjectResolverService implements Resolve<any>{
+
+    constructor(private projectService: ProjectService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        
+        console.log("Iniciando el resolver");
+        return this.projectService.getProject(activatedRoute.queryParams.id);
+    }
+}
+
+@Injectable({providedIn:'root'})
+
+export class ProjectWithTaskResolverService implements Resolve<any>{
+
+    constructor(private projectService: ProjectService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        
+        console.log("Iniciando el resolver");
+        return this.projectService.getProjectWithTasks(activatedRoute.queryParams.id);
+    }
+}

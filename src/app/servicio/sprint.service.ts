@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ProjectService } from './project.service';
 
 @Injectable({providedIn:'root'})
 
@@ -34,3 +36,17 @@ export class SprintService {
 
 }
 
+@Injectable({providedIn:'root'})
+
+export class SprintResolverService implements Resolve<any>{
+
+    constructor(private sprintService: SprintService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        
+        console.log("Iniciando el resolver");
+        return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
+    }
+}

@@ -24,27 +24,33 @@ export class BacklogComponent implements OnInit {
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, private taskService: TaskService) { }
+    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, private taskService: TaskService) {
+      
+      this.project = this.activatedRoute.snapshot.data.project;
+
+      this.project.team = this.activatedRoute.snapshot.data.projectWithTeam.team;
+
+    }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(param => {
+    //this.activatedRoute.queryParams.subscribe(param => {
 
-      if(param.id != undefined){
-        this.idProject = param.id;
+      // if(param.id != undefined){
+      //   this.idProject = param.id;
       
-        this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
-          this.project = project;
-          this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
-            this.project.team = {id: project.team.id, name: project.team.name};
-            console.log("Proyecto " + this.project);
-          });
-        });
+      //   this.projectService.getProjectWithTasks(this.idProject).subscribe((project:ProjectComplete)=>{
+      //     this.project = project;
+          // this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
+          //   this.project.team = {id: project.team.id, name: project.team.name};
+          //   console.log("Proyecto " + this.project);
+          // });
+    //     });
 
-      } else{
-        this.navigateTo("bienvenida");
-      }
+    //   } else{
+    //     this.navigateTo("bienvenida");
+    //   }
 
-    });
+    // });
   }
 
   navigateTo(route: String): void{
