@@ -27,20 +27,7 @@
         </table>
     </section>
 
-    <!-- <section id="list-section-workspace-sprint">
-        <mat-list>
-            <h4>Tableros</h4>
-            <mat-list-item>
-                <mat-icon mat-list-icon>view_week</mat-icon>
-                <h4 mat-line>Front-end</h4>
-            </mat-list-item>
-            <mat-list-item>
-                <mat-icon mat-list-icon>view_week</mat-icon>
-                <h4 mat-line>Back-end</h4>
-            </mat-list-item>
-        </mat-list>
 
-    </section> -->
 <br/>
     <section id="dashboard-sprint">
         <mat-accordion>
@@ -62,4 +49,15 @@
         </mat-accordion>
 
     </section>
+
+
+    <div class="tableBoard">
+        <h5>Tableros<mat-icon (click)="createBoard(sprint)" matListIcon>add</mat-icon></h5>
+        <div *ngFor="let t of board">
+            <mat-list-item>
+                <p mat-line>{{t.name}} <mat-icon (click)="openBoard(t.id)" mat-list-icon>view_week</mat-icon><mat-icon (click)="editBoard(t,sprint)" matListIcon>create</mat-icon><mat-icon (click)="deleteBoard(t)" matListIcon>delete</mat-icon> </p>
+            </mat-list-item>
+        </div> 
+    </div>
+
 </div>

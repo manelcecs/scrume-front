@@ -41,9 +41,9 @@ export class AppComponent implements OnInit, OnDestroy {
     //   console.log(JSON.stringify(res));
     // });
 
-    this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-      console.log(JSON.stringify(res));
-    });
+    // this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
+    //   console.log(JSON.stringify(res));
+    // });
 
   }
 
