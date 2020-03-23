@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BoardSimple, BoardNumber, Board } from '../dominio/board.domain';
 import { BoardService } from '../servicio/board.service';
 import { Observable } from 'rxjs';
+import { formatDate } from '@angular/common';
+
+import { LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'app-sprint',
@@ -20,6 +23,7 @@ export class SprintComponent implements OnInit {
   idSprint : number;
   board: BoardSimple[];
   boardDelete: BoardNumber;
+
 
   constructor(private sprintService : SprintService, private boardService:BoardService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
@@ -131,6 +135,7 @@ export class EditSprintDialog implements OnInit{
     this.idSprint = this.data.id;
     this.startDate.setValue(new Date(this.data.startDate));
     this.endDate.setValue(new Date(this.data.endDate));
+
   }
 
   onNoClick(): void {

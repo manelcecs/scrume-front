@@ -37,24 +37,6 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.activatedRoute.queryParams.subscribe(params =>{
-
-    //   console.log(JSON.stringify(params));
-    //   if(params.id != undefined){
-    //     this.idProject = params.id;
-
-    //     this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
-    //       this.project = project;
-          // this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
-          //   this.sprints = sprint;
-          // });
-
-    //     });
-    //   }else{
-    //     console.log("Nice try...");
-    //     //this.navigateTo("teams");
-    //   }
-    // });
   }
 
   openBacklog(): void{

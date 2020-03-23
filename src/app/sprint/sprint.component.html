@@ -1,7 +1,7 @@
 <div id="main-sprint">
     <section id="header-sprint">
         <div>
-          <h3><a href="" (click)="openTeam(sprint.project.team.id)">{{sprint.project.team.name}}</a> > <a href=""  (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a> > Sprint</h3>
+          <h3><a (click)="openTeam(sprint.project.team.id)">{{sprint.project.team.name}}</a> > <a (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a> > Sprint</h3>
         </div>
       </section>
       <section id="progress-sprint">
@@ -11,7 +11,7 @@
         <table id="progress-table-sprint">
             <tr>
                 <td class="date-sprint">
-                    <p>{{sprint.startDate}}</p>
+                    <p>{{sprint.startDate | date:'dd-MM-yyyy'}}</p>
                 </td>
                 <td style="width:50%">
                     <div class="progress">
@@ -21,7 +21,7 @@
                     </div>
                 </td>
                 <td class="date-sprint">
-                    <p>{{sprint.endDate}}</p>
+                    <p>{{sprint.endDate | date:'dd-MM-yyyy'}}</p>
                 </td>
             </tr>
         </table>

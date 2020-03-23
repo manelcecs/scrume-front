@@ -15,8 +15,8 @@ export class CreateProjectComponent implements OnInit {
 
   action : string;
 
-  private idProyecto : number;
-  private idEquipo : number;
+  idProyecto : number;
+  idEquipo : number;
   project: ProjectDto;
 
 
