@@ -17,6 +17,7 @@ jobs:
       script:
         - npm audit fix
         - npm fund
+        - sonar-scanner
       deploy:
         provider: heroku
         app: scrume-app-s2
