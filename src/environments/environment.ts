@@ -8,7 +8,7 @@ export const environment = {
     "user": "testuser@gmail.com",
     "pass": "1234563"
   },
-  "backend": 'https://api-scrume-sp2.herokuapp.com/'
+  "backend": 'https://api-scrume-s2.cleverapps.io/'
 };
 
 /*'https://api-scrume.cleverapps.io/'
