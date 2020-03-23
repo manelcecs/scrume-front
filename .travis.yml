@@ -13,6 +13,7 @@ jobs:
         - npm fund
 
       addons:
+        chrome: stable
 
         sonarcloud:
           organization: "scrume-front"
@@ -21,7 +22,7 @@ jobs:
 
       script:
         - ng test --code-coverage
-        
+        - ng lint
       deploy:
         provider: heroku
         app: scrume-app-s2
