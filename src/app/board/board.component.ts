@@ -20,6 +20,7 @@ export class BoardComponent implements OnInit {
   task: TaskMove;
   n: number;
   taskSend: TaskMove;
+  message: string;
 
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute, private taskservice: TaskService) { }
 
@@ -35,6 +36,8 @@ export class BoardComponent implements OnInit {
              console.log("el json del tablero " + JSON.stringify(this.board))
           });
 
+       }else if(param.id == 0) {
+          this.message = "Debes actualizar algún tablero para acceder desde aquí"
        }
      });
 

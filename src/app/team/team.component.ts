@@ -3,11 +3,12 @@ import { Team } from '../dominio/team.domain';
 import { Router } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
-import { Board } from '../dominio/board.domain';
+import { Board, BoardSimple } from '../dominio/board.domain';
 import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { ProjectService } from '../servicio/project.service';
 import { Observable } from 'rxjs';
+import { BoardService } from '../servicio/board.service';
 
 @Component({
   selector: 'app-team',
@@ -21,11 +22,13 @@ export class TeamComponent implements OnInit {
     keepAfterRouteChange: true
 };
   teams: Team[];
+  boardNumber: number;
 
   constructor(private router: Router,
     private teamService: TeamService,
     private sprintService: SprintService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private boardService: BoardService
     ) { }
 
   ngOnInit(): void {
@@ -65,8 +68,11 @@ export class TeamComponent implements OnInit {
     this.router.navigate(['createProject'], {queryParams: {id: team.id, action: "create"}});
   }
 
-  openBoard(proj: ProjectDto): void{
-    this.router.navigate(['project'], {queryParams: {id: proj.id}});
+  openBoard(idProj: number): void{
+    this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple)=>{
+      this.boardNumber = board.id;
+      this.router.navigate(['board'], {queryParams: {id: this.boardNumber}});
+    });
   }
 
   openSprint(proj: ProjectDto): void{

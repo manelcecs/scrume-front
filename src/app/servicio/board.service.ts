@@ -32,4 +32,8 @@ getBoardBySprint(id: number): Observable<BoardSimple[]> {
     return this.httpClient.get<BoardSimple[]>(this.cabeceraService.getCabecera() + "api/workspace/list/sprint/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
 }
 
+getBoardByProject(id: number): Observable<BoardSimple> {
+    return this.httpClient.get<BoardSimple>(this.cabeceraService.getCabecera() + "api/workspace/last-by-project/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
+}
+
 }
