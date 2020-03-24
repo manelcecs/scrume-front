@@ -63,19 +63,19 @@ export class BoardComponent implements OnInit {
       let col = new String(event.previousContainer.data);
       let col2 = new String(event.container.data);
 
-      if (col == "To Do" && col2 == "In progress") {
+      if (col == "To do" && col2 == "In progress") {
         this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[1].id, this.n);
-      } else if (col == "To Do" && col2 == "Done"){
+      } else if (col == "To do" && col2 == "Done"){
         this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[2].id, this.n);
-      } else if (col == "In progress" && col2 == "To Do"){
+      } else if (col == "In progress" && col2 == "To do"){
         this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[0].id, this.n);
       } else if (col == "In progress" && col2 == "Done"){
         this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[2].id, this.n);
-      } else if (col == "Done" && col2 == "To Do"){
+      } else if (col == "Done" && col2 == "To do"){
         this.n = this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[0].id, this.n);
       }else{
