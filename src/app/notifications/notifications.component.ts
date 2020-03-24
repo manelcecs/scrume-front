@@ -15,15 +15,16 @@ export class NotificationsComponent implements OnInit {
   constructor(private invitationService : InvitationService) { }
 
   ngOnInit(): void {
-    this.invitationService.getInvitations(this.userSignedIn).subscribe((invitations : InvitationDisplay[]) => {
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
       this.invitations = invitations;
+      console.log(invitations);
     })
   }
 
   answerInvitation(invitation : InvitationDisplay, answer : boolean) {
-    let answeredInvitation : AnswerInvitation = {id: invitation.id, answer: true};
-    this.invitationService.answerInvitation(answeredInvitation).subscribe(() => {
-      this.invitationService.getInvitations(this.userSignedIn).subscribe((invitations : InvitationDisplay[]) => {
+    let answeredInvitation : AnswerInvitation = {id: invitation.id, isAccepted: true};
+    this.invitationService.answerInvitation(invitation.id, answeredInvitation).subscribe(() => {
+      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
         this.invitations = invitations;
       })
     })

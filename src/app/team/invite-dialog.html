@@ -1,0 +1,41 @@
+<div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Mensaje</mat-label>
+      <textarea matInput [formControl]="messageFormControl"></textarea>
+      <mat-error *ngIf="messageFormControl.invalid">error</mat-error>
+    </mat-form-field>
+  </div>
+  <mat-form-field class="example-chip-list">
+    <mat-chip-list #chipListUsers aria-label="User selection">
+      <mat-chip
+      *ngFor="let user of users"
+      (removed)="remove(user)">
+      {{user}}
+      </mat-chip>
+      <input
+        placeholder="Añadir usuario"
+        #userInput
+        [formControl]="userFormControl"
+        [matChipInputFor]="chipListUsers"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of suggestedUsers | async" [value]="user.id">
+        {{user.nick}}
+      </mat-option>
+    </mat-autocomplete> -->
+  </mat-form-field>
+
+    <div id="buttons-dialog">
+      <button id="cancel-dialog" mat-button (click)="onNoClick()">
+        Cancelar
+      </button>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="!validForm()" cdkFocusInitial>
+        Guardar
+      </button>
+    </div>
+
+</div>

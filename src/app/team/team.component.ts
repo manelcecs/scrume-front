@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { Team } from '../dominio/team.domain';
 import { Router } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
@@ -8,6 +8,14 @@ import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { ProjectService } from '../servicio/project.service';
 import { Observable } from 'rxjs';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { InvitationDto } from '../dominio/invitation.domain';
+import { FormControl, Validators } from '@angular/forms';
+import { UserNick } from '../dominio/user.domain';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { InvitationService } from '../servicio/invitation.service';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-team',
@@ -25,7 +33,8 @@ export class TeamComponent implements OnInit {
   constructor(private router: Router,
     private teamService: TeamService,
     private sprintService: SprintService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -93,4 +102,127 @@ export class TeamComponent implements OnInit {
       });
     });
   }
+
+  openDialogInvite(idTeam: number): void {
+    this.dialog.open(InvitationDialog, {
+      width: '250px',
+      data: idTeam
+    });
+  }
+}
+
+
+@Component({
+  selector: 'invite-dialog',
+  templateUrl: 'invite-dialog.html',
+  styleUrls: ['./invite-dialog.css']
+})
+export class InvitationDialog implements OnInit{
+
+  team: number;
+  invitation : InvitationDto;
+  users : number[];
+  usersBD : UserNick[];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  message = new FormControl('',  { validators: [Validators.required]});
+  messageFormControl = new FormControl('', {validators: [Validators.required]});
+  userFormControl = new FormControl('',  { validators: [Validators.required]});
+  suggestedUsers : Observable<UserNick[]>;
+
+  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
+  constructor(
+    public dialogRef: MatDialogRef<InvitationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: number, private invitationService : InvitationService) {
+
+    }
+
+
+  ngOnInit(): void {
+    this.team = this.data;
+    this.invitationService.getSuggestedUsers(this.team).subscribe((users : UserNick[]) =>{
+      this.usersBD = users;
+      console.log(this.usersBD);
+    })
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  remove(user: number): void {
+    const index = this.users.indexOf(user);
+
+    if (index >= 0) {
+      this.users.splice(index, 1);
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    this.users.push(parseInt(value));
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.userFormControl.setValue(null);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.users.push(parseInt(event.option.viewValue));
+    this.userInput.nativeElement.value = '';
+    this.userFormControl.setValue(null);
+  }
+
+  onSaveClick() : void {
+    let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: Array(this.userFormControl.value)};
+    this.invitationService.createInvitation(invitation).subscribe(() => {
+      this.dialogRef.close();
+    });
+
+  }
+
+  // getErrorMessageStartDate() : string {
+  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
+  // };
+
+  // getErrorMessageEndDate() : string {
+  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
+  // }
+
+  validForm():boolean {
+
+     let valid: boolean;
+
+     valid = this.messageFormControl.valid && this.userFormControl.valid;
+     return valid;
+
+   }
+
+  // validateToday(): ValidatorFn {
+  //   return (control: AbstractControl): {[key: string]: any} | null => {
+  //     console.log("Prueba 2")
+  //     let isValid = true;
+
+  //     if (control.value.getTime() < Date.now()) {
+  //       isValid = false;
+  //     }
+  //     return isValid ? null : { 'past': 'the date cant be past' }
+  //   };
+  // }
+
+  // validateStartBeforeEnd(): ValidatorFn {
+  //   return (control: AbstractControl): { [key: string]: any } => {
+  //     let isValid = true;
+  //     if (control.value.getTime() > this.endDate.value.getTime()) {
+  //       isValid = false;
+  //     }
+  //     return isValid ? null : { 'invalid': 'Invalid dates' }
+
+  //   };
+  // }
+
 }

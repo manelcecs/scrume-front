@@ -21,34 +21,28 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     this.cargarMenu();
 
-    Promise.resolve().then(()=> {
-      let idm = localStorage.getItem("idioma");
-      if (idm == null){
-        localStorage.setItem("idioma", this.idioma);
-      }else{
-        this.idioma = idm;
-      }
+    // Promise.resolve().then(()=> {
+    //   let idm = localStorage.getItem("idioma");
+    //   if (idm == null){
+    //     localStorage.setItem("idioma", this.idioma);
+    //   }else{
+    //     this.idioma = idm;
+    //   }
 
-      if(this.idioma == "es"){
-        this.router.navigate(["bienvenida"]);
-      }else{
-        this.router.navigate(["wellcome"]);
-      }
+    //   if(this.idioma == "es"){
+    //     this.router.navigate(["bienvenida"]);
+    //   }else{
+    //     this.router.navigate(["wellcome"]);
+    //   }
 
-    });
-    this.navigateTo('teams');
-    // this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-    //   console.log(JSON.stringify(res));
     // });
+    // this.navigateTo('teams');
 
-    this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-      console.log(JSON.stringify(res));
-    });
 
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
   navigateTo(route: string): void{
@@ -75,6 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
         visible: 'true'
     }
   ];
-  } 
+  }
 
 }

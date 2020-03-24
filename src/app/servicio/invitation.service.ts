@@ -4,6 +4,7 @@ import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 import { InvitationDisplay, InvitationDto, AnswerInvitation } from '../dominio/invitation.domain';
+import { UserNick } from '../dominio/user.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -11,17 +12,23 @@ export class InvitationService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    getInvitations(idUser: number) : Observable<InvitationDisplay[]> {
-        return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/project", {headers: this.cabeceraService.getBasicAuthentication()});
+    getInvitations() : Observable<InvitationDisplay[]> {
+        return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/team/list-invitations", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     createInvitation(invitation : InvitationDto) : Observable<InvitationDto> {
-      return this.httpClient.post<InvitationDto>(this.cabeceraService.getCabecera() + "api/project", {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.post<InvitationDto>(this.cabeceraService.getCabecera() + "api/team/invite",invitation, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    answerInvitation(answer : AnswerInvitation) : Observable<AnswerInvitation>{
-      return this.httpClient.post<AnswerInvitation>(this.cabeceraService.getCabecera() + "api/project", {headers: this.cabeceraService.getBasicAuthentication()});
+    answerInvitation(idInvitation : number, answer : AnswerInvitation) : Observable<AnswerInvitation>{
+      console.log(answer);
+      return this.httpClient.put<AnswerInvitation>(this.cabeceraService.getCabecera() + "api/team/answer-invitation/" + idInvitation, answer,  {headers: this.cabeceraService.getBasicAuthentication()});
 
+    }
+
+    getSuggestedUsers(idTeam: number) : Observable<UserNick[]> {
+      let data = {"team" : idTeam, "users" : [], "word" : ""};
+      return this.httpClient.post<UserNick[]>(this.cabeceraService.getCabecera() + "api/team/findByNick", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 

@@ -1,17 +1,19 @@
 export interface InvitationDisplay {
-  id: number;
-  profilePicSender: Blob;
-  nicknameSender: string;
+  id?: number;
+  photo: Blob;
+  from: string;
   message: string;
+  team: number;
+
 }
 
 export interface InvitationDto {
   message: string;
   recipients: number[];
-  team: number
+  team: number;
 }
 
 export interface AnswerInvitation {
   id: number;
-  answer: boolean;
+  isAccepted: boolean;
 }
