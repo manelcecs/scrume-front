@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   idioma: string  = "es";
 
   loading = false;
+  title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
