@@ -9,8 +9,9 @@ import { BoardSimple, BoardNumber, Board } from '../dominio/board.domain';
 import { BoardService } from '../servicio/board.service';
 import { Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
-
+import { Document } from '../dominio/document.domain'
 import { LOCALE_ID } from '@angular/core';
+import { DocumentService } from '../servicio/document.service';
 
 @Component({
   selector: 'app-sprint',
@@ -23,9 +24,10 @@ export class SprintComponent implements OnInit {
   idSprint : number;
   board: BoardSimple[];
   boardDelete: BoardNumber;
+  doc: Document[];
 
 
-  constructor(private sprintService : SprintService, private boardService:BoardService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
+  constructor(private sprintService : SprintService, private boardService:BoardService, private documentService: DocumentService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -38,9 +40,18 @@ export class SprintComponent implements OnInit {
 
         });
 
-         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
-           this.board = board;
-         });
+        //lista de boards
+
+        this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+          this.board = board;
+        });
+
+        //lista de documents
+
+        this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[])=> {
+          this.doc = doc;
+          console.log(JSON.stringify(this.doc))
+        });
 
       } else{
         this.navigateTo("bienvenida");

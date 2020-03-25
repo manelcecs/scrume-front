@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DocumentService } from '../servicio/document.service';
 
 @Component({
   selector: 'app-document',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private documentService: DocumentService, private activatedRoute: ActivatedRoute,) { }
 
   ngOnInit(): void {
   }
