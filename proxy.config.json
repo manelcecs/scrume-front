@@ -1,4 +1,4 @@
-{   
+{
     "/api/*": {
       "target": "https://api-scrume-sp2.herokuapp.com",
       "secure": false,

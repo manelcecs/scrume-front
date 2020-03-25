@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
+import { InvitationService } from './servicio/invitation.service';
+import { InvitationDisplay } from './dominio/invitation.domain';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +14,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routes: Object[] = [];
   idioma: string  = "es";
+  notifications : boolean = false;
 
   loading = false;
   title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -37,6 +40,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
     this.cargarMenu();
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (invitations.length != 0) {
+        this.notifications = true;
+      }
+    });
 
     Promise.resolve().then(()=> {
     let idm = localStorage.getItem("idioma");
@@ -54,12 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     });
     this.navigateTo('teams');
-  
+
 
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
   navigateTo(route: string): void{
@@ -86,6 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
         visible: 'true'
     }
   ];
-  } 
+  }
 
 }
