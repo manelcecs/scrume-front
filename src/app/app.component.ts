@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
+import { UserService } from './servicio/user.service';
+import { User } from './dominio/user.domain';
 
 @Component({
   selector: 'app-root',
@@ -15,14 +17,14 @@ export class AppComponent implements OnInit, OnDestroy {
   routes: Object[] = [];
   idioma: string  = "es";
 
-  username : string;
+  user : User;
 
   loading = false;
   title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private dialog: MatDialog) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private dialog: MatDialog, private userService: UserService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -45,9 +47,11 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = sessionStorage.getItem("loginToken");
     console.log("token:", token);
     if(token != null && token !== ""){
-      //TODO: petición get User
-      this.username = "Demo User";
-      this.navigateTo("teams");
+      this.userService.findUserAuthenticated().subscribe((user: User)=>{
+        this.user = user;
+        this.navigateTo("teams");
+      });
+      
     }else{
       this.navigateTo("bienvenida");
     }
@@ -87,16 +91,17 @@ export class AppComponent implements OnInit, OnDestroy {
     dialog.afterClosed().subscribe(()=>{
       let token = sessionStorage.getItem("loginToken");
       if(token != null && token != ""){
-         //TODO: petición get User
-        this.username = "Demo User";
-        this.navigateTo("teams");
+        this.userService.findUserAuthenticated().subscribe((user: User)=>{
+          this.user = user;
+          this.navigateTo("teams");
+        });
       }
     });
   }
 
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
-    this.username = undefined;
+    this.user = undefined;
     this.navigateTo("bienvenida");
   }
 

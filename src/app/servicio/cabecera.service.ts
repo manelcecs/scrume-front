@@ -28,4 +28,16 @@ export class CabeceraService {
 
         return headers;
     }
+
+    getCustomBasicAuthentication(user: string, pass: string): HttpHeaders{
+        let headers = new HttpHeaders();
+        
+        headers = headers.append("Authorization", "Basic " + btoa(user+":"+pass));
+        headers = headers.append("Content-Type", "application/json");
+        headers = headers.append("Access-Control-Allow-Origin", '*');
+
+
+        return headers;
+    }
+
   }

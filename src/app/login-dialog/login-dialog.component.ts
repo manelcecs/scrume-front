@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ViewChild  } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserService } from '../servicio/user.service';
 
 @Component({
     selector: 'login-dialog',
@@ -17,7 +18,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     
     constructor(
       public dialogRef: MatDialogRef<LoginDialog>,
-      @Inject(MAT_DIALOG_DATA) public data: any) {}
+      @Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService) {}
   
   
     ngOnInit(): void {
@@ -28,9 +29,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     }
   
     login() : void {
-      //TODO: petición para verificar la autenticacion
-      sessionStorage.setItem("loginToken", btoa(this.email.value+":"+this.pass.value));
-      this.dialogRef.close();
+      this.userService.checkCredentials(this.email.value, this.pass.value).subscribe((valid: boolean)=>{
+        if(valid){
+          sessionStorage.setItem("loginToken", btoa(this.email.value+":"+this.pass.value));
+          this.dialogRef.close();
+        }else{
+          this.pass.setErrors({invalid: true});
+        }
+      });
+      
     }
 
     validForm(): boolean{
@@ -46,10 +53,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     }
 
     getErrorMessageEmail() : string{
-      return "";
+      return this.email.hasError('required')? "Debe introducir un email": this.email.hasError('email') ? "El email debe tener un formato válido": "";
     }
     getErrorMessagePass(): string{
-      return "";
+      return this.pass.hasError('required')? "Debe introducir una contraseña": this.pass.hasError('invalid')? "Email o contraseña no encontrado, verifique los datos.":"";
     }
   
 }
