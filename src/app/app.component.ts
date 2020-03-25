@@ -2,6 +2,8 @@ import { Component, OnDestroy, ChangeDetectorRef, OnInit, Output, EventEmitter }
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
+import { InvitationService } from './servicio/invitation.service';
+import { InvitationDisplay } from './dominio/invitation.domain';
 
 @Component({
   selector: 'app-root',
@@ -12,43 +14,44 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routes: Object[] = [];
   idioma: string  = "es";
+  notifications : boolean = false;
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
   }
 
   ngOnInit(): void{
     this.cargarMenu();
-
-    Promise.resolve().then(()=> {
-      let idm = localStorage.getItem("idioma");
-      if (idm == null){
-        localStorage.setItem("idioma", this.idioma);
-      }else{
-        this.idioma = idm;
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (invitations.length != 0) {
+        this.notifications = true;
       }
-
-      if(this.idioma == "es"){
-        this.router.navigate(["bienvenida"]);
-      }else{
-        this.router.navigate(["wellcome"]);
-      }
-
     });
-    this.navigateTo('teams');
-    // this.httpClient.get<any>("/api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-    //   console.log(JSON.stringify(res));
+
+
+    // Promise.resolve().then(()=> {
+    //   let idm = localStorage.getItem("idioma");
+    //   if (idm == null){
+    //     localStorage.setItem("idioma", this.idioma);
+    //   }else{
+    //     this.idioma = idm;
+    //   }
+
+    //   if(this.idioma == "es"){
+    //     this.router.navigate(["bienvenida"]);
+    //   }else{
+    //     this.router.navigate(["wellcome"]);
+    //   }
+
     // });
+    // this.navigateTo('teams');
 
-    this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/profile/list", {headers: this.cabeceraService.getBasicAuthentication()}).subscribe(res =>{
-      console.log(JSON.stringify(res));
-    });
 
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
   navigateTo(route: string): void{
@@ -75,6 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
         visible: 'true'
     }
   ];
-  } 
+  }
 
 }

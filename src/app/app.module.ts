@@ -26,7 +26,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
-import { TeamComponent } from './team/team.component';
+import { TeamComponent, InvitationDialog } from './team/team.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { ProjectComponent, NewSprintDialog } from './project/project.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -46,7 +46,9 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
+import { NotificationsComponent } from './notifications/notifications.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     NewTaskDialog,
     EditTaskDialog,
     BoardComponent,
+    NotificationsComponent,
+    CreateInvitationComponent,
+    InvitationDialog,
   ],
   imports: [
     MatFormFieldModule,
@@ -98,6 +103,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatExpansionModule,
     MatDialogModule,
     MatNativeDateModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

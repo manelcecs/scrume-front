@@ -1,0 +1,48 @@
+/* Contenido cuando no hay notificaciones */
+#empty-notifications {
+  text-align: center;
+  margin-top: 10%;
+}
+
+#empty-notifications > img {
+  width: 40%;
+}
+
+#empty-notifications-text {
+  margin-top: 4%;
+}
+
+/* Notificaciones */
+.card-notification {
+  margin: 10% 5%;
+}
+
+.profile-sender-invitation  {
+  margin-top: 0%;
+}
+
+.profile-sender-invitation > img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.buttons-invitation {
+  width: 100%;
+  text-align: center;
+}
+
+.accept-invitation {
+  width: 90%;
+  background-color: #24bb24;
+  color: #1e5e0a;
+}
+
+
+
+.reject-invitation {
+  width: 90%;
+  background-color: rgb(228, 0, 0);
+  color: rgb(85, 11, 11);
+}
+
