@@ -21,7 +21,6 @@ export class InvitationService {
     }
 
     answerInvitation(idInvitation : number, answer : AnswerInvitation) : Observable<AnswerInvitation>{
-      console.log(answer);
       return this.httpClient.put<AnswerInvitation>(this.cabeceraService.getCabecera() + "api/team/answer-invitation/" + idInvitation, answer,  {headers: this.cabeceraService.getBasicAuthentication()});
 
     }

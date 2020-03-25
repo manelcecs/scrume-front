@@ -33,7 +33,7 @@
 
             <mat-card class="div2">
 
-              <mat-icon matListIcon>table_chart</mat-icon>
+              <mat-icon matListIcon (click)="openBoard(project.id)">table_chart</mat-icon>
               <mat-icon matListIcon (click)="openSprint(project)">insert_chart</mat-icon>
               <mat-icon matListIcon (click)="openProject(project)" >work</mat-icon>
 

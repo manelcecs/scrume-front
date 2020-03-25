@@ -5,6 +5,12 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { NewSprintDialog } from '../project/project.component';
 import { SprintService } from '../servicio/sprint.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BoardSimple, BoardNumber, Board } from '../dominio/board.domain';
+import { BoardService } from '../servicio/board.service';
+import { Observable } from 'rxjs';
+import { formatDate } from '@angular/common';
+
+import { LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'app-sprint',
@@ -15,8 +21,11 @@ export class SprintComponent implements OnInit {
 
   sprint : SprintDisplay;
   idSprint : number;
+  board: BoardSimple[];
+  boardDelete: BoardNumber;
 
-  constructor(private sprintService : SprintService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
+
+  constructor(private sprintService : SprintService, private boardService:BoardService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -26,7 +35,12 @@ export class SprintComponent implements OnInit {
 
         this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
           this.sprint = sprintDisplay;
+
         });
+
+         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+           this.board = board;
+         });
 
       } else{
         this.navigateTo("bienvenida");
@@ -58,6 +72,42 @@ export class SprintComponent implements OnInit {
     this.router.navigate(['team'], {queryParams: {id: team}});
   }
 
+  //Board
+
+  openBoard(board: number): void {
+    this.router.navigate(['board'], {queryParams: {id: board}});
+  }
+
+  createBoard(row: SprintDisplay): void {
+    this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
+  }
+  
+  editBoard(row: BoardNumber, sprint: SprintDisplay): void{
+    this.router.navigate(['createBoard'], {queryParams: {idBoard: row.id, idSprint: sprint.id}});
+  }
+
+  deleteBoard(board: BoardNumber): void{
+
+    this._deleteBoard(board.id).subscribe((board: BoardNumber)=>{
+  
+      this.boardDelete = board;
+
+        this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
+          this.sprint = sprintDisplay;
+
+        });
+
+         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
+           this.board = board;
+         });
+  
+    });
+  
+  }
+  
+  private _deleteBoard(id: number): Observable<BoardNumber>{
+    return this.boardService.deleteBoard(id);
+  }
 
 }
 
@@ -85,6 +135,7 @@ export class EditSprintDialog implements OnInit{
     this.idSprint = this.data.id;
     this.startDate.setValue(new Date(this.data.startDate));
     this.endDate.setValue(new Date(this.data.endDate));
+
   }
 
   onNoClick(): void {

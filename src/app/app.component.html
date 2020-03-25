@@ -14,6 +14,8 @@
       <img *ngIf="notifications==false" src="../assets/notification.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle()">
       <img *ngIf="notifications==true" src="../assets/notification-color.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle()">
     </nav>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate" style="width: 100%; height: 5px;">
+    </mat-progress-bar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 
