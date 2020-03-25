@@ -51,6 +51,7 @@ import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
+import { DocumentComponent } from './document/document.component';
 
 
 
@@ -75,7 +76,8 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     BoardComponent,
     CreateBoardComponent,
     SelectSprintBottomSheet,
-    EstimateTaskDialog
+    EstimateTaskDialog,
+    DocumentComponent
   ],
   imports: [
     MatFormFieldModule,

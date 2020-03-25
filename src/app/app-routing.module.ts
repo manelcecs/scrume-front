@@ -12,6 +12,7 @@ import { BoardComponent } from './board/board.component';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
+import { DocumentComponent } from './document/document.component';
 
 
 const routes: Routes = [
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'sprint', component: SprintComponent},
   {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}},
   {path: 'createBoard', component: CreateBoardComponent},
-  {path: 'board', component: BoardComponent}
+  {path: 'board', component: BoardComponent},
+  {path: 'document', component: DocumentComponent}
 
 ];
 
