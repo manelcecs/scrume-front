@@ -8,32 +8,36 @@
     </mat-form-field>
   </div>
   <mat-form-field class="example-chip-list">
-    <mat-chip-list #chipListUsers aria-label="User selection">
+    <mat-chip-list #chipList aria-label="Fruit selection">
       <mat-chip
-      *ngFor="let user of users"
-      (removed)="remove(user)">
-      {{user}}
+        *ngFor="let user of users"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(user)">
+        {{user.nick}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-        placeholder="Añadir usuario"
-        #userInput
-        [formControl]="userFormControl"
-        [matChipInputFor]="chipListUsers"
+        placeholder="New fruit..."
+        #fruitInput
+        [formControl]="fruitCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="add($event)">
     </mat-chip-list>
-    <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let user of suggestedUsers | async" [value]="user.id">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
         {{user.nick}}
       </mat-option>
-    </mat-autocomplete> -->
+    </mat-autocomplete>
   </mat-form-field>
 
     <div id="buttons-dialog">
       <button id="cancel-dialog" mat-button (click)="onNoClick()">
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="!validForm()" cdkFocusInitial>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial>
         Guardar
       </button>
     </div>

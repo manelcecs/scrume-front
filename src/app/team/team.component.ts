@@ -16,6 +16,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { InvitationService } from '../servicio/invitation.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-team',
@@ -111,7 +112,10 @@ export class TeamComponent implements OnInit {
   }
 }
 
-
+export interface Fruit {
+  name: string;
+  id: number;
+}
 @Component({
   selector: 'invite-dialog',
   templateUrl: 'invite-dialog.html',
@@ -121,69 +125,103 @@ export class InvitationDialog implements OnInit{
 
   team: number;
   invitation : InvitationDto;
-  users : number[];
+  //users : number[];
   usersBD : UserNick[];
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  message = new FormControl('',  { validators: [Validators.required]});
+  searchValue;
   messageFormControl = new FormControl('', {validators: [Validators.required]});
-  userFormControl = new FormControl('',  { validators: [Validators.required]});
-  suggestedUsers : Observable<UserNick[]>;
+  // suggestedUsers : Observable<UserNick[]>;
 
-  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
+  visible = true;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredUsers: Observable<UserNick[]>;
+  users: UserNick[] = [];
+  allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
+
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
     public dialogRef: MatDialogRef<InvitationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: number, private invitationService : InvitationService) {
-
+      this.team = this.data;
+      this.invitationService.getSuggestedUsers(this.team).subscribe((res : UserNick[]) => {
+        this.allUsers = res;
+        console.log("AllUsers:", this.allUsers);
+        this.filteredUsers = this.fruitCtrl.valueChanges.pipe(
+          startWith(null),
+          map((user: UserNick | null) => user ? this._filter(user) : this.allUsers.slice()));
+      })
     }
 
 
   ngOnInit(): void {
-    this.team = this.data;
-    this.invitationService.getSuggestedUsers(this.team).subscribe((users : UserNick[]) =>{
-      this.usersBD = users;
-      console.log(this.usersBD);
-    })
+    // this.team = this.data;
+    // this.invitationService.getSuggestedUsers(this.team).subscribe((users : UserNick[]) =>{
+    //   this.usersBD = users;
+    //   console.log(this.usersBD);
+    // })
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  remove(user: number): void {
-    const index = this.users.indexOf(user);
-
-    if (index >= 0) {
-      this.users.splice(index, 1);
-    }
-  }
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
-    this.users.push(parseInt(value));
+    console.log("Input:", input);
+    console.log("Value:", value);
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.users.push();
+    }
+
     // Reset the input value
     if (input) {
       input.value = '';
     }
-    this.userFormControl.setValue(null);
+
+    this.fruitCtrl.setValue(null);
+  }
+
+
+  remove(user: UserNick): void {
+    const index = this.users.indexOf(user);
+
+    console.log("Remove", user);
+    if (index >= 0) {
+      this.users.splice(index, 1);
+    }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.users.push(parseInt(event.option.viewValue));
-    this.userInput.nativeElement.value = '';
-    this.userFormControl.setValue(null);
+    console.log("Selected", event.option.value);
+    this.users.push(event.option.value);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  private _filter(value: UserNick): UserNick[] {
+    const filterValue = value.nick.toLowerCase();
+
+    return this.allUsers.filter(fruit => fruit.nick.toLowerCase().indexOf(filterValue) === 0);
   }
 
   onSaveClick() : void {
-    let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: Array(this.userFormControl.value)};
+    let recipients : number[] = [];
+    this.users.forEach(user => recipients.push(user.id));
+    let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: recipients};
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();
     });
 
-  }
+ }
 
   // getErrorMessageStartDate() : string {
   //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
@@ -193,14 +231,14 @@ export class InvitationDialog implements OnInit{
   //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
   // }
 
-  validForm():boolean {
+  // validForm():boolean {
 
-     let valid: boolean;
+  //    let valid: boolean;
 
-     valid = this.messageFormControl.valid && this.userFormControl.valid;
-     return valid;
+  //    valid = this.messageFormControl.valid && this.userFormControl.valid;
+  //    return valid;
 
-   }
+  //  }
 
   // validateToday(): ValidatorFn {
   //   return (control: AbstractControl): {[key: string]: any} | null => {

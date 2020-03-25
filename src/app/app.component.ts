@@ -2,6 +2,8 @@ import { Component, OnDestroy, ChangeDetectorRef, OnInit, Output, EventEmitter }
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
+import { InvitationService } from './servicio/invitation.service';
+import { InvitationDisplay } from './dominio/invitation.domain';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +14,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routes: Object[] = [];
   idioma: string  = "es";
+  notifications : boolean = false;
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
   }
 
   ngOnInit(): void{
     this.cargarMenu();
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (invitations.length != 0) {
+        this.notifications = true;
+      }
+    });
+
 
     // Promise.resolve().then(()=> {
     //   let idm = localStorage.getItem("idioma");
