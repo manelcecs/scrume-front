@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     });
     this.navigateTo('teams');
-  
+
 
   }
 

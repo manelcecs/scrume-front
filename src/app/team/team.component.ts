@@ -118,10 +118,7 @@ export class TeamComponent implements OnInit {
   }
 }
 
-export interface Fruit {
-  name: string;
-  id: number;
-}
+
 @Component({
   selector: 'invite-dialog',
   templateUrl: 'invite-dialog.html',
@@ -141,7 +138,7 @@ export class InvitationDialog implements OnInit{
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
+  fruitCtrl = new FormControl('', {validators: [Validators.required]});
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
   allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
@@ -155,7 +152,6 @@ export class InvitationDialog implements OnInit{
       this.team = this.data;
       this.invitationService.getSuggestedUsers(this.team).subscribe((res : UserNick[]) => {
         this.allUsers = res;
-        console.log("AllUsers:", this.allUsers);
         this.filteredUsers = this.fruitCtrl.valueChanges.pipe(
           startWith(null),
           map((user: UserNick | null) => user ? this._filter(user) : this.allUsers.slice()));
@@ -180,8 +176,7 @@ export class InvitationDialog implements OnInit{
     const input = event.input;
     const value = event.value;
 
-    console.log("Input:", input);
-    console.log("Value:", value);
+
 
     // Add our fruit
     if ((value || '').trim()) {
@@ -200,14 +195,12 @@ export class InvitationDialog implements OnInit{
   remove(user: UserNick): void {
     const index = this.users.indexOf(user);
 
-    console.log("Remove", user);
     if (index >= 0) {
       this.users.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    console.log("Selected", event.option.value);
     this.users.push(event.option.value);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
@@ -216,7 +209,7 @@ export class InvitationDialog implements OnInit{
   private _filter(value: UserNick): UserNick[] {
     const filterValue = value.nick.toLowerCase();
 
-    return this.allUsers.filter(fruit => fruit.nick.toLowerCase().indexOf(filterValue) === 0);
+    return this.allUsers.filter(user => user.nick.toLowerCase().indexOf(filterValue) === 0);
   }
 
   onSaveClick() : void {
