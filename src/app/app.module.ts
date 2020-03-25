@@ -35,7 +35,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { TeamCreateComponent } from './team-create/team-create.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BacklogComponent, NewTaskDialog, EditTaskDialog } from './backlog/backlog.component';
+import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet, EstimateTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
 import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -49,6 +49,11 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { CreateBoardComponent } from './create-board/create-board.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +77,9 @@ import {MatChipsModule} from '@angular/material/chips';
     NotificationsComponent,
     CreateInvitationComponent,
     InvitationDialog,
+    CreateBoardComponent,
+    SelectSprintBottomSheet,
+    EstimateTaskDialog
   ],
   imports: [
     MatFormFieldModule,
@@ -103,6 +111,10 @@ import {MatChipsModule} from '@angular/material/chips';
     MatExpansionModule,
     MatDialogModule,
     MatNativeDateModule,
+    MatProgressBarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    MatBottomSheetModule,
+    MatListModule,
     MatChipsModule
   ],
   providers: [],

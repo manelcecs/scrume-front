@@ -10,6 +10,9 @@ import { TeamCreateComponent } from './team-create/team-create.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { BoardComponent } from './board/board.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import { CreateBoardComponent } from './create-board/create-board.component';
+import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
+import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 
 
 const routes: Routes = [
@@ -17,10 +20,11 @@ const routes: Routes = [
   {path: 'bienvenida', component: BienvenidaComponent},
   {path: 'teams', component: TeamComponent},
   {path: 'teamsCreate', component: TeamCreateComponent},
-  {path: 'project', component: ProjectComponent},
+  {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'sprint', component: SprintComponent},
-  {path: 'backlog', component: BacklogComponent},
+  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}},
+  {path: 'createBoard', component: CreateBoardComponent},
   {path: 'board', component: BoardComponent},
   {path: 'invitation', component: CreateInvitationComponent}
 

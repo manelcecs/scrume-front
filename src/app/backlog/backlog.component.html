@@ -3,7 +3,7 @@
     <section id="header">
 
         <div>
-            <h3><a href="" (click)="openTeam(project.team)">{{project.team.name}}</a> > <a href=""  (click)="openProject(project)">{{project.name}}</a> > Product Backlog</h3>
+            <h3><a href="" (click)="openTeam()">{{project.team.name}}</a> > <a href=""  (click)="openProject()">{{project.name}}</a> > Product Backlog</h3>
         </div>
 
     </section>
@@ -25,9 +25,13 @@
                 <mat-list-item class="task-row" *ngFor="let task of project.tasks | filter:searchValue">
 
                     <li class="list-group-item d-flex justify-content-between align-items-center task-row">
-                        {{task.title}}
-                        <span>{{task.points!=0?task.points + ' PH':'Sin estimación'}}</span>
+                        <span>{{task.title}}</span>
+                        <span>Tu estimación: {{task.estimatedPoints}} PH</span>
+                        <span>Estimación total: {{task.finalPoints}} PH</span>
+
                         <div>
+                            <button *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" mat-raised-button (click)="openEstimateTask(task.id)">Estimar</button>
+                            <button *ngIf="task.finalPoints != 0 && task.column == undefined" mat-raised-button (click)="openSelectSprint(task.id)">Mover</button>
                             <mat-icon matListIcon (click)="openEditTask(task)">create</mat-icon> 
                             <mat-icon matListIcon (click)="deleteTask(task)">delete</mat-icon> 
                         </div>

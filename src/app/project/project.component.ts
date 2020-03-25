@@ -27,33 +27,19 @@ export class ProjectComponent implements OnInit {
      private projectService: ProjectService,
      private sprintService : SprintService,
      public dialog: MatDialog
-    ) { }
+    ) { 
+
+      console.log("Constructor component");
+      this.project = this.activatedRoute.snapshot.data.project;
+      this.sprints = this.activatedRoute.snapshot.data.sprints;
+
+    }
 
   ngOnInit(): void {
 
-    this.activatedRoute.queryParams.subscribe(params =>{
-
-      console.log(JSON.stringify(params));
-      if(params.id != undefined){
-        this.idProject = params.id;
-
-        this.projectService.getProject(this.idProject).subscribe((project:ProjectDto)=>{
-          this.project = project;
-          console.log(JSON.stringify(this.project));
-          this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
-            this.sprints = sprint;
-          });
-
-        });
-      }else{
-        console.log("Nice try...");
-        //this.navigateTo("teams");
-      }
-    });
   }
 
   openBacklog(): void{
-    console.log("openBacklog" + this.project.id);
     this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
   }
 
@@ -93,7 +79,6 @@ export class ProjectComponent implements OnInit {
 
 
 // DIALOGO PARA CREAR UN SPRINT
-
 @Component({
   selector: 'new-sprint-dialog',
   templateUrl: 'new-sprint-dialog.html',

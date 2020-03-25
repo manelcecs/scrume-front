@@ -81,13 +81,6 @@ export class TeamCreateComponent implements OnInit {
 
   }
 
-  deleteTeam(team: Team): void{
-    this._deleteTeam(team.id).subscribe(()=>{
-      this.navigateTo("teams");
-    }, (error)=>{
-      console.log("error: "+error.error);
-    });
-  }
 
   private _editTeam(id: number):Observable<TeamSimple>{
     this.team.name = this.name.value;
@@ -100,10 +93,6 @@ export class TeamCreateComponent implements OnInit {
     //this.team = {name: this.name.value, projects: this.projects}
     this.team = {id:0, name: this.name.value}
     return this.teamService.createTeam(this.team);
-  }
-
-  private _deleteTeam(id: number): Observable<TeamSimple>{
-    return this.teamService.deleteTeam(id);
   }
 
   cancelCreateteam(): void {

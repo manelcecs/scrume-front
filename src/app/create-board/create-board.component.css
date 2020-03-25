@@ -1,0 +1,52 @@
+#main-board {
+    padding: 3% 25%;
+}
+
+#main-board > section{
+    padding-bottom: 1%;
+}
+
+#save-board-create {
+    background-color: #38B6FF;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#save-board-create:hover {
+    background-color: #18A1F0;
+}
+
+#cancel-board-create {
+    background-color: #e62e2e;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#cancel-board-create:hover {
+    background-color: #db0f0f;
+}
+
+#delete-board-create {
+    background-color: #471313;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#delete-board-create:hover {
+    background-color: #471313;
+}
+
+.form-field-board-create{
+    width: 100%;
+}
+
+#buttons-board-create{
+    display: flex;
+    justify-content: left;
+}

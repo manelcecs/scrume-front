@@ -1,5 +1,5 @@
-import { Component, OnDestroy, ChangeDetectorRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit,  } from '@angular/core';
+import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
 import { InvitationService } from './servicio/invitation.service';
@@ -16,9 +16,26 @@ export class AppComponent implements OnInit, OnDestroy {
   idioma: string  = "es";
   notifications : boolean = false;
 
+  loading = false;
+  title: any = 'scrume-front';
+
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+    this.router.events.subscribe((event: RouterEvent) =>{
+      switch(true){
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+      }
+    });
   }
 
   ngOnInit(): void{
@@ -29,24 +46,23 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
+    Promise.resolve().then(()=> {
+    let idm = localStorage.getItem("idioma");
+    if (idm == null){
+      localStorage.setItem("idioma", this.idioma);
+    }else{
+      this.idioma = idm;
+    }
 
-    // Promise.resolve().then(()=> {
-    //   let idm = localStorage.getItem("idioma");
-    //   if (idm == null){
-    //     localStorage.setItem("idioma", this.idioma);
-    //   }else{
-    //     this.idioma = idm;
-    //   }
+    if(this.idioma == "es"){
+      this.router.navigate(["bienvenida"]);
+    }else{
+      this.router.navigate(["wellcome"]);
+    }
 
-    //   if(this.idioma == "es"){
-    //     this.router.navigate(["bienvenida"]);
-    //   }else{
-    //     this.router.navigate(["wellcome"]);
-    //   }
-
-    // });
-    // this.navigateTo('teams');
-
+    });
+    this.navigateTo('teams');
+  
 
   }
 
