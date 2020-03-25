@@ -158,27 +158,18 @@ export class InvitationDialog implements OnInit{
       })
     }
 
-
   ngOnInit(): void {
-    // this.team = this.data;
-    // this.invitationService.getSuggestedUsers(this.team).subscribe((users : UserNick[]) =>{
-    //   this.usersBD = users;
-    //   console.log(this.usersBD);
-    // })
+
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
-
-
-    // Add our fruit
     if ((value || '').trim()) {
       this.users.push();
     }
@@ -190,7 +181,6 @@ export class InvitationDialog implements OnInit{
 
     this.fruitCtrl.setValue(null);
   }
-
 
   remove(user: UserNick): void {
     const index = this.users.indexOf(user);
@@ -219,47 +209,16 @@ export class InvitationDialog implements OnInit{
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();
     });
+  }
 
- }
+  getErrorMessageMessage() : string {
+    return this.messageFormControl.hasError('required')?'El mensaje es obligatorio':'';
+  };
 
-  // getErrorMessageStartDate() : string {
-  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
-  // };
 
-  // getErrorMessageEndDate() : string {
-  //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
-  // }
-
-  // validForm():boolean {
-
-  //    let valid: boolean;
-
-  //    valid = this.messageFormControl.valid && this.userFormControl.valid;
-  //    return valid;
-
-  //  }
-
-  // validateToday(): ValidatorFn {
-  //   return (control: AbstractControl): {[key: string]: any} | null => {
-  //     console.log("Prueba 2")
-  //     let isValid = true;
-
-  //     if (control.value.getTime() < Date.now()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'past': 'the date cant be past' }
-  //   };
-  // }
-
-  // validateStartBeforeEnd(): ValidatorFn {
-  //   return (control: AbstractControl): { [key: string]: any } => {
-  //     let isValid = true;
-  //     if (control.value.getTime() > this.endDate.value.getTime()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'invalid': 'Invalid dates' }
-
-  //   };
-  // }
-
+  validForm():boolean {
+    let valid: boolean;
+    valid = this.messageFormControl.valid && this.users.length != 0;
+    return valid;
+  }
 }
