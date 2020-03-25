@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginDialog } from './login-dialog/login-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +15,14 @@ export class AppComponent implements OnInit, OnDestroy {
   routes: Object[] = [];
   idioma: string  = "es";
 
+  username : string;
+
   loading = false;
   title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private dialog: MatDialog) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -38,22 +42,15 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     this.cargarMenu();
 
-    Promise.resolve().then(()=> {
-    let idm = localStorage.getItem("idioma");
-    if (idm == null){
-      localStorage.setItem("idioma", this.idioma);
+    let token = sessionStorage.getItem("loginToken");
+    console.log("token:", token);
+    if(token != null && token !== ""){
+      //TODO: petición get User
+      this.username = "Demo User";
+      this.navigateTo("teams");
     }else{
-      this.idioma = idm;
+      this.navigateTo("bienvenida");
     }
-
-    if(this.idioma == "es"){
-      this.router.navigate(["bienvenida"]);
-    }else{
-      this.router.navigate(["wellcome"]);
-    }
-
-    });
-    this.navigateTo('teams');
   
 
   }
@@ -75,11 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'home',
         visible: 'true'
     },{
-        title: 'Wellcome',
-        route: '/wellcome',
-        icon: 'home',
-        visible: 'true'
-    },{
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
@@ -88,4 +80,27 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
   } 
 
+  openLogin(): void {
+    let dialog = this.dialog.open(LoginDialog, {
+      width: '250px'
+    });
+    dialog.afterClosed().subscribe(()=>{
+      let token = sessionStorage.getItem("loginToken");
+      if(token != null && token != ""){
+         //TODO: petición get User
+        this.username = "Demo User";
+        this.navigateTo("teams");
+      }
+    });
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.username = undefined;
+    this.navigateTo("bienvenida");
+  }
+
+  getUsername(){
+    //TODO: peticion al back
+  }
 }

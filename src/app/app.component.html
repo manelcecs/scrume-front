@@ -9,8 +9,11 @@
     <nav class="navbar navbar-dark menu">
       <a class="logo">
         <img (click)="sidenav.toggle()" src="../assets/menu-navbar.png" width="30" height="30" class="d-inline-block align-top menu-icon" alt="">
-        <img src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="navigateTo('teams')">
+        <img src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="navigateTo('bienvenida')">
       </a>
+      <div class="username" *ngIf="username != undefined"><a >{{username}}</a>   -   <a (click)="logOut()" >Cerrar sesión</a></div>
+      <div class="username" *ngIf="username == undefined"><a (click)="openLogin()" >Acceder</a></div>
+
     </nav>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" style="width: 100%; height: 5px;">
     </mat-progress-bar>

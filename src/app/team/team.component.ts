@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../dominio/team.domain';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
 import { Board, BoardSimple } from '../dominio/board.domain';
@@ -25,26 +25,26 @@ export class TeamComponent implements OnInit {
   boardNumber: number;
 
   constructor(private router: Router,
+    private activatedRoute: ActivatedRoute,
     private teamService: TeamService,
     private sprintService: SprintService,
     private projectService: ProjectService,
     private boardService: BoardService
-    ) { }
+    ) { 
+
+      this.teams = this.activatedRoute.snapshot.data.teams;
+    }
 
   ngOnInit(): void {
-    this.teamService.getAllTeams().subscribe((teams : Team[] )=>{
-      this.teams = teams;
       for(let t of this.teams){
         this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
           t.projects = projects;
-          console.log("Asignados los proyectos "+projects+" al equipo "+t.name);
-        });
-      }
-    }, (error)=>{
+        }, (error)=>{
       console.log("Error al hacer la petición a BD. "+error);
       //error("Error al hacer la petición a BD.", this.options);
-    });
-    }; //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
+      });
+    }
+  } //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
 
 
   createTeam(): void {
