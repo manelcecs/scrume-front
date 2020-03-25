@@ -39,6 +39,11 @@ mat-sidenav-container, mat-sidenav {
     height: 100%;
 }
 
+.username{
+    color:white;
+    float: right;
+}
+
 mat-sidenav {
     width: 250px;
     background-color: whitesmoke;

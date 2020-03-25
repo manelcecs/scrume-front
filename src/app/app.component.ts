@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
 import { InvitationService } from './servicio/invitation.service';
 import { InvitationDisplay } from './dominio/invitation.domain';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginDialog } from './login-dialog/login-dialog.component';
+import { UserService } from './servicio/user.service';
+import { User } from './dominio/user.domain';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +20,14 @@ export class AppComponent implements OnInit, OnDestroy {
   idioma: string  = "es";
   notifications : boolean = false;
 
+  user : User;
+
   loading = false;
   title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -46,22 +52,18 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    Promise.resolve().then(()=> {
-    let idm = localStorage.getItem("idioma");
-    if (idm == null){
-      localStorage.setItem("idioma", this.idioma);
+    let token = sessionStorage.getItem("loginToken");
+    console.log("token:", token);
+    if(token != null && token !== ""){
+      this.userService.findUserAuthenticated().subscribe((user: User)=>{
+        this.user = user;
+        this.navigateTo("teams");
+      });
+      
     }else{
-      this.idioma = idm;
+      this.navigateTo("bienvenida");
     }
-
-    if(this.idioma == "es"){
-      this.router.navigate(["bienvenida"]);
-    }else{
-      this.router.navigate(["wellcome"]);
-    }
-
-    });
-    this.navigateTo('teams');
+  
 
 
   }
@@ -83,11 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'home',
         visible: 'true'
     },{
-        title: 'Wellcome',
-        route: '/wellcome',
-        icon: 'home',
-        visible: 'true'
-    },{
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
@@ -96,4 +93,28 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
   }
 
+  openLogin(): void {
+    let dialog = this.dialog.open(LoginDialog, {
+      width: '250px'
+    });
+    dialog.afterClosed().subscribe(()=>{
+      let token = sessionStorage.getItem("loginToken");
+      if(token != null && token != ""){
+        this.userService.findUserAuthenticated().subscribe((user: User)=>{
+          this.user = user;
+          this.navigateTo("teams");
+        });
+      }
+    });
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.user = undefined;
+    this.navigateTo("bienvenida");
+  }
+
+  getUsername(){
+    //TODO: peticion al back
+  }
 }

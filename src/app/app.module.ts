@@ -44,7 +44,6 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
-import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
@@ -54,6 +53,7 @@ import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
+import { LoginDialog } from './login-dialog/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +79,8 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     InvitationDialog,
     CreateBoardComponent,
     SelectSprintBottomSheet,
-    EstimateTaskDialog
+    EstimateTaskDialog,
+    LoginDialog
   ],
   imports: [
     MatFormFieldModule,
