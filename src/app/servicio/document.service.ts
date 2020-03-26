@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Document } from '../dominio/document.domain'
 
-Injectable({providedIn:'root'})
+@Injectable({providedIn:'root'})
 
 export class DocumentService {
 
@@ -23,6 +23,6 @@ export class DocumentService {
     }
 
     getDocumentsBySprint(idSprint: number): Observable<Document[]> {
-        return this.httpClient.get<Document[]>(this.cabeceraService.getCabecera() + "api/document/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.get<Document[]>(this.cabeceraService.getCabecera() + "api/document/sprint/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 }
