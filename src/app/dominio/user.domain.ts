@@ -5,7 +5,7 @@ export interface UserName {
 
 export interface UserNick {
   id: number;
-  email: string;
+  nick: string;
 }
 
 export interface User{
