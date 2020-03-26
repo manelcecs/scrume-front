@@ -18,6 +18,10 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { InvitationService } from '../servicio/invitation.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {map, startWith} from 'rxjs/operators';
+//De document
+import { DomSanitizer } from '@angular/platform-browser';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-team',
@@ -38,7 +42,8 @@ export class TeamComponent implements OnInit {
     private sprintService: SprintService,
     private projectService: ProjectService,
     private boardService: BoardService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private sanitizer: DomSanitizer
     ) { }
 
   ngOnInit(): void {
@@ -56,6 +61,58 @@ export class TeamComponent implements OnInit {
     });
     }; //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
 
+//BORRAR
+// descargarPDF():void {
+//   const data = 'some text';
+//   var blob = new Blob([data], { type: "application/pdf"});
+//   this.ss = blob;
+//   this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+// }
+
+// generarPDF(){
+//   html2canvas(document.getElementById('paper'), {
+//      // Opciones
+//      allowTaint: true,
+//      useCORS: false,
+//      // Calidad del PDF
+//      scale: 1
+//   }).then(function(canvas) {
+//   //var img = canvas.toDataURL("image/png");
+//   var doc = new jsPDF();
+//   //doc.addImage(img,'PNG',7, 20, 195, 105);
+//   doc.save('prueba.pdf');
+//  });
+//}
+
+  value;
+
+  generarPDF(){
+    var doc = new jsPDF();
+    doc.fromHTML(document.getElementById('paper'),10,10);
+    doc.save('prueba.pdf');
+  }
+
+  pasarPagina(){
+    let aux = document.getElementById('palabras');
+    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
+    if(height == "456px"){
+      aux.style.backgroundColor = 'red';
+    }
+  }
+
+  onKey(value: string){
+    if(value.substring(value.length-1, value.length) == "\n"){
+      this.value = value + "\n";
+    } else{
+      this.value = value;
+    }
+  }
+
+  insertEnter(value: string){
+   let aux = document.getElementById('palabras');
+   this.value = value + "\n";
+  }
+  //-----------------
 
   createTeam(): void {
     this.router.navigate(['teamsCreate']);
@@ -220,8 +277,7 @@ export class InvitationDialog implements OnInit{
       this.dialogRef.close();
     });
 
- }
-
+  }
   // getErrorMessageStartDate() : string {
   //   return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
   // };
