@@ -5,7 +5,7 @@ export interface UserName {
 
 export interface UserNick {
   id: number;
-  nick: string;
+  email: string;
 }
 
 export interface User{
@@ -17,4 +17,5 @@ export interface User{
     photo: string;
     surnames: string;
     userAccount: any;
+
 }
