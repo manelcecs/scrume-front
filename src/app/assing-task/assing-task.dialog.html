@@ -1,0 +1,15 @@
+<h4>Asignar usuarios a la tarea</h4>
+<p>Usuarios Asginados</p>
+<mat-chip-list>
+  <mat-chip *ngFor="let user of usersOfTask">{{user.nick}}<mat-icon (click)="unassing(user)">keyboard_arrow_down</mat-icon></mat-chip>
+</mat-chip-list>
+<p>Usuarios del Equipo</p>
+<mat-chip-list>
+  <mat-chip *ngFor="let user of usersOfTeam">{{user.nick}}<mat-icon (click)="assing(user)">keyboard_arrow_up</mat-icon></mat-chip>
+</mat-chip-list>
+<br />
+<div id="buttons-dialog">
+  <button id="cancel-dialog" mat-button (click)="cancel()">
+    Cancelar
+  </button>
+</div>

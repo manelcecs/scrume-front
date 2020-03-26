@@ -34,5 +34,8 @@ export class TaskService {
       return this.httpClient.post<TaskEstimate>(this.cabeceraService.getCabecera() +  "api/task/estimate/" + taskEstimate.task, taskEstimate, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+    getTask(idTask: number): Observable<TaskDto> {
+      return this.httpClient.get<TaskDto>(this.cabeceraService.getCabecera() + "api/task/"+idTask, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 
 }

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
 import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
 import { Board } from '../dominio/board.domain';
-import { User } from '../dominio/user.domain';
+import { User, SimpleUserNick } from '../dominio/user.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -18,6 +18,10 @@ export class UserService {
 
     findUserAuthenticated(){
         return this.httpClient.get<User>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getAllUsersOfWorkspace(id: number){
+        return this.httpClient.get<SimpleUserNick[]>(this.cabeceraService.getCabecera()+"api/user/list-by-workspace/"+id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }

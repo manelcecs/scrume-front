@@ -27,7 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, 
+    private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -46,23 +47,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
     this.cargarMenu();
-    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-      if (invitations.length != 0) {
-        this.notifications = true;
-      }
-    });
 
     let token = sessionStorage.getItem("loginToken");
-    console.log("token:", token);
     if(token != null && token !== ""){
       this.userService.findUserAuthenticated().subscribe((user: User)=>{
         this.user = user;
         this.navigateTo("teams");
+
+        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+          if (invitations.length != 0) {
+            this.notifications = true;
+          }
+        });
       });
       
     }else{
       this.navigateTo("bienvenida");
     }
+
+
+    
   
 
 
@@ -88,7 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
-        visible: 'true'
+        visible: this.user!= undefined
     }
   ];
   }

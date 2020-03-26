@@ -18,3 +18,9 @@ export interface User{
     surnames: string;
     userAccount: any;
 }
+
+export interface SimpleUserNick {
+  id: number;
+  nick: string;
+  photo?: string;
+}

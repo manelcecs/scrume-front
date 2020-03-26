@@ -1,5 +1,5 @@
 import { ProjectName } from './project.domain';
-import { UserName } from './user.domain';
+import { UserName, UserNick, SimpleUserNick } from './user.domain';
 import { ColumDto } from './colum.domian';
 import { SprintWorkspace } from './sprint.domain';
 
@@ -8,6 +8,7 @@ export interface TaskDto {
     title: string;
     description: string;
     project: ProjectName;
+    users: SimpleUserNick[];
 }
 
 export interface TaskSimple {
@@ -32,4 +33,9 @@ export interface TaskMove{
 export interface TaskEstimate{
     points: number;
     task: number;
+}
+
+export interface TaskAssignable{
+    id: number;
+    users: UserNick[];
 }

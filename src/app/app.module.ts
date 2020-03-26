@@ -54,6 +54,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
+import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { LoginDialog } from './login-dialog/login-dialog.component';
     CreateBoardComponent,
     SelectSprintBottomSheet,
     EstimateTaskDialog,
-    LoginDialog
+    LoginDialog,
+    AssingTaskDialog
   ],
   imports: [
     MatFormFieldModule,
