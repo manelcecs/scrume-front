@@ -12,6 +12,7 @@ import { formatDate } from '@angular/common';
 import { Document } from '../dominio/document.domain'
 import { LOCALE_ID } from '@angular/core';
 import { DocumentService } from '../servicio/document.service';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-sprint',
@@ -51,7 +52,6 @@ export class SprintComponent implements OnInit {
 
         this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
           this.doc = doc;
-          console.log("el json de documento " + JSON.stringify(this.doc))
         });
 
       } else {
@@ -116,7 +116,6 @@ export class SprintComponent implements OnInit {
 
       this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
         this.doc = doc;
-        console.log("el json de documento " + JSON.stringify(this.doc))
       });
 
     });
@@ -125,33 +124,6 @@ export class SprintComponent implements OnInit {
 
   private _deleteBoard(id: number): Observable<BoardNumber> {
     return this.boardService.deleteBoard(id);
-  }
-
-  createDoc(row: number): void {
-
-    this.document = {
-      id: 0,
-      name: "Añade aquí el nombre",
-      content: "{ titulo: '', contenido: '' } ",
-      sprint: row,
-      type: "REVIEW"
-    }
-
-    this.documentService.createDocument(row, this.document).subscribe((doc: Document) => {
-      this.document = doc;
-
-      this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[]) => {
-        this.board = board;
-      });
-
-      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
-        this.doc = doc;
-        console.log("el json de documento " + JSON.stringify(this.doc))
-      });
-      
-    });
-
-    this.router.navigate(['sprint'], { queryParams: { id: row } });
   }
 
   //Document------------------------------------------------------------------------------------------------------------
@@ -172,7 +144,6 @@ export class SprintComponent implements OnInit {
 
       this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
         this.doc = doc;
-        console.log("el json de documento " + JSON.stringify(this.doc))
       });
 
     });
@@ -183,11 +154,82 @@ export class SprintComponent implements OnInit {
     return this.documentService.deleteDocument(id);
   }
 
+  openDialogDoc(sprint: SprintDisplay): void {
+    const dialogRef = this.dialog.open(NewDocumentDialog, {
+      width: '250px',
+      data: sprint.id
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      
+      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
+        this.doc = doc;
+      });
+
+    });
+
+  }
+
+  openDocument(doc: number): void {
+    this.router.navigate(['document'], { queryParams: { id: doc } });
+  }
+
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------
 
+@Component({
+  selector: 'new-document-dialog',
+  templateUrl: 'new-document-dialog.html',
+  styleUrls: ['./new-document-dialog.css']
+})
+export class NewDocumentDialog implements OnInit{
 
+  idSprint: number;
+
+  document: Document;
+  board: BoardSimple[];
+  doc: Document[];
+
+  tipos: string[];
+  review: string;
+
+  selected: string;
+
+  tipo = new FormControl('',  { validators: [Validators.required]});
+
+  constructor(
+    public dialogRef: MatDialogRef<NewDocumentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: number,
+    private documentService: DocumentService, private boardService: BoardService, private router: Router) {}
+
+
+  ngOnInit(): void {
+    this.idSprint = this.data;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(select: string) : void {
+    this.document = {
+      id: 0,
+      name: "Añade aquí el nombre",
+      content: "{ titulo: '', contenido: '' } ",
+      sprint: this.idSprint,
+      type: select
+    }
+
+    this.documentService.createDocument(this.idSprint, this.document).subscribe((doc: Document) => {
+      this.document = doc;
+
+      this.dialogRef.close();
+
+    });
+
+  }
+
+}
 
 //Dialog de Sprint-----------------------------------------------------------------------------------------
 
@@ -225,7 +267,6 @@ export class EditSprintDialog implements OnInit {
   onSaveClick(): void {
     this.sprint = { id: this.idSprint, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString() }
     this.sprintService.editSprint(this.idSprint, this.sprint).subscribe((sprint: Sprint) => {
-      console.log(sprint);
       //FIXME: Recargar la pagina
       this.dialogRef.close();
     });
