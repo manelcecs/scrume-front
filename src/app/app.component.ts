@@ -7,7 +7,7 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { User } from './dominio/user.domain';
+import { UserNick, User } from './dominio/user.domain';
 
 @Component({
   selector: 'app-root',
@@ -46,19 +46,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
     this.cargarMenu();
-    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-      if (invitations.length != 0) {
-        this.notifications = true;
-      }
-    });
 
     let token = sessionStorage.getItem("loginToken");
     console.log("token:", token);
     if(token != null && token !== ""){
-      this.userService.findUserAuthenticated().subscribe((user: User)=>{
-        this.user = user;
-        this.navigateTo("teams");
-      });
+      this.getUserInfo();
       
     }else{
       this.navigateTo("bienvenida");
@@ -100,10 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
     dialog.afterClosed().subscribe(()=>{
       let token = sessionStorage.getItem("loginToken");
       if(token != null && token != ""){
-        this.userService.findUserAuthenticated().subscribe((user: User)=>{
-          this.user = user;
-          this.navigateTo("teams");
-        });
+        this.getUserInfo();
       }
     });
   }
@@ -114,7 +103,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navigateTo("bienvenida");
   }
 
-  getUsername(){
-    //TODO: peticion al back
+  getUserInfo(){
+    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
+        this.userService.getUser(user.id).subscribe((userComplete: User)=>{
+          this.user = userComplete;
+          this.navigateTo("teams");
+        });
+
+        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+          if (invitations.length != 0) {
+            this.notifications = true;
+          }
+        });
+      
+    });
   }
+
 }
