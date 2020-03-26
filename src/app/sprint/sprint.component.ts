@@ -50,7 +50,7 @@ export class SprintComponent implements OnInit {
 
         this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[])=> {
           this.doc = doc;
-          console.log(JSON.stringify(this.doc))
+          console.log("el json de documento " + JSON.stringify(this.doc))
         });
 
       } else{
