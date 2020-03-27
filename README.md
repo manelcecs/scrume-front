@@ -3,23 +3,25 @@
 En este proyecto se verán varios aspectos de la programación en Angular basada al consumo de API's.
 
 Se trataran conceptos básicos:
-    - Generación de componentes
-        -Constructor
-        -OnInit
-        -Alimentar la vista
-    -Consumos de servicios
-        -Peticiones REST
-        -Dominio e interfaces
-        -Suscribe
-    -Navegación entre vistas
-        -Navegación simple
-        -Navegación con parámetros
+
+- Generación de componentes
+  -Constructor
+  -OnInit
+  -Alimentar la vista
+-Consumos de servicios
+  -Peticiones REST
+  -Dominio e interfaces
+  -Suscribe
+-Navegación entre vistas
+  -Navegación simple
+  -Navegación con parámetros
 
 Con esta base podremos tratar los siguientes temas:
-    - avegación con resolvers
-    -Generación de dialogs
-    -Consumo de BBDD en navegador
-    -Gestión de errores
+    
+-Navegación con resolvers
+-Generación de dialogs
+-Consumo de BBDD en navegador
+-Gestión de errores
 
 ## Basics
 
