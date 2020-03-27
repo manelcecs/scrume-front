@@ -15,6 +15,8 @@ export class DocumentComponent implements OnInit {
   idDoc: number;
   doc: Document;
   document: Document;
+  con: string;
+  c;
 
   //retrospective
   good;
@@ -206,6 +208,62 @@ export class DocumentComponent implements OnInit {
       aux.style.backgroundColor = 'red';
     }
 
+  }
+
+  updateDoc(doc: Document): void {
+
+    if(doc.type == "REVIEW"){
+
+      this.c = {
+        done: this.done,
+        noDone: this.noDone,
+        rePlanning: this.rePlanning
+      }
+
+      console.log("lo que me llega " + this.done);
+      
+    }else if(doc.type == "RETROSPECTIVE"){
+
+      this.c = {
+        good: this.good,
+        bad: this.bad,
+        improvement: this.improvement
+      }
+
+    }else if(doc.type == "DAILY"){
+
+      this.c = {
+        name: this.name,
+        done: this.done,
+        todo: this.todo,
+        problem: this.problem
+      }
+
+    }else{
+
+      this.c = {
+        entrega: this.entrega,
+        conseguir: this.conseguir
+      }
+
+    }
+
+    this.con = JSON.stringify(this.c);
+
+    let documentComplete = {
+      id: doc.id,
+      name: doc.name,
+      sprint: doc.sprint,
+      type: doc.type,
+      content: this.con
+    }
+
+    console.log("el documento " + JSON.stringify(documentComplete));
+
+    this.documentService.editDocument(documentComplete).subscribe((doc: Document)=> {
+      this.doc = doc;
+      console.log("holaaaaaaa");
+    });
   }
 
 }

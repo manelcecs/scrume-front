@@ -238,7 +238,7 @@ export class NewDocumentDialog implements OnInit{
     }else{
       let json = {
         entrega: "",
-        conseguir: "",
+        conseguir: ""
       }
       this.cont = JSON.stringify(json);
     }
