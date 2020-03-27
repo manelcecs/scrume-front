@@ -1,3 +1,18 @@
+mat-sidenav-container {
+    height: 100%;
+}
+
+#principal{
+    overflow: auto;
+    height: 100%;
+
+}
+
+#principal::-webkit-scrollbar{
+    z-index: top;
+}
+
+
 /* Menu horizontal */
 
 #menu-horizontal{
@@ -10,40 +25,52 @@
     position: sticky;
     top: 0;
     z-index: 5235235235;
+    justify-content: space-between;
 }
 
-#icono > mat-icon{
-    margin-top: 10px;
-    font-size: 50px;
+#menu-horizontal-buttons-left{
+    display: flex;
+    align-items: center;
 }
 
-#menu-horizontal> span {
-    margin-left: 1%;
+#menu-horizontal-buttons-left > button:focus{
+    outline:0 !important;
 }
 
-#menu-horizontal > mat-icon:hover {
+#menu-horizontal-buttons-right{
+    display: flex;
+    align-items: center;
+}
+
+#menu-horizontal-buttons-right > img{
+    margin-right: 20px;
     cursor: pointer;
 }
 
-#menu-horizontal > mat-icon {
-    font-size: 40px !important;
-    margin-right: 1%;
-}
-
-#icono{
-    float: left;
-    height: 100%;
-}
-
 #logo{
-    margin-left: 30px;
-    float: left;
-    height: 100%;
+    cursor: pointer;
 }
 
 /* ------------------------------- */
 
+
+
 /* Menu vertical izquierdo*/
+
+mat-sidenav {
+    height: 100%;
+    width: 15em;
+    background-color: white;
+}
+
+#menu-vertical-izquierdo{
+    width: 15em;
+}
+
+.ul{
+    padding: 8%;
+}
+
 
 /* ------------------------------- */
 
@@ -52,71 +79,8 @@
 /* ------------------------------- */
 
 
-
-
-mat-sidenav {
-    width: 250px;
-    background-color: whitesmoke;
-}
-
-main {
-    padding: 10px;
-}
-
-a:hover {
-    cursor: pointer;
-}
-
-a {
-    text-decoration: none;
-    color:  #019CDD;
-    align-content: flex-start;
-}
-
-
-
-mat-sidenav {
-    height: 100%;
-    width: 20%;
-    background-color: white;
-}
-
-mat-sidenav-container {
-    height: 100%;
-}
-
-
-a:hover {
-    cursor: pointer;
-}
-
-.mat-list-item{
-    list-style-type: none;
-    margin-left: 1%;
-    margin-top: 7px;
-
-}
-
-.title{
-    font-size: 50px;
-}
-
-mat-toolbar{
-    border-radius: 3px;
-}
-
-@media(max-width: 959px){
+/* @media(max-width: 959px){
     mat-toolbar{
         border-radius: 0px;
     }
-}
-
-button {
-    background-color: darkslategray;
-
-}
-
-.mat-list-item-content{
-    margin-left: 1%;
-}
-
+} */
