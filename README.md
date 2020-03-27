@@ -1,24 +1,25 @@
 # Formación en Angular
 
 En este proyecto se verán varios aspectos de la programación en Angular basada al consumo de API's.
+
 Se trataran conceptos básicos:
     - Generación de componentes
-        - Constructor
-        - OnInit
-        - Alimentar la vista
-    - Consumos de servicios
-        - Peticiones REST
-        - Dominio e interfaces
-        - Suscribe
-    - Navegación entre vistas
-        - Navegación simple
-        - Navegación con parámetros
+        -Constructor
+        -OnInit
+        -Alimentar la vista
+    -Consumos de servicios
+        -Peticiones REST
+        -Dominio e interfaces
+        -Suscribe
+    -Navegación entre vistas
+        -Navegación simple
+        -Navegación con parámetros
 
 Con esta base podremos tratar los siguientes temas:
-    - Navegación con resolvers
-    - Generación de dialogs
-    - Consumo de BBDD en navegador
-    - Gestión de errores
+    - avegación con resolvers
+    -Generación de dialogs
+    -Consumo de BBDD en navegador
+    -Gestión de errores
 
 ## Basics
 
