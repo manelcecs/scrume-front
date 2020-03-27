@@ -58,7 +58,7 @@
                 <textarea value={{rePlanning}} (input)="reviewRePlanning(replanningHTML.value)" placeholder="Planificación futura" matInput #replanningHTML></textarea>
             </mat-form-field>
         </div> 
-        <button id="buttonPDF" mat-flat-button (click)="updateDoc(doc)">Guardar</button>
+        <button id="buttonPDF" mat-flat-button (click)="openSnackBar(message, close)" (click)="updateDoc(doc)">Guardar</button>
         <button id="buttonPDF" mat-flat-button (click)="generarPDF()">Descargar en PDF</button>
         
     </section>
