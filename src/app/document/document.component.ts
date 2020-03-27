@@ -4,6 +4,7 @@ import { DocumentService } from '../servicio/document.service';
 import { Document, Daily } from '../dominio/document.domain';
 //De document
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-document',
@@ -15,6 +16,11 @@ export class DocumentComponent implements OnInit {
   idDoc: number;
   doc: Document;
   document: Document;
+  con: string;
+  c;
+
+  message: string;
+  close: string;
 
   //retrospective
   good;
@@ -35,7 +41,8 @@ export class DocumentComponent implements OnInit {
   constructor(private router: Router, 
     private documentService: DocumentService, 
     private activatedRoute: ActivatedRoute,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -44,6 +51,9 @@ export class DocumentComponent implements OnInit {
       if(param.id != undefined){
 
         this.idDoc = param.id;
+
+        this.message = "Documento guardado en base de datos"
+        this.close = "Cerrar"
 
         this.documentService.getDocuments(this.idDoc).subscribe((doc: Document)=> {
           this.doc = doc;
@@ -206,6 +216,68 @@ export class DocumentComponent implements OnInit {
       aux.style.backgroundColor = 'red';
     }
 
+  }
+
+  updateDoc(doc: Document): void {
+
+    if(doc.type == "REVIEW"){
+
+      this.c = {
+        done: this.done,
+        noDone: this.noDone,
+        rePlanning: this.rePlanning
+      }
+
+      console.log("lo que me llega " + this.done);
+      
+    }else if(doc.type == "RETROSPECTIVE"){
+
+      this.c = {
+        good: this.good,
+        bad: this.bad,
+        improvement: this.improvement
+      }
+
+    }else if(doc.type == "DAILY"){
+
+      this.c = {
+        name: this.name,
+        done: this.done,
+        todo: this.todo,
+        problem: this.problem
+      }
+
+    }else{
+
+      this.c = {
+        entrega: this.entrega,
+        conseguir: this.conseguir
+      }
+
+    }
+
+    this.con = JSON.stringify(this.c);
+
+    let documentComplete = {
+      id: doc.id,
+      name: doc.name,
+      sprint: doc.sprint,
+      type: doc.type,
+      content: this.con
+    }
+
+    console.log("el documento " + JSON.stringify(documentComplete));
+
+    this.documentService.editDocument(documentComplete).subscribe((doc: Document)=> {
+      this.doc = doc;
+      console.log("holaaaaaaa");
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }
