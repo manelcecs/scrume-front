@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getUserInfo(){
     this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
-        this.userService.getUser(user.id).subscribe((userComplete: User)=>{
+        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
           this.user = userComplete;
           this.navigateTo("teams");
         });

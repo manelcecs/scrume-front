@@ -165,7 +165,7 @@ export class InvitationDialog implements OnInit{
   fruitCtrl = new FormControl('', {validators: [Validators.required]});
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
-  allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
+  allUsers: UserNick[] = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
