@@ -81,27 +81,95 @@ export class DocumentComponent implements OnInit {
 
   //Daily
 
-  dailyName(value: string){ this.name = value; var pdfContainer = document.getElementById("pdf-container"); pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  dailyDone(value: string){ this.done = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  dailyTodo(value: string){ this.todo = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  dailyProblem(value: string){ this.problem = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  dailyName(value: string){ 
+    this.name = value; 
+    var pdfContainer = document.getElementById("pdf-container"); 
+    var scrollNow = document.getElementById("dailyName");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+    console.log(pdfContainer.scrollTop);
+  }
+
+  dailyDone(value: string){ 
+    this.done = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("dailyDone");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+  dailyTodo(value: string){ 
+    this.todo = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("dailyTodo");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+  dailyProblem(value: string){ 
+    this.problem = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("dailyProblem");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
 
   //Retrospective
 
-  restrospectiveGood(value: String){ this.good = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  restrospectiveBad(value: String){ this.bad = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  restrospectiveImprovement(value: String){ this.improvement = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  restrospectiveGood(value: String){ 
+    this.good = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("restrospectiveGood");
+    pdfContainer.scrollTop = scrollNow.clientHeight;  
+  }
+  
+  restrospectiveBad(value: String){ 
+    this.bad = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("restrospectiveBad");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+  
+  restrospectiveImprovement(value: String){ 
+    this.improvement = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("restrospectiveImprovement");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+
 
   //Review
 
-  reviewDone(value: String){ this.done = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  reviewNoDone(value: String){ this.noDone = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  reviewRePlanning(value: String){ this.rePlanning = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  reviewDone(value: String){ 
+    this.done = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("reviewDone");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+
+  reviewNoDone(value: String){ 
+    this.noDone = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("reviewNoDone");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+
+  reviewRePlanning(value: String){ 
+    this.rePlanning = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("reviewRePlanning");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
 
   //Planning
 
-  planningEntrega(value: String){ this.entrega = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
-  planningConseguir(value: String){ this.conseguir = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  planningEntrega(value: String){ 
+    this.entrega = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("planningEntrega");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+
+  planningConseguir(value: String){ 
+    this.conseguir = value;
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("planningConseguir");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
 
 
   generarPDF(){

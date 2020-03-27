@@ -67,19 +67,16 @@
         <div id="pdf">
             <div *ngIf="doc.type == 'DAILY'" class="paper">
                 <h3>{{doc.name}} | {{doc.type}}</h3>
-                <p>Nombre y apellidos: {{name}}</p>
+                <p id="dailyName">Nombre y apellidos: {{name}}</p>
                 <br>
-
                 <h5>¿Qué he hecho hoy?</h5>
-                <p>{{done}}</p>
+                <p id="dailyDone">{{done}}</p>
                 <br>
-
                 <h5>¿Qué voy a hacer hoy?</h5>
-                <p>{{todo}}</p>
+                <p id="dailyTodo">{{todo}}</p>
                 <br>
-
                 <h5>¿Qué problemas he tenido?</h5>
-                <p>{{problem}}</p>
+                <p id="dailyProblem">{{problem}}</p>
             </div>
 
             <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
@@ -87,43 +84,42 @@
                 <br>
 
                 <h5>¿Qué se ha hecho bien?</h5>
-                <p>{{good}}</p>
+                <p id="restrospectiveGood">{{good}}</p>
                 <br>
 
                 <h5>¿Qué se ha hecho mal?</h5>
-                <p>{{bad}}</p>
+                <p id="restrospectiveBad">{{bad}}</p>
                 <br>
 
                 <h5>¿Como podemos mejorar?</h5>
-                <p>{{improvement}}</p>
+                <p id="restrospectiveImprovement">{{improvement}}</p>
             </div>
  
             <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
                 <h3>{{doc.name}} | {{doc.type}}</h3>
                 
                 <p>¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?:</p> 
-                <p>{{entrega}}</p>
+                <p id="planningEntrega">{{entrega}}</p>
                 <br>
 
                 <h5>¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?</h5>
-                <p>{{conseguir}}</p>
+                <p id="planningConseguir">{{conseguir}}</p>
                 <br>
             </div>
-
             
             <div *ngIf="doc.type == 'REVIEW'" class="paper">
                 <h3>{{doc.name}} | {{doc.type}}</h3>
 
                 <h5>Elementos de la Lista de Producto se han “Terminado”</h5>
-                <p>{{done}}</p>
+                <p id="reviewDone">{{done}}</p>
                 <br>
 
                 <h5>Cuales no se han “Terminado”</h5>
-                <p>{{noDone}}</p>
+                <p id="reviewNoDone">{{noDone}}</p>
                 <br>
 
                 <h5>Planificación futura</h5>
-                <p>{{rePlanning}}</p>
+                <p id="reviewRePlanning">{{rePlanning}}</p>
                 <br>
 
             </div> 
