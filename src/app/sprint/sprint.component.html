@@ -60,4 +60,23 @@
         </div> 
     </div>
 
-</div>
+    <div class="tableDocument">
+        <h5>Documentos<mat-icon matListIcon (click)="openDialogDoc(sprint)" >add</mat-icon></h5>
+        <div *ngFor="let d of doc">
+            <mat-list-item>
+
+                <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
+                    <p>
+                        <span matBadge="N!" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo, Tipo: {{d.type}}<mat-icon (click)="openDocument(d.id)" matListIcon>description</mat-icon><mat-icon (click)="deleteDoc(d.id)" matListIcon>delete</mat-icon></span>
+                    </p>
+                </div>
+                <ng-template #elseBlock>
+                    <p mat-line>Título: {{d.name}}, Tipo: {{d.type}}<mat-icon (click)="openDocument(d.id)" matListIcon>description</mat-icon><mat-icon (click)="deleteDoc(d.id)" matListIcon>delete</mat-icon> </p>
+                </ng-template>
+
+                
+            </mat-list-item>
+        </div> 
+    </div>
+
+    </div>

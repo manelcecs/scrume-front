@@ -1,12 +1,13 @@
-<mat-sidenav-container class="example-container" [hasBackdrop]="false">
-  <mat-sidenav #sidenav mode="over">
+<mat-sidenav-container [hasBackdrop]="false">
+  
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="70">
     <a mat-list-item *ngFor="let item of routes" (click)="navigateTo(item.route); sidenav.close();">
       <mat-icon>{{item.icon}}</mat-icon> {{item.title}}
     </a>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <nav class="navbar navbar-dark menu">
+  <mat-sidenav-content style="overflow: hidden;">
+    <nav class="navbar navbar-dark" id="menu-horizontal">
       <a class="logo">
         <img (click)="sidenav.toggle()" src="../assets/menu-navbar.png" width="30" height="30" class="d-inline-block align-top menu-icon" alt="">
         <img src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="navigateTo('bienvenida')">
@@ -19,11 +20,14 @@
     </nav>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" style="width: 100%; height: 5px;">
     </mat-progress-bar>
-    <router-outlet></router-outlet>
+    <main style="overflow: auto; height: 100%;">
+      <router-outlet>
+      </router-outlet>
+    </main>
   </mat-sidenav-content>
 
   <mat-sidenav #sidenavnotifications mode="over" position="end" [fixedInViewport]="true" [fixedTopGap]="70">
-    <app-notifications></app-notifications>
+    <app-notifications ></app-notifications>
 
   </mat-sidenav>
 

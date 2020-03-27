@@ -9,8 +9,10 @@ import { BoardSimple, BoardNumber, Board } from '../dominio/board.domain';
 import { BoardService } from '../servicio/board.service';
 import { Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
-
+import { Document } from '../dominio/document.domain'
 import { LOCALE_ID } from '@angular/core';
+import { DocumentService } from '../servicio/document.service';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-sprint',
@@ -19,34 +21,45 @@ import { LOCALE_ID } from '@angular/core';
 })
 export class SprintComponent implements OnInit {
 
-  sprint : SprintDisplay;
-  idSprint : number;
+  sprint: SprintDisplay;
+  idSprint: number;
   board: BoardSimple[];
   boardDelete: BoardNumber;
+  doc: Document[];
+  document: Document;
 
 
-  constructor(private sprintService : SprintService, private boardService:BoardService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
+  constructor(private sprintService: SprintService, private boardService: BoardService, private documentService: DocumentService, private activatedRoute: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
 
-      if(param.id != undefined){
+      if (param.id != undefined) {
         this.idSprint = param.id;
 
-        this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
+        this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay: SprintDisplay) => {
           this.sprint = sprintDisplay;
 
         });
 
-         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
-           this.board = board;
-         });
+        //lista de boards
 
-      } else{
+        this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[]) => {
+          this.board = board;
+        });
+
+        //lista de documents
+
+        this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
+          this.doc = doc;
+        });
+
+      } else {
         this.navigateTo("bienvenida");
       }
     }
-    )}
+    )
+  }
 
   navigateTo(route: string): void{
     this.router.navigate([route]);
@@ -58,58 +71,198 @@ export class SprintComponent implements OnInit {
       data: this.sprint
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
+      this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay: SprintDisplay) => {
         this.sprint = sprintDisplay;
       });
     });
   }
 
-  openProject(proj: number): void{
-    this.router.navigate(['project'], {queryParams: {id: proj}});
+  openProject(proj: number): void {
+    this.router.navigate(['project'], { queryParams: { id: proj } });
   }
 
-  openTeam(team: number): void{
-    this.router.navigate(['team'], {queryParams: {id: team}});
+  openTeam(team: number): void {
+    this.router.navigate(['team'], { queryParams: { id: team } });
   }
 
-  //Board
+  //Board-----------------------------------------------------------------------------------------------------------------------------------
 
   openBoard(board: number): void {
-    this.router.navigate(['board'], {queryParams: {id: board}});
+    this.router.navigate(['board'], { queryParams: { id: board } });
   }
 
   createBoard(row: SprintDisplay): void {
-    this.router.navigate(['createBoard'], {queryParams: {id: row.id}});
-  }
-  
-  editBoard(row: BoardNumber, sprint: SprintDisplay): void{
-    this.router.navigate(['createBoard'], {queryParams: {idBoard: row.id, idSprint: sprint.id}});
+    this.router.navigate(['createBoard'], { queryParams: { id: row.id } });
   }
 
-  deleteBoard(board: BoardNumber): void{
+  editBoard(row: BoardNumber, sprint: SprintDisplay): void {
+    this.router.navigate(['createBoard'], { queryParams: { idBoard: row.id, idSprint: sprint.id } });
+  }
 
-    this._deleteBoard(board.id).subscribe((board: BoardNumber)=>{
-  
+  deleteBoard(board: BoardNumber): void {
+
+    this._deleteBoard(board.id).subscribe((board: BoardNumber) => {
+
       this.boardDelete = board;
 
-        this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay : SprintDisplay)=> {
-          this.sprint = sprintDisplay;
+      this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay: SprintDisplay) => {
+        this.sprint = sprintDisplay;
 
-        });
+      });
 
-         this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[])=> {
-           this.board = board;
-         });
-  
+      this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[]) => {
+        this.board = board;
+      });
+
+      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
+        this.doc = doc;
+      });
+
     });
-  
+
   }
-  
-  private _deleteBoard(id: number): Observable<BoardNumber>{
+
+  private _deleteBoard(id: number): Observable<BoardNumber> {
     return this.boardService.deleteBoard(id);
   }
 
+  //Document------------------------------------------------------------------------------------------------------------
+
+  deleteDoc(id: number): void {
+
+    this._deleteDoc(id).subscribe((doc: Document) => {
+      this.document = doc;
+
+      this.sprintService.getSprint(this.idSprint).subscribe((sprintDisplay: SprintDisplay) => {
+        this.sprint = sprintDisplay;
+
+      });
+
+      this.boardService.getBoardBySprint(this.idSprint).subscribe((board: BoardSimple[]) => {
+        this.board = board;
+      });
+
+      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
+        this.doc = doc;
+      });
+
+    });
+
+  }
+
+  private _deleteDoc(id: number): Observable<Document> {
+    return this.documentService.deleteDocument(id);
+  }
+
+  openDialogDoc(sprint: SprintDisplay): void {
+    const dialogRef = this.dialog.open(NewDocumentDialog, {
+      width: '250px',
+      data: sprint.id
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      
+      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
+        this.doc = doc;
+      });
+
+    });
+
+  }
+
+  openDocument(doc: number): void {
+    this.router.navigate(['document'], { queryParams: { id: doc } });
+  }
+
 }
+
+//Dialog de Crear Document--------------------------------------------------------------------------------
+
+@Component({
+  selector: 'new-document-dialog',
+  templateUrl: 'new-document-dialog.html',
+  styleUrls: ['./new-document-dialog.css']
+})
+export class NewDocumentDialog implements OnInit{
+
+  idSprint: number;
+
+  document: Document;
+  board: BoardSimple[];
+  doc: Document[];
+
+  tipos: string[];
+  review: string;
+
+  selected: string;
+  cont: string;
+
+  tipo = new FormControl('',  { validators: [Validators.required]});
+
+  constructor(
+    public dialogRef: MatDialogRef<NewDocumentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: number,
+    private documentService: DocumentService, private boardService: BoardService, private router: Router) {}
+
+
+  ngOnInit(): void {
+    this.idSprint = this.data;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(select: string) : void {
+    if(select == "REVIEW") {
+      let json = {
+        done: "",
+        noDone: "",
+        rePlanning: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else if(select == "RETROSPECTIVE"){
+      let json = {
+        good: "",
+        bad: "",
+        improvement: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else if(select == "DAILY"){
+      let json = {
+        name: "",
+        done: "",
+        todo: "",
+        problem: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else{
+      let json = {
+        entrega: "",
+        conseguir: "",
+      }
+      this.cont = JSON.stringify(json);
+    }
+
+    this.document = {
+      id: 0,
+      name: "Añade aquí el nombre",
+      content: this.cont,
+      sprint: this.idSprint,
+      type: select
+    }
+
+    this.documentService.createDocument(this.idSprint, this.document).subscribe((doc: Document) => {
+      this.document = doc;
+
+      this.dialogRef.close();
+
+    });
+
+  }
+
+}
+
+//Dialog de Sprint-----------------------------------------------------------------------------------------
 
 
 @Component({
@@ -117,18 +270,18 @@ export class SprintComponent implements OnInit {
   templateUrl: 'edit-sprint-dialog.html',
   styleUrls: ['./edit-sprint-dialog.css']
 })
-export class EditSprintDialog implements OnInit{
+export class EditSprintDialog implements OnInit {
 
   idSprint: number;
-  sprint : SprintJsonDates;
+  sprint: SprintJsonDates;
   //FIXME: Arreglar los validators
-  startDate = new FormControl('',  { validators: [Validators.required, this.validateToday]});
-  endDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd] });
+  startDate = new FormControl('', { validators: [Validators.required, this.validateToday] });
+  endDate = new FormControl('', { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd] });
 
   constructor(
     public dialogRef: MatDialogRef<EditSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
-    private sprintService: SprintService) {}
+    private sprintService: SprintService) { }
 
 
   ngOnInit(): void {
@@ -142,32 +295,31 @@ export class EditSprintDialog implements OnInit{
     this.dialogRef.close();
   }
 
-  onSaveClick() : void {
-    this.sprint = {id:this.idSprint, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString()}
-    this.sprintService.editSprint(this.idSprint, this.sprint).subscribe((sprint : Sprint) => {
-      console.log(sprint);
+  onSaveClick(): void {
+    this.sprint = { id: this.idSprint, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString() }
+    this.sprintService.editSprint(this.idSprint, this.sprint).subscribe((sprint: Sprint) => {
       //FIXME: Recargar la pagina
       this.dialogRef.close();
     });
 
   }
 
-  getErrorMessageStartDate() : String {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
+  getErrorMessageStartDate(): String {
+    return this.startDate.hasError('required') ? 'Este campo es obligatorio' : this.startDate.hasError('past') ? 'La fecha no puede ser en pasado' : this.startDate.hasError('invalid') ? 'La fecha de fin no puede ser anterior a la de inicio' : '';
   };
 
-  getErrorMessageEndDate() : String {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
+  getErrorMessageEndDate(): String {
+    return this.startDate.hasError('required') ? 'Este campo es obligatorio' : this.startDate.hasError('past') ? 'La fecha no puede ser en pasado' : '';
   }
 
-  validForm():boolean {
+  validForm(): boolean {
     let valid: boolean;
     valid = this.endDate.valid && this.startDate.valid;
     return valid;
   }
 
   validateToday(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       let isValid = true;
 
       if (control.value.getTime() < new Date(Date.now()).getTime()) {
@@ -188,7 +340,7 @@ export class EditSprintDialog implements OnInit{
     };
   }
 
-    //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
+  //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
   // validateStartBeforeEnd(): ValidatorFn {
   //   return (control: AbstractControl): { [key: string]: any } => {
   //     let isValid = true;
