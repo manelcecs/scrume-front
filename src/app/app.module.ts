@@ -37,7 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet, EstimateTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
-import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
+import { SprintComponent, EditSprintDialog, NewDocumentDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -55,6 +55,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { DocumentComponent } from './document/document.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { DocumentComponent } from './document/document.component';
     CreateBoardComponent,
     SelectSprintBottomSheet,
     EstimateTaskDialog,
-    DocumentComponent
+    DocumentComponent,
+    NewDocumentDialog
   ],
   imports: [
     MatFormFieldModule,
@@ -117,7 +119,8 @@ import { DocumentComponent } from './document/document.component';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
     MatListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent],
