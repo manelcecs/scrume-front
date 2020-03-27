@@ -1,26 +1,153 @@
-<p>
-    id: {{doc.id}}
-</p>
-<p>
-    name: {{doc.name}}
-</p>
-<p>
-    contect: {{doc.content}}
-</p>
-<p>
-    sprint: {{doc.sprint}}
-</p>
-<p>
-    type: {{doc.type}}
-</p>
+<div id="main">
 
 
+    <section id="forms">
+        <p> name: {{doc.name}} | type: {{doc.type}} </p>
 
-<!-- BORRAR -->
+        <div *ngIf="doc.type == 'DAILY'">
+            <mat-form-field class="form-field-project-create">
+                <input (keyup)="dailyName(name.value)" placeholder="Nombre y Apellidos" matInput #name>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="dailyDone(done.value)" placeholder="¿Qué he hecho hoy?" matInput #done></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="dailyTodo(todo.value)" placeholder="¿Qué voy a hacer hoy?" matInput #todo></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="dailyProblem(problem.value)" placeholder="¿Qué problemas he tenido?" matInput #problem></textarea>
+            </mat-form-field>
+        </div>
 
-<input matInput (keyup)="onKey($event)">
+        <div *ngIf="doc.type == 'RETROSPECTIVE'">
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="restrospectiveGood(good.value)" placeholder="¿Qué he hecho bien?" matInput #good></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="restrospectiveBad(bad.value)" placeholder="¿Qué se ha hecho mal?" matInput #bad></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea (keyup)="restrospectiveImprovement(improvement.value)" placeholder="¿Como podemos mejorar?" matInput #improvement></textarea>
+            </mat-form-field>
+        </div>
 
+        <!-- <div *ngIf="doc.type == 'PLANNING_MEETING'">
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="Asistentes" matInput #done></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="Orden del dia" matInput #order></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="Discusión" matInput #discussion></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="Conclusiones" matInput #conclusion></textarea>
+            </mat-form-field>
+        </div>
 
-<div>{{document}}</div>
+        
 
+        <div *ngIf="doc.type == 'REVIEW'">
+            <mat-form-field class="form-field-project-create">
+                <input oninput="" placeholder="Nombre y Apellidos" matInput #name>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="¿Qué he hecho hoy?" matInput #done></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="¿Qué voy a hacer hoy?" matInput #todo></textarea>
+            </mat-form-field>
+    
+            <mat-form-field class="form-field-project-create">
+                <textarea placeholder="¿Qué problemas he tenido?" matInput #problem></textarea>
+            </mat-form-field>
+        </div> -->
+        
+    </section>
+    
+    <section id="pdf-container">
+        <div id="pdf">
+            <div *ngIf="doc.type == 'DAILY'" class="paper">
+                <h2>{{doc.name}} | {{doc.type}}</h2>
+                <p>Nombre y apellidos: {{daily.name}}</p>
+                <br>
 
+                <h4>¿Qué he hecho hoy?</h4>
+                <p>{{daily.done}}</p>
+                <br>
+
+                <h4>¿Qué voy a hacer hoy?</h4>
+                <p>{{daily.todo}}</p>
+                <br>
+
+                <h4>¿Qué problemas he tenido?</h4>
+                <p>{{daily.problem}}</p>
+            </div>
+
+            <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
+                <h2>{{doc.name}} | {{doc.type}}</h2>
+                <br>
+
+                <h4>¿Qué se ha hecho bien?</h4>
+                <p>{{good}}</p>
+                <br>
+
+                <h4>¿Qué se ha hecho mal?</h4>
+                <p>{{bad}}</p>
+                <br>
+
+                <h4>¿Como podemos mejorar?</h4>
+                <p>{{improvement}}</p>
+            </div>
+<!-- 
+            <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
+                <h2>{{doc.name}} | {{doc.type}}</h2>
+                <p>Asistentes:</p> 
+                <p>{{assistants.value}}</p>
+                <br>
+
+                <h4>Orden del dia</h4>
+                <p>{{order.value}}</p>
+                <br>
+
+                <h4>Discusión</h4>
+                <p>{{discussion.value}}</p>
+                <br>
+
+                <h4>Conclusiones</h4>
+                <p>{{conclusion.value}}</p>
+            </div>
+
+            
+            <div *ngIf="doc.type == 'REVIEW'" class="paper">
+                <h2>{{doc.name}} | {{doc.type}}</h2>
+                <p>Nombre y apellidos: {{name.value}}</p>
+                <br>
+
+                <h4>¿Qué he hecho hoy?</h4>
+                <p>{{done.value}}</p>
+                <br>
+
+                <h4>¿Qué voy a hacer hoy?</h4>
+                <p>{{todo.value}}</p>
+                <br>
+
+                <h4>¿Qué problemas he tenido?</h4>
+                <p>{{problem.value}}</p>
+            </div> -->
+
+            <button mat-flat-button (click)="generarPDF()">Descargar en PDF</button>
+        </div>
+    </section>
+</div>

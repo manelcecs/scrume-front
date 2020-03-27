@@ -18,10 +18,6 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { InvitationService } from '../servicio/invitation.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {map, startWith} from 'rxjs/operators';
-//De document
-import { DomSanitizer } from '@angular/platform-browser';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-team',
@@ -42,8 +38,7 @@ export class TeamComponent implements OnInit {
     private sprintService: SprintService,
     private projectService: ProjectService,
     private boardService: BoardService,
-    public dialog: MatDialog,
-    private sanitizer: DomSanitizer
+    public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -84,46 +79,6 @@ export class TeamComponent implements OnInit {
 //  });
 //}
 
-  value;
-  prueba;
-
-  generarPDF(){
-    //Mi idea del pdf es que no surja a partir del html sino añadiendo los contenidos desde aqui
-
-    // var doc = new jsPDF();
-    // doc.text(35, 25, this.value)
-    // doc.save('retrospectiva.pdf');
-
-    const documentDefinition = { content: 'This is an sample PDF printed with pdfMake' };
-    pdfMake.createPdf(documentDefinition).open();
-
-  }
-
-
-  siguientePagina(){
-    let aux = document.getElementById('palabras');
-    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
-    if(height == "456px"){
-      aux.style.backgroundColor = 'red';
-    }
-  }
-
-  onKey(value: string){
-    let aux = document.getElementById('palabras');
-    // if(value.substring(value.length-1, value.length) == "\n"){
-    //   this.value = value + "Fracaso";
-    // } else{
-    //   this.value = value;
-    // }
-
-    this.value = value;
-    
-    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
-    if(height == "456px"){
-      aux.style.backgroundColor = 'red';
-    }
-
-  }
   //-----------------
 
   createTeam(): void {
