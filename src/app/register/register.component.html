@@ -195,18 +195,18 @@
           </table>
 
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext (click)="valueRadioButton()">Next</button>
+              <button mat-button matStepperPrevious>Atrás</button>
+          <button mat-button matStepperNext [disabled]="!notNullSelectedPlan()">Siguiente</button>
         </div>
       </form>
     </mat-step>
 
     <mat-step  [optional]="true" state="personal">
         <ng-template matStepLabel>Pago</ng-template>
+        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
         <p>You are now done.</p>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
+          <button mat-button matStepperPrevious>Atrás</button>
         </div>
     </mat-step>
 

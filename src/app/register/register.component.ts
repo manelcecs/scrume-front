@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 
 // El selector es la forma de instanciar al componente desde otro html que no es el que aparece en la línea de abajo.
 // Por ejemplo, en el app.component.ts, el selector es app-root y en index.html es llamado poniendo <app-root></app-root>
@@ -15,6 +16,7 @@ export class RegisterComponent implements OnInit {
   personalDataFormGroup: FormGroup;
   isOptional = true;
   termsAccepted = false;
+  public payPalConfig?: IPayPalConfig;
 
   emailControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
   passwordControl: FormControl = new FormControl('', [Validators.required,
@@ -30,6 +32,7 @@ export class RegisterComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.initConfig();
     this.signUpFormGroup = this._formBuilder.group({
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
@@ -89,8 +92,74 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  valueRadioButton() {
-    console.log(document.querySelector('input[name="selected-plan"]:checked')["value"]);
+  notNullSelectedPlan(): boolean {
+    let inputRadioButton = document.querySelector('input[name="selected-plan"]:checked');
+    if (inputRadioButton != null) {
+      let valueRadioButton = inputRadioButton["value"];
+      return valueRadioButton == 'BASIC' || valueRadioButton == 'PRO' || valueRadioButton == 'STANDARD';
+    } else {
+      return false;
+    }
+  }
+
+  private initConfig(): void {
+    this.payPalConfig = {
+    currency: 'EUR',
+    clientId: 'Af0cQPHcB-NCKQD-S-oT3vqkxgA36fZqhStYa_L_ir2E3AjS0tjur2QaQWK1F9PgmK0HFfxK0gr8jq31',
+    createOrderOnClient: (data) => <ICreateOrderRequest>{
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: 'EUR',
+            value: '9.99',
+            breakdown: {
+              item_total: {
+                currency_code: 'EUR',
+                value: '9.99'
+              }
+            }
+          },
+          items: [
+            {
+              name: 'Enterprise Subscription',
+              quantity: '1',
+              category: 'DIGITAL_GOODS',
+              unit_amount: {
+                currency_code: 'EUR',
+                value: '9.99',
+              },
+            }
+          ]
+        }
+      ]
+    },
+    advanced: {
+      commit: 'true',
+    },
+    style: {
+      label: 'paypal',
+      layout: 'vertical'
+    },
+    onApprove: (data, actions) => {
+      console.log('onApprove - transaction was approved, but not authorized', data, actions);
+      actions.order.get().then(details => {
+        console.log('onApprove - you can get full order details inside onApprove: ', details);
+      });
+    },
+    onClientAuthorization: (data) => {
+      console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+    },
+    onCancel: (data, actions) => {
+      console.log('OnCancel', data, actions);
+    },
+    onError: err => {
+      console.log('OnError', err);
+    },
+    onClick: (data, actions) => {
+      console.log('onClick', data, actions);
+    },
+  };
   }
 
 }

@@ -57,6 +57,7 @@ import { LoginDialog } from './login-dialog/login-dialog.component';
 import { RegisterComponent } from './register/register.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -121,7 +122,8 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
-    MatStepperModule
+    MatStepperModule,
+    NgxPayPalModule,
   ],
   providers: [
     {

@@ -20,4 +20,8 @@ export class UserService {
         return this.httpClient.get<User>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+    registerUser(){
+
+    }
+
 }

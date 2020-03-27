@@ -28,6 +28,7 @@
     "express-http-proxy": "^1.6.0",
     "heroku-proxy": "^2.1.1",
     "http-proxy": "^1.18.0",
+    "ngx-paypal": "^6.0.1",
     "pass": "^0.2.0",
     "request": "^2.88.2",
     "rxjs": "~6.5.4",
