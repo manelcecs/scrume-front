@@ -6,73 +6,59 @@
 
         <div *ngIf="doc.type == 'DAILY'">
             <mat-form-field class="form-field-project-create">
-                <input (keyup)="dailyName(name.value)" placeholder="Nombre y Apellidos" matInput #name>
+                <input value={{name}} (keyup)="dailyName(nameHTML.value)" placeholder="Nombre y Apellidos" matInput #nameHTML>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="dailyDone(done.value)" placeholder="¿Qué he hecho hoy?" matInput #done></textarea>
+                <textarea value={{done}} (keyup)="dailyDone(doneHTML.value)" placeholder="¿Qué he hecho hoy?" matInput #doneHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="dailyTodo(todo.value)" placeholder="¿Qué voy a hacer hoy?" matInput #todo></textarea>
+                <textarea value={{todo}} (keyup)="dailyTodo(todoHTML.value)" placeholder="¿Qué voy a hacer hoy?" matInput #todoHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="dailyProblem(problem.value)" placeholder="¿Qué problemas he tenido?" matInput #problem></textarea>
+                <textarea value={{problem}} (keyup)="dailyProblem(problemHTML.value)" placeholder="¿Qué problemas he tenido?" matInput #problemHTML></textarea>
             </mat-form-field>
         </div>
 
         <div *ngIf="doc.type == 'RETROSPECTIVE'">
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="restrospectiveGood(good.value)" placeholder="¿Qué he hecho bien?" matInput #good></textarea>
+                <textarea value={{good}} (keyup)="restrospectiveGood(goodHTML.value)" placeholder="¿Qué he hecho bien?" matInput #goodHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="restrospectiveBad(bad.value)" placeholder="¿Qué se ha hecho mal?" matInput #bad></textarea>
+                <textarea value={{bad}} (keyup)="restrospectiveBad(badHTML.value)" placeholder="¿Qué se ha hecho mal?" matInput #badHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea (keyup)="restrospectiveImprovement(improvement.value)" placeholder="¿Como podemos mejorar?" matInput #improvement></textarea>
+                <textarea value={{improvement}} (keyup)="restrospectiveImprovement(improvementHTML.value)" placeholder="¿Como podemos mejorar?" matInput #improvementHTML></textarea>
             </mat-form-field>
         </div>
 
-        <!-- <div *ngIf="doc.type == 'PLANNING_MEETING'">
+        <div *ngIf="doc.type == 'PLANNING_MEETING'">
             <mat-form-field class="form-field-project-create">
-                <textarea placeholder="Asistentes" matInput #done></textarea>
+                <textarea value={{entrega}} (keyup)="planningEntrega(entregaHTML.value)" placeholder="¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?" matInput #entregaHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea placeholder="Orden del dia" matInput #order></textarea>
-            </mat-form-field>
-    
-            <mat-form-field class="form-field-project-create">
-                <textarea placeholder="Discusión" matInput #discussion></textarea>
-            </mat-form-field>
-    
-            <mat-form-field class="form-field-project-create">
-                <textarea placeholder="Conclusiones" matInput #conclusion></textarea>
+                <textarea value={{conseguir}} (keyup)="planningConseguir(conseguirHTML.value)" placeholder="¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?" matInput #conseguirHTML></textarea>
             </mat-form-field>
         </div>
-
         
-
         <div *ngIf="doc.type == 'REVIEW'">
             <mat-form-field class="form-field-project-create">
-                <input oninput="" placeholder="Nombre y Apellidos" matInput #name>
+                <input value={{done}} (keyup)="reviewDone(doneHTML.value)" oninput="" placeholder="Elementos de la Lista de Producto se han “Terminado”" matInput #doneHTML>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea placeholder="¿Qué he hecho hoy?" matInput #done></textarea>
+                <textarea value={{noDone}} (keyup)="reviewNoDone(nodoneHTML.value)" placeholder="Cuales no se han “Terminado”" matInput #nodoneHTML></textarea>
             </mat-form-field>
     
             <mat-form-field class="form-field-project-create">
-                <textarea placeholder="¿Qué voy a hacer hoy?" matInput #todo></textarea>
+                <textarea value={{rePlanning}} (keyup)="reviewRePlanning(replanningHTML.value)" placeholder="Planificación futura" matInput #replanningHTML></textarea>
             </mat-form-field>
-    
-            <mat-form-field class="form-field-project-create">
-                <textarea placeholder="¿Qué problemas he tenido?" matInput #problem></textarea>
-            </mat-form-field>
-        </div> -->
+        </div> 
         
     </section>
     
@@ -80,19 +66,19 @@
         <div id="pdf">
             <div *ngIf="doc.type == 'DAILY'" class="paper">
                 <h2>{{doc.name}} | {{doc.type}}</h2>
-                <p>Nombre y apellidos: {{daily.name}}</p>
+                <p>Nombre y apellidos: {{name}}</p>
                 <br>
 
                 <h4>¿Qué he hecho hoy?</h4>
-                <p>{{daily.done}}</p>
+                <p>{{done}}</p>
                 <br>
 
                 <h4>¿Qué voy a hacer hoy?</h4>
-                <p>{{daily.todo}}</p>
+                <p>{{todo}}</p>
                 <br>
 
                 <h4>¿Qué problemas he tenido?</h4>
-                <p>{{daily.problem}}</p>
+                <p>{{problem}}</p>
             </div>
 
             <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
@@ -110,42 +96,36 @@
                 <h4>¿Como podemos mejorar?</h4>
                 <p>{{improvement}}</p>
             </div>
-<!-- 
+ 
             <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
                 <h2>{{doc.name}} | {{doc.type}}</h2>
-                <p>Asistentes:</p> 
-                <p>{{assistants.value}}</p>
+                
+                <p>¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?:</p> 
+                <p>{{entrega}}</p>
                 <br>
 
-                <h4>Orden del dia</h4>
-                <p>{{order.value}}</p>
+                <h4>¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?</h4>
+                <p>{{conseguir}}</p>
                 <br>
-
-                <h4>Discusión</h4>
-                <p>{{discussion.value}}</p>
-                <br>
-
-                <h4>Conclusiones</h4>
-                <p>{{conclusion.value}}</p>
             </div>
 
             
             <div *ngIf="doc.type == 'REVIEW'" class="paper">
                 <h2>{{doc.name}} | {{doc.type}}</h2>
-                <p>Nombre y apellidos: {{name.value}}</p>
+
+                <h4>Elementos de la Lista de Producto se han “Terminado”</h4>
+                <p>{{done}}</p>
                 <br>
 
-                <h4>¿Qué he hecho hoy?</h4>
-                <p>{{done.value}}</p>
+                <h4>Cuales no se han “Terminado”</h4>
+                <p>{{noDone}}</p>
                 <br>
 
-                <h4>¿Qué voy a hacer hoy?</h4>
-                <p>{{todo.value}}</p>
+                <h4>Planificación futura</h4>
+                <p>{{rePlanning}}</p>
                 <br>
 
-                <h4>¿Qué problemas he tenido?</h4>
-                <p>{{problem.value}}</p>
-            </div> -->
+            </div> 
 
             <button mat-flat-button (click)="generarPDF()">Descargar en PDF</button>
         </div>

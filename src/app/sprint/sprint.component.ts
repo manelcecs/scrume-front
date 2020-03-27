@@ -194,6 +194,7 @@ export class NewDocumentDialog implements OnInit{
   review: string;
 
   selected: string;
+  cont: string;
 
   tipo = new FormControl('',  { validators: [Validators.required]});
 
@@ -212,10 +213,40 @@ export class NewDocumentDialog implements OnInit{
   }
 
   onSaveClick(select: string) : void {
+    if(select == "REVIEW") {
+      let json = {
+        done: "",
+        noDone: "",
+        rePlanning: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else if(select == "RETROSPECTIVE"){
+      let json = {
+        good: "",
+        bad: "",
+        improvement: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else if(select == "DAILY"){
+      let json = {
+        name: "",
+        done: "",
+        todo: "",
+        problem: ""
+      }
+      this.cont = JSON.stringify(json);
+    }else{
+      let json = {
+        entrega: "",
+        conseguir: "",
+      }
+      this.cont = JSON.stringify(json);
+    }
+
     this.document = {
       id: 0,
       name: "Añade aquí el nombre",
-      content: "{ titulo: '', contenido: '' } ",
+      content: this.cont,
       sprint: this.idSprint,
       type: select
     }

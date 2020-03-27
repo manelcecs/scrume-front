@@ -4,8 +4,6 @@ import { DocumentService } from '../servicio/document.service';
 import { Document, Daily } from '../dominio/document.domain';
 //De document
 import { DomSanitizer } from '@angular/platform-browser';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-document',
@@ -17,6 +15,22 @@ export class DocumentComponent implements OnInit {
   idDoc: number;
   doc: Document;
   document: Document;
+
+  //retrospective
+  good;
+  bad;
+  improvement;
+  //daily
+  name;
+  done;
+  todo;
+  problem;
+  //review
+  noDone;
+  rePlanning;
+  //planning
+  entrega;
+  conseguir;
 
   constructor(private router: Router, 
     private documentService: DocumentService, 
@@ -33,6 +47,24 @@ export class DocumentComponent implements OnInit {
 
         this.documentService.getDocuments(this.idDoc).subscribe((doc: Document)=> {
           this.doc = doc;
+
+          if(doc.type == "RETROSPECTIVE") {
+            this.good = JSON.parse(this.doc.content).good;
+            this.bad = JSON.parse(this.doc.content).bad;
+            this.improvement = JSON.parse(this.doc.content).improvement;
+          }else if(doc.type == "REVIEW") {
+            this.done = JSON.parse(this.doc.content).done;
+            this.noDone = JSON.parse(this.doc.content).noDone;
+            this.rePlanning = JSON.parse(this.doc.content).rePlanning;
+          }else if(doc.type == "DAILY") {
+            this.name = JSON.parse(this.doc.content).name;
+            this.done = JSON.parse(this.doc.content).done;
+            this.todo = JSON.parse(this.doc.content).todo;
+            this.problem = JSON.parse(this.doc.content).problem;
+          }else{
+            this.entrega = JSON.parse(this.doc.content).entrega;
+            this.conseguir = JSON.parse(this.doc.content).conseguir;
+          }
         });
 
       } else{
@@ -48,25 +80,28 @@ export class DocumentComponent implements OnInit {
   }
 
   //Daily
-  daily: Daily;
 
-  dailyName(value: string){ this.daily.name = value;}
-
-  dailyDone(value: string){ this.daily.done = value;}
-
-  dailyTodo(value: string){ this.daily.todo = value;}
-
-  dailyProblem(value: string){ this.daily.problem = value;}
+  dailyName(value: string){ this.name = value;}
+  dailyDone(value: string){ this.done = value;}
+  dailyTodo(value: string){ this.todo = value;}
+  dailyProblem(value: string){ this.problem = value;}
 
   //Retrospective
-  good;
-  bad;
-  improvement;
 
   restrospectiveGood(value: String){ this.good = value;}
   restrospectiveBad(value: String){ this.bad = value;}
   restrospectiveImprovement(value: String){ this.improvement = value;}
 
+  //Review
+
+  reviewDone(value: String){ this.done = value;}
+  reviewNoDone(value: String){ this.noDone = value;}
+  reviewRePlanning(value: String){ this.rePlanning = value;}
+
+  //Planning
+
+  planningEntrega(value: String){ this.entrega = value;}
+  planningConseguir(value: String){ this.conseguir = value;}
 
 
   generarPDF(){
