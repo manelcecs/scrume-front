@@ -51,22 +51,19 @@
 
 </div> -->
 
+{{prueba}}
 
+<textarea (keyup)="onKey(box.value)" matInput #box></textarea>
 
-<!-- <input #box>
-<p>{{box.value}}</p> -->
-
-
-<textarea (keyup)="pasarPagina()" (keyup)="onKey(box.value)" (keyup.enter)="insertEnter(box.value)" matInput #box></textarea>
-
-<div class="paper" id="paper">
-
-    Pagina 1 /nsfsafs
-    {{value}}
+<div id="pdf" style="background-color: grey; overflow: auto; width: 900px; height: 500px;">
+    
+  <div class="paper" id="paper">
+    Pagina 1
+    <p id="palabras">{{value}}</p>
+  </div>
+  
 </div>
 
-<button mat-flat-button (click)="createTeam()">Página Anterior</button>
-<button mat-flat-button (click)="createTeam()">Siguiente Página</button>
 <button mat-flat-button (click)="generarPDF()">Descargar en PDF</button>
 
 <style>
@@ -74,23 +71,18 @@
 .paper {
   background: #fff;
   box-shadow:
-    /* The top layer shadow */
     0 -1px 1px rgba(0,0,0,0.15),
-    /* The second layer */
     0 -10px 0 -5px #eee,
-    /* The second layer shadow */
     0 -10px 1px -4px rgba(0,0,0,0.15),
-     /* The third layer */
     0 -20px 0 -10px #eee,
-    /* The third layer shadow */
     0 -20px 1px -9px rgba(0,0,0,0.15);
-
   padding: 30px;
-  width:500px;
-  min-height: 500px;
+  width: 700px;
+  min-height: 800px;
   height: auto;
   margin: 2%;
   word-wrap: break-word;
+  white-space: pre-line;
 }
 
 .paper > p{

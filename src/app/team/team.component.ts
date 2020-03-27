@@ -20,8 +20,8 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {map, startWith} from 'rxjs/operators';
 //De document
 import { DomSanitizer } from '@angular/platform-browser';
-import * as jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-team',
@@ -85,14 +85,22 @@ export class TeamComponent implements OnInit {
 //}
 
   value;
+  prueba;
 
   generarPDF(){
-    var doc = new jsPDF();
-    doc.fromHTML(document.getElementById('paper'),10,10);
-    doc.save('prueba.pdf');
+    //Mi idea del pdf es que no surja a partir del html sino añadiendo los contenidos desde aqui
+
+    // var doc = new jsPDF();
+    // doc.text(35, 25, this.value)
+    // doc.save('retrospectiva.pdf');
+
+    const documentDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+    pdfMake.createPdf(documentDefinition).open();
+
   }
 
-  pasarPagina(){
+
+  siguientePagina(){
     let aux = document.getElementById('palabras');
     var height = window.getComputedStyle(aux, null).getPropertyValue("height");
     if(height == "456px"){
@@ -101,16 +109,20 @@ export class TeamComponent implements OnInit {
   }
 
   onKey(value: string){
-    if(value.substring(value.length-1, value.length) == "\n"){
-      this.value = value + "\n";
-    } else{
-      this.value = value;
-    }
-  }
+    let aux = document.getElementById('palabras');
+    // if(value.substring(value.length-1, value.length) == "\n"){
+    //   this.value = value + "Fracaso";
+    // } else{
+    //   this.value = value;
+    // }
 
-  insertEnter(value: string){
-   let aux = document.getElementById('palabras');
-   this.value = value + "\n";
+    this.value = value;
+    
+    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
+    if(height == "456px"){
+      aux.style.backgroundColor = 'red';
+    }
+
   }
   //-----------------
 
