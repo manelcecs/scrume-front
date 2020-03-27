@@ -13,13 +13,14 @@ import { CreateInvitationComponent } from './create-invitation/create-invitation
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
+import { TeamResolverService } from './servicio/team.service';
 import { DocumentComponent } from './document/document.component';
 
 
 const routes: Routes = [
 
   {path: 'bienvenida', component: BienvenidaComponent},
-  {path: 'teams', component: TeamComponent},
+  {path: 'teams', component: TeamComponent, resolve:{teams: TeamResolverService}, data:{method: ""}},
   {path: 'teamsCreate', component: TeamCreateComponent},
   {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}},
   {path: 'createProject', component: CreateProjectComponent},

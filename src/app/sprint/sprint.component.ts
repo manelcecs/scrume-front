@@ -61,7 +61,7 @@ export class SprintComponent implements OnInit {
     )
   }
 
-  navigateTo(route: String): void {
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
