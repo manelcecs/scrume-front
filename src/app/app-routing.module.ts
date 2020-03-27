@@ -14,6 +14,7 @@ import { CreateBoardComponent } from './create-board/create-board.component';
 import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 import { TeamResolverService } from './servicio/team.service';
+import { RegisterComponent } from './register/register.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,9 @@ const routes: Routes = [
   {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}},
   {path: 'createBoard', component: CreateBoardComponent},
   {path: 'board', component: BoardComponent},
-  {path: 'invitation', component: CreateInvitationComponent}
+  {path: 'invitation', component: CreateInvitationComponent},
+  {path: 'register', component: RegisterComponent},
+
 
 ];
 

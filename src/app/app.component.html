@@ -12,7 +12,8 @@
         <img src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="navigateTo('bienvenida')">
       </a>
       <div class="username" *ngIf="user != undefined"><a >{{user.name}}</a>   -   <a (click)="logOut()" >Cerrar sesión</a></div>
-      <div class="username" *ngIf="user == undefined"><a (click)="openLogin()" >Acceder</a></div>
+      <div class="username" *ngIf="user == undefined"><a (click)="openLogin()">Acceder</a></div>
+      <div class="username" *ngIf="user == undefined"><a (click)="navigateTo('register')">Registrarse</a></div>
 
       <img *ngIf="notifications==false" src="../assets/notification.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle()">
       <img *ngIf="notifications==true" src="../assets/notification-color.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle()">

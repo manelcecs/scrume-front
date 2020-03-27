@@ -1,0 +1,225 @@
+<div id="register-main">
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="signUpFormGroup" state="signUp">
+      <form [formGroup]="signUpFormGroup">
+        <ng-template matStepLabel>Registro</ng-template>
+
+        <mat-form-field class="register-input">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="emailControl" required>
+          <mat-error>{{getErrorMessageEmail()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="register-input">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="passwordControl" required (input)="confirmPasswordControl.updateValueAndValidity()">
+          <mat-error>{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="register-input">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput formControlName="confirmPasswordControl" required (input)="confirmPasswordControl.updateValueAndValidity()">
+          <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperNext>Siguiente*</button><br/>
+          <small>*Haciendo click en siguiente acepta los términos y condiciones de la plataforma</small>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="selectPlanFormGroup" state="selectPlan">
+        <form [formGroup]="selectPlanFormGroup">
+            <ng-template matStepLabel>Seleccione un plan</ng-template>
+            <table id="card-table">
+            <tr class="plan-table">
+              <td>
+                  <div class="plan-card">
+                    <div class="title-plan-card">
+                      <h4>Basic</h4>
+                      <mat-divider></mat-divider>
+                    </div>
+                    <div class="img-plan-card">
+                      <img src="../../assets/archives.png" alt="basic-plan">
+                    </div>
+                  <div class="price-plan-card">
+
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="plan-card">
+                  <div class="title-plan-card">
+                    <h4>Standard</h4>
+                    <mat-divider></mat-divider>
+                  </div>
+                  <div class="img-plan-card">
+                    <img src="../../assets/analysis.png" alt="standard-plan">
+                  </div>
+                  <div class="price-plan-card">
+
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="plan-card">
+                  <div class="title-plan-card">
+                    <h4>Pro</h4>
+                    <mat-divider></mat-divider>
+                  </div>
+                  <div class="img-plan-card">
+                    <img src="../../assets/creativity.png" alt="pro-plan">
+                  </div>
+                  <div class="price-plan-card">
+
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Numero de proyectos -->
+            <tr class="feature-plan-table">
+              <td>
+                <p>Posibilidad de gestionar 1 proyecto</p>
+              </td>
+              <td>
+                <p>Gestión de hasta 3 proyectos</p>
+              </td>
+              <td>
+                <p>Posibilidad de gestionar un número ilimitado de proyectos</p>
+              </td>
+            </tr>
+            <!-- Numero de tableros -->
+            <tr class="feature-plan-table">
+              <td>
+                <p>1 tablero</p>
+              </td>
+              <td>
+                <p>2 tableros por proyecto</p>
+              </td>
+              <td>
+                <p>Tableros ilimitados por proyecto</p>
+              </td>
+            </tr>
+            <!-- Sprints -->
+            <tr class="feature-plan-table">
+              <td>
+                <p>1 Sprint de 30 días de duración</p>
+              </td>
+              <td>
+                <p>Sprints ilimitados.</p>
+              </td>
+              <td>
+                <p>Sprints ilimitados</p>
+              </td>
+            </tr>
+            <!-- Planitllas de documentos -->
+            <tr class="feature-plan-table">
+              <td>
+                <p>Plantillas de los diferentes documentos utilizados en la metodología SCRUM</p>
+              </td>
+              <td>
+                <p>Plantillas de los diferentes documentos utilizados en la metodología SCRUM</p>
+              </td>
+              <td>
+                <p>Plantillas de los diferentes documentos utilizados en la metodología SCRUM</p>
+              </td>
+            </tr>
+            <!-- Graficos -->
+            <tr class="feature-plan-table">
+              <td>
+                <p></p>
+              </td>
+              <td>
+                <p>Gráficos Burn up y Burn down</p>
+              </td>
+              <td>
+                <p>Gráficos Burn up y Burn down</p>
+              </td>
+            </tr>
+            <!-- Avisos -->
+            <tr class="feature-plan-table">
+              <td>
+                <p></p>
+              </td>
+              <td>
+                <p></p>
+              </td>
+              <td>
+                <p>Automatización de avisos (reuniones, fin de Sprints, etc.)</p>
+              </td>
+            </tr>
+            <!-- Sincronizacion con github -->
+            <tr class="feature-plan-table">
+              <td>
+                <p></p>
+              </td>
+              <td>
+                <p></p>
+              </td>
+              <td>
+                <p>Automatización de commits en GitHub</p>
+              </td>
+            </tr>
+            <tr class="price-plan-table">
+              <td>
+                <mat-divider></mat-divider>
+                <h3>0€</h3>
+                <p>por usuario al mes</p>
+              </td>
+              <td>
+                 <mat-divider></mat-divider>
+                <h3>1€</h3>
+                <p>por usuario al mes</p>
+              </td>
+              <td>
+                <mat-divider></mat-divider>
+                <h3>2€</h3>
+                <p>por usuario al mes</p>
+              </td>
+            </tr>
+            <tr class="Select-plan-table">
+                <td>
+                  <mat-radio-button class="plan-radio-button" value="BASIC" name="selected-plan" [checked]="true" [required]="true">
+                    Selecccionar plan Basic
+                  </mat-radio-button>
+                </td>
+                <td>
+                  <mat-radio-button class="plan-radio-button" value="STANDARD" name="selected-plan" [required]="true">
+                    Selecccionar plan Standard
+                  </mat-radio-button>
+                </td>
+                <td>
+                  <mat-radio-button class="plan-radio-button" value="PRO" name="selected-plan" [required]="true">
+                    Selecccionar plan Pro
+                  </mat-radio-button>
+              </tr>
+          </table>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext (click)="valueRadioButton()">Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step  [optional]="true" state="personal">
+        <ng-template matStepLabel>Pago</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="signUp">
+      <mat-icon>how_to_reg</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="selectPlan">
+      <mat-icon>shopping_cart</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="personal">
+      <mat-icon>payment</mat-icon>
+    </ng-template>
+  </mat-horizontal-stepper>
+
+</div>

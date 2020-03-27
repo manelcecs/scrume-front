@@ -40,8 +40,8 @@ export class TeamComponent implements OnInit {
     private projectService: ProjectService,
     private boardService: BoardService,
     public dialog: MatDialog
-    ) { 
-  
+    ) {
+
       this.teams = this.activatedRoute.snapshot.data.teams;
     }
 
@@ -141,7 +141,7 @@ export class InvitationDialog implements OnInit{
   fruitCtrl = new FormControl('', {validators: [Validators.required]});
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
-  allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
+  allUsers: UserNick[] = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
