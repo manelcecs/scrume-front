@@ -71,6 +71,9 @@ mat-sidenav {
     padding: 8%;
 }
 
+.ul > li > a{
+    cursor: pointer;
+}
 
 /* ------------------------------- */
 
