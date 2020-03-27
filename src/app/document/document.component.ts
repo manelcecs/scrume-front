@@ -81,27 +81,27 @@ export class DocumentComponent implements OnInit {
 
   //Daily
 
-  dailyName(value: string){ this.name = value;}
-  dailyDone(value: string){ this.done = value;}
-  dailyTodo(value: string){ this.todo = value;}
-  dailyProblem(value: string){ this.problem = value;}
+  dailyName(value: string){ this.name = value; var pdfContainer = document.getElementById("pdf-container"); pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  dailyDone(value: string){ this.done = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  dailyTodo(value: string){ this.todo = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  dailyProblem(value: string){ this.problem = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
 
   //Retrospective
 
-  restrospectiveGood(value: String){ this.good = value;}
-  restrospectiveBad(value: String){ this.bad = value;}
-  restrospectiveImprovement(value: String){ this.improvement = value;}
+  restrospectiveGood(value: String){ this.good = value; var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  restrospectiveBad(value: String){ this.bad = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  restrospectiveImprovement(value: String){ this.improvement = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
 
   //Review
 
-  reviewDone(value: String){ this.done = value;}
-  reviewNoDone(value: String){ this.noDone = value;}
-  reviewRePlanning(value: String){ this.rePlanning = value;}
+  reviewDone(value: String){ this.done = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  reviewNoDone(value: String){ this.noDone = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  reviewRePlanning(value: String){ this.rePlanning = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
 
   //Planning
 
-  planningEntrega(value: String){ this.entrega = value;}
-  planningConseguir(value: String){ this.conseguir = value;}
+  planningEntrega(value: String){ this.entrega = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
+  planningConseguir(value: String){ this.conseguir = value;var pdfContainer = document.getElementById("pdf-container");pdfContainer.scrollTop = pdfContainer.scrollHeight - pdfContainer.clientHeight;}
 
 
   generarPDF(){
