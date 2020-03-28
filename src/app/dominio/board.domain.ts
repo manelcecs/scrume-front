@@ -25,3 +25,8 @@ export interface BoardNumber {
     name: string;
     sprint: number;
 }
+
+export interface BoardName{
+    id: number;
+    name: string;
+}

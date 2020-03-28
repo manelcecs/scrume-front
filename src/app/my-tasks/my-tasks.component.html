@@ -1,0 +1,10 @@
+<div *ngFor="let key of tasksMap.keys()">
+    <h3>{{key}}</h3>
+    <div *ngFor="let task of tasksMap.get(key)">
+        {{task.title}}
+        <mat-icon (click)="openProject(task.project.id)">work</mat-icon>
+        <mat-icon *ngIf="task.workspace != null" (click)="openBoard(task.workspace.id)">table_chart</mat-icon>
+    </div>
+
+
+</div>
