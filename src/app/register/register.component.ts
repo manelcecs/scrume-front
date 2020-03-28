@@ -56,10 +56,24 @@ export class RegisterComponent implements OnInit {
      };
   }
 
+  validEmailValidator() {
+    this.userService.isValidEmail(this.emailControl.value).subscribe((res : boolean) => {
+      console.log("Email:", this.emailControl.value);
+      console.log("Res:", res);
+      if (!res) {
+        this.emailControl.setErrors({'usedEmail': true});
+      } else {
+        this.emailControl.updateValueAndValidity();
+      }
+      console.log("Errors 1:", this.emailControl.errors);
+    })
+  }
+
 
   getErrorMessageEmail() {
     return this.emailControl.hasError('required') ? 'Este campo es requerido.':
-    this.emailControl.hasError('email') ? 'El email debe tener un formato válido: ejemplo@ejemplo.es': '';
+    this.emailControl.hasError('email') ? 'El email debe tener un formato válido: ejemplo@ejemplo.es':
+    this.emailControl.hasError('usedEmail') ? 'Este email ya está en uso': '';
   }
 
   getErrorMessagePassword(){
@@ -77,19 +91,6 @@ export class RegisterComponent implements OnInit {
     this.confirmPasswordControl.hasError('notSamePassword') ? 'Las contraseñas no coinciden.' : '';
   }
 
-
-
-  // validForm(): boolean {
-
-  //   let valid: boolean;
-
-  //   valid = this.emailControl.valid && this.passwordControl.valid && this.confirmPasswordControl.valid;
-  //   if (valid && !this.termsControl.value) {
-  //      this.termsControl.setErrors({'required' : true});
-  //   }
-  //   return valid;
-
-  // }
 
   notNullSelectedPlan(): boolean {
     let inputRadioButton = document.querySelector('input[name="selected-plan"]:checked');

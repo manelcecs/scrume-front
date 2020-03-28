@@ -9,7 +9,7 @@
 
         <mat-form-field class="register-input">
           <mat-label>Email</mat-label>
-          <input matInput formControlName="emailControl" required>
+          <input matInput formControlName="emailControl" required (change)="validEmailValidator()">
           <mat-error>{{getErrorMessageEmail()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="register-input">

@@ -22,7 +22,12 @@ export class UserService {
     }
 
     getAllBoxes() : Observable<Box[]>{
-      return this.httpClient.get<Box[]>(this.cabeceraService.getCabecera() + "api/box/all", {headers: this.cabeceraService.getBasicAuthentication()})
+      return this.httpClient.get<Box[]>(this.cabeceraService.getCabecera() + "api/box/all", {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    isValidEmail(email : string) : Observable<boolean> {
+      let data = {"username": email};
+      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/login/isAValidEmail", data, {headers: this.cabeceraService.getBasicAuthentication()})
     }
 
 }
