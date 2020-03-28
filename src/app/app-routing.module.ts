@@ -15,6 +15,7 @@ import { ProjectWithTaskResolverService, ProjectResolverService } from './servic
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 import { TeamResolverService } from './servicio/team.service';
 import { DocumentComponent } from './document/document.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'createBoard', component: CreateBoardComponent},
   {path: 'board', component: BoardComponent},
   {path: 'invitation', component: CreateInvitationComponent},
-  {path: 'document', component: DocumentComponent}
+  {path: 'document', component: DocumentComponent},
+  {path: 'profile', component: ProfileComponent}
 
 ];
 

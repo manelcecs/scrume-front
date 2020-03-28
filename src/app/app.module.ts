@@ -57,6 +57,7 @@ import { LoginDialog } from './login-dialog/login-dialog.component';
 import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     EstimateTaskDialog,
     LoginDialog,
     DocumentComponent,
-    NewDocumentDialog
+    NewDocumentDialog,
+    ProfileComponent
   ],
   imports: [
     MatFormFieldModule,

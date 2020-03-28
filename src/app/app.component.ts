@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
 import { UserNick, User } from './dominio/user.domain';
+import { ProfileService } from './servicio/profile.service';
+import { Profile } from './dominio/profile.domain';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -117,6 +119,10 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       
     });
+  }
+
+  openProfile(){
+    this.navigateTo("profile");
   }
 
 }
