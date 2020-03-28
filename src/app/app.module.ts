@@ -54,6 +54,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
+import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
+import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -85,7 +87,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     EstimateTaskDialog,
     LoginDialog,
     DocumentComponent,
-    NewDocumentDialog
+    NewDocumentDialog,
+    AssingTaskDialog,
+    MyTasksComponent
   ],
   imports: [
     MatFormFieldModule,

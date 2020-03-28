@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { UserNick, User } from '../dominio/user.domain';
+import { User, SimpleUserNick, UserNick } from '../dominio/user.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -20,4 +20,9 @@ export class UserService {
     getUser(id: number):Observable<User>{
         return this.httpClient.get<User>(this.cabeceraService.getCabecera()+"api/user/"+id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    getAllUsersOfWorkspace(id: number){
+        return this.httpClient.get<SimpleUserNick[]>(this.cabeceraService.getCabecera()+"api/user/list-by-workspace/"+id, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
 }

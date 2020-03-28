@@ -1,13 +1,15 @@
 import { ProjectName } from './project.domain';
-import { UserName } from './user.domain';
+import { UserNick, SimpleUserNick } from './user.domain';
 import { ColumDto } from './colum.domian';
 import { SprintWorkspace } from './sprint.domain';
+import { BoardName } from './board.domain';
 
 export interface TaskDto {
     id?: number;
     title: string;
     description: string;
     project: ProjectName;
+    users: SimpleUserNick[];
 }
 
 export interface TaskSimple {
@@ -32,4 +34,23 @@ export interface TaskMove{
 export interface TaskEstimate{
     points: number;
     task: number;
+}
+
+export interface TaskAssignable{
+    id: number;
+    users: UserNick[];
+}
+
+export interface TaskToEdit{
+    id: number;
+    description: string;
+    title: string;
+    users: number[];
+}
+
+export interface TaskToList{
+    taskId: number;
+    title: string;
+    project: ProjectName;
+    workspace: BoardName;
 }

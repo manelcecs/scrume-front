@@ -2,8 +2,8 @@
   
   <mat-sidenav id="menu-vertical-izquierdo" #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="70">
     <ul class="nav flex-column ul">
-      <li class="li" (click)="navigateTo(item.route); sidenav.close()" class="nav-item" *ngFor="let item of routes">
-        <a class="nav-link active" (click)="navigateTo(item.route); sidenav.close()"><mat-icon>{{item.icon}}</mat-icon>  {{item.title}}</a>
+      <li class="li" class="nav-item" *ngFor="let item of routes" *ngIf="item.visible">
+        <a class="nav-link active" (click)="navigateTo(item.route, item.method); sidenav.close()"><mat-icon>{{item.icon}}</mat-icon>  {{item.title}}</a>
       </li>
     </ul>
   </mat-sidenav>
