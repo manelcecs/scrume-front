@@ -43,6 +43,9 @@ export class ProjectComponent implements OnInit {
     this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
   }
 
+  openTeam(team: number): void {
+    this.router.navigate(['team'], { queryParams: { id: team } });
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {

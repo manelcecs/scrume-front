@@ -7,10 +7,3 @@ export interface Document {
     content: string;
     sprint: number;
 }
-
-export interface Daily{
-    name: string;
-    todo: string;
-    done: string;
-    problem: string;
-}

@@ -5,7 +5,7 @@
         <h3>Rellene los siguientes campos</h3>
         <div *ngIf="doc.type == 'DAILY'">
             <mat-form-field class="form-field">
-                <input value={{name}} (input)="dailyName(nameHTML.value)" placeholder="Nombre y Apellidos" matInput #nameHTML>
+                <input value={{nameDaily}} (input)="dailyName(nameDailyHTML.value)" placeholder="Nombre del documento" matInput #nameDailyHTML>
             </mat-form-field>
     
             <mat-form-field class="form-field">
@@ -23,6 +23,10 @@
 
         <div *ngIf="doc.type == 'RETROSPECTIVE'">
             <mat-form-field class="form-field">
+                <input value={{nameRetrospective}} (input)="retrospectiveName(nameRetrospectiveHTML.value)" placeholder="Nombre del documento" matInput #nameRetrospectiveHTML>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
                 <textarea value={{good}} (input)="restrospectiveGood(goodHTML.value)" placeholder="¿Qué he hecho bien?" matInput #goodHTML></textarea>
             </mat-form-field>
     
@@ -37,6 +41,10 @@
 
         <div *ngIf="doc.type == 'PLANNING_MEETING'">
             <mat-form-field class="form-field">
+                <input value={{namePlanning}} (input)="planningName(namePlanningHTML.value)" placeholder="Nombre del documento" matInput #namePlanningHTML>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
                 <textarea value={{entrega}} (input)="planningEntrega(entregaHTML.value)" placeholder="¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?" matInput #entregaHTML></textarea>
             </mat-form-field>
     
@@ -46,6 +54,10 @@
         </div>
         
         <div *ngIf="doc.type == 'REVIEW'">
+            <mat-form-field class="form-field">
+                <input value={{nameReview}} (input)="reviewName(nameReviewHTML.value)" placeholder="Nombre del documento" matInput #nameReviewHTML>
+            </mat-form-field>
+
             <mat-form-field class="form-field">
                 <input value={{done}} (input)="reviewDone(doneHTML.value)" oninput="" placeholder="Elementos de la Lista de Producto se han “Terminado”" matInput #doneHTML>
             </mat-form-field>
@@ -59,15 +71,14 @@
             </mat-form-field>
         </div> 
         <button id="buttonPDF" mat-flat-button (click)="openSnackBar(message, close)" (click)="updateDoc(doc)">Guardar</button>
-        <button id="buttonPDF" mat-flat-button (click)="generarPDF()">Descargar en PDF</button>
+        <!-- <button id="buttonPDF" mat-flat-button (click)="generarPDF()">Descargar en PDF</button> -->
         
     </section>
     
     <section id="pdf-container">
         <div id="pdf">
             <div *ngIf="doc.type == 'DAILY'" class="paper">
-                <h3>{{doc.name}} | {{doc.type}}</h3>
-                <p id="dailyName">Nombre y apellidos: {{name}}</p>
+                <h3 id="dailyName">{{nameDaily}} | {{doc.type}}</h3>
                 <br>
                 <h5>¿Qué he hecho hoy?</h5>
                 <p id="dailyDone">{{done}}</p>
@@ -80,7 +91,7 @@
             </div>
 
             <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
-                <h3>{{doc.name}} | {{doc.type}}</h3>
+                <h3 id="retrospectiveName">{{nameRetrospective}} | {{doc.type}}</h3>
                 <br>
 
                 <h5>¿Qué se ha hecho bien?</h5>
@@ -96,8 +107,8 @@
             </div>
  
             <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
-                <h3>{{doc.name}} | {{doc.type}}</h3>
-                
+                <h3 id="planningName">{{namePlanning}} | {{doc.type}}</h3>
+                <br>
                 <p>¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?:</p> 
                 <p id="planningEntrega">{{entrega}}</p>
                 <br>
@@ -108,8 +119,8 @@
             </div>
             
             <div *ngIf="doc.type == 'REVIEW'" class="paper">
-                <h3>{{doc.name}} | {{doc.type}}</h3>
-
+                <h3 id="reviewName">{{nameReview}} | {{doc.type}}</h3>   
+                <br>
                 <h5>Elementos de la Lista de Producto se han “Terminado”</h5>
                 <p id="reviewDone">{{done}}</p>
                 <br>
