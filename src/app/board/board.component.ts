@@ -86,13 +86,6 @@ export class BoardComponent implements OnInit {
       }
 
     }
-    console.log("Previous container " + event.container.data);
-    console.log("Previous index " +event.previousIndex);
-    console.log("container " + event.container.data);
-    console.log("Current index " + event.currentIndex);
-    console.log("Distanse " + JSON.stringify(event.distance));
-    console.log("Pointer over container " + event.isPointerOverContainer);
-    console.log("item " + event.item.element.nativeElement.id);
   }
 
   private transferTaskToArray(origen: TaskDto[], destiny: TaskDto[], preIndex: number, newIndex: number) {
@@ -143,7 +136,8 @@ export class BoardComponent implements OnInit {
     let dialog = this.dialog.open(AssingTaskDialog, {
       width: '250px',
       data: {idWorkspace: this.board.id,
-        idTask: task.id
+        idTask: task.id,
+        usersAsign: task.users
       }
     });
     dialog.afterClosed().subscribe(()=>{

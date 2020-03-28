@@ -39,3 +39,18 @@ export interface TaskAssignable{
     id: number;
     users: UserNick[];
 }
+
+export interface TaskToEdit{
+    id: number;
+    description: string;
+    title: string;
+    users: number[];
+}
+
+export interface TaskToList{
+    projectId: number;
+    projectName: string;
+    taskId: number;
+    workId: number;
+    workName: string;
+}

@@ -7,7 +7,8 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { User } from './dominio/user.domain';
+import { User, UserNick } from './dominio/user.domain';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -46,29 +47,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void{
-    this.cargarMenu();
-
+    
     let token = sessionStorage.getItem("loginToken");
+    console.log("token:", token);
     if(token != null && token !== ""){
-      this.userService.findUserAuthenticated().subscribe((user: User)=>{
-        this.user = user;
-        this.navigateTo("teams");
-
-        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-          if (invitations.length != 0) {
-            this.notifications = true;
-          }
-        });
-      });
+      this.getUserInfo();
       
     }else{
+      this.cargarMenu();
+
       this.navigateTo("bienvenida");
     }
-
-
-    
-  
-
 
   }
 
@@ -76,8 +65,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  navigateTo(route: string): void{
-    this.router.navigate([route]);
+  navigateTo(route: string, method?: string, id?: number): void{
+    if(method==undefined && id == undefined){
+      this.router.navigate([route]);
+    }else if(method != undefined && id == undefined){
+      this.router.navigate([route], {queryParams:{method: method}});
+    }else if(method == undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{id: id}});
+    }else if(method != undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{method: method, id: id}});
+    }
   }
 
   cargarMenu() : void{
@@ -92,7 +89,14 @@ export class AppComponent implements OnInit, OnDestroy {
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
-        visible: this.user!= undefined
+        visible: true
+    },{
+      title: 'Mis Tareas',
+        route: '/myTasks',
+        icon: 'list',
+        visible: true,
+        method: 'getTasksOfUser',
+        id: this.user.id
     }
   ];
   }
@@ -104,10 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
     dialog.afterClosed().subscribe(()=>{
       let token = sessionStorage.getItem("loginToken");
       if(token != null && token != ""){
-        this.userService.findUserAuthenticated().subscribe((user: User)=>{
-          this.user = user;
-          this.navigateTo("teams");
-        });
+        this.getUserInfo();
       }
     });
   }
@@ -118,7 +119,22 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navigateTo("bienvenida");
   }
 
-  getUsername(){
-    //TODO: peticion al back
+  getUserInfo(){
+    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
+        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
+          this.user = userComplete;
+          this.navigateTo("teams");
+          
+          this.cargarMenu();
+        });
+
+        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+          if (invitations.length != 0) {
+            this.notifications = true;
+          }
+        });
+
+    });
   }
+
 }

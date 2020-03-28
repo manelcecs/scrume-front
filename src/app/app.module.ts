@@ -55,6 +55,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
+import { MyTasksComponent } from './my-tasks/my-tasks.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
     SelectSprintBottomSheet,
     EstimateTaskDialog,
     LoginDialog,
-    AssingTaskDialog
+    AssingTaskDialog,
+    MyTasksComponent
   ],
   imports: [
     MatFormFieldModule,

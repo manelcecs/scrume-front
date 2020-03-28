@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject, ViewChild  } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '../servicio/user.service';
 import { SimpleUserNick } from '../dominio/user.domain';
-import { TaskAssignable, TaskDto } from '../dominio/task.domain';
+import { TaskDto, TaskToEdit } from '../dominio/task.domain';
 import { TaskService } from '../servicio/task.service';
+
 @Component({
     selector: 'assing-task.dialog',
     templateUrl: 'assing-task.dialog.html',
@@ -12,7 +12,9 @@ import { TaskService } from '../servicio/task.service';
   })
   export class AssingTaskDialog implements OnInit{
   
-    task: TaskDto;
+    task: TaskToEdit;
+    taskComplete : SimpleUserNick[];
+    taskId: number;
     usersOfTeam: SimpleUserNick[];
     usersOfTask: SimpleUserNick[];
   
@@ -22,9 +24,20 @@ import { TaskService } from '../servicio/task.service';
     constructor(
       public dialogRef: MatDialogRef<AssingTaskDialog>,
       @Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService, private taskService: TaskService) {
+        
         this.workspaceId = data.idWorkspace;
-        this.taskService.getTask(data.idTask).subscribe((task: TaskDto)=>{
-          this.task = task;
+        this.taskId =data.idTask;
+
+        this.usersOfTask = data.usersAsign;
+
+        this.taskService.getTask(this.taskId).subscribe((task: TaskDto)=>{
+          this.taskComplete = task.users;
+          let users = [];
+          for(let u of task.users){
+            users.push(u.id);
+          }
+          this.task = {id: this.taskId, description: task.description, title: task.title, users: users};
+          this.task.id = this.taskId;
         });
     }
   
@@ -38,25 +51,34 @@ import { TaskService } from '../servicio/task.service';
     }
 
     unassing(user: SimpleUserNick){
-      this.task.users.splice(this.task.users.indexOf(user), 1);
-      this.taskService.editTask(this.task.id, this.task).subscribe((task: TaskDto)=>{
-        this.task = task;
+      this.task.users.splice(this.task.users.indexOf(user.id), 1);
+      this.taskService.editTask(this.taskId, this.task).subscribe((task: TaskDto)=>{
+        let users = [];
+        for(let u of task.users){
+          users.push(u.id);
+        }
+        this.task = {id: this.taskId, description: task.description, title: task.title, users: users};
+        this.usersOfTeam.splice(this.usersOfTeam.indexOf(user), 1);
         this.getAllUsersToAssing();
       });
     }
 
     assing(user: SimpleUserNick){
-      this.task.users.push(user);
-      this.taskService.editTask(this.task.id, this.task).subscribe((task: TaskDto)=>{
-        this.task = task;
+      this.task.users.push(user.id);
+      this.taskService.editTask(this.taskId, this.task).subscribe((task: TaskDto)=>{
+        let users = [];
+        for(let u of task.users){
+          users.push(u.id);
+        }
+        this.task = {id: this.taskId, description: task.description, title: task.title, users: users};
+        this.usersOfTask.push(user);
         this.getAllUsersToAssing();
       });
     }
       
-    getAllUsersToAssing(){
+    getAllUsersToAssing(){  
       this.userService.getAllUsersOfWorkspace(this.workspaceId).subscribe((users: SimpleUserNick[]) =>{
         this.usersOfTeam = users;
-        this.usersOfTask = this.task.users;
         //Eliminamos los usuarios ya asignados
         for(let u of this.usersOfTask){
           let index = this.usersOfTask.indexOf(u);

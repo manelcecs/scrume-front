@@ -4,7 +4,7 @@ export interface UserName {
 }
 
 export interface UserNick {
-  id: number;
+  idUser: number;
   nick: string;
 }
 
