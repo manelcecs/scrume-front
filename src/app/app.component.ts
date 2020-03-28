@@ -78,7 +78,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   cargarMenu() : void{
-    console.log("Menu cargado");
+    let token = sessionStorage.getItem("loginToken");
+    let logged = token != null && token !== "";
+    console.log("Logged", logged);
     this.routes = [
       {
         title: 'Bienvenida',
@@ -89,14 +91,13 @@ export class AppComponent implements OnInit, OnDestroy {
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
-        visible: true
+        visible: logged
     },{
       title: 'Mis Tareas',
         route: '/myTasks',
         icon: 'list',
-        visible: true,
-        method: 'getTasksOfUser',
-        id: this.user.id
+        visible: logged,
+        method: 'getTasksOfUser'
     }
   ];
   }
@@ -132,6 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         });
       
+        this.cargarMenu();
     });
   }
 

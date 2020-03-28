@@ -2,8 +2,8 @@
   
   <mat-sidenav id="menu-vertical-izquierdo" #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="70">
     <ul class="nav flex-column ul">
-      <li class="li" class="nav-item" *ngFor="let item of routes" *ngIf="item.visible">
-        <a class="nav-link active" (click)="navigateTo(item.route, item.method); sidenav.close()"><mat-icon>{{item.icon}}</mat-icon>  {{item.title}}</a>
+      <li class="li" class="nav-item" *ngFor="let item of routes">
+        <a class="nav-link active" *ngIf="item.visible" (click)="navigateTo(item.route, item.method); sidenav.close();"><mat-icon>{{item.icon}}</mat-icon>  {{item.title}}</a>
       </li>
     </ul>
   </mat-sidenav>
@@ -17,11 +17,7 @@
       
       <div id="menu-horizontal-buttons-right">
 
-        <!-- <div class="username" *ngIf="user != undefined"><a >{{user.nick}}</a>   -   <a (click)="logOut()" >Cerrar sesión</a></div>
-        <div class="username" *ngIf="user == undefined"><a (click)="openLogin()" >Acceder</a></div> -->
-
         <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin-right: 10px;">Acceder</a>
-        <!-- <img *ngIf="user == undefined" src="../assets/logout.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openLogin()"> -->
         <img *ngIf="user != undefined" src="../assets/logout.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut()">
         <img *ngIf="!notifications && user != undefined" src="../assets/notification.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
         <img *ngIf="notifications && user != undefined" src="../assets/notification-color.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
