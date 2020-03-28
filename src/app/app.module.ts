@@ -56,6 +56,7 @@ import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -121,7 +122,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
