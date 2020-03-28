@@ -16,8 +16,7 @@
 
         <p>{{tarea.title}}</p>
         <div class="roundImage"*ngFor="let user of tarea.users">
-          <img alt="userPhoto{{user.nick}}" *ngIf="user.photo !== undefined && user.photo !== '' " src="data:image/jpg;base64,{{user.photo}}" />
-          <img alt="{{user.nick}}" *ngIf="user.photo == undefined || user.photo == '' " />
+          <img alt="userPhoto{{user.nick}}" src="{{user.photo}}" />
         </div>
         <mat-icon (click)="addUsers(tarea)">add</mat-icon>
       </div>
