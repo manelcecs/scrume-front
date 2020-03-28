@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   name: FormControl = new FormControl('',{validators: [Validators.required]});
   nick: FormControl = new FormControl('',{validators: [Validators.required]});
   surnames: FormControl = new FormControl('',{validators: [Validators.required]});
-  photo: FormControl = new FormControl('');
+  photo: FormControl = new FormControl('', {validators: [Validators.pattern(/^(https?:\/\/)/)]});
   gitUser: FormControl = new FormControl('');
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router, private _snackBar: MatSnackBar, private _location: Location) { }
@@ -90,6 +90,13 @@ export class ProfileComponent implements OnInit {
     this._snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  getErrorMessageName(): String {
+    return this.name.hasError('required')?'Este campo es requerido.':
+    this.nick.hasError('required')?'Este campo es requerido.':
+    this.surnames.hasError('required')?'Este campo es requerido.':
+    this.photo.hasError('pattern')?'Debe de ser una imagen.':'';
   }
 
 }

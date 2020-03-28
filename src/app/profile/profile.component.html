@@ -11,18 +11,22 @@
             <mat-form-field class="form-field-profile">
                 <img src="{{profile.photo}}" width="100" height="100" alt="">
                 <input #nameImput matInput placeholder="Photo" [formControl]="photo">
+                <mat-error *ngIf="photo.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Nombre" [formControl]="name">
+                <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Nick" [formControl]="nick">
+                <mat-error *ngIf="nick.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Surnames" [formControl]="surnames">
+                <mat-error *ngIf="surnames.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
