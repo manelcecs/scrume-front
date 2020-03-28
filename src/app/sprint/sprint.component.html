@@ -59,7 +59,7 @@
                 <ul class="list-group list-group-flush">
                     <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let d of doc">
                         <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
-                                <span matBadge="N!" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>    
+                            <span matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>    
                             <span class="badge badge-info">{{d.type}}</span>
                             <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteDoc(d.id)">
                         </div>
@@ -85,26 +85,4 @@
             </div>
         </div>
     </section>
-
-    <!-- <section id="dashboard-sprint">
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Métricas y gráficos
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <tr>
-                  <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
-                  <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
-                </tr>
-                <tr>
-                  <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
-                  <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
-                </tr>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-    </section> -->
-
 </div>

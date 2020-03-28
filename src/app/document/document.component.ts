@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../servicio/document.service';
-import { Document, Daily } from '../dominio/document.domain';
+import { Document} from '../dominio/document.domain';
 //De document
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -54,7 +54,7 @@ export class DocumentComponent implements OnInit {
 
         this.idDoc = param.id;
 
-        this.message = "Documento guardado en base de datos"
+        this.message = "Se ha guardado el documento correctamente"
         this.close = "Cerrar"
 
         this.documentService.getDocuments(this.idDoc).subscribe((doc: Document)=> {
@@ -225,29 +225,6 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  siguientePagina(){
-    let aux = document.getElementById('palabras');
-    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
-    if(height == "456px"){
-      aux.style.backgroundColor = 'red';
-    }
-  }
-
-  onKey(value: string){
-    let aux = document.getElementById('palabras');
-    // if(value.substring(value.length-1, value.length) == "\n"){
-    //   this.value = value + "Fracaso";
-    // } else{
-    //   this.value = value;
-    // }
-    
-    var height = window.getComputedStyle(aux, null).getPropertyValue("height");
-    if(height == "456px"){
-      aux.style.backgroundColor = 'red';
-    }
-
-  }
-
   updateDoc(doc: Document): void {
 
     if(doc.type == "REVIEW"){
@@ -271,7 +248,6 @@ export class DocumentComponent implements OnInit {
     }else if(doc.type == "DAILY"){
 
       this.c = {
-        name: this.name,
         done: this.done,
         todo: this.todo,
         problem: this.problem
@@ -300,7 +276,6 @@ export class DocumentComponent implements OnInit {
 
     this.documentService.editDocument(documentComplete).subscribe((doc: Document)=> {
       this.doc = doc;
-      console.log("holaaaaaaa");
     });
   }
 
