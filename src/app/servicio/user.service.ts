@@ -6,6 +6,7 @@ import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
 import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
 import { Board } from '../dominio/board.domain';
 import { User } from '../dominio/user.domain';
+import { Box } from '../dominio/box.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -20,8 +21,8 @@ export class UserService {
         return this.httpClient.get<User>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    registerUser(){
-
+    getAllBoxes() : Observable<Box[]>{
+      return this.httpClient.get<Box[]>(this.cabeceraService.getCabecera() + "api/box/all", {headers: this.cabeceraService.getBasicAuthentication()})
     }
 
 }

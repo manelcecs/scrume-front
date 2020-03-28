@@ -1,5 +1,8 @@
 <div id="register-main">
   <mat-horizontal-stepper linear #stepper>
+
+
+
     <mat-step [stepControl]="signUpFormGroup" state="signUp">
       <form [formGroup]="signUpFormGroup">
         <ng-template matStepLabel>Registro</ng-template>
@@ -178,17 +181,17 @@
             </tr>
             <tr class="Select-plan-table">
                 <td>
-                  <mat-radio-button class="plan-radio-button" value="BASIC" name="selected-plan" [checked]="true" [required]="true">
+                  <mat-radio-button class="plan-radio-button" value="BASIC" name="selected-plan" [checked]="true" [required]="true" (change)="initConfig()">
                     Selecccionar plan Basic
                   </mat-radio-button>
                 </td>
                 <td>
-                  <mat-radio-button class="plan-radio-button" value="STANDARD" name="selected-plan" [required]="true">
+                  <mat-radio-button class="plan-radio-button" value="STANDARD" name="selected-plan" [required]="true" (change)="initConfig()">
                     Selecccionar plan Standard
                   </mat-radio-button>
                 </td>
                 <td>
-                  <mat-radio-button class="plan-radio-button" value="PRO" name="selected-plan" [required]="true">
+                  <mat-radio-button class="plan-radio-button" value="PRO" name="selected-plan" [required]="true" (change)="initConfig()">
                     Selecccionar plan Pro
                   </mat-radio-button>
               </tr>
@@ -201,14 +204,24 @@
       </form>
     </mat-step>
 
-    <mat-step  [optional]="true" state="personal">
+    <mat-step state="personal">
         <ng-template matStepLabel>Pago</ng-template>
-        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
-        <p>You are now done.</p>
+        <div id="welcome-message-register">
+          <h2>¡Hola {{emailControl.value}}!</h2>
+          <p *ngIf="selectedPlan == 'BASIC'">Ha seleccionado el plan "Basic" que es gratuito. El registro se completará cuando pulse el boton de guardar.</p>
+          <p *ngIf="selectedPlan == 'STANDARD'">Ha seleccionado el plan "Standard" que cuesta 1€ al mes. Podrás disfrutar de todas las funcionalidades cuando el pago se efectúe con éxito.</p>
+          <p *ngIf="selectedPlan == 'PRO'">Ha seleccionado el plan "Pro" que es 2€ al mes. Cuando el pago se efectúe con éxito, tendrás acceso a todas las funcionalidades ¡Enhorabuena 😎!</p>
+        </div><br/>
+        <div *ngIf="selectedPlan != 'BASIC'" id="paypal-button-register" style="width: 50%; text-align: center;">
+          <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+        </div>
         <div>
           <button mat-button matStepperPrevious>Atrás</button>
+          <button mat-button *ngIf="selectedPlan == 'BASIC'">Guardar</button>
         </div>
     </mat-step>
+
+
 
     <!-- Icon overrides. -->
     <ng-template matStepperIcon="signUp">

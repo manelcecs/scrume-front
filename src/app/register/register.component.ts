@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
+import { Box } from '../dominio/box.domain';
+import { UserService } from '../servicio/user.service';
 
 // El selector es la forma de instanciar al componente desde otro html que no es el que aparece en la línea de abajo.
 // Por ejemplo, en el app.component.ts, el selector es app-root y en index.html es llamado poniendo <app-root></app-root>
@@ -17,6 +19,8 @@ export class RegisterComponent implements OnInit {
   isOptional = true;
   termsAccepted = false;
   public payPalConfig?: IPayPalConfig;
+  selectedPlan : string;
+  boxes : Box[];
 
   emailControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
   passwordControl: FormControl = new FormControl('', [Validators.required,
@@ -26,18 +30,19 @@ export class RegisterComponent implements OnInit {
     Validators.pattern(/[\^*\-_<>[\]{}¿?¡!\\\/&%$#():;.,+@=]/),
     Validators.minLength(8)]);
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
-  termsControl: FormControl = new FormControl(false);
 
-  //Al constructor se le pasan las clases como los servicios que usaremos en el componente
-  constructor(private _formBuilder: FormBuilder) { }
+
+
+  constructor(private _formBuilder: FormBuilder, private userService : UserService) { }
 
   ngOnInit(): void {
-    this.initConfig();
+    this.userService.getAllBoxes().subscribe((res : Box[]) => {
+      this.boxes = res;
+    });
     this.signUpFormGroup = this._formBuilder.group({
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       confirmPasswordControl: this.confirmPasswordControl,
-      termsControl : this.termsControl,
     });
     this.selectPlanFormGroup = this._formBuilder.group({
     });
@@ -51,10 +56,6 @@ export class RegisterComponent implements OnInit {
      };
   }
 
-  displayValidationErrors(control: FormControl) {
-    console.log(control.errors)
-    console.log(this.passwordControl.getError("pattern")["requiredPattern"]);
-  }
 
   getErrorMessageEmail() {
     return this.emailControl.hasError('required') ? 'Este campo es requerido.':
@@ -76,25 +77,24 @@ export class RegisterComponent implements OnInit {
     this.confirmPasswordControl.hasError('notSamePassword') ? 'Las contraseñas no coinciden.' : '';
   }
 
-  getErrorTerms(){
-    return this.termsControl.hasError('required') ? 'Debe leer y aceptar los términos y condiciones.' : '';
-  }
 
-  validForm(): boolean {
 
-    let valid: boolean;
+  // validForm(): boolean {
 
-    valid = this.emailControl.valid && this.passwordControl.valid && this.confirmPasswordControl.valid;
-    if (valid && !this.termsControl.value) {
-       this.termsControl.setErrors({'required' : true});
-    }
-    return valid;
+  //   let valid: boolean;
 
-  }
+  //   valid = this.emailControl.valid && this.passwordControl.valid && this.confirmPasswordControl.valid;
+  //   if (valid && !this.termsControl.value) {
+  //      this.termsControl.setErrors({'required' : true});
+  //   }
+  //   return valid;
+
+  // }
 
   notNullSelectedPlan(): boolean {
     let inputRadioButton = document.querySelector('input[name="selected-plan"]:checked');
     if (inputRadioButton != null) {
+      this.selectedPlan = String(inputRadioButton["value"]);
       let valueRadioButton = inputRadioButton["value"];
       return valueRadioButton == 'BASIC' || valueRadioButton == 'PRO' || valueRadioButton == 'STANDARD';
     } else {
@@ -102,32 +102,41 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  private initConfig(): void {
+
+
+  initConfig(): void {
+    let priceSelectedBox : number;
+    if (this.selectedPlan == 'STANDARD') {
+      priceSelectedBox = this.boxes.filter(box => box.name == 'STANDARD')[0].price;
+    } else if (this.selectedPlan == 'PRO'){
+      priceSelectedBox = this.boxes.filter(box => box.name == 'PRO')[0].price;
+    }
+    let paypal:IPayPalConfig
     this.payPalConfig = {
     currency: 'EUR',
-    clientId: 'Af0cQPHcB-NCKQD-S-oT3vqkxgA36fZqhStYa_L_ir2E3AjS0tjur2QaQWK1F9PgmK0HFfxK0gr8jq31',
+    clientId: 'AWOURCDQ1p1qNlLYj9Y_hMW2WsNcOSvLQ4MD-iRdJCqohyLebl1W7_V7ONq0wh_UfhpuZCQtFQZ_0mQi',
     createOrderOnClient: (data) => <ICreateOrderRequest>{
       intent: 'CAPTURE',
       purchase_units: [
         {
           amount: {
             currency_code: 'EUR',
-            value: '9.99',
+            value: priceSelectedBox.toString(),
             breakdown: {
               item_total: {
                 currency_code: 'EUR',
-                value: '9.99'
+                value: priceSelectedBox.toString()
               }
             }
           },
           items: [
             {
-              name: 'Enterprise Subscription',
+              name: this.selectedPlan + " - Scrume",
               quantity: '1',
               category: 'DIGITAL_GOODS',
               unit_amount: {
                 currency_code: 'EUR',
-                value: '9.99',
+                value: priceSelectedBox.toString(),
               },
             }
           ]
@@ -139,7 +148,8 @@ export class RegisterComponent implements OnInit {
     },
     style: {
       label: 'paypal',
-      layout: 'vertical'
+      layout: "horizontal",
+      size: "responsive"
     },
     onApprove: (data, actions) => {
       console.log('onApprove - transaction was approved, but not authorized', data, actions);
