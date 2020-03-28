@@ -9,6 +9,8 @@ import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
 import { UserNick, User } from './dominio/user.domain';
 import { query } from '@angular/animations';
+import { ProfileService } from './servicio/profile.service';
+import { Profile } from './dominio/profile.domain';
 
 @Component({
   selector: 'app-root',
@@ -28,8 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, 
-    private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -135,6 +136,10 @@ export class AppComponent implements OnInit, OnDestroy {
       
         this.cargarMenu();
     });
+  }
+
+  openProfile(){
+    this.navigateTo("profile");
   }
 
 }

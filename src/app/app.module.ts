@@ -59,6 +59,7 @@ import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     DocumentComponent,
     NewDocumentDialog,
     AssingTaskDialog,
-    MyTasksComponent
+    MyTasksComponent,
+    ProfileComponent
   ],
   imports: [
     MatFormFieldModule,

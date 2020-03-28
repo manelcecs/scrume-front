@@ -18,6 +18,7 @@
       <div id="menu-horizontal-buttons-right">
 
         <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin-right: 10px;">Acceder</a>
+        <img *ngIf="user != undefined" src="../assets/profile.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()"> 
         <img *ngIf="user != undefined" src="../assets/logout.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut()">
         <img *ngIf="!notifications && user != undefined" src="../assets/notification.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
         <img *ngIf="notifications && user != undefined" src="../assets/notification-color.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">

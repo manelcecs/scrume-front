@@ -17,6 +17,7 @@ import { TeamResolverService } from './servicio/team.service';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { TaskResolverService } from './servicio/task.service';
 import { DocumentComponent } from './document/document.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path: 'invitation', component: CreateInvitationComponent},
   {path: 'document', component: DocumentComponent},
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
+  {path: 'profile', component: ProfileComponent}
 
 ];
 
