@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { UserNick } from '../dominio/user.domain';
+import { UserNick, User } from '../dominio/user.domain';
 import { Profile } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,6 +15,8 @@ import { Location } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
 
+  user : User;
+
   message: string;
   close: string;
 
@@ -23,8 +25,14 @@ export class ProfileComponent implements OnInit {
   name: FormControl = new FormControl('',{validators: [Validators.required]});
   nick: FormControl = new FormControl('',{validators: [Validators.required]});
   surnames: FormControl = new FormControl('',{validators: [Validators.required]});
-  photo: FormControl = new FormControl('', {validators: [Validators.pattern(/^(https?:\/\/)/)]});
+  photo: FormControl = new FormControl('', {validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(256)]});
   gitUser: FormControl = new FormControl('');
+  lastPass: FormControl = new FormControl('');
+  newPass: FormControl = new FormControl('',{validators: [Validators.pattern(/^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/)]});
+
+  newPassword: string;
+  showPass: boolean = false;
+  showPassLast: boolean = false;
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router, private _snackBar: MatSnackBar, private _location: Location) { }
 
@@ -34,8 +42,8 @@ export class ProfileComponent implements OnInit {
       this.profileService.getProfile(user.idUser).subscribe((profile: Profile)=>{
         this.profile = profile;
 
-        this.message = "Perfil actualizado."
-        this.close = "Cerrar"
+        this.message = "Perfil actualizado.";
+        this.close = "Cerrar";
 
         console.log(JSON.stringify(this.profile));
 
@@ -44,6 +52,8 @@ export class ProfileComponent implements OnInit {
         this.surnames.setValue(this.profile.surnames);
         this.photo.setValue(this.profile.photo);
         this.gitUser.setValue(this.profile.gitUser);
+
+        let token = sessionStorage.getItem("loginToken");
 
       });
     });
@@ -57,19 +67,41 @@ export class ProfileComponent implements OnInit {
     this.profile.photo = this.photo.value;
     this.profile.surnames = this.surnames.value;
     this.profile.gitUser = this.gitUser.value;
+    this.profile.previousPassword = this.lastPass.value;
+    this.profile.newPassword = this.newPass.value;
+
+    this.newPassword = this.newPass.value;
 
     this.profile = { id: this.profile.id,
-      idUserAccount: this.profile.idUserAccount,
       gitUser: this.profile.gitUser,
       name: this.profile.name,
       nick: this.profile.nick,
       photo: this.profile.photo,
-      surnames: this.profile.surnames
+      surnames: this.profile.surnames,
+      previousPassword: this.profile.previousPassword,
+      newPassword: this.profile.newPassword
     }
+
+    console.log(JSON.stringify("la editada " + JSON.stringify(this.profile)));
 
     this.profileService.editProfile(this.profile).subscribe((pro: Profile)=> {
       this.profile = pro;
+
+
+    }, (error)=> {
+      this.lastPass.setErrors({invalid:true});
+      this.newPass.setErrors({invalid:true});
+    },
+    ()=>{
+      if(this.newPass.value == ""){
+        console.log("se queda igual la contraseña");
+      }else{
+        let email = atob(sessionStorage.getItem("loginToken")).split(":")[0];
+        sessionStorage.setItem("loginToken", btoa(email+":"+this.newPassword));
+      }
     });
+
+
 
   }
 
@@ -96,7 +128,25 @@ export class ProfileComponent implements OnInit {
     return this.name.hasError('required')?'Este campo es requerido.':
     this.nick.hasError('required')?'Este campo es requerido.':
     this.surnames.hasError('required')?'Este campo es requerido.':
-    this.photo.hasError('pattern')?'Debe de ser una imagen.':'';
+    this.photo.hasError('pattern')?'Debe de ser una imagen.':
+    this.photo.hasError('maxlength')?'No puede tener más de 256 caracteres.':
+    this.newPass.hasError('pattern')?'Debe de contener al menos 8 caracteres, una mayuscula, una minuscula y un número.':'';  
+  }
+
+  changePassState(){
+    this.showPass = !this.showPass;
+  }
+
+  changePassStateLast(){
+    this.showPassLast = !this.showPassLast;
+  }
+
+  getErrorLastPass() {
+    return this.lastPass.hasError('invalid')?'La contraseña es incorrecta.':'';
+  }
+
+  getErrorNewPass() {
+    return this.lastPass.hasError('invalid')?'La contraseña es incorrecta.':'';
   }
 
 }

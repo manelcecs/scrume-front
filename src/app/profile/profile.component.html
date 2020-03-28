@@ -32,6 +32,19 @@
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="User Git" [formControl]="gitUser">
             </mat-form-field>
+
+            <mat-icon (click)="changePassStateLast()">remove_red_eye</mat-icon>
+            <mat-form-field class="form-field-profile">
+                <input #nameImput [type]="showPassLast?'text':'password'" matInput placeholder="Contraseña Antigua" [formControl]="lastPass">
+                <mat-error *ngIf="newPass.invalid">{{ getErrorLastPass() }}</mat-error>
+            </mat-form-field>
+
+            <mat-icon (click)="changePassState()">remove_red_eye</mat-icon>
+            <mat-form-field class="form-field-profile">
+                <input #nameImput [type]="showPass?'text':'password'" matInput placeholder="Contraseña Nueva" [formControl]="newPass">
+                <mat-error *ngIf="newPass.invalid">{{ getErrorMessageName() }}</mat-error>
+                <mat-error *ngIf="newPass.invalid">{{ getErrorNewPass() }}</mat-error>
+            </mat-form-field>
             
             <br/> <br/>
             
