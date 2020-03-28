@@ -15,7 +15,6 @@ export class DocumentComponent implements OnInit {
 
   idDoc: number;
   doc: Document;
-  document: Document;
   con: string;
   c;
 
@@ -23,18 +22,21 @@ export class DocumentComponent implements OnInit {
   close: string;
 
   //retrospective
+  nameRetrospective;
   good;
   bad;
   improvement;
   //daily
-  name;
+  nameDaily;
   done;
   todo;
   problem;
   //review
+  nameReview;
   noDone;
   rePlanning;
   //planning
+  namePlanning;
   entrega;
   conseguir;
 
@@ -59,19 +61,22 @@ export class DocumentComponent implements OnInit {
           this.doc = doc;
 
           if(doc.type == "RETROSPECTIVE") {
+            this.nameRetrospective = this.doc.name;
             this.good = JSON.parse(this.doc.content).good;
             this.bad = JSON.parse(this.doc.content).bad;
             this.improvement = JSON.parse(this.doc.content).improvement;
           }else if(doc.type == "REVIEW") {
+            this.nameReview = this.doc.name;
             this.done = JSON.parse(this.doc.content).done;
             this.noDone = JSON.parse(this.doc.content).noDone;
             this.rePlanning = JSON.parse(this.doc.content).rePlanning;
           }else if(doc.type == "DAILY") {
-            this.name = JSON.parse(this.doc.content).name;
+            this.nameDaily = this.doc.name;
             this.done = JSON.parse(this.doc.content).done;
             this.todo = JSON.parse(this.doc.content).todo;
             this.problem = JSON.parse(this.doc.content).problem;
           }else{
+            this.namePlanning = this.doc.name;
             this.entrega = JSON.parse(this.doc.content).entrega;
             this.conseguir = JSON.parse(this.doc.content).conseguir;
           }
@@ -90,13 +95,12 @@ export class DocumentComponent implements OnInit {
   }
 
   //Daily
-
   dailyName(value: string){ 
-    this.name = value; 
-    var pdfContainer = document.getElementById("pdf-container"); 
+    this.nameDaily = value;
+    this.doc.name = value; 
+    var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("dailyName");
     pdfContainer.scrollTop = scrollNow.clientHeight;
-    console.log(pdfContainer.scrollTop);
   }
 
   dailyDone(value: string){ 
@@ -105,6 +109,7 @@ export class DocumentComponent implements OnInit {
     var scrollNow = document.getElementById("dailyDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
+
   dailyTodo(value: string){ 
     this.todo = value; 
     var pdfContainer = document.getElementById("pdf-container");
@@ -119,6 +124,14 @@ export class DocumentComponent implements OnInit {
   }
 
   //Retrospective
+
+  retrospectiveName(value: string){ 
+    this.nameRetrospective = value;
+    this.doc.name = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("retrospectiveName");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
 
   restrospectiveGood(value: String){ 
     this.good = value; 
@@ -144,6 +157,15 @@ export class DocumentComponent implements OnInit {
 
   //Review
 
+
+  reviewName(value: string){ 
+    this.nameReview = value;
+    this.doc.name = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("reviewName");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
+
   reviewDone(value: String){ 
     this.done = value;
     var pdfContainer = document.getElementById("pdf-container");
@@ -166,6 +188,14 @@ export class DocumentComponent implements OnInit {
   }
 
   //Planning
+
+  planningName(value: string){ 
+    this.namePlanning = value;
+    this.doc.name = value; 
+    var pdfContainer = document.getElementById("pdf-container");
+    var scrollNow = document.getElementById("planningName");
+    pdfContainer.scrollTop = scrollNow.clientHeight;
+  }
 
   planningEntrega(value: String){ 
     this.entrega = value;
