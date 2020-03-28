@@ -29,7 +29,6 @@ export class ProjectComponent implements OnInit {
      public dialog: MatDialog
     ) { 
 
-      console.log("Constructor component");
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
 

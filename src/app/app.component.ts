@@ -49,7 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     
     let token = sessionStorage.getItem("loginToken");
-    console.log("token:", token);
     if(token != null && token !== ""){
       this.getUserInfo();
       

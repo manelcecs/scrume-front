@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskToList } from '../dominio/task.domain';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-tasks',
@@ -12,21 +12,31 @@ export class MyTasksComponent implements OnInit {
 
   tasks: TaskToList[];
 
-  tasksMap: Map<number, TaskToList>;
+  tasksMap: Map<string, TaskToList[]> = new Map<string, TaskToList[]>();
 
-  constructor(private router: Router, @Inject(MAT_DIALOG_DATA) public data: any) { 
-    this.tasks = data.tasks;
+  constructor(private router: Router,
+    private activatedRoute: ActivatedRoute) { 
+    this.tasks = this.activatedRoute.snapshot.data.tasks;
+    
     for(let t of this.tasks){
-      this.tasksMap.set(t.projectId, t);
+
+      let projName = t.project.name;
+
+      if(this.tasksMap.has(projName)){
+        let array = this.tasksMap.get(projName);
+        array.push(t);
+        this.tasksMap.set(projName, array);
+
+      }else{
+        let arrayTask: TaskToList[] = [];
+        arrayTask.push(t);
+        this.tasksMap.set(projName, arrayTask);
+      }
     }
   }
 
   ngOnInit(): void {
 
-    for(let [key, values] of this.tasksMap){
-      console.log("key", key);
-      console.log("values", values);
-    }
 
   }
 

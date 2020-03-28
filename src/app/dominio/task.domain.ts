@@ -1,7 +1,8 @@
 import { ProjectName } from './project.domain';
-import { UserName, UserNick, SimpleUserNick } from './user.domain';
+import { UserNick, SimpleUserNick } from './user.domain';
 import { ColumDto } from './colum.domian';
 import { SprintWorkspace } from './sprint.domain';
+import { BoardName } from './board.domain';
 
 export interface TaskDto {
     id?: number;
@@ -48,9 +49,8 @@ export interface TaskToEdit{
 }
 
 export interface TaskToList{
-    projectId: number;
-    projectName: string;
     taskId: number;
-    workId: number;
-    workName: string;
+    title: string;
+    project: ProjectName;
+    workspace: BoardName;
 }

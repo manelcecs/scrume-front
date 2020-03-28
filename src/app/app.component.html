@@ -1,7 +1,7 @@
 <mat-sidenav-container class="example-container" [hasBackdrop]="false">
   <mat-sidenav #sidenav mode="over">
     <div *ngFor="let item of routes">
-      <a mat-list-item *ngIf="item.visible" (click)="navigateTo(item.route, item.method, item.id); sidenav.close();">
+      <a mat-list-item *ngIf="item.visible" (click)="navigateTo(item.route, item.method); sidenav.close();">
         <mat-icon>{{item.icon}}</mat-icon> {{item.title}}
       </a>
     </div>

@@ -51,15 +51,21 @@ import { TaskService } from '../servicio/task.service';
     }
 
     unassing(user: SimpleUserNick){
+
       this.task.users.splice(this.task.users.indexOf(user.id), 1);
+
       this.taskService.editTask(this.taskId, this.task).subscribe((task: TaskDto)=>{
         let users = [];
         for(let u of task.users){
           users.push(u.id);
         }
         this.task = {id: this.taskId, description: task.description, title: task.title, users: users};
-        this.usersOfTeam.splice(this.usersOfTeam.indexOf(user), 1);
-        this.getAllUsersToAssing();
+        this.usersOfTeam.push(user);
+        this.usersOfTask.splice(this.usersOfTask.indexOf(user),1);
+      },(error)=>{
+        console.log("Error", error);
+      },()=>{
+        this.cancel();
       });
     }
 
@@ -72,20 +78,20 @@ import { TaskService } from '../servicio/task.service';
         }
         this.task = {id: this.taskId, description: task.description, title: task.title, users: users};
         this.usersOfTask.push(user);
-        this.getAllUsersToAssing();
+        
+      },(error)=>{
+        console.log("Error", error);
+      },()=>{
+        this.cancel();
       });
     }
       
     getAllUsersToAssing(){  
       this.userService.getAllUsersOfWorkspace(this.workspaceId).subscribe((users: SimpleUserNick[]) =>{
+
         this.usersOfTeam = users;
-        //Eliminamos los usuarios ya asignados
-        for(let u of this.usersOfTask){
-          let index = this.usersOfTask.indexOf(u);
-          if(index >= 0){
-            this.usersOfTeam.splice(index);
-          }
-        }
+
+        this.usersOfTeam = this.usersOfTeam.filter(u => !this.usersOfTask.map(u1=> u1.id).includes(u.id));
 
       });
     }

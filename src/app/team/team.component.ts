@@ -141,7 +141,7 @@ export class InvitationDialog implements OnInit{
   fruitCtrl = new FormControl('', {validators: [Validators.required]});
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
-  allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
+  allUsers: UserNick[] = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -204,7 +204,7 @@ export class InvitationDialog implements OnInit{
 
   onSaveClick() : void {
     let recipients : number[] = [];
-    this.users.forEach(user => recipients.push(user.id));
+    this.users.forEach(user => recipients.push(user.idUser));
     let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: recipients};
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();

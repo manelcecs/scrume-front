@@ -38,8 +38,8 @@ export class TaskService {
       return this.httpClient.get<TaskDto>(this.cabeceraService.getCabecera() + "api/task/"+idTask, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    getTasksOfUser(idUser: number){
-      return this.httpClient.get<TaskToList>(this.cabeceraService.getCabecera()+"api/task/user/"+idUser, {headers: this.cabeceraService.getBasicAuthentication()});
+    getTasksOfUser(){
+      return this.httpClient.get<TaskToList>(this.cabeceraService.getCabecera()+"api/task/user/", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 }
@@ -56,9 +56,9 @@ export class TaskResolverService implements Resolve<any>{
         let method = activatedRoute.queryParams.method;
         switch(method){
             case 'getTasksOfUser':
-                return this.task.getTasksOfUser(activatedRoute.queryParams.id);
+                return this.task.getTasksOfUser();
             default:
-                return this.task.getTasksOfUser(activatedRoute.queryParams.id);
+                return this.task.getTasksOfUser();
         }
     }
 }
