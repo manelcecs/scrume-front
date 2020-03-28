@@ -1,1 +1,39 @@
-Hola {{profile.nick}}
+<div id="main-team">
+    <section>
+            <div>
+                <h3>Edita tu perfil {{profile.nick}}</h3> 
+            </div>
+    </section>
+
+    <section>
+        <form id="form-team-create">
+
+            <mat-form-field class="form-field-profile">
+                <input #nameImput matInput placeholder="Nombre" [formControl]="name">
+            </mat-form-field>
+
+            <mat-form-field class="form-field-profile">
+                <input #nameImput matInput placeholder="Nick" [formControl]="nick">
+            </mat-form-field>
+
+            <mat-form-field class="form-field-profile">
+                <input #nameImput matInput placeholder="Photo" [formControl]="photo">
+            </mat-form-field>
+
+            <mat-form-field class="form-field-profile">
+                <input #nameImput matInput placeholder="Surnames" [formControl]="surnames">
+            </mat-form-field>
+
+            <mat-form-field class="form-field-profile">
+                <input #nameImput matInput placeholder="User Git" [formControl]="gitUser">
+            </mat-form-field>
+            
+            <br/> <br/>
+            
+            <div id="buttons-profile">
+                <button id="cancel-profile" (click)="cancelEditProfile()" mat-flat-button>Cancelar</button>
+                <button id="save-profile" type="submit" [disabled]="!validForm()" (click)="editProfile()" mat-flat-button>Guardar</button>
+            </div>
+        </form>
+    </section>
+</div>
