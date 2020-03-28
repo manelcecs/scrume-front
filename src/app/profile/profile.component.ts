@@ -5,6 +5,8 @@ import { UserNick } from '../dominio/user.domain';
 import { Profile } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
+  message: string;
+  close: string;
 
   profile: Profile;
 
@@ -21,13 +26,16 @@ export class ProfileComponent implements OnInit {
   photo: FormControl = new FormControl('');
   gitUser: FormControl = new FormControl('');
 
-  constructor(private userService: UserService, private profileService: ProfileService, private router: Router) { }
+  constructor(private userService: UserService, private profileService: ProfileService, private router: Router, private _snackBar: MatSnackBar, private _location: Location) { }
 
   ngOnInit(): void {
 
     this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
       this.profileService.getProfile(user.idUser).subscribe((profile: Profile)=>{
         this.profile = profile;
+
+        this.message = "Perfil actualizado."
+        this.close = "Cerrar"
 
         console.log(JSON.stringify(this.profile));
 
@@ -61,13 +69,12 @@ export class ProfileComponent implements OnInit {
 
     this.profileService.editProfile(this.profile).subscribe((pro: Profile)=> {
       this.profile = pro;
-      this.router.navigate(['teams']);
     });
 
   }
 
   cancelEditProfile(){
-    this.router.navigate(['teams']);
+    this._location.back();
   }
 
   validForm():boolean {
@@ -77,6 +84,12 @@ export class ProfileComponent implements OnInit {
     valid = valid && this.name.valid && this.nick.valid && this.surnames.valid;
     return valid;
 
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }

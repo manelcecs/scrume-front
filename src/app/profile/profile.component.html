@@ -1,4 +1,4 @@
-<div id="main-team">
+<div id="main-profile">
     <section>
             <div>
                 <h3>Edita tu perfil {{profile.nick}}</h3> 
@@ -6,7 +6,12 @@
     </section>
 
     <section>
-        <form id="form-team-create">
+        <form id="form-profile">
+
+            <mat-form-field class="form-field-profile">
+                <img src="{{profile.photo}}" width="100" height="100" alt="">
+                <input #nameImput matInput placeholder="Photo" [formControl]="photo">
+            </mat-form-field>
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Nombre" [formControl]="name">
@@ -14,10 +19,6 @@
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Nick" [formControl]="nick">
-            </mat-form-field>
-
-            <mat-form-field class="form-field-profile">
-                <input #nameImput matInput placeholder="Photo" [formControl]="photo">
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
@@ -32,8 +33,9 @@
             
             <div id="buttons-profile">
                 <button id="cancel-profile" (click)="cancelEditProfile()" mat-flat-button>Cancelar</button>
-                <button id="save-profile" type="submit" [disabled]="!validForm()" (click)="editProfile()" mat-flat-button>Guardar</button>
+                <button id="save-profile" type="submit" [disabled]="!validForm()" (click)="editProfile()" (click)="openSnackBar(message, close)" mat-flat-button>Guardar</button>
             </div>
+
         </form>
     </section>
 </div>
