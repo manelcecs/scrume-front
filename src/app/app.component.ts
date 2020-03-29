@@ -11,6 +11,7 @@ import { UserNick, User, UserIdUser } from './dominio/user.domain';
 import { query } from '@angular/animations';
 import { ProfileService } from './servicio/profile.service';
 import { Profile } from './dominio/profile.domain';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -130,12 +131,15 @@ export class AppComponent implements OnInit, OnDestroy {
           this.navigateTo("teams");
         });
 
-        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-          if (invitations.length != 0) {
-            this.notifications = true;
-          } else {
-            this.notifications = false;
-          }
+        timer(0, 10000).subscribe(() => {
+
+          this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+            if (invitations.length != 0) {
+              this.notifications = true;
+            } else {
+              this.notifications = false;
+            }
+          });
         });
 
         this.cargarMenu();

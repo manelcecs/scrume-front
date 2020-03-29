@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InvitationDisplay, AnswerInvitation } from '../dominio/invitation.domain';
 import { InvitationService } from '../servicio/invitation.service';
+import { Observable, timer } from 'rxjs';
 
 @Component({
   selector: 'app-notifications',
@@ -17,15 +18,19 @@ export class NotificationsComponent implements OnInit {
   ngOnInit(): void {
     let token = sessionStorage.getItem("loginToken");
     if (token != null && token !== "") {
-      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-        this.invitations = invitations;
-        console.log(invitations);
-      });
+      timer(0, 10000).subscribe(() => {
+        console.log("se ha lanzado el timer")
+        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+          this.invitations = invitations;
+        });
+      }
+
+        )
     }
   }
 
   answerInvitation(invitation : InvitationDisplay, answer : boolean) {
-    let answeredInvitation : AnswerInvitation = {id: invitation.id, isAccepted: true};
+    let answeredInvitation : AnswerInvitation = {id: invitation.id, isAccepted: answer};
     this.invitationService.answerInvitation(invitation.id, answeredInvitation).subscribe(() => {
       this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
         this.invitations = invitations;
