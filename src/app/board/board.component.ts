@@ -52,13 +52,7 @@ export class BoardComponent implements OnInit {
 
       let col = event.container.data+"";
 
-      if (col == "To Do") {
-        this.moveInArray(this.board.columns[0] , event.previousIndex , event.currentIndex);
-      } else if (col == "Done"){
-        this.moveInArray(this.board.columns[2] , event.previousIndex , event.currentIndex);
-      } else {
-        this.moveInArray(this.board.columns[1] , event.previousIndex , event.currentIndex);
-      }
+
       
     } else {
 
