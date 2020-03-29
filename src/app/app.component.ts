@@ -118,6 +118,8 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
+    
+    this.cargarMenu();
     this.navigateTo("bienvenida");
   }
 
