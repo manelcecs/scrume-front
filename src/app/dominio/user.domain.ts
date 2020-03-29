@@ -31,3 +31,9 @@ export interface UserRegister {
   payerId?: string;
   username: string;
 }
+
+export interface SimpleUserNick {
+  id: number;
+  nick: string;
+  photo?: string;
+}

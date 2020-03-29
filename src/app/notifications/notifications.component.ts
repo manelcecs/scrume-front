@@ -19,7 +19,6 @@ export class NotificationsComponent implements OnInit {
     let token = sessionStorage.getItem("loginToken");
     if (token != null && token !== "") {
       timer(0, 10000).subscribe(() => {
-        console.log("se ha lanzado el timer")
         this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
           this.invitations = invitations;
         });
