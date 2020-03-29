@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { UserNick, User } from '../dominio/user.domain';
+import { UserNick, User, UserIdUser } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  editProfile() {
+  editProfile(){
 
     this.profile.name = this.name.value;
     this.profile.nick = this.nick.value;

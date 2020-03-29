@@ -3,13 +3,17 @@ export interface UserName {
 
 }
 
-export interface UserNick {
+export interface UserIdUser {
   idUser: number;
+}
+
+export interface UserNick {
+  id: number;
   nick: string;
 }
 
 export interface User{
-    
+
     id?: number;
     gitUser: string;
     name: string;
