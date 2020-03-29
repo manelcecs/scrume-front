@@ -19,3 +19,9 @@ export interface User{
     userAccount: any;
 
 }
+
+export interface SimpleUserNick {
+  id: number;
+  nick: string;
+  photo?: string;
+}

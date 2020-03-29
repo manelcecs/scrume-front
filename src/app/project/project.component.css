@@ -1,37 +1,62 @@
 #main-project {
     padding: 3% 10%;
 }
-section > * {
-    float: left;
-}
-/* Header Proyect */
-#header-project {
-    margin-bottom: 2%;
-    float: left;
-}
 
-#header-project > div{
+/* Header component */
+
+#header-project{
+    min-width: 10em;
     width: 100%;
-
+    height: auto;
 }
-#header-project > div > p{
+
+#header-project > nav > ol{ 
+    background-color: #fafafa;
+}
+
+#header-project > nav > ol > li > a{ 
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#header-project > nav > ol > li{ 
+    font-size: 18px;
+}
+#header-project > nav > ol > li> img{ 
+    margin-left: 15px;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+
+#header-sprint > nav > ol > li > a:hover{ 
+    font-size: 18px;
+    color: #1976d2;
+}
+
+/*-----------------*/
+
+
+/* Descripcion and product backlog */
+
+#description-proyect{
+    margin-bottom: 20px;
+    padding: 1% 2%;
+}
+
+#description-proyect > p{
+    width: 100%;
     text-align: justify;
-
 }
-/*------------------------------*/
 
-/* Sprints Project */
-#sprints-project > div{
+#description-proyect > div{
     width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
-#title-sprint{
-    float:left;
-}
 
-#buttons-project {
-    float: right;
-}
 .button-sprints {
     background-color: #38B6FF;
     color: white;
@@ -41,58 +66,41 @@ section > * {
     background-color: #18A1F0;
 }
 
-.button-delete-sprints {
-  background-color: #e62e2e;
-  color: white;
-  margin-left: 1em;
-}
-.button-delete-sprints:hover {
-  background-color: #db0f0f;
-}
 
-/*------------------------------*/
 
-.content-sprints-project{
-    margin-top: 3%;
+/* More info proyect */
+
+.sprints-project{
+    padding: 2% 2%; 
+    background-color: white;
 
 }
 
-.info-sprint-project {
-    margin-bottom: 2%;
-    float: left;
-    width: 100%;
-}
-
-
-.title-progress-project {
-    float: left;
-    width: 60%;
-    padding-right: 1em;
+.info-sprint-project{
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 2.6em;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
 
-.statistics-sprint-project {
-    float: right;
-    width: 40%;
+.title-progress-project{
+    width: 70%;
 }
 
-.name-sprint-project {
-    float: left;
-    width: 30%;
+.name-sprint-project > a{
+    cursor: pointer;
 }
 
-
-.name-sprint-project :hover {
-  cursor: pointer;
+.name-sprint-project > a:hover{
+    text-decoration: underline;
 }
 
 .progress-project{
-    float: right;
-    width: 70%;
+    width: 100%;
+}
 
+.statistics-sprint-project {
+    width: 15em;
 }
 
 .table-statistics-project{
@@ -106,5 +114,10 @@ section > * {
     padding: 0.1%;
     font-size: smaller;
 }
+
+
+
+/*------------------------------*/
+
 
 

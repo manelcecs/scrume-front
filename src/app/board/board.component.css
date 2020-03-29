@@ -1,7 +1,22 @@
+#main{
+  padding: 3% 2%;
+}
+
+/* Tableros */
+
+#boards-container{
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .cdk-drop-list {
-  width: 33%;
-  float: left;
+  width: 30%;
+  height: 36em;
+  padding: 2%;
+  overflow-y: auto;
   border: 1px;
+  border-radius: 0.5em;
+  background-color: white;
 }
 
 .nameColum {
@@ -10,21 +25,32 @@
 }
 
 .nombreTarea {
-  border-radius: 6em;
+  border-radius: 0.5em;
   border-style: solid 2px;
   border: 10px;
-  padding: 20px 10px;
+  padding: 20px 30px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
+  background: rgb(248, 248, 248);
   font-size: 14px;
 }
 
 .p {
   text-align: center;
+}
+
+.user-img{
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 600px)  {
+  body{
+    orientation: landscape;
+    /* orientation: portrait; */
+  }
 }

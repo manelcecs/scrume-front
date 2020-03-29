@@ -14,6 +14,8 @@ import { CreateBoardComponent } from './create-board/create-board.component';
 import { ProjectWithTaskResolverService, ProjectResolverService } from './servicio/project.service';
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 import { TeamResolverService } from './servicio/team.service';
+import { MyTasksComponent } from './my-tasks/my-tasks.component';
+import { TaskResolverService } from './servicio/task.service';
 import { DocumentComponent } from './document/document.component';
 import { ProfileComponent } from './profile/profile.component';
 
@@ -21,7 +23,7 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
 
   {path: 'bienvenida', component: BienvenidaComponent},
-  {path: 'teams', component: TeamComponent, resolve:{teams: TeamResolverService}, data:{method: ""}},
+  {path: 'teams', component: TeamComponent, resolve:{teams: TeamResolverService}},
   {path: 'teamsCreate', component: TeamCreateComponent},
   {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}},
   {path: 'createProject', component: CreateProjectComponent},
@@ -31,6 +33,7 @@ const routes: Routes = [
   {path: 'board', component: BoardComponent},
   {path: 'invitation', component: CreateInvitationComponent},
   {path: 'document', component: DocumentComponent},
+  {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
   {path: 'profile', component: ProfileComponent}
 
 ];

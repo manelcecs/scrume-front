@@ -1,20 +1,33 @@
 {{message}}
 
-<div cdkDropListGroup>
-  <div *ngFor="let colum of board.columns"
-    cdkDropList
-    [cdkDropListData]="colum.name"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
 
-    <div class="nameColum">
-      <h2>{{colum.name}}</h2>
+<div id="main">
+
+  <div id="boards-container" cdkDropListGroup>
+    <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="nameColum">
+        <h4>{{colum.name}}</h4>
+      </div>
+
+      <hr>
+  
+      <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
+        <div class="nombreTarea">
+          <p>{{tarea.title}}</p>
+
+          <div style="display: flex; align-items: center;">
+            <div class="roundImage"*ngFor="let user of tarea.users">
+              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo !== undefined && user.photo !== '' " src="{{user.photo}}" />
+              <img style="margin-right: 10px" alt="{{user.nick}}" width="40" height="40" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png" *ngIf="user.photo == undefined || user.photo == '' " />
+            </div>
+            <img src="../assets/add-user.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="addUsers(tarea)">
+          </div>
+
+        </div>
+      </div>
+  
     </div>
-
-    <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
-      <p class="nombreTarea">{{tarea.title}}</p>
-    </div>
-
   </div>
+
 </div>
     

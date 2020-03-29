@@ -1,0 +1,14 @@
+
+#cancel-dialog {
+    background-color: #e62e2e;
+    color: white;
+    margin-left: 1em;
+}
+
+#cancel-dialog:hover {
+    background-color: #db0f0f;
+}
+
+#buttons-dialog {
+    justify-content: center;
+}
