@@ -10,40 +10,44 @@
 
             <mat-form-field class="form-field-profile">
                 <img src="{{profile.photo}}" width="100" height="100" alt="">
-                <input #nameImput matInput placeholder="Photo" [formControl]="photo">
+                <input #photoImput matInput placeholder="Photo" [formControl]="photo">
+                <mat-hint>{{ photoImput.value?.length || 0 }}/255</mat-hint>
                 <mat-error *ngIf="photo.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
                 <input #nameImput matInput placeholder="Nombre" [formControl]="name">
+                <mat-hint>{{ nameImput.value?.length || 0 }}/25</mat-hint>
                 <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
-                <input #nameImput matInput placeholder="Nick" [formControl]="nick">
+                <input #nickImput matInput placeholder="Nick" [formControl]="nick">
+                <mat-hint>{{ nickImput.value?.length || 0 }}/25</mat-hint>
                 <mat-error *ngIf="nick.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
-                <input #nameImput matInput placeholder="Surnames" [formControl]="surnames">
+                <input #surnamesImput matInput placeholder="Surnames" [formControl]="surnames">
+                <mat-hint>{{ surnamesImput.value?.length || 0 }}/25</mat-hint>
                 <mat-error *ngIf="surnames.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-field-profile">
-                <input #nameImput matInput placeholder="User Git" [formControl]="gitUser">
+                <input #gitUserImput matInput placeholder="User Git" [formControl]="gitUser">
+                <mat-error *ngIf="gitUser.invalid">{{ getErrorMessageName() }}</mat-error>
             </mat-form-field>
 
             <mat-icon (click)="changePassStateLast()">remove_red_eye</mat-icon>
             <mat-form-field class="form-field-profile">
-                <input #nameImput [type]="showPassLast?'text':'password'" matInput placeholder="Contraseña Antigua" [formControl]="lastPass">
-                <mat-error *ngIf="newPass.invalid">{{ getErrorLastPass() }}</mat-error>
+                <input #lastPassImput [type]="showPassLast?'text':'password'" matInput placeholder="Contraseña Antigua" [formControl]="lastPass">
+                <mat-error *ngIf="lastPass.invalid">{{ getErrorLastPass() }}</mat-error>
             </mat-form-field>
 
             <mat-icon (click)="changePassState()">remove_red_eye</mat-icon>
             <mat-form-field class="form-field-profile">
-                <input #nameImput [type]="showPass?'text':'password'" matInput placeholder="Contraseña Nueva" [formControl]="newPass">
+                <input #newPassImput [type]="showPass?'text':'password'" matInput placeholder="Contraseña Nueva" [formControl]="newPass">
                 <mat-error *ngIf="newPass.invalid">{{ getErrorMessageName() }}</mat-error>
-                <mat-error *ngIf="newPass.invalid">{{ getErrorNewPass() }}</mat-error>
             </mat-form-field>
             
             <br/> <br/>
