@@ -23,6 +23,7 @@ export class BoardComponent implements OnInit {
   n: number;
   taskSend: TaskMove;
   message: string;
+  idSprint: number;
 
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
      private taskservice: TaskService, private dialog: MatDialog) { }
@@ -33,6 +34,7 @@ export class BoardComponent implements OnInit {
 
        if(param.id != undefined){
          this.idBoard = param.id;
+         this.idSprint = param.idSprint;
 
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
@@ -52,13 +54,7 @@ export class BoardComponent implements OnInit {
 
       let col = event.container.data+"";
 
-      if (col == "To Do") {
-        this.moveInArray(this.board.columns[0] , event.previousIndex , event.currentIndex);
-      } else if (col == "Done"){
-        this.moveInArray(this.board.columns[2] , event.previousIndex , event.currentIndex);
-      } else {
-        this.moveInArray(this.board.columns[1] , event.previousIndex , event.currentIndex);
-      }
+
       
     } else {
 
@@ -146,6 +142,10 @@ export class BoardComponent implements OnInit {
      });
 
     });
+  }
+
+  back(){
+    this.router.navigate(['sprint'], { queryParams: { id: this.idSprint} });
   }
 
 }

@@ -3,6 +3,10 @@
 
 <div id="main">
 
+  <button style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
+    Volver al Sprint
+</button>
+
   <div id="boards-container" cdkDropListGroup>
     <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">
       <div class="nameColum">
@@ -12,7 +16,7 @@
       <hr>
   
       <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
-        <div class="nombreTarea">
+        <div *ngIf="tarea.title != undefined" class="nombreTarea">
           <p>{{tarea.title}}</p>
 
           <div style="display: flex; align-items: center;">
