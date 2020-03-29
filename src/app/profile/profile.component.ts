@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
 
       }
 
-      this.userService.findUserAuthenticated().subscribe((user: UserNick) => {
+      this.userService.findUserAuthenticated().subscribe((user: UserIdUser) => {
         this.profileService.getProfile(user.idUser).subscribe((profile: Profile) => {
           this.profile = profile;
 
