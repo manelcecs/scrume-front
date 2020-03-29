@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { UserNick, User } from '../dominio/user.domain';
+import { UserNick, User, UserIdUser } from '../dominio/user.domain';
 import { Profile } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
+    this.userService.findUserAuthenticated().subscribe((user: UserIdUser)=>{
       this.profileService.getProfile(user.idUser).subscribe((profile: Profile)=>{
         this.profile = profile;
 
@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile(){
-    
+
     this.profile.name = this.name.value;
     this.profile.nick = this.nick.value;
     this.profile.photo = this.photo.value;
@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
     this.surnames.hasError('required')?'Este campo es requerido.':
     this.photo.hasError('pattern')?'Debe de ser una imagen.':
     this.photo.hasError('maxlength')?'No puede tener más de 256 caracteres.':
-    this.newPass.hasError('pattern')?'Debe de contener al menos 8 caracteres, una mayuscula, una minuscula y un número.':'';  
+    this.newPass.hasError('pattern')?'Debe de contener al menos 8 caracteres, una mayuscula, una minuscula y un número.':'';
   }
 
   changePassState(){

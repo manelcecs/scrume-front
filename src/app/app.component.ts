@@ -122,7 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
+    this.userService.findUserAuthenticated().subscribe((user: UserIdUser)=>{
         this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
           this.user = userComplete;
           this.navigateTo("teams");
@@ -131,6 +131,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
           if (invitations.length != 0) {
             this.notifications = true;
+          } else {
+            this.notifications = false;
           }
         });
       

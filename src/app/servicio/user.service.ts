@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { User, SimpleUserNick, UserNick } from '../dominio/user.domain';
+import { User, SimpleUserNick, UserNick, UserIdUser } from '../dominio/user.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -13,8 +13,8 @@ export class UserService {
         return this.httpClient.get<boolean>(this.cabeceraService.getCabecera()+"api/login/isAValidUser", {headers: this.cabeceraService.getCustomBasicAuthentication(user, pass)});
     }
 
-    findUserAuthenticated(): Observable<UserNick>{
-        return this.httpClient.get<UserNick>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
+    findUserAuthenticated(): Observable<UserIdUser>{
+        return this.httpClient.get<UserIdUser>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     getUser(id: number):Observable<User>{

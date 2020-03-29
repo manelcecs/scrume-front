@@ -228,7 +228,7 @@ export class InvitationDialog implements OnInit{
 
   onSaveClick() : void {
     let recipients : number[] = [];
-    this.users.forEach(user => recipients.push(user.idUser));
+    this.users.forEach(user => recipients.push(user.id));
     let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: recipients};
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();
