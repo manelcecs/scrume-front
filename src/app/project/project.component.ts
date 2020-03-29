@@ -29,7 +29,6 @@ export class ProjectComponent implements OnInit {
      public dialog: MatDialog
     ) { 
 
-      console.log("Constructor component");
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
 
@@ -43,6 +42,9 @@ export class ProjectComponent implements OnInit {
     this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
   }
 
+  openTeam(team: number): void {
+    this.router.navigate(['team'], { queryParams: { id: team } });
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {

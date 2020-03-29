@@ -53,10 +53,10 @@ export class TeamResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
-        let method = activatedRoute.data.method;
+        let method = activatedRoute.queryParams.method;
         switch(method){
             case 'getTeam':
-                return this.teams.getTeam(activatedRoute.data.id);
+                return this.teams.getTeam(activatedRoute.queryParams.id);
             default:
                 return this.teams.getAllTeams();
         }

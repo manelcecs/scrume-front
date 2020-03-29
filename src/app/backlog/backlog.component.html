@@ -1,10 +1,14 @@
 <section id="main">
 
-    <section id="header">
+    <section id="header-PB">
 
-        <div>
-            <h3><a href="" (click)="openTeam()">{{project.team.name}}</a> > <a href=""  (click)="openProject()">{{project.name}}</a> > Product Backlog</h3>
-        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a (click)="openTeam()">{{project.team.name}}</a></li>
+              <li class="breadcrumb-item"><a (click)="openProject()">{{project.name}}</a></li>
+              <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">Product Backlog</li>
+            </ol>
+        </nav>
 
     </section>
 
@@ -21,25 +25,31 @@
         </div>
 
         <div id="task-list">
-            <ul class="list-group list-group-flush">
-                <mat-list-item class="task-row" *ngFor="let task of project.tasks | filter:searchValue">
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center task-row">
-                        <span>{{task.title}}</span>
-                        <span>Tu estimación: {{task.estimatedPoints}} PH</span>
-                        <span>Estimación total: {{task.finalPoints}} PH</span>
-
-                        <div>
-                            <button *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" mat-raised-button (click)="openEstimateTask(task.id)">Estimar</button>
-                            <button *ngIf="task.finalPoints != 0 && task.column == undefined" mat-raised-button (click)="openSelectSprint(task.id)">Mover</button>
-                            <mat-icon matListIcon (click)="openEditTask(task)">create</mat-icon> 
-                            <mat-icon matListIcon (click)="deleteTask(task)">delete</mat-icon> 
+            
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let task of project.tasks | filter:searchValue">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="panel-title">
+                        <div class="tasks-buttons-container">
+                            <img src="../assets/edit.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEditTask(task)">
+                            <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="deleteTask(task)">
+                            <img src="../assets/card.png" *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" width="auto" height="17" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEstimateTask(task.id)">
+                            <img src="../assets/move.png" *ngIf="task.finalPoints != 0 && task.column == undefined" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openSelectSprint(task.id)">
                         </div>
-                    </li>
-
-                </mat-list-item>
-            </ul>
-        </div>
+                        <span class="separator">|</span>
+                        <span>{{task.title}}</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="panel-content">
+                    <p class="task-description">{{task.description}}</p>
+                    <div class="task-points">
+                        <p>Tu estimación: {{task.estimatedPoints}} PH</p>
+                        <p>Estimación total: {{task.finalPoints}} PH</p>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 
     </section>
 

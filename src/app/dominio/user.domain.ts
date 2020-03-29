@@ -3,13 +3,17 @@ export interface UserName {
 
 }
 
+export interface UserIdUser {
+  idUser: number;
+}
+
 export interface UserNick {
   id: number;
   nick: string;
 }
 
 export interface User{
-    
+
     id?: number;
     gitUser: string;
     name: string;
@@ -18,4 +22,10 @@ export interface User{
     surnames: string;
     userAccount: any;
 
+}
+
+export interface SimpleUserNick {
+  id: number;
+  nick: string;
+  photo?: string;
 }

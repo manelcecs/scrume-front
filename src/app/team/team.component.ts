@@ -56,6 +56,30 @@ export class TeamComponent implements OnInit {
     }
   } //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
 
+//BORRAR
+// descargarPDF():void {
+//   const data = 'some text';
+//   var blob = new Blob([data], { type: "application/pdf"});
+//   this.ss = blob;
+//   this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+// }
+
+// generarPDF(){
+//   html2canvas(document.getElementById('paper'), {
+//      // Opciones
+//      allowTaint: true,
+//      useCORS: false,
+//      // Calidad del PDF
+//      scale: 1
+//   }).then(function(canvas) {
+//   //var img = canvas.toDataURL("image/png");
+//   var doc = new jsPDF();
+//   //doc.addImage(img,'PNG',7, 20, 195, 105);
+//   doc.save('prueba.pdf');
+//  });
+//}
+
+  //-----------------
 
   createTeam(): void {
     this.router.navigate(['teamsCreate']);
@@ -141,7 +165,7 @@ export class InvitationDialog implements OnInit{
   fruitCtrl = new FormControl('', {validators: [Validators.required]});
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
-  allUsers: UserNick[] = [{id:0, nick:"jualorper"}];
+  allUsers: UserNick[] = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;

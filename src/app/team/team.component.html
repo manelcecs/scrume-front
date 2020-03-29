@@ -1,52 +1,45 @@
-<div class="general">
+<div id="main-teams">
 
-  <section>
-    <div id="header-sprints-project">
-      <div id="title-sprint">
-        <h1 class="TM">Teams</h1>
-      </div>
-      <div id="buttons-project">
-        <button class="but" mat-flat-button (click)="createTeam()">Crear Equipo</button>
-      </div>
+<section>
+
+  <div id="buttons-project-container">
+    <button class="button-project" mat-flat-button (click)="createTeam()">Crear Equipo</button>
+  </div>
+
+  <div *ngFor="let team of teams">
+    <div class="team-title">
+      <h4>{{team.name}}</h4>
+      <img src="../assets/edit.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="editTeam(team)">
+      <img src="../assets/add-user.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openDialogInvite(team.id)">
+      <img src="../assets/bin.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="deleteTeam(team.id)">
     </div>
-  </section>
+  
+    <div class="team-proyects">
+      
+      <mat-list-item *ngFor="let project of team.projects">
 
-  <div class="equiposGeneral">
+        <mat-card class="project-card">
 
-    <mat-list-item class="team" *ngFor="let team of teams">
-      <div class="first-div">
+          <p class="project-card-title">{{project.name}}</p>
 
-        <h3 matLine>
-          <mat-icon matListIcon>people</mat-icon> {{team.name}}
-          <mat-icon (click)="editTeam(team)" matListIcon>create</mat-icon>
-          <mat-icon (click)="createProject(team)" matListIcon>add</mat-icon>
-          <mat-icon matListIcon (click)="deleteTeam(team.id)">delete</mat-icon>
-          <mat-icon matListIcon (click)="openDialogInvite(team.id)">person_add</mat-icon>
-        </h3>
-      </div>
-      <div>
-        <mat-list-item *ngFor="let project of team.projects">
+          <mat-card class="project-card-none">
 
-          <mat-card class="second-div">
-
-            <p class="title">{{project.name}}</p>
-
-            <mat-card class="div2">
-
-              <mat-icon matListIcon (click)="openBoard(project.id)">table_chart</mat-icon>
-              <mat-icon matListIcon (click)="openSprint(project)">insert_chart</mat-icon>
-              <mat-icon matListIcon (click)="openProject(project)" >work</mat-icon>
-
-            </mat-card>
+            <img src="../assets/board.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openBoard(project.id)">
+            <img src="../assets/report.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openSprint(project)">
+            <img src="../assets/project.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openProject(project)">
 
           </mat-card>
 
-        </mat-list-item>
+        </mat-card>
 
-      </div>
+      </mat-list-item>
 
-    </mat-list-item>
-
+      <img src="../assets/more.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="createProject(team)">
+  
+    </div>
   </div>
+
+
+</section>
 
 </div>

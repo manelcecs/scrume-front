@@ -7,7 +7,10 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { UserNick, User } from './dominio/user.domain';
+import { UserNick, User, UserIdUser } from './dominio/user.domain';
+import { query } from '@angular/animations';
+import { ProfileService } from './servicio/profile.service';
+import { Profile } from './dominio/profile.domain';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -48,15 +51,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cargarMenu();
 
     let token = sessionStorage.getItem("loginToken");
-    console.log("token:", token);
     if(token != null && token !== ""){
       this.getUserInfo();
-      
+
     }else{
+      this.cargarMenu();
+
       this.navigateTo("bienvenida");
     }
-  
-
 
   }
 
@@ -64,12 +66,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  navigateTo(route: string): void{
-    this.router.navigate([route]);
+  navigateTo(route: string, method?: string, id?: number): void{
+    if(method==undefined && id == undefined){
+      this.router.navigate([route]);
+    }else if(method != undefined && id == undefined){
+      this.router.navigate([route], {queryParams:{method: method}});
+    }else if(method == undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{id: id}});
+    }else if(method != undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{method: method, id: id}});
+    }
   }
 
   cargarMenu() : void{
-    console.log("Menu cargado");
+    let token = sessionStorage.getItem("loginToken");
+    let logged = token != null && token !== "";
+    console.log("Logged", logged);
     this.routes = [
       {
         title: 'Bienvenida',
@@ -80,7 +92,13 @@ export class AppComponent implements OnInit, OnDestroy {
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
-        visible: 'true'
+        visible: logged
+    },{
+      title: 'Mis Tareas',
+        route: '/myTasks',
+        icon: 'list',
+        visible: logged,
+        method: 'getTasksOfUser'
     }
   ];
   }
@@ -104,8 +122,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
-        this.userService.getUser(user.id).subscribe((userComplete: User)=>{
+    this.userService.findUserAuthenticated().subscribe((user: UserIdUser)=>{
+        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
           this.user = userComplete;
           this.navigateTo("teams");
         });
@@ -113,10 +131,17 @@ export class AppComponent implements OnInit, OnDestroy {
         this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
           if (invitations.length != 0) {
             this.notifications = true;
+          } else {
+            this.notifications = false;
           }
         });
-      
+
+        this.cargarMenu();
     });
+  }
+
+  openProfile(){
+    this.navigateTo("profile");
   }
 
 }
