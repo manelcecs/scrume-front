@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { Profile } from '../dominio/profile.domain';
+import { Profile, ProfileSave } from '../dominio/profile.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -16,5 +16,9 @@ export class ProfileService {
 
     getProfile(idPro: number): Observable<Profile> {
         return this.httpClient.get<Profile>(this.cabeceraService.getCabecera()+ "api/user/" + idPro, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    createProfile(profile: ProfileSave): Observable<ProfileSave> {
+        return this.httpClient.post<ProfileSave>(this.cabeceraService.getCabecera()+ "api/user" , profile, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 }
