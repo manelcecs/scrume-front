@@ -7,7 +7,7 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { UserNick, User } from './dominio/user.domain';
+import { UserNick, User, UserIdUser } from './dominio/user.domain';
 import { query } from '@angular/animations';
 import { ProfileService } from './servicio/profile.service';
 import { Profile } from './dominio/profile.domain';
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = sessionStorage.getItem("loginToken");
     if(token != null && token !== ""){
       this.getUserInfo();
-      
+
     }else{
       this.cargarMenu();
 
@@ -135,7 +135,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.notifications = false;
           }
         });
-      
+
         this.cargarMenu();
     });
   }
