@@ -13,19 +13,21 @@ export interface UserNick {
 }
 
 export interface User{
-
-    id?: number;
-    gitUser: string;
-    name: string;
-    nick: string;
-    photo: string;
-    surnames: string;
-    userAccount: any;
-
+  id?: number;
+  gitUser: string;
+  name: string;
+  nick: string;
+  photo: string;
+  surnames: string;
+  userAccount: any;
 }
 
-export interface SimpleUserNick {
+export interface UserRegister {
+  box: number;
+  expiredDate: string;
   id: number;
-  nick: string;
-  photo?: string;
+  orderId?: string;
+  password: string;
+  payerId?: string;
+  username: string;
 }

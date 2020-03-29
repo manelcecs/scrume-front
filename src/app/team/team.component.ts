@@ -40,8 +40,8 @@ export class TeamComponent implements OnInit {
     private projectService: ProjectService,
     private boardService: BoardService,
     public dialog: MatDialog
-    ) { 
-  
+    ) {
+
       this.teams = this.activatedRoute.snapshot.data.teams;
     }
 
