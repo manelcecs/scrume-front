@@ -50,3 +50,8 @@
     display: flex;
     justify-content: left;
 }
+
+#formulario{
+    padding-bottom: 40%;
+    display: block;
+}

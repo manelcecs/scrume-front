@@ -88,7 +88,7 @@ export class SprintComponent implements OnInit {
   //Board-----------------------------------------------------------------------------------------------------------------------------------
 
   openBoard(board: number): void {
-    this.router.navigate(['board'], { queryParams: { id: board } });
+    this.router.navigate(['board'], { queryParams: { id: board, idSprint: this.idSprint } });
   }
 
   createBoard(row: SprintDisplay): void {

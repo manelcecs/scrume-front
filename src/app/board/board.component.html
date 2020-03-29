@@ -3,6 +3,10 @@
 
 <div id="main">
 
+  <button style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
+    Volver al Sprint
+</button>
+
   <div id="boards-container" cdkDropListGroup>
     <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">
       <div class="nameColum">
