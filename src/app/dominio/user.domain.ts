@@ -17,3 +17,13 @@ export interface User{
   surnames: string;
   userAccount: any;
 }
+
+export interface UserRegister {
+  box: number;
+  expiredDate: string;
+  id: number;
+  orderId?: string;
+  password: string;
+  payerId?: string;
+  username: string;
+}

@@ -15,6 +15,7 @@ import { ProjectWithTaskResolverService, ProjectResolverService } from './servic
 import { SprintResolverService, SprintWorkspaceResolverService } from './servicio/sprint.service';
 import { TeamResolverService } from './servicio/team.service';
 import { RegisterComponent } from './register/register.component';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'board', component: BoardComponent},
   {path: 'invitation', component: CreateInvitationComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'terms-of-use', component: TermsOfUseComponent},
 
 
 ];

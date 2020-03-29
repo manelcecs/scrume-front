@@ -14,18 +14,20 @@
         </mat-form-field>
         <mat-form-field class="register-input">
           <mat-label>Contraseña</mat-label>
-          <input matInput formControlName="passwordControl" required (input)="confirmPasswordControl.updateValueAndValidity()">
+          <input matInput formControlName="passwordControl" required (input)="confirmPasswordControl.updateValueAndValidity()" [type]="showPass? 'text' : 'password'">
+          <mat-icon matSuffix (click)="changePassState()">remove_red_eye</mat-icon>
           <mat-error>{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
         <mat-form-field class="register-input">
           <mat-label>Confirmar contraseña</mat-label>
-          <input matInput formControlName="confirmPasswordControl" required (input)="confirmPasswordControl.updateValueAndValidity()">
+          <input matInput formControlName="confirmPasswordControl" required (input)="confirmPasswordControl.updateValueAndValidity()" [type]="showConfirmPass ? 'text' : 'password'">
+          <mat-icon matSuffix (click)="changeConfirmPassState()">remove_red_eye</mat-icon>
           <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
         </mat-form-field>
 
         <div>
           <button mat-button matStepperNext>Siguiente*</button><br/>
-          <small>*Haciendo click en siguiente acepta los términos y condiciones de la plataforma</small>
+          <small>*Haciendo click en "siguiente" acepta los <a (click)="navigateTo('terms-of-use')" target="_blank" style="color: lightskyblue; cursor: pointer;">términos y condiciones de la plataforma</a></small>
         </div>
       </form>
     </mat-step>
@@ -217,7 +219,7 @@
         </div>
         <div>
           <button mat-button matStepperPrevious>Atrás</button>
-          <button mat-button *ngIf="selectedPlan == 'BASIC'">Guardar</button>
+          <button mat-button *ngIf="selectedPlan == 'BASIC'" (click) = "saveBasicPlan()">Guardar</button>
         </div>
     </mat-step>
 

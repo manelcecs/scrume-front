@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
 import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
 import { Board } from '../dominio/board.domain';
-import { User } from '../dominio/user.domain';
+import { User, UserRegister } from '../dominio/user.domain';
 import { Box } from '../dominio/box.domain';
 
 @Injectable({providedIn:'root'})
@@ -27,7 +27,11 @@ export class UserService {
 
     isValidEmail(email : string) : Observable<boolean> {
       let data = {"username": email};
-      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/login/isAValidEmail", data, {headers: this.cabeceraService.getBasicAuthentication()})
+      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/login/isAValidEmail", data, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    registerUser(user: UserRegister) : Observable<UserRegister> {
+      return this.httpClient.post<UserRegister>(this.cabeceraService.getCabecera() + "api/login", user);
     }
 
 }

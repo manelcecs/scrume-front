@@ -58,6 +58,7 @@ import { RegisterComponent } from './register/register.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     SelectSprintBottomSheet,
     EstimateTaskDialog,
     LoginDialog,
-    RegisterComponent
+    RegisterComponent,
+    TermsOfUseComponent
   ],
   imports: [
     MatFormFieldModule,

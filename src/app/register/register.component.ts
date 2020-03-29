@@ -3,6 +3,8 @@ import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl, FormC
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { Box } from '../dominio/box.domain';
 import { UserService } from '../servicio/user.service';
+import {UserRegister} from '../dominio/user.domain';
+import { Router } from '@angular/router';
 
 // El selector es la forma de instanciar al componente desde otro html que no es el que aparece en la línea de abajo.
 // Por ejemplo, en el app.component.ts, el selector es app-root y en index.html es llamado poniendo <app-root></app-root>
@@ -21,6 +23,8 @@ export class RegisterComponent implements OnInit {
   public payPalConfig?: IPayPalConfig;
   selectedPlan : string;
   boxes : Box[];
+  showPass : boolean = false;
+  showConfirmPass : boolean = false;
 
   emailControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
   passwordControl: FormControl = new FormControl('', [Validators.required,
@@ -33,7 +37,7 @@ export class RegisterComponent implements OnInit {
 
 
 
-  constructor(private _formBuilder: FormBuilder, private userService : UserService) { }
+  constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router) { }
 
   ngOnInit(): void {
     this.userService.getAllBoxes().subscribe((res : Box[]) => {
@@ -103,10 +107,20 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  navigateTo(route: string): void{
+    this.router.navigate([route]);
+  }
 
-
+  changePassState(){
+    this.showPass = !this.showPass;
+  }
+  changeConfirmPassState() {
+    this.showConfirmPass = !this.showConfirmPass;
+  }
   initConfig(): void {
+    let paymentInfo;
     let priceSelectedBox : number;
+    let selectedBox : number = this.boxes.filter(box => box.name == this.selectedPlan)[0].id;
     if (this.selectedPlan == 'STANDARD') {
       priceSelectedBox = this.boxes.filter(box => box.name == 'STANDARD')[0].price;
     } else if (this.selectedPlan == 'PRO'){
@@ -154,11 +168,18 @@ export class RegisterComponent implements OnInit {
     },
     onApprove: (data, actions) => {
       console.log('onApprove - transaction was approved, but not authorized', data, actions);
+      paymentInfo = data;
       actions.order.get().then(details => {
         console.log('onApprove - you can get full order details inside onApprove: ', details);
       });
     },
     onClientAuthorization: (data) => {
+      let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+      let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value}
+      console.log(user);
+      this.userService.registerUser(user).subscribe(() => {
+        console.log("EXITOOOO")
+      });
       console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
     },
     onCancel: (data, actions) => {
@@ -171,6 +192,16 @@ export class RegisterComponent implements OnInit {
       console.log('onClick', data, actions);
     },
   };
+  }
+
+  saveBasicPlan(){
+    let selectedBox : number = this.boxes.filter(box => box.name == this.selectedPlan)[0].id;
+    let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+    let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, password: this.passwordControl.value,  username: this.emailControl.value}
+    console.log(user);
+    this.userService.registerUser(user).subscribe(() => {
+      console.log("EXITOOOO")
+    });
   }
 
 }
