@@ -36,7 +36,6 @@ export class RegisterComponent implements OnInit {
     Validators.pattern(/\d/),
     Validators.pattern(/[a-z]/),
     Validators.pattern(/[A-Z]/),
-    Validators.pattern(/[\^*\-_<>[\]{}¿?¡!\\\/&%$#():;.,+@=]/),
     Validators.minLength(8)]);
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
 
@@ -89,8 +88,7 @@ export class RegisterComponent implements OnInit {
     !this.passwordControl.hasError("pattern") ? '' :
     this.passwordControl.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
     this.passwordControl.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
-    this.passwordControl.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." :
-    this.passwordControl.getError("pattern")["requiredPattern"] == "/[\\^*\\-_<>[\\]{}¿?¡!\\\\\\/&%$#():;.,+@=]/" ? "Debe tener un símbolo: ^ * - _ < > [ ] { } ¿ ? ¡ ! \ / & % $ # ( ) : ; . , + @ = " : '';
+    this.passwordControl.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
   }
 
   getErrorMessageConfirmPassword(){
