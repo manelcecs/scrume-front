@@ -5,6 +5,7 @@ import { Box } from '../dominio/box.domain';
 import { UserService } from '../servicio/user.service';
 import {UserRegister} from '../dominio/user.domain';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // El selector es la forma de instanciar al componente desde otro html que no es el que aparece en la línea de abajo.
 // Por ejemplo, en el app.component.ts, el selector es app-root y en index.html es llamado poniendo <app-root></app-root>
@@ -14,6 +15,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css'] //Los css que harán referencia al html (Pueden ser varios, por eso es un array)
 })
 export class RegisterComponent implements OnInit {
+
+  message: string;
+  close: string;
+
   //Aqui se definen variables que se usarán más adelante
   signUpFormGroup: FormGroup;
   selectPlanFormGroup: FormGroup;
@@ -35,9 +40,7 @@ export class RegisterComponent implements OnInit {
     Validators.minLength(8)]);
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
 
-
-
-  constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router) { }
+  constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userService.getAllBoxes().subscribe((res : Box[]) => {
@@ -117,6 +120,13 @@ export class RegisterComponent implements OnInit {
   changeConfirmPassState() {
     this.showConfirmPass = !this.showConfirmPass;
   }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+    });
+  }
+
   initConfig(): void {
     let paymentInfo;
     let priceSelectedBox : number;
@@ -178,7 +188,9 @@ export class RegisterComponent implements OnInit {
       let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value}
       console.log(user);
       this.userService.registerUser(user).subscribe(() => {
-        console.log("EXITOOOO")
+        this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+        this.close = "Cerrar";
+        this.openSnackBar(this.message, this.close);
       });
       console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
     },
@@ -200,7 +212,9 @@ export class RegisterComponent implements OnInit {
     let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, password: this.passwordControl.value,  username: this.emailControl.value}
     console.log(user);
     this.userService.registerUser(user).subscribe(() => {
-      console.log("EXITOOOO")
+      this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+      this.close = "Cerrar";
+      this.openSnackBar(this.message, this.close);
     });
   }
 
