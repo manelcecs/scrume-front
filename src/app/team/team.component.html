@@ -13,9 +13,9 @@
       <img src="../assets/add-user.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openDialogInvite(team.id)">
       <img src="../assets/bin.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="deleteTeam(team.id)">
     </div>
-  
+
     <div class="team-proyects">
-      
+
       <mat-list-item *ngFor="let project of team.projects">
 
         <mat-card class="project-card">
@@ -35,7 +35,7 @@
       </mat-list-item>
 
       <img src="../assets/more.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="createProject(team)">
-  
+
     </div>
   </div>
 

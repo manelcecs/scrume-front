@@ -88,8 +88,8 @@ export class NewSprintDialog implements OnInit{
 
   project: ProjectName;
   sprint: SprintJsonDates;
-  startDate = new FormControl('',  { validators: [Validators.required, this.validateToday, this.validateStartBeforeEnd]});
-  endDate = new FormControl('',  { validators: [Validators.required, this.validateToday] });
+  startDate = new FormControl('',  { validators: [Validators.required]});
+  endDate = new FormControl('',  { validators: [Validators.required] });
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
@@ -121,13 +121,15 @@ export class NewSprintDialog implements OnInit{
     return this.startDate.hasError('required')?'Este campo es obligatorio':
     this.startDate.hasError('past')?'La fecha no puede ser en pasado':
     this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':
-    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':'';
+    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':
+    this.startDate.hasError('beforeToday') ? "La fecha no puede ser anterior a hoy" : '';
   };
 
   getErrorMessageEndDate() : string {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':
-    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
-    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':'';
+    return this.endDate.hasError('required')?'Este campo es obligatorio':
+    this.endDate.hasError('past')?'La fecha no puede ser en pasado':
+    this.endDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':
+    this.endDate.hasError('beforeTodayEnd') ? "La fecha no puede ser anterior a hoy" : '';
   }
 
   validForm():boolean {
@@ -139,28 +141,31 @@ export class NewSprintDialog implements OnInit{
 
   }
 
-  validateToday(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      console.log("Prueba 2")
-      let isValid = true;
 
-      if (control.value.getTime() < Date.now()) {
-        isValid = false;
-      }
-      return isValid ? null : { 'past': 'the date cant be past' }
-    };
+  afterTodayStarDateValidator() {
+    let formControlToTime : number = new Date(this.startDate.value).getTime();
+    let todayToTime : number = new Date().getTime();
+    console.log("Validator de hoy:", formControlToTime);
+    if (formControlToTime < todayToTime) {
+      this.startDate.setErrors({'beforeToday':true});
+    } else {
+      this.startDate.updateValueAndValidity();
+    }
+    console.log("ERrores start", this.startDate.errors);
   }
 
-  validateStartBeforeEnd(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-      let isValid = true;
-      if (control.value.getTime() > this.endDate.value.getTime()) {
-        isValid = false;
-      }
-      return isValid ? null : { 'invalid': 'Invalid dates' }
-
-    };
+  afterTodayEndDateValidator() {
+    let formControlToTime : number = new Date(this.endDate.value).getTime();
+    let todayToTime : number = new Date().getTime();
+    console.log("Validator de hoy:", formControlToTime);
+    if (formControlToTime < todayToTime) {
+      this.endDate.setErrors({'beforeTodayEnd':true});
+    } else {
+      this.endDate.updateValueAndValidity();
+    }
+    console.log("Errores end", this.endDate.errors);
   }
+
 
   validDatesValidator() {
     console.log("Validator de dates");
@@ -169,7 +174,7 @@ export class NewSprintDialog implements OnInit{
       if (!res) {
         this.startDate.setErrors({'usedDates': true});
         this.endDate.setErrors({'usedDates': true});
-      } else {
+      } else if (!(this.startDate.hasError('beforeToday') || this.endDate.hasError('beforeTodayEnd'))) {
         this.startDate.updateValueAndValidity();
         this.endDate.updateValueAndValidity();
       }

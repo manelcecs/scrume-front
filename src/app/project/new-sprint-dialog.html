@@ -7,7 +7,7 @@
         <mat-label>Fecha de inicio</mat-label>
         <input matInput [formControl]="startDate" [matDatepicker]="pickerStar"/>
         <mat-datepicker-toggle matSuffix [for]="pickerStar"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStar (closed)="validDatesValidator()"></mat-datepicker>
+        <mat-datepicker #pickerStar (closed)="afterTodayStarDateValidator();validDatesValidator();"></mat-datepicker>
         <mat-error *ngIf="startDate.invalid">{{ getErrorMessageStartDate() }}</mat-error>
       </mat-form-field>
     </div>
@@ -16,7 +16,7 @@
         <mat-label>Fecha de fin</mat-label>
         <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd" />
         <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd (closed)="validDatesValidator()"></mat-datepicker>
+        <mat-datepicker #pickerEnd (closed)="afterTodayEndDateValidator();validDatesValidator();"></mat-datepicker>
         <mat-error *ngIf="endDate.invalid">{{ getErrorMessageEndDate() }}</mat-error>
       </mat-form-field>
     </div>

@@ -59,23 +59,27 @@ export class CreateProjectComponent implements OnInit {
 
   createProject(): void {
 
-    if (this.idProyecto != undefined){
+    if (this.validForm()) {
 
-      this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
-        this.project = resp;
-        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
-      });
+      if (this.idProyecto != undefined){
 
-    }else{
-      console.log("proyecto: "+ JSON.stringify(this.project));
-      this._createProject().subscribe((resp: ProjectDto) => {
+        this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
-        this.project = resp;
-        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+          this.project = resp;
+          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+        });
 
-      });
+      }else{
+        console.log("proyecto: "+ JSON.stringify(this.project));
+        this._createProject().subscribe((resp: ProjectDto) => {
 
+          this.project = resp;
+          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+
+        });
+
+      }
     }
 
   }
@@ -105,7 +109,9 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  validForm():Boolean {
+
+
+  validForm():boolean {
 
     let valid: boolean;
 
