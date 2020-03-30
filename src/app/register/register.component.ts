@@ -32,11 +32,8 @@ export class RegisterComponent implements OnInit {
   showConfirmPass : boolean = false;
 
   emailControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordControl: FormControl = new FormControl('', [Validators.required, 
-     Validators.pattern(/\d/),
-     Validators.pattern(/[a-z]/),
-     Validators.pattern(/[A-Z]/),
-     Validators.minLength(8)]);
+  passwordControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$')]);
+
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
 
   constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
