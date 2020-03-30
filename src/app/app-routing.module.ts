@@ -20,6 +20,7 @@ import { DocumentComponent } from './document/document.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
+import { AppComponent } from './app.component';
 
 
 const routes: Routes = [
@@ -38,7 +39,7 @@ const routes: Routes = [
   {path: 'terms-of-use', component: TermsOfUseComponent},
   {path: 'document', component: DocumentComponent},
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
 
 
 ];
