@@ -18,6 +18,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { InvitationService } from '../servicio/invitation.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {map, startWith} from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-team',
@@ -39,7 +40,8 @@ export class TeamComponent implements OnInit {
     private sprintService: SprintService,
     private projectService: ProjectService,
     private boardService: BoardService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
     ) {
 
       this.teams = this.activatedRoute.snapshot.data.teams;
@@ -52,7 +54,7 @@ export class TeamComponent implements OnInit {
         }, (error)=>{
       });
     }
-  } 
+  }
 
   //-----------------
 
@@ -80,7 +82,13 @@ export class TeamComponent implements OnInit {
   openBoard(idProj: number): void{
     this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple)=>{
       this.boardNumber = board.id;
-      this.router.navigate(['board'], {queryParams: {id: this.boardNumber}});
+      if (this.boardNumber != 0){
+        this.router.navigate(['board'], {queryParams: {id: this.boardNumber}});
+      } else {
+        this._snackBar.open("No hay un tablero actualizado recientemente", "Cerrar", {
+          duration: 2000,
+        });
+      }
     });
   }
 

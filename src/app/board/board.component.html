@@ -3,7 +3,7 @@
 
 <div id="main">
 
-  <button style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
+  <button *ngIf="idSprint != undefined" style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
     Volver al Sprint
 </button>
 
@@ -14,7 +14,7 @@
       </div>
 
       <hr>
-  
+
       <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
         <div *ngIf="tarea.title != undefined" class="nombreTarea">
           <p>{{tarea.title}}</p>
@@ -29,9 +29,8 @@
 
         </div>
       </div>
-  
+
     </div>
   </div>
 
 </div>
-    

@@ -26,8 +26,8 @@ export class BacklogComponent implements OnInit {
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, 
-    private taskService: TaskService, private bottomSheet: MatBottomSheet) { 
+    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog,
+    private taskService: TaskService, private bottomSheet: MatBottomSheet) {
 
       this.idProject = this.activatedRoute.snapshot.data.project.id;
       this.project = this.activatedRoute.snapshot.data.project;
@@ -191,7 +191,7 @@ export class NewTaskDialog implements OnInit{
   project: ProjectName;
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
-  description = new FormControl('',  { validators: []});
+  description = new FormControl('',  { validators: [Validators.required]});
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
@@ -240,7 +240,7 @@ export class EditTaskDialog implements OnInit{
   idTask: number;
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
-  description = new FormControl('',  { validators: []});
+  description = new FormControl('',  { validators: [Validators.required]});
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
@@ -273,7 +273,7 @@ export class EditTaskDialog implements OnInit{
     return this.description.hasError('required')?'Este campo es obligatorio':'';
   };
 
- 
+
 
   validForm():boolean {
     let valid: boolean;
