@@ -1,17 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Team, TeamSimple } from '../dominio/team.domain';
-import { ProjectDto, ProjectComplete, ProjectName } from '../dominio/project.domain';
+import { ProjectComplete, ProjectName } from '../dominio/project.domain';
 import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
-import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TaskDto, TaskSimple, TaskBacklog, TaskMove, TaskEstimate } from '../dominio/task.domain';
-import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { TaskDto, TaskSimple, TaskMove, TaskEstimate } from '../dominio/task.domain';
+import { FormControl, Validators} from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
 import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
-import {MatListModule} from '@angular/material/list';
-import { Sprint, SprintDisplay, SprintWorkspace } from '../dominio/sprint.domain';
+import { SprintWorkspace } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 

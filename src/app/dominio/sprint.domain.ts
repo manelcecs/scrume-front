@@ -1,5 +1,5 @@
 import { ProjectName, ProjectDto } from './project.domain';
-import { Board, BoardColumnTODO } from './board.domain';
+import { BoardColumnTODO } from './board.domain';
 
 export interface SprintDisplay {
     id: number;

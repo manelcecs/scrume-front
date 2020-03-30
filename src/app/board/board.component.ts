@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ColumDto} from '../dominio/colum.domian';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
 import { TaskDto, TaskMove } from '../dominio/task.domain';
-import { BoardSimple, Board, BoardNumber } from '../dominio/board.domain';
-import { Observable } from 'rxjs';
+import { Board} from '../dominio/board.domain';
 import { TaskService } from '../servicio/task.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AssingTaskDialog } from '../assing-task/assing-task.dialog.component';
@@ -50,13 +49,7 @@ export class BoardComponent implements OnInit {
   var: string = "To Do";
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-
-      let col = event.container.data+"";
-
-
-      
-    } else {
+    if (event.previousContainer !== event.container) {
 
       let col = event.previousContainer.data+"";
       let col2 = event.container.data+"";

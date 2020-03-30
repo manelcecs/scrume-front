@@ -28,12 +28,12 @@
     overflow-y: auto;
 }
 
-#pdf{
-    /* background-color: rgba(212, 212, 212, 0.082); 
+/* #pdf{
+    background-color: rgba(212, 212, 212, 0.082); 
     width: 100%;
     padding: 0% 12%;
-    height: 500px; */
-}
+    height: 500px; 
+}*/
 
 .paper {
     background: #fff;
@@ -52,8 +52,8 @@
     white-space: pre-line;
   }
   
-  .paper > p{
+  /*.paper > p{
   
-  }
+  }*/
 
   

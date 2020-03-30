@@ -3,8 +3,8 @@ import { Team } from '../dominio/team.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
-import { Board, BoardSimple } from '../dominio/board.domain';
-import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
+import { BoardSimple } from '../dominio/board.domain';
+import { SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { ProjectService } from '../servicio/project.service';
 import { Observable } from 'rxjs';
@@ -50,34 +50,9 @@ export class TeamComponent implements OnInit {
         this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
           t.projects = projects;
         }, (error)=>{
-      console.log("Error al hacer la petición a BD. "+error);
-      //error("Error al hacer la petición a BD.", this.options);
       });
     }
-  } //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
-
-//BORRAR
-// descargarPDF():void {
-//   const data = 'some text';
-//   var blob = new Blob([data], { type: "application/pdf"});
-//   this.ss = blob;
-//   this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-// }
-
-// generarPDF(){
-//   html2canvas(document.getElementById('paper'), {
-//      // Opciones
-//      allowTaint: true,
-//      useCORS: false,
-//      // Calidad del PDF
-//      scale: 1
-//   }).then(function(canvas) {
-//   //var img = canvas.toDataURL("image/png");
-//   var doc = new jsPDF();
-//   //doc.addImage(img,'PNG',7, 20, 195, 105);
-//   doc.save('prueba.pdf');
-//  });
-//}
+  } 
 
   //-----------------
 
@@ -237,7 +212,7 @@ export class InvitationDialog implements OnInit{
 
   getErrorMessageMessage() : string {
     return this.messageFormControl.hasError('required')?'El mensaje es obligatorio':'';
-  };
+  }
 
 
   validForm():boolean {

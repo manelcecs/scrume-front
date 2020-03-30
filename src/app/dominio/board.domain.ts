@@ -1,6 +1,5 @@
 import { ColumDto } from './colum.domian';
-import { SprintComponent } from '../sprint/sprint.component';
-import { SprintDisplay, Sprint } from './sprint.domain';
+import { Sprint } from './sprint.domain';
 
 export interface Board {
     id?: Number;
