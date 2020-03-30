@@ -1,4 +1,4 @@
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,6 +54,11 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
+import { RegisterComponent } from './register/register.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { DocumentComponent } from './document/document.component';
@@ -91,7 +96,9 @@ import { ProfileComponent } from './profile/profile.component';
     NewDocumentDialog,
     AssingTaskDialog,
     MyTasksComponent,
-    ProfileComponent
+    ProfileComponent,
+    RegisterComponent,
+    TermsOfUseComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -129,9 +136,16 @@ import { ProfileComponent } from './profile/profile.component';
     MatListModule,
     MatChipsModule,
     MatBadgeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatStepperModule,
+    NgxPayPalModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

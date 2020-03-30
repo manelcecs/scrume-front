@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../servicio/board.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BoardSimple, Board, BoardNumber } from '../dominio/board.domain';
+import { Board, BoardNumber } from '../dominio/board.domain';
 import { Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 

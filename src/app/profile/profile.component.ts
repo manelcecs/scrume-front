@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { UserNick, User, UserIdUser } from '../dominio/user.domain';
+import { User, UserIdUser } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -24,13 +24,16 @@ export class ProfileComponent implements OnInit {
   profileSave: ProfileSave;
   idUserAccount: number;
 
-  name: FormControl = new FormControl('', { validators: [Validators.required] });
-  nick: FormControl = new FormControl('', { validators: [Validators.required] });
-  surnames: FormControl = new FormControl('', { validators: [Validators.required] });
-  photo: FormControl = new FormControl('', { validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(256)] });
-  gitUser: FormControl = new FormControl('');
+  name: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
+  nick: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25), Validators.pattern(/^\S+$/)] });
+  surnames: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
+  photo: FormControl = new FormControl('', { validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(255)] });
+  gitUser: FormControl = new FormControl('', {validators: [Validators.pattern(/^\S+$/)]});
   lastPass: FormControl = new FormControl('');
-  newPass: FormControl = new FormControl('', { validators: [Validators.pattern(/^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/)] });
+  newPass: FormControl = new FormControl('', { validators: [Validators.pattern(/\d/),
+    Validators.pattern(/[a-z]/),
+    Validators.pattern(/[A-Z]/),
+    Validators.minLength(8)] });
 
   newPassword: string;
   showPass: boolean = false;
@@ -69,15 +72,11 @@ export class ProfileComponent implements OnInit {
           this.message = "Perfil actualizado.";
           this.close = "Cerrar";
 
-          console.log(JSON.stringify(this.profile));
-
           this.name.setValue(this.profile.name);
           this.nick.setValue(this.profile.nick);
           this.surnames.setValue(this.profile.surnames);
           this.photo.setValue(this.profile.photo);
           this.gitUser.setValue(this.profile.gitUser);
-
-          let token = sessionStorage.getItem("loginToken");
 
         });
       });
@@ -109,15 +108,16 @@ export class ProfileComponent implements OnInit {
       newPassword: this.profile.newPassword
     }
 
-    console.log(JSON.stringify("la editada " + JSON.stringify(this.profile)));
-
     this.profileService.editProfile(this.profile).subscribe((pro: Profile) => {
       this.profile = pro;
 
 
     }, (error) => {
-      this.lastPass.setErrors({ invalid: true });
-      this.newPass.setErrors({ invalid: true });
+      if(error.error.message == "The current password does not match the one stored in the database") {
+        this.lastPass.setErrors({ invalid: true });
+      }else if(error.error.message == "The new password must have an uppercase, a lowercase, a number and at least 8 characters"){
+        this.newPass.setErrors({ invalid: true });
+      }
     },
       () => {
         if (this.newPass.value == "") {
@@ -140,7 +140,7 @@ export class ProfileComponent implements OnInit {
 
     let valid: boolean = true;
 
-    valid = valid && this.name.valid && this.nick.valid && this.surnames.valid;
+    valid = valid && this.name.valid && this.nick.valid && this.surnames.valid && this.photo.valid && this.newPass.valid && this.lastPass.valid;
     return valid;
 
   }
@@ -151,13 +151,23 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  getErrorMessageName(): String {
+  getErrorMessageName(): string {
     return this.name.hasError('required') ? 'Este campo es requerido.' :
-      this.nick.hasError('required') ? 'Este campo es requerido.' :
-        this.surnames.hasError('required') ? 'Este campo es requerido.' :
-          this.photo.hasError('pattern') ? 'Debe de ser una imagen.' :
-            this.photo.hasError('maxlength') ? 'No puede tener más de 256 caracteres.' :
-              this.newPass.hasError('pattern') ? 'Debe de contener al menos 8 caracteres, una mayuscula, una minuscula y un número.' : '';
+    this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+    this.photo.hasError('pattern') ? 'Debe de ser una imagen.' :
+    this.photo.hasError('maxlength') ? 'No puede tener más de 256 caracteres.' :
+    this.nick.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+    this.nick.hasError('pattern') ? 'No puede tener espacios en blanco.' :
+    this.nick.hasError('required') ? 'Este campo es requerido.' :
+    this.surnames.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+    this.surnames.hasError('required') ? 'Este campo es requerido.' :
+    this.gitUser.hasError('pattern') ? 'No puede tener espacios en blanco.' :
+    this.newPass.hasError('minlength') ? 'El tamaño debe ser mayor a 8 caracteres.':
+    this.newPass.hasError('invalid') ? 'No puedes ser vacia.' :
+    this.newPass.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
+    this.newPass.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
+    this.newPass.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
+
   }
 
   changePassState() {
@@ -169,10 +179,6 @@ export class ProfileComponent implements OnInit {
   }
 
   getErrorLastPass() {
-    return this.lastPass.hasError('invalid') ? 'La contraseña es incorrecta.' : '';
-  }
-
-  getErrorNewPass() {
     return this.lastPass.hasError('invalid') ? 'La contraseña es incorrecta.' : '';
   }
 

@@ -16,6 +16,7 @@
       </div>
       
       <div id="menu-horizontal-buttons-right">
+      <div class="username" *ngIf="user == undefined"><a (click)="navigateTo('register')">Registrarse</a></div>
 
         <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin-right: 10px;">Acceder</a>
         <img *ngIf="user != undefined" src="../assets/profile.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()"> 

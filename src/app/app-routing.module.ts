@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WellcomeComponent } from './wellcome/wellcome.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
@@ -18,6 +17,8 @@ import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { TaskResolverService } from './servicio/task.service';
 import { DocumentComponent } from './document/document.component';
 import { ProfileComponent } from './profile/profile.component';
+import { RegisterComponent } from './register/register.component';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 
 
 const routes: Routes = [
@@ -32,9 +33,12 @@ const routes: Routes = [
   {path: 'createBoard', component: CreateBoardComponent},
   {path: 'board', component: BoardComponent},
   {path: 'invitation', component: CreateInvitationComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'terms-of-use', component: TermsOfUseComponent},
   {path: 'document', component: DocumentComponent},
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+
 
 ];
 

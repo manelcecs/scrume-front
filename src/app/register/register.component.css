@@ -1,0 +1,68 @@
+#register-main {
+  margin: 3% 10%;
+}
+
+.register-input {
+  width: 100%;
+}
+
+/* ========================
+   ==Tabla con los planes==
+   ========================
+*/
+#card-table {
+  width: 100%;
+  text-align: center;
+}
+
+.plan-table{
+  width: 100%;
+  text-align: center;
+}
+
+.plan-table > td{
+  width: 10%;
+  text-align: center;
+  vertical-align: top;
+
+}
+
+.plan-table > td > div{
+  margin: auto;
+}
+
+/* Div con la información de los planes */
+.plan-card{
+  width: 90%;
+}
+
+.img-plan-card {
+  padding-top: 5%;
+  padding-bottom: 10%;
+}
+
+.img-plan-card > img {
+  width: 40%;
+}
+
+/* Filas de la tabla con las features de los planes */
+
+.feature-plan-table > td{
+  padding: 1% 2%;
+
+}
+
+.price-plan-table > td{
+  padding: 1% 2%;
+}
+
+/* Botones */
+button {
+  background-color: #38B6FF;
+  color: white;
+  margin-left: 1em;
+}
+
+button:hover {
+  background-color: #18A1F0;
+}

@@ -4,7 +4,6 @@ import { CabeceraService } from './cabecera.service';
 import { Team, TeamSimple } from '../dominio/team.domain';
 import { Observable } from 'rxjs';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { SprintService } from './sprint.service';
 
 @Injectable({providedIn:'root'})
 
@@ -54,11 +53,10 @@ export class TeamResolverService implements Resolve<any>{
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
         let method = activatedRoute.queryParams.method;
-        switch(method){
-            case 'getTeam':
-                return this.teams.getTeam(activatedRoute.queryParams.id);
-            default:
-                return this.teams.getAllTeams();
+        if(method === 'getTeam'){
+            return this.teams.getTeam(activatedRoute.queryParams.id);
+        }else{
+            return this.teams.getAllTeams();
         }
     }
 }

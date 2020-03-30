@@ -6,8 +6,6 @@ import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
-import { error } from '@angular/compiler/src/util';
-import { WrappedNodeExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-project',
@@ -27,7 +25,7 @@ export class ProjectComponent implements OnInit {
      private projectService: ProjectService,
      private sprintService : SprintService,
      public dialog: MatDialog
-    ) { 
+    ) {
 
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
@@ -120,11 +118,16 @@ export class NewSprintDialog implements OnInit{
   }
 
   getErrorMessageStartDate() : string {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':'';
+    return this.startDate.hasError('required')?'Este campo es obligatorio':
+    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
+    this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':
+    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':'';
   };
 
   getErrorMessageEndDate() : string {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':this.startDate.hasError('past')?'La fecha no puede ser en pasado':'';
+    return this.startDate.hasError('required')?'Este campo es obligatorio':
+    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
+    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':'';
   }
 
   validForm():boolean {
@@ -157,6 +160,21 @@ export class NewSprintDialog implements OnInit{
       return isValid ? null : { 'invalid': 'Invalid dates' }
 
     };
+  }
+
+  validDatesValidator() {
+    console.log("Validator de dates");
+    this.sprintService.checkDates(this.project.id, this.startDate.value, this.endDate.value).subscribe((res : boolean) => {
+      console.log("Res:", res);
+      if (!res) {
+        this.startDate.setErrors({'usedDates': true});
+        this.endDate.setErrors({'usedDates': true});
+      } else {
+        this.startDate.updateValueAndValidity();
+        this.endDate.updateValueAndValidity();
+      }
+      console.log("Errors 1:", this.startDate.errors);
+    })
   }
 
     //Validartor que compruebe si puede crear un sprnt en esas fechas con una query

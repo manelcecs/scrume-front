@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { TaskToList } from '../dominio/task.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 
