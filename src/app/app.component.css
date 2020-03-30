@@ -18,7 +18,7 @@ mat-sidenav-container {
 #menu-horizontal{
     height: 70px;
     width: 100%;
-    background-color: lightslategray;
+    background-color: black;
     color: whitesmoke;
     padding: 1%;
     position: sticky;
