@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InvitationDisplay, AnswerInvitation } from '../dominio/invitation.domain';
 import { InvitationService } from '../servicio/invitation.service';
-import { Observable, timer } from 'rxjs';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-notifications',

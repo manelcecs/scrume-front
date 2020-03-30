@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { User, SimpleUserNick, UserNick, UserIdUser, UserRegister } from '../dominio/user.domain';
-import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
-import { Board } from '../dominio/board.domain';
+import { User, SimpleUserNick, UserIdUser, UserRegister } from '../dominio/user.domain';
 import { Box } from '../dominio/box.domain';
 
 @Injectable({providedIn:'root'})

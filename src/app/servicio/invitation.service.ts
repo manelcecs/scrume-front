@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { ProjectDto, ProjectComplete } from '../dominio/project.domain';
 import { InvitationDisplay, InvitationDto, AnswerInvitation } from '../dominio/invitation.domain';
 import { UserNick } from '../dominio/user.domain';
 

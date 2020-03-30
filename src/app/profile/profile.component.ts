@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { UserNick, User, UserIdUser } from '../dominio/user.domain';
+import { User, UserIdUser } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -72,15 +72,11 @@ export class ProfileComponent implements OnInit {
           this.message = "Perfil actualizado.";
           this.close = "Cerrar";
 
-          console.log(JSON.stringify(this.profile));
-
           this.name.setValue(this.profile.name);
           this.nick.setValue(this.profile.nick);
           this.surnames.setValue(this.profile.surnames);
           this.photo.setValue(this.profile.photo);
           this.gitUser.setValue(this.profile.gitUser);
-
-          let token = sessionStorage.getItem("loginToken");
 
         });
       });
@@ -111,8 +107,6 @@ export class ProfileComponent implements OnInit {
       previousPassword: this.profile.previousPassword,
       newPassword: this.profile.newPassword
     }
-
-    console.log(JSON.stringify("la editada " + JSON.stringify(this.profile)));
 
     this.profileService.editProfile(this.profile).subscribe((pro: Profile) => {
       this.profile = pro;
@@ -157,7 +151,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  getErrorMessageName(): String {
+  getErrorMessageName(): string {
     return this.name.hasError('required') ? 'Este campo es requerido.' :
     this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
     this.photo.hasError('pattern') ? 'Debe de ser una imagen.' :

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ProjectService } from '../servicio/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectDto } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
-import { Team } from '../dominio/team.domain';
 
 @Component({
   selector: 'app-create-project',

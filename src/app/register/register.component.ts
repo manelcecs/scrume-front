@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { Box } from '../dominio/box.domain';
 import { UserService } from '../servicio/user.service';

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../servicio/document.service';
 import { Document} from '../dominio/document.domain';
-//De document
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -90,7 +89,7 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  navigateTo(route: String): void{
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
@@ -133,21 +132,21 @@ export class DocumentComponent implements OnInit {
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  restrospectiveGood(value: String){ 
+  restrospectiveGood(value: string){ 
     this.good = value; 
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveGood");
     pdfContainer.scrollTop = scrollNow.clientHeight;  
   }
   
-  restrospectiveBad(value: String){ 
+  restrospectiveBad(value: string){ 
     this.bad = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveBad");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
   
-  restrospectiveImprovement(value: String){ 
+  restrospectiveImprovement(value: string){ 
     this.improvement = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveImprovement");
@@ -166,21 +165,21 @@ export class DocumentComponent implements OnInit {
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewDone(value: String){ 
+  reviewDone(value: string){ 
     this.done = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewNoDone(value: String){ 
+  reviewNoDone(value: string){ 
     this.noDone = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewNoDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewRePlanning(value: String){ 
+  reviewRePlanning(value: string){ 
     this.rePlanning = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewRePlanning");
@@ -197,14 +196,14 @@ export class DocumentComponent implements OnInit {
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  planningEntrega(value: String){ 
+  planningEntrega(value: string){ 
     this.entrega = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("planningEntrega");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  planningConseguir(value: String){ 
+  planningConseguir(value: string){ 
     this.conseguir = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("planningConseguir");
@@ -234,8 +233,6 @@ export class DocumentComponent implements OnInit {
         noDone: this.noDone,
         rePlanning: this.rePlanning
       }
-
-      console.log("lo que me llega " + this.done);
       
     }else if(doc.type == "RETROSPECTIVE"){
 
@@ -272,10 +269,8 @@ export class DocumentComponent implements OnInit {
       content: this.con
     }
 
-    console.log("el documento " + JSON.stringify(documentComplete));
-
-    this.documentService.editDocument(documentComplete).subscribe((doc: Document)=> {
-      this.doc = doc;
+    this.documentService.editDocument(documentComplete).subscribe((docSaved: Document)=> {
+      this.doc = docSaved;
     });
   }
 

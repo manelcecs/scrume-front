@@ -6,8 +6,6 @@ import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
-import { error } from '@angular/compiler/src/util';
-import { WrappedNodeExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-project',

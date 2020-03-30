@@ -2,17 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Sprint, SprintDisplay, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { NewSprintDialog } from '../project/project.component';
 import { SprintService } from '../servicio/sprint.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoardSimple, BoardNumber, Board } from '../dominio/board.domain';
 import { BoardService } from '../servicio/board.service';
 import { Observable } from 'rxjs';
-import { formatDate } from '@angular/common';
 import { Document } from '../dominio/document.domain'
-import { LOCALE_ID } from '@angular/core';
 import { DocumentService } from '../servicio/document.service';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-sprint',
@@ -142,8 +138,8 @@ export class SprintComponent implements OnInit {
         this.board = board;
       });
 
-      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((doc: Document[]) => {
-        this.doc = doc;
+      this.documentService.getDocumentsBySprint(this.idSprint).subscribe((docSave: Document[]) => {
+        this.doc = docSave;
       });
 
     });
