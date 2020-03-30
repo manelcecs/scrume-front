@@ -45,11 +45,9 @@ export class CreateProjectComponent implements OnInit {
 
           this.idEquipo = params.id;
         }else{
-          console.log("Nice try...");
           this.navigateTo("teams");
         }
       }else{
-        console.log("Nice try...");
         this.navigateTo("teams");
       }
 
@@ -71,7 +69,6 @@ export class CreateProjectComponent implements OnInit {
         });
 
       }else{
-        console.log("proyecto: "+ JSON.stringify(this.project));
         this._createProject().subscribe((resp: ProjectDto) => {
 
           this.project = resp;

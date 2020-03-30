@@ -32,11 +32,11 @@ export class RegisterComponent implements OnInit {
   showConfirmPass : boolean = false;
 
   emailControl: FormControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordControl: FormControl = new FormControl('', [Validators.required,
-    Validators.pattern(/\d/),
-    Validators.pattern(/[a-z]/),
-    Validators.pattern(/[A-Z]/),
-    Validators.minLength(8)]);
+  passwordControl: FormControl = new FormControl('', [Validators.required, 
+     Validators.pattern(/\d/),
+     Validators.pattern(/[a-z]/),
+     Validators.pattern(/[A-Z]/),
+     Validators.minLength(8)]);
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
 
   constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
@@ -64,14 +64,11 @@ export class RegisterComponent implements OnInit {
 
   validEmailValidator() {
     this.userService.isValidEmail(this.emailControl.value).subscribe((res : boolean) => {
-      console.log("Email:", this.emailControl.value);
-      console.log("Res:", res);
       if (!res) {
         this.emailControl.setErrors({'usedEmail': true});
       } else {
         this.emailControl.updateValueAndValidity();
       }
-      console.log("Errors 1:", this.emailControl.errors);
     })
   }
 
@@ -85,10 +82,10 @@ export class RegisterComponent implements OnInit {
   getErrorMessagePassword(){
     return this.passwordControl.hasError('required') ? 'Este campo es requerido.':
     this.passwordControl.hasError('minlength') ? 'El tamaño debe ser mayor a 8 caracteres.':
-    !this.passwordControl.hasError("pattern") ? '' :
-    this.passwordControl.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
-    this.passwordControl.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
-    this.passwordControl.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
+    this.passwordControl.hasError("pattern") ? 'La contraseña debe tener 8 caracteres entre números, mayúsculas y minúsculas.' :'';
+    // this.passwordControl.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
+    // this.passwordControl.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
+    // this.passwordControl.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
   }
 
   getErrorMessageConfirmPassword(){
@@ -177,9 +174,7 @@ export class RegisterComponent implements OnInit {
     onApprove: (data, actions) => {
       console.log('onApprove - transaction was approved, but not authorized', data, actions);
       paymentInfo = data;
-      actions.order.get().then(details => {
-        console.log('onApprove - you can get full order details inside onApprove: ', details);
-      });
+      actions.order.get();
     },
     onClientAuthorization: (data) => {
       let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
@@ -190,7 +185,6 @@ export class RegisterComponent implements OnInit {
         this.close = "Cerrar";
         this.openSnackBar(this.message, this.close);
       });
-      console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
     },
     onCancel: (data, actions) => {
       console.log('OnCancel', data, actions);

@@ -53,6 +53,11 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
+      timer(0, 10000).subscribe(() => {
+
+          this.getNotifications();
+      });
+
     }else{
       this.cargarMenu();
 
@@ -129,16 +134,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.navigateTo("teams");
         });
 
-        timer(0, 10000).subscribe(() => {
-
-          this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-            if (invitations.length != 0) {
-              this.notifications = true;
-            } else {
-              this.notifications = false;
-            }
-          });
-        });
+        this.getNotifications();
 
         this.cargarMenu();
     });
@@ -146,6 +142,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openProfile(){
     this.navigateTo("profile");
+  }
+
+  getNotifications(){
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (invitations.length != 0) {
+        this.notifications = true;
+      } else {
+        this.notifications = false;
+      }
+    });
   }
 
 }
