@@ -1,20 +1,21 @@
 <h4>Acceder</h4>
 <div>
     <div>
-      <mat-form-field>
+      <mat-form-field style="width: 100%;">
         <mat-label>Email</mat-label>
         <input matInput [formControl]="email" />
         <mat-error *ngIf="email.invalid">{{ getErrorMessageEmail() }}</mat-error>
       </mat-form-field>
     </div>
     <div>
-      <mat-icon (click)="changePassState()">remove_red_eye</mat-icon>
       <mat-form-field>
         <mat-label>Contraseña</mat-label>
         <input matInput [formControl]="pass" [type]="showPass? 'text' : 'password'" />
+        <mat-icon matSuffix (click)="changePassState()">remove_red_eye</mat-icon>
         <mat-error *ngIf="pass.invalid">{{ getErrorMessagePass() }}</mat-error>
       </mat-form-field>
     </div>
+    <br/>
     <div id="buttons-dialog">
       <button id="cancel-dialog" mat-button (click)="cancel()">
         Cancelar

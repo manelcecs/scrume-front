@@ -209,10 +209,12 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {title:this.title.value, description:this.description.value};
-    this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
-      this.dialogRef.close();
-    });
+    if (this.validForm()) {
+      this.task = {title:this.title.value, description:this.description.value};
+      this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
+        this.dialogRef.close();
+      });
+    }
   }
 
   getErrorMessageTitle() : String {
@@ -259,17 +261,20 @@ export class EditTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:this.idTask, title:this.title.value, description:this.description.value};
-    this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
-      this.dialogRef.close();
-    });
+    if (this.validForm()) {
+
+      this.task = {id:this.idTask, title:this.title.value, description:this.description.value};
+      this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
+        this.dialogRef.close();
+      });
+    }
   }
 
-  getErrorMessageTitle() : String {
+  getErrorMessageTitle() : string {
     return this.title.hasError('required')?'Este campo es obligatorio':'';
   };
 
-  getErrorMessageDescription() : String {
+  getErrorMessageDescription() : string {
     return this.description.hasError('required')?'Este campo es obligatorio':'';
   };
 

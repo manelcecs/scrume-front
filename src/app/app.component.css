@@ -2,7 +2,7 @@ mat-sidenav-container {
     height: 100%;
 }
 
-#principal{
+/* #principal{
     overflow: auto;
     height: 100%;
 
@@ -10,7 +10,7 @@ mat-sidenav-container {
 
 #principal::-webkit-scrollbar{
     z-index: top;
-}
+} */
 
 
 /* Menu horizontal */

@@ -21,8 +21,8 @@
 
           <div style="display: flex; align-items: center;">
             <div class="roundImage"*ngFor="let user of tarea.users">
-              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo !== undefined && user.photo !== '' " src="{{user.photo}}" />
-              <img style="margin-right: 10px" alt="{{user.nick}}" width="40" height="40" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png" *ngIf="user.photo == undefined || user.photo == '' " />
+              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo != undefined && user.photo !== '' " src="{{user.photo}}" width="40" height="40" class="d-inline-block align-top user-img"/>
+              <img style="margin-right: 10px" alt="{{user.nick}}" *ngIf="!(user.photo != undefined && user.photo !== '') " width="40" height="40" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png"/>
             </div>
             <img src="../assets/add-user.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="addUsers(tarea)">
           </div>

@@ -122,7 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
-    
+
     this.cargarMenu();
     this.navigateTo("bienvenida");
   }
@@ -145,13 +145,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getNotifications(){
-    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-      if (invitations.length != 0) {
-        this.notifications = true;
-      } else {
-        this.notifications = false;
-      }
-    });
+    if (this.user != undefined) {
+      console.log("in");
+      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+        if (invitations.length != 0) {
+          this.notifications = true;
+        } else {
+          this.notifications = false;
+        }
+      });
+    }
   }
 
 }
