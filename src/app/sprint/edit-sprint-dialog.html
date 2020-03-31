@@ -7,19 +7,19 @@
         <mat-label>Fecha de inicio</mat-label>
         <input matInput [formControl]="startDate" [matDatepicker]="pickerStar" />
         <mat-datepicker-toggle matSuffix [for]="pickerStar"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStar></mat-datepicker>
+        <mat-datepicker #pickerStar (closed)="afterTodayStarDateValidator();"></mat-datepicker>
         <mat-error *ngIf="startDate.invalid">{{ getErrorMessageStartDate() }}</mat-error>
       </mat-form-field>
-    </div>
+    </div><br/>
     <div>
       <mat-form-field>
         <mat-label>Fecha de fin</mat-label>
         <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd" />
         <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd></mat-datepicker>
+        <mat-datepicker #pickerEnd (closed)="afterTodayEndDateValidator();"></mat-datepicker>
         <mat-error *ngIf="endDate.invalid">{{ getErrorMessageEndDate() }}</mat-error>
       </mat-form-field>
-    </div>
+    </div><br/>
     <div id="buttons-dialog">
       <button id="cancel-dialog" mat-button (click)="onNoClick()">
         Cancelar

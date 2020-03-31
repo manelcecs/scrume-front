@@ -2,6 +2,14 @@ import { Component, OnDestroy, OnInit,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
+import { InvitationService } from './servicio/invitation.service';
+import { InvitationDisplay } from './dominio/invitation.domain';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginDialog } from './login-dialog/login-dialog.component';
+import { UserService } from './servicio/user.service';
+import { User, UserIdUser } from './dominio/user.domain';
+import { ProfileService } from './servicio/profile.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +20,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routes: Object[] = [];
   idioma: string  = "es";
+  notifications : boolean = false;
+
+  user : User;
 
   loading = false;
   title: any = 'scrume-front';
 
 
   //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -38,36 +49,43 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     this.cargarMenu();
 
-    Promise.resolve().then(()=> {
-    let idm = localStorage.getItem("idioma");
-    if (idm == null){
-      localStorage.setItem("idioma", this.idioma);
-    }else{
-      this.idioma = idm;
-    }
+    let token = sessionStorage.getItem("loginToken");
+    if(token != null && token !== ""){
+      this.getUserInfo();
 
-    if(this.idioma == "es"){
-      this.router.navigate(["bienvenida"]);
-    }else{
-      this.router.navigate(["wellcome"]);
-    }
+      timer(0, 10000).subscribe(() => {
 
-    });
-    this.navigateTo('teams');
-  
+          this.getNotifications();
+      });
+
+    }else{
+      this.cargarMenu();
+
+      this.navigateTo("bienvenida");
+    }
 
   }
 
   ngOnDestroy(): void {
-    
+
   }
 
-  navigateTo(route: string): void{
-    this.router.navigate([route]);
+  navigateTo(route: string, method?: string, id?: number): void{
+    if(method==undefined && id == undefined){
+      this.router.navigate([route]);
+    }else if(method != undefined && id == undefined){
+      this.router.navigate([route], {queryParams:{method: method}});
+    }else if(method == undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{id: id}});
+    }else if(method != undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{method: method, id: id}});
+    }
   }
 
   cargarMenu() : void{
-    console.log("Menu cargado");
+    let token = sessionStorage.getItem("loginToken");
+    let logged = token != null && token !== "";
+    console.log("Logged", logged);
     this.routes = [
       {
         title: 'Bienvenida',
@@ -75,17 +93,68 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'home',
         visible: 'true'
     },{
-        title: 'Wellcome',
-        route: '/wellcome',
-        icon: 'home',
-        visible: 'true'
-    },{
         title: 'Equipo',
         route: '/teams',
         icon: 'people',
-        visible: 'true'
+        visible: logged
+    },{
+      title: 'Mis Tareas',
+        route: '/myTasks',
+        icon: 'list',
+        visible: logged,
+        method: 'getTasksOfUser'
     }
   ];
-  } 
+  }
+
+  openLogin(): void {
+    let dialog = this.dialog.open(LoginDialog, {
+      width: '250px'
+    });
+    dialog.afterClosed().subscribe(()=>{
+      let token = sessionStorage.getItem("loginToken");
+      if(token != null && token != ""){
+        this.getUserInfo();
+      }
+    });
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.user = undefined;
+
+    this.cargarMenu();
+    this.navigateTo("bienvenida");
+  }
+
+  getUserInfo(){
+    this.userService.findUserAuthenticated().subscribe((user: UserIdUser)=>{
+        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
+          this.user = userComplete;
+          this.navigateTo("teams");
+        });
+
+        this.getNotifications();
+
+        this.cargarMenu();
+    });
+  }
+
+  openProfile(){
+    this.navigateTo("profile");
+  }
+
+  getNotifications(){
+    if (this.user != undefined) {
+      console.log("in");
+      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+        if (invitations.length != 0) {
+          this.notifications = true;
+        } else {
+          this.notifications = false;
+        }
+      });
+    }
+  }
 
 }

@@ -1,30 +1,30 @@
 <h4>Crear sprint</h4>
 <div>
-  <form id="prueba" action="" method="POST">
+  <form id="prueba">
 
     <div>
       <mat-form-field>
         <mat-label>Fecha de inicio</mat-label>
-        <input matInput [formControl]="startDate" [matDatepicker]="pickerStar" />
+        <input matInput [formControl]="startDate" [matDatepicker]="pickerStar"/>
         <mat-datepicker-toggle matSuffix [for]="pickerStar"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStar></mat-datepicker>
+        <mat-datepicker #pickerStar (closed)="afterTodayStarDateValidator();validDatesValidator();"></mat-datepicker>
         <mat-error *ngIf="startDate.invalid">{{ getErrorMessageStartDate() }}</mat-error>
       </mat-form-field>
-    </div>
+    </div><br/>
     <div>
       <mat-form-field>
         <mat-label>Fecha de fin</mat-label>
         <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd" />
         <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd></mat-datepicker>
+        <mat-datepicker #pickerEnd (closed)="afterTodayEndDateValidator();validDatesValidator();"></mat-datepicker>
         <mat-error *ngIf="endDate.invalid">{{ getErrorMessageEndDate() }}</mat-error>
       </mat-form-field>
-    </div>
+    </div><br/>
     <div id="buttons-dialog">
       <button id="cancel-dialog" mat-button (click)="onNoClick()">
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="!validForm()" cdkFocusInitial>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial>
         Guardar
       </button>
     </div>

@@ -1,63 +1,87 @@
 <div id="main-sprint">
     <section id="header-sprint">
-        <div>
-          <h3><a (click)="openTeam(sprint.project.team.id)">{{sprint.project.team.name}}</a> > <a (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a> > Sprint</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a (click)="navigateTo('teams')">{{sprint.project.team.name}}</a></li>
+              <li class="breadcrumb-item"><a (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a></li>
+              <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">Sprint<img src="../assets/edit.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialog()">
+              </li>
+            </ol>
+        </nav>
+    </section>
+
+    <section id="progress-sprint">
+
+        <div style="display: flex; justify-content: space-between;">
+            <span>{{sprint.startDate | date:'dd/MM/yyyy'}}</span> <span>{{sprint.endDate | date:'dd/MM/yyyy'}}</span>
         </div>
-      </section>
-      <section id="progress-sprint">
-          <button id="edit-sprint" mat-button (click)="openDialog()">
-              Editar
-            </button>
-        <table id="progress-table-sprint">
-            <tr>
-                <td class="date-sprint">
-                    <p>{{sprint.startDate | date:'dd-MM-yyyy'}}</p>
-                </td>
-                <td style="width:50%">
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: {{(sprint.completedHP/sprint.totalHP) * 100}}%" aria-valuemin="0"
-                            aria-valuemax="100"></div>
 
-                    </div>
-                </td>
-                <td class="date-sprint">
-                    <p>{{sprint.endDate | date:'dd-MM-yyyy'}}</p>
-                </td>
-            </tr>
-        </table>
-    </section>
-
-
-<br/>
-    <section id="dashboard-sprint">
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Métricas y gráficos
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <tr>
-                  <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
-                  <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
-                </tr>
-                <tr>
-                  <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
-                  <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
-                </tr>
-            </mat-expansion-panel>
-        </mat-accordion>
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{(sprint.completedHP/sprint.totalHP) * 100}}%" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
 
     </section>
 
+    <section id="more-info-sprint">
 
-    <div class="tableBoard">
-        <h5>Tableros<mat-icon (click)="createBoard(sprint)" matListIcon>add</mat-icon></h5>
-        <div *ngFor="let t of board">
-            <mat-list-item>
-                <p mat-line>{{t.name}} <mat-icon (click)="openBoard(t.id)" mat-list-icon>view_week</mat-icon><mat-icon (click)="editBoard(t,sprint)" matListIcon>create</mat-icon><mat-icon (click)="deleteBoard(t)" matListIcon>delete</mat-icon> </p>
-            </mat-list-item>
-        </div> 
-    </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                    Tableros
+                    <img src="../assets/more.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                  Documentos <img src="../assets/more.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialogDoc(sprint)">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Métricas</a>
+            </li>
+        </ul>
 
+        <div class="tab-content" id="myTabContent">
+            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                <ul class="list-group list-group-flush">
+                    <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let t of board">
+                        <p (click)="openBoard(t.id)">{{t.name}}</p>
+                        <img src="../assets/edit.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="editBoard(t,sprint)">
+                        <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteBoard(t)">
+                    </li>
+                </ul>
+
+            </div>
+            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                <ul class="list-group list-group-flush">
+                    <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let d of doc">
+                        <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
+                            <span matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>
+                            <span class="badge badge-info">{{d.type}}</span>
+                            <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteDoc(d.id)">
+                        </div>
+                        <ng-template #elseBlock>
+                            <a (click)="openDocument(d.id)" >{{d.name}} </a>
+                            <span class="badge badge-info">{{d.type}}</span>
+                            <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteDoc(d.id)">
+                        </ng-template>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <tr>
+                    <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
+                    <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
+                  </tr>
+                  <tr>
+                    <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
+                    <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
+                  </tr>
+            </div>
+        </div>
+    </section>
 </div>

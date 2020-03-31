@@ -1,6 +1,5 @@
 import { ColumDto } from './colum.domian';
-import { SprintComponent } from '../sprint/sprint.component';
-import { SprintDisplay, Sprint } from './sprint.domain';
+import { Sprint } from './sprint.domain';
 
 export interface Board {
     id?: Number;
@@ -24,4 +23,9 @@ export interface BoardNumber {
     id?: number;
     name: string;
     sprint: number;
+}
+
+export interface BoardName{
+    id: number;
+    name: string;
 }

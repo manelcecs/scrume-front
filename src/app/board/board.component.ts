@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ColumDto} from '../dominio/colum.domian';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
 import { TaskDto, TaskMove } from '../dominio/task.domain';
-import { BoardSimple, Board, BoardNumber } from '../dominio/board.domain';
-import { Observable } from 'rxjs';
+import { Board} from '../dominio/board.domain';
 import { TaskService } from '../servicio/task.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AssingTaskDialog } from '../assing-task/assing-task.dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -20,8 +21,11 @@ export class BoardComponent implements OnInit {
   task: TaskMove;
   n: number;
   taskSend: TaskMove;
+  message: string;
+  idSprint: number;
 
-  constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute, private taskservice: TaskService) { }
+  constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
+     private taskservice: TaskService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -29,12 +33,14 @@ export class BoardComponent implements OnInit {
 
        if(param.id != undefined){
          this.idBoard = param.id;
+         this.idSprint = param.idSprint;
 
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
-             console.log("el json del tablero " + JSON.stringify(this.board))
           });
 
+       }else if(param.id == 0) {
+          this.message = "Debes actualizar algún tablero para acceder desde aquí";
        }
      });
 
@@ -43,36 +49,24 @@ export class BoardComponent implements OnInit {
   var: string = "To Do";
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+    if (event.previousContainer !== event.container) {
 
-      let col = new String(event.container.data);
+      let col = event.previousContainer.data+"";
+      let col2 = event.container.data+"";
 
-      if (col == "To Do") {
-        this.moveInArray(this.board.columns[0] , event.previousIndex , event.currentIndex);
-      } else if (col == "Done"){
-        this.moveInArray(this.board.columns[2] , event.previousIndex , event.currentIndex);
-      } else {
-        this.moveInArray(this.board.columns[1] , event.previousIndex , event.currentIndex);
-      }
-      
-    } else {
-
-      let col = new String(event.previousContainer.data);
-      let col2 = new String(event.container.data);
-
-      if (col == "To Do" && col2 == "In progress") {
+      if (col == "To do" && col2 == "In progress") {
         this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[1].id, this.n);
-      } else if (col == "To Do" && col2 == "Done"){
+      } else if (col == "To do" && col2 == "Done"){
         this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[2].id, this.n);
-      } else if (col == "In progress" && col2 == "To Do"){
+      } else if (col == "In progress" && col2 == "To do"){
         this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[0].id, this.n);
       } else if (col == "In progress" && col2 == "Done"){
         this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[2].id, this.n);
-      } else if (col == "Done" && col2 == "To Do"){
+      } else if (col == "Done" && col2 == "To do"){
         this.n = this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
         this.moveTask(this.board.columns[0].id, this.n);
       }else{
@@ -81,13 +75,6 @@ export class BoardComponent implements OnInit {
       }
 
     }
-    console.log("Previous container " + event.container.data);
-    console.log("Previous index " +event.previousIndex);
-    console.log("container " + event.container.data);
-    console.log("Current index " + event.currentIndex);
-    console.log("Distanse " + JSON.stringify(event.distance));
-    console.log("Pointer over container " + event.isPointerOverContainer);
-    console.log("item " + event.item.element.nativeElement.id);
   }
 
   private transferTaskToArray(origen: TaskDto[], destiny: TaskDto[], preIndex: number, newIndex: number) {
@@ -119,19 +106,39 @@ export class BoardComponent implements OnInit {
     }
  }
 
-navigateTo(route: String): void{
-  this.router.navigate([route]);
-}
+  navigateTo(route: String): void{
+    this.router.navigate([route]);
+  }
 
-moveTask(idDest: number, idtask: number): void {
-  this.taskSend = {destiny: idDest, task: idtask};
-  this.taskservice.moveTask(this.taskSend).subscribe((task : TaskMove) => {
-    console.log(JSON.stringify(task));
-  });
-}
+  moveTask(idDest: number, idtask: number): void {
+    this.taskSend = {destiny: idDest, task: idtask};
+    this.taskservice.moveTask(this.taskSend).subscribe((task : TaskMove) => {
+      console.log(JSON.stringify(task));
+    });
+  }
 
-onClick(event): any {
-  console.log(event.target.dataset.index);
-}
+  onClick(event): any {
+    console.log(event.target.dataset.index);
+  }
+
+  addUsers(task: TaskDto){
+    let dialog = this.dialog.open(AssingTaskDialog, {
+      width: '250px',
+      data: {idWorkspace: this.board.id,
+        idTask: task.id,
+        usersAsign: task.users
+      }
+    });
+    dialog.afterClosed().subscribe(()=>{
+      this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
+        this.board = board;
+     });
+
+    });
+  }
+
+  back(){
+    this.router.navigate(['sprint'], { queryParams: { id: this.idSprint} });
+  }
 
 }

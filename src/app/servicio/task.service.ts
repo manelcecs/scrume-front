@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
-import { TaskSimple, TaskDto, TaskMove, TaskEstimate } from '../dominio/task.domain';
-import { Board } from '../dominio/board.domain';
+import { TaskSimple, TaskDto, TaskMove, TaskEstimate, TaskToList } from '../dominio/task.domain';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({providedIn:'root'})
 
@@ -14,7 +13,6 @@ export class TaskService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     createTask(idProyect:number, task : TaskSimple): Observable<TaskSimple>{
-      console.log("Tarea:" + JSON.stringify(task));
       return this.httpClient.post<TaskSimple>(this.cabeceraService.getCabecera() + "api/task/" + idProyect, task, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
@@ -34,5 +32,27 @@ export class TaskService {
       return this.httpClient.post<TaskEstimate>(this.cabeceraService.getCabecera() +  "api/task/estimate/" + taskEstimate.task, taskEstimate, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+    getTask(idTask: number): Observable<TaskDto> {
+      return this.httpClient.get<TaskDto>(this.cabeceraService.getCabecera() + "api/task/"+idTask, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getTasksOfUser(){
+      return this.httpClient.get<TaskToList>(this.cabeceraService.getCabecera()+"api/task/user/", {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 
 }
+
+@Injectable({providedIn: 'root'})
+export class TaskResolverService implements Resolve<any>{
+
+    constructor(private task: TaskService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        
+        //let method = activatedRoute.queryParams.method;
+        return this.task.getTasksOfUser();
+    }
+}
+

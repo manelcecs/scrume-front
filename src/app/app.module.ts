@@ -26,7 +26,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
-import { TeamComponent } from './team/team.component';
+import { TeamComponent, InvitationDialog } from './team/team.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { ProjectComponent, NewSprintDialog } from './project/project.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,22 +37,34 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BacklogComponent, NewTaskDialog, EditTaskDialog, SelectSprintBottomSheet, EstimateTaskDialog } from './backlog/backlog.component';
 import { FilterPipe } from './backlog/filter.pipe';
-import { SprintComponent, EditSprintDialog } from './sprint/sprint.component';
+import { SprintComponent, EditSprintDialog, NewDocumentDialog } from './sprint/sprint.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
-import {Component} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import {MatChipsModule} from '@angular/material/chips';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
-
-
+import { LoginDialog } from './login-dialog/login-dialog.component';
+import { RegisterComponent } from './register/register.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
+import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
+import { MyTasksComponent } from './my-tasks/my-tasks.component';
+import { DocumentComponent } from './document/document.component';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -73,9 +85,20 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     NewTaskDialog,
     EditTaskDialog,
     BoardComponent,
+    NotificationsComponent,
+    CreateInvitationComponent,
+    InvitationDialog,
     CreateBoardComponent,
     SelectSprintBottomSheet,
-    EstimateTaskDialog
+    EstimateTaskDialog,
+    LoginDialog,
+    DocumentComponent,
+    NewDocumentDialog,
+    AssingTaskDialog,
+    MyTasksComponent,
+    ProfileComponent,
+    RegisterComponent,
+    TermsOfUseComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -110,9 +133,19 @@ import { CreateBoardComponent } from './create-board/create-board.component';
     MatProgressBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule,
+    MatBadgeModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    NgxPayPalModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

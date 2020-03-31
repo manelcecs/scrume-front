@@ -8,7 +8,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 @Injectable({providedIn:'root'})
 
 export class SprintService {
-   
+
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
@@ -35,6 +35,12 @@ export class SprintService {
     listTodoColumnsOfAProject(idProject: number): Observable<SprintWorkspace[]> {
       return this.httpClient.get<SprintWorkspace[]>(this.cabeceraService.getCabecera() + "api/workspace/list-todo-columns/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    checkDates(project : number, starDate: Date, endDate : Date) : Observable<boolean>{
+      let data= {"startDate": starDate.toISOString(), "endDate": endDate.toISOString()};
+      console.log("Checking dates:", data);
+      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/sprint/check-dates/" + project, data, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 }
 
 
@@ -58,7 +64,7 @@ export class SprintResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        
+
         console.log("Iniciando el resolver");
         return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
     }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Team, TeamSimple } from '../dominio/team.domain';
 import { Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({providedIn:'root'})
 
@@ -42,3 +43,20 @@ export class TeamService {
 
 }
 
+@Injectable({providedIn: 'root'})
+export class TeamResolverService implements Resolve<any>{
+
+    constructor(private teams: TeamService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        
+        let method = activatedRoute.queryParams.method;
+        if(method === 'getTeam'){
+            return this.teams.getTeam(activatedRoute.queryParams.id);
+        }else{
+            return this.teams.getAllTeams();
+        }
+    }
+}

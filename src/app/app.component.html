@@ -1,20 +1,44 @@
-<mat-sidenav-container class="example-container">
-  <mat-sidenav #sidenav mode="over">
-    <a mat-list-item *ngFor="let item of routes" (click)="navigateTo(item.route); sidenav.close();">
-      <mat-icon>{{item.icon}}</mat-icon> {{item.title}}
-    </a>
+<mat-sidenav-container [hasBackdrop]="false">
+
+  <mat-sidenav id="menu-vertical-izquierdo" #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="70">
+    <ul class="nav flex-column ul">
+      <li class="li" class="nav-item" *ngFor="let item of routes">
+        <a class="nav-link active" *ngIf="item.visible" (click)="navigateTo(item.route, item.method); sidenav.close();"><mat-icon>{{item.icon}}</mat-icon>  {{item.title}}</a>
+      </li>
+    </ul>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <nav class="navbar navbar-dark menu">
-      <a class="logo">
-        <img (click)="sidenav.toggle()" src="../assets/menu-navbar.png" width="30" height="30" class="d-inline-block align-top menu-icon" alt="">
-        <img src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="navigateTo('teams')">
-      </a>
+    <nav class="navbar navbar-dark" id="menu-horizontal">
+      <div id="menu-horizontal-buttons-left">
+        <button mat-icon-button (click)="sidenav.toggle(); sidenavnotifications.close()"><mat-icon>menu</mat-icon></button>
+        <a id="logo" (click)="navigateTo('bienvenida')"><img alt="" src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top"></a>
+      </div>
+
+      <div id="menu-horizontal-buttons-right">
+      <div class="username" *ngIf="user == undefined"><a (click)="navigateTo('register')">Registrarse</a></div>
+
+        <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin: 0 10px;">Acceder</a>
+        <img *ngIf="user != undefined" src="../assets/profile.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
+        <img *ngIf="user != undefined" src="../assets/logout.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
+        <img *ngIf="!notifications && user != undefined" src="../assets/notification.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
+        <img *ngIf="notifications && user != undefined" src="../assets/notification-color.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
+
+      </div>
+
     </nav>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" style="width: 100%; height: 5px;">
     </mat-progress-bar>
-    <router-outlet></router-outlet>
+    <main id="principal">
+      <router-outlet>
+      </router-outlet>
+    </main>
   </mat-sidenav-content>
-</mat-sidenav-container>
 
+  <mat-sidenav #sidenavnotifications mode="over" position="end" [fixedInViewport]="true" [fixedTopGap]="70">
+    <app-notifications ></app-notifications>
+
+  </mat-sidenav>
+
+
+</mat-sidenav-container>

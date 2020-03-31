@@ -1,9 +1,54 @@
+/* Cabecera Sprint */
+#header-sprint{
+    min-width: 10em;
+    width: auto;
+    height: auto;
+}
+
+#header-sprint > nav > ol{ 
+    background-color: #fafafa;
+}
+
+#header-sprint > nav > ol > li > a{ 
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#header-sprint > nav > ol > li{ 
+    font-size: 18px;
+}
+#header-sprint > nav > ol > li> img{ 
+    margin-left: 15px;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+
+#header-sprint > nav > ol > li > a:hover{ 
+    font-size: 18px;
+    color: #1976d2;
+}
+
+/* ---------------- */
+
+/* More info sprint */
+#more-info-sprint > ul > li >a{
+    display: flex;
+    align-items: center;
+}
+
+#more-info-sprint > ul > li > a > img{
+    margin-left: 10px;
+}
+
+/* ------------------------ */
+
 #main-sprint {
     padding: 3% 10%;
 }
-section > * {
-    float: left;
-}
+
+
 section {
     width: 100%;
     margin-bottom: 2%;
@@ -21,9 +66,7 @@ section {
 }
 
 /* Sprint header */
-#header-sprint > div{
-    width: 100%;
-}
+
 
 /* Barra de progreso del sprint */
 #progress-table-sprint{
@@ -66,4 +109,9 @@ section {
 .tableBoard {
     padding: 5%;
     margin-top: 10%;
+}
+
+/*Document*/
+.tableDocument {
+    padding-left: 5%;
 }
