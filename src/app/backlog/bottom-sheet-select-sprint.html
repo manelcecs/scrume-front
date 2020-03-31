@@ -1,5 +1,6 @@
 <mat-nav-list>
 
+  <p *ngIf="sprints.length == 0" style="text-align: center;">¡No tienes sprints aún!</p>
   <div *ngFor="let sprint of sprints; index as i;">
     <a *ngFor="let board of sprint.workspaces;" mat-list-item (click)="moveTaskToSprint(board.column, taskId)">
       <span mat-line>Sprint {{i+1}} | Tablero: {{board.name}}</span>

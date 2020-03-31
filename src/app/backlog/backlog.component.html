@@ -4,7 +4,7 @@
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a (click)="openTeam()">{{project.team.name}}</a></li>
+              <li class="breadcrumb-item"><a (click)="navigateTo('teams')">{{project.team.name}}</a></li>
               <li class="breadcrumb-item"><a (click)="openProject()">{{project.name}}</a></li>
               <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">Product Backlog</li>
             </ol>
@@ -25,7 +25,7 @@
         </div>
 
         <div id="task-list">
-            
+
         <mat-accordion>
             <mat-expansion-panel *ngFor="let task of project.tasks | filter:searchValue">
                 <mat-expansion-panel-header>

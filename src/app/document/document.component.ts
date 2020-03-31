@@ -39,8 +39,8 @@ export class DocumentComponent implements OnInit {
   entrega;
   conseguir;
 
-  constructor(private router: Router, 
-    private documentService: DocumentService, 
+  constructor(private router: Router,
+    private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private _snackBar: MatSnackBar) { }
@@ -79,7 +79,8 @@ export class DocumentComponent implements OnInit {
             this.entrega = JSON.parse(this.doc.content).entrega;
             this.conseguir = JSON.parse(this.doc.content).conseguir;
           }
-        });
+        }
+        );
 
       } else{
         this.navigateTo("bienvenida");
@@ -94,29 +95,29 @@ export class DocumentComponent implements OnInit {
   }
 
   //Daily
-  dailyName(value: string){ 
+  dailyName(value: string){
     this.nameDaily = value;
-    this.doc.name = value; 
+    this.doc.name = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("dailyName");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  dailyDone(value: string){ 
-    this.done = value; 
+  dailyDone(value: string){
+    this.done = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("dailyDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  dailyTodo(value: string){ 
-    this.todo = value; 
+  dailyTodo(value: string){
+    this.todo = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("dailyTodo");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
-  dailyProblem(value: string){ 
-    this.problem = value; 
+  dailyProblem(value: string){
+    this.problem = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("dailyProblem");
     pdfContainer.scrollTop = scrollNow.clientHeight;
@@ -124,29 +125,29 @@ export class DocumentComponent implements OnInit {
 
   //Retrospective
 
-  retrospectiveName(value: string){ 
+  retrospectiveName(value: string){
     this.nameRetrospective = value;
-    this.doc.name = value; 
+    this.doc.name = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("retrospectiveName");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  restrospectiveGood(value: string){ 
-    this.good = value; 
+  restrospectiveGood(value: string){
+    this.good = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveGood");
-    pdfContainer.scrollTop = scrollNow.clientHeight;  
+    pdfContainer.scrollTop = scrollNow.clientHeight;
   }
-  
-  restrospectiveBad(value: string){ 
+
+  restrospectiveBad(value: string){
     this.bad = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveBad");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
-  
-  restrospectiveImprovement(value: string){ 
+
+  restrospectiveImprovement(value: string){
     this.improvement = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("restrospectiveImprovement");
@@ -157,29 +158,29 @@ export class DocumentComponent implements OnInit {
   //Review
 
 
-  reviewName(value: string){ 
+  reviewName(value: string){
     this.nameReview = value;
-    this.doc.name = value; 
+    this.doc.name = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewName");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewDone(value: string){ 
+  reviewDone(value: string){
     this.done = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewNoDone(value: string){ 
+  reviewNoDone(value: string){
     this.noDone = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewNoDone");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  reviewRePlanning(value: string){ 
+  reviewRePlanning(value: string){
     this.rePlanning = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("reviewRePlanning");
@@ -188,22 +189,22 @@ export class DocumentComponent implements OnInit {
 
   //Planning
 
-  planningName(value: string){ 
+  planningName(value: string){
     this.namePlanning = value;
-    this.doc.name = value; 
+    this.doc.name = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("planningName");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  planningEntrega(value: string){ 
+  planningEntrega(value: string){
     this.entrega = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("planningEntrega");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
-  planningConseguir(value: string){ 
+  planningConseguir(value: string){
     this.conseguir = value;
     var pdfContainer = document.getElementById("pdf-container");
     var scrollNow = document.getElementById("planningConseguir");
@@ -233,7 +234,7 @@ export class DocumentComponent implements OnInit {
         noDone: this.noDone,
         rePlanning: this.rePlanning
       }
-      
+
     }else if(doc.type == "RETROSPECTIVE"){
 
       this.c = {
@@ -271,13 +272,24 @@ export class DocumentComponent implements OnInit {
 
     this.documentService.editDocument(documentComplete).subscribe((docSaved: Document)=> {
       this.doc = docSaved;
+      this.openSnackBar(this.message, this.close, false);
+    }, (error) => {
+      this.openSnackBar("El documento tiene demasiadas palabras", "Cerrar", true);
     });
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-    });
+  openSnackBar(message: string, action: string, error : boolean) {
+    if (error) {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      }).afterDismissed().subscribe(() => {
+        this.router.navigate(["sprint"], {queryParams: {id: this.doc.sprint}});
+      });
+    }
   }
 
 }

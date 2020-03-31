@@ -116,7 +116,10 @@ export class RegisterComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 5000,
-    });
+    }).afterDismissed().subscribe(() => {
+      this.navigateTo("bienvenida");
+    }
+    );
   }
 
   initConfig(): void {
@@ -169,14 +172,12 @@ export class RegisterComponent implements OnInit {
       size: "responsive"
     },
     onApprove: (data, actions) => {
-      console.log('onApprove - transaction was approved, but not authorized', data, actions);
       paymentInfo = data;
       actions.order.get();
     },
     onClientAuthorization: (data) => {
       let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-      let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value}
-      console.log(user);
+      let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value};
       this.userService.registerUser(user).subscribe(() => {
         this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
         this.close = "Cerrar";
@@ -184,13 +185,10 @@ export class RegisterComponent implements OnInit {
       });
     },
     onCancel: (data, actions) => {
-      console.log('OnCancel', data, actions);
     },
     onError: err => {
-      console.log('OnError', err);
     },
     onClick: (data, actions) => {
-      console.log('onClick', data, actions);
     },
   };
   }
@@ -199,7 +197,6 @@ export class RegisterComponent implements OnInit {
     let selectedBox : number = this.boxes.filter(box => box.name == this.selectedPlan)[0].id;
     let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, password: this.passwordControl.value,  username: this.emailControl.value}
-    console.log(user);
     this.userService.registerUser(user).subscribe(() => {
       this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
       this.close = "Cerrar";

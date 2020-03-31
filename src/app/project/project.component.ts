@@ -106,14 +106,17 @@ export class NewSprintDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
-    console.log(this.sprint);
+    if (this.validForm()) {
 
-    this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
-      this.dialogRef.close();
-      //FIXME: Recargar la pagina
-      this.router.navigate(["project"], {queryParams:{id:this.project.id}})
-    });
+      this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
+      console.log(this.sprint);
+
+      this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
+        this.dialogRef.close();
+        //FIXME: Recargar la pagina
+        this.router.navigate(["project"], {queryParams:{id:this.project.id}})
+      });
+    }
 
   }
 
