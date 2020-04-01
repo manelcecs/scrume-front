@@ -1,12 +1,11 @@
 export const environment = {
-<<<<<<< HEAD
-  production: true
-=======
   production: true,
   "login": {
-    "user": "testuser@gmail.com",
-    "pass": "123456"
+    "user": "testuser1@gmail.com",
+    "pass": "1234561"
   },
-  "backend": 'https://api-scrume.cleverapps.io/'
->>>>>>> integration
+  "backend": 'https://api-scrume-sp2.herokuapp.com/'
 };
+
+
+//"backend": 'https://api-scrume-sp2.herokuapp.com/'

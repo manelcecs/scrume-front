@@ -3,22 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-<<<<<<< HEAD
-  production: false
-};
-
-/*
-=======
-  production: false,
+  production: true,
   "login": {
-    "user": "testuser@gmail.com",
-    "pass": "123456"
+    "user": "testuser1@gmail.com",
+    "pass": "1234561"
   },
-  "backend": '/'
+  "backend": 'https://api-scrume-sp2.herokuapp.com/'
 };
 
 /*'https://api-scrume.cleverapps.io/'
->>>>>>> integration
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
-import { Team } from '../dominio/team.domain';
+import { Team, TeamSimple } from '../dominio/team.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { ProjectDto } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
@@ -57,57 +57,42 @@ export class TeamCreateComponent implements OnInit {
   }
 
   createTeam(): void {
+    if (this.validForm()){
+      if (this.id != undefined){
 
-    if (this.id != undefined){
+        this._editTeam(this.id).subscribe((resp: Team) => {
 
-      this._editTeam(this.id).subscribe((resp: Team) => {
+          this.team = resp;
+          this.navigateTo("teams");
+        });
 
-        this.team = resp;
-        this.navigateTo("teams");
-      });
+      }else{
 
-    }else{
+        this._createTeam().subscribe((resp: Team) => {
 
-      this._createTeam().subscribe((resp: Team) => {
-
-        this.team = resp;
-        this.navigateTo("teams");
-      },(error) => {
-        this.team = undefined;
-      });
-
+          this.team = resp;
+          this.navigateTo("teams");
+        },(error) => {
+          this.team = undefined;
+        });
+      }
     }
 
 
   }
 
-  deleteTeam(team: Team): void{
-    this._deleteTeam(team.id).subscribe(()=>{
-      this.navigateTo("teams");
-    }, (error)=>{
-      console.log("error: "+error.error);
-    });
-  }
 
-  private _editTeam(id: number):any/*Observable<Team>*/{
-
+  private _editTeam(id: number):Observable<TeamSimple>{
     this.team.name = this.name.value;
-    return this.teamService.editTeam(id, this.team);
+    this.team.id = id;
+    return this.teamService.editTeam(this.team);
 
   }
 
-  private _createTeam():Observable<Team>{
-
-    this.team = {name: this.name.value, projects: this.projects}
-
+  private _createTeam():Observable<TeamSimple>{
+    //this.team = {name: this.name.value, projects: this.projects}
+    this.team = {id:0, name: this.name.value}
     return this.teamService.createTeam(this.team);
-
-  }
-
-  private _deleteTeam(id: number): Observable<Team>{
-
-    return this.teamService.deleteTeam(id);
-
   }
 
   cancelCreateteam(): void {

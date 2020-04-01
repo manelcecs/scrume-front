@@ -1,0 +1,59 @@
+#main{
+    display: flex;
+}
+
+#forms{
+    width: 40%;
+    padding: 2% 5%; 
+}
+
+#forms > div{
+    float: left;
+    width: 100%;
+    padding: 5% 5%;
+}
+
+.form-field{
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+
+#pdf-container{
+    width: 60%; 
+    padding: 4% 8% 0% 8%;
+    background-color: #E7E7E7;
+    height: 730px;
+    overflow-y: auto;
+}
+
+/* #pdf{
+    background-color: rgba(212, 212, 212, 0.082); 
+    width: 100%;
+    padding: 0% 12%;
+    height: 500px; 
+}*/
+
+.paper {
+    background: #fff;
+    box-shadow:
+      0 -1px 1px rgba(0,0,0,0.15),
+      0 -10px 0 -5px #eee,
+      0 -10px 1px -4px rgba(0,0,0,0.15),
+      0 -20px 0 -10px #eee,
+      0 -20px 1px -9px rgba(0,0,0,0.15);
+    padding: 8% 10%;
+    width: 100%;
+    min-height: 900px;
+    height: auto;
+    margin: 2%;
+    word-wrap: break-word;
+    white-space: pre-line;
+  }
+  
+  /*.paper > p{
+  
+  }*/
+
+  

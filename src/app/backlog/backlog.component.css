@@ -4,12 +4,34 @@
 
 /* Header */
 
-#header{
+#header-PB{
+    min-width: 10em;
+    width: 100%;
+    height: auto;
+}
+
+#header-PB > nav > ol{ 
+    background-color: #fafafa;
+}
+
+#header-PB > nav > ol > li > a{ 
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#header-PB > nav > ol > li{ 
+    font-size: 18px;
+}
+
+#header-PB > nav > ol > li > a:hover{ 
+    font-size: 18px;
+    color: #1976d2;
 }
 
 /* ---------------------------------- */
 
-/* Tasks */
+/* Tasks Menu*/
 
 #tasks{
     width: 100%;
@@ -41,5 +63,47 @@
 #button-container > button:hover{
     background-color:#18A1F0;
 }
-
 /* ---------------------------------- */
+
+/* Tasks list */
+
+.tasks-buttons-container{
+    width: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.task-list-buttons{
+    cursor: pointer;
+    margin: 0 2.5px;
+}
+
+.panel-title{
+    display: flex; align-items: center;
+}
+
+.panel-content{
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+}
+
+.task-points{
+    text-align: right;
+    min-width: 11em;
+    align-self: flex-end;
+}
+
+
+.task-description{
+    margin-right: 2%;
+    text-align: justify;
+}
+
+.separator{
+    margin:0 10px; 
+    color: lightgrey;
+}
+

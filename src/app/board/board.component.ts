@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumDto} from '../dominio/colum.domian';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BoardService } from '../servicio/board.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { TaskDto } from '../dominio/task.domain';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
+import { TaskDto, TaskMove } from '../dominio/task.domain';
+import { Board} from '../dominio/board.domain';
+import { TaskService } from '../servicio/task.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AssingTaskDialog } from '../assing-task/assing-task.dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -12,58 +16,65 @@ import { TaskDto } from '../dominio/task.domain';
 })
 export class BoardComponent implements OnInit {
 
-  colums: ColumDto [];
+  board: Board;
+  idBoard: number;
+  task: TaskMove;
+  n: number;
+  taskSend: TaskMove;
+  message: string;
+  idSprint: number;
 
-  constructor(private router: Router, private boardService: BoardService) { }
+  constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
+     private taskservice: TaskService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    sessionStorage.setItem("user", "Jonh Doe");
-    sessionStorage.setItem("pass", "constrasenya");
-    this.colums = this.boardService.getTaskForColums(); //añadir subscribe((colums:Colums)=>{this.colums = colums});
+
+     this.activatedRoute.queryParams.subscribe(param => {
+
+       if(param.id != undefined){
+         this.idBoard = param.id;
+         this.idSprint = param.idSprint;
+
+          this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
+             this.board = board;
+          });
+
+       }else if(param.id == 0) {
+          this.message = "Debes actualizar algún tablero para acceder desde aquí";
+       }
+     });
+
   }
 
   var: string = "To Do";
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+    if (event.previousContainer !== event.container) {
 
-      let col = new String(event.container.data);
+      let col = event.previousContainer.data+"";
+      let col2 = event.container.data+"";
 
-      if (col == "To Do") {
-        this.moveInArray(this.colums[0] , event.previousIndex , event.currentIndex);
-      } else if (col == "Done"){
-        this.moveInArray(this.colums[2] , event.previousIndex , event.currentIndex);
-      } else {
-        this.moveInArray(this.colums[1] , event.previousIndex , event.currentIndex);
-      }
-      
-    } else {
-
-      let col = new String(event.previousContainer.data);
-      let col2 = new String(event.container.data);
-
-      if (col == "To Do" && col2 == "In Progress") {
-        this.transferTaskToArray(this.colums[0].tareas, this.colums[1].tareas, event.previousIndex, event.currentIndex);
-      } else if (col == "To Do" && col2 == "Done"){
-        this.transferTaskToArray(this.colums[0].tareas, this.colums[2].tareas, event.previousIndex, event.currentIndex);
-      } else if (col == "In Progress" && col2 == "To Do"){
-        this.transferTaskToArray(this.colums[1].tareas, this.colums[0].tareas, event.previousIndex, event.currentIndex);
-      } else if (col == "In Progress" && col2 == "Done"){
-        this.transferTaskToArray(this.colums[1].tareas, this.colums[2].tareas, event.previousIndex, event.currentIndex);
-      } else if (col == "Done" && col2 == "To Do"){
-        this.transferTaskToArray(this.colums[2].tareas, this.colums[0].tareas, event.previousIndex, event.currentIndex);
+      if (col == "To do" && col2 == "In progress") {
+        this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[1].id, this.n);
+      } else if (col == "To do" && col2 == "Done"){
+        this.n = this.transferTaskToArray(this.board.columns[0].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[2].id, this.n);
+      } else if (col == "In progress" && col2 == "To do"){
+        this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[0].id, this.n);
+      } else if (col == "In progress" && col2 == "Done"){
+        this.n = this.transferTaskToArray(this.board.columns[1].tasks, this.board.columns[2].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[2].id, this.n);
+      } else if (col == "Done" && col2 == "To do"){
+        this.n = this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[0].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[0].id, this.n);
       }else{
-        this.transferTaskToArray(this.colums[2].tareas, this.colums[1].tareas, event.previousIndex, event.currentIndex);
+        this.n = this.transferTaskToArray(this.board.columns[2].tasks, this.board.columns[1].tasks, event.previousIndex, event.currentIndex);
+        this.moveTask(this.board.columns[1].id, this.n);
       }
 
     }
-    console.log("Previous container " + event.container.data);
-    console.log("Previous index " +event.previousIndex);
-    console.log("container " + event.container.data);
-    console.log("Current index " + event.currentIndex);
-    console.log("Distanse " + JSON.stringify(event.distance));
-    console.log("Pointer over container " + event.isPointerOverContainer);
-    console.log("item " + event.item.data);
   }
 
   private transferTaskToArray(origen: TaskDto[], destiny: TaskDto[], preIndex: number, newIndex: number) {
@@ -71,14 +82,13 @@ export class BoardComponent implements OnInit {
     let save = origen[preIndex];
     origen.splice(preIndex, 1);
     destiny.splice(newIndex, 0, save);
-    console.log("origen  " + origen)
-    console.log("destino  " +destiny)
+    return save.id;
 
   }
 
   private moveInArray(container: ColumDto, preIndex: number, newIndex: number) {
 
-    let arrayTareas = container.tareas;
+    let arrayTareas = container.tasks;
     let save = arrayTareas[preIndex];
     arrayTareas.splice(preIndex, 1);
     arrayTareas.splice(newIndex, 0, save);
@@ -95,5 +105,40 @@ export class BoardComponent implements OnInit {
         res = "[doneList,todoList]"
     }
  }
+
+  navigateTo(route: String): void{
+    this.router.navigate([route]);
+  }
+
+  moveTask(idDest: number, idtask: number): void {
+    this.taskSend = {destiny: idDest, task: idtask};
+    this.taskservice.moveTask(this.taskSend).subscribe((task : TaskMove) => {
+      console.log(JSON.stringify(task));
+    });
+  }
+
+  onClick(event): any {
+    console.log(event.target.dataset.index);
+  }
+
+  addUsers(task: TaskDto){
+    let dialog = this.dialog.open(AssingTaskDialog, {
+      width: '250px',
+      data: {idWorkspace: this.board.id,
+        idTask: task.id,
+        usersAsign: task.users
+      }
+    });
+    dialog.afterClosed().subscribe(()=>{
+      this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
+        this.board = board;
+     });
+
+    });
+  }
+
+  back(){
+    this.router.navigate(['sprint'], { queryParams: { id: this.idSprint} });
+  }
 
 }

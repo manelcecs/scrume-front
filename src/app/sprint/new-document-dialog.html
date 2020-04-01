@@ -1,0 +1,27 @@
+<h4>Crear documento nuevo</h4>
+<div>
+    <form id="prueba">
+
+
+
+        <mat-form-field>
+            <mat-label>Selecciona una opción</mat-label>
+            <mat-select [(value)]="selected" [formControl]="tipo">
+                <mat-option value="REVIEW">REVIEW</mat-option>
+                <mat-option value="PLANNING_MEETING">PLANNING MEETING</mat-option>
+                <mat-option value="RETROSPECTIVE">RETROSPECTIVE</mat-option>
+                <mat-option value="DAILY">DAILY</mat-option>
+            </mat-select>
+            <mat-error *ngIf="tipo.invalid">{{getTipoErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <div id="buttons-dialog">
+            <button id="cancel-dialog" mat-button (click)="onNoClick()">
+                Cancelar
+            </button>
+            <button id="save-dialog" mat-button (click)="onSaveClick(selected)" cdkFocusInitial>
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,22 @@
+<div id="main-board">
+    <section>
+            <div>
+                <h3>{{ board != undefined?'Editar':'Crear' }} un tablero</h3>
+            </div>
+    </section>
+
+    <section>
+        <form id="form-board-create">
+            <mat-form-field class="form-field-board-create">
+                <input #nameImput matInput placeholder="Nombre" [formControl]="name">
+                <mat-hint>{{ nameImput.value?.length || 0 }}/15</mat-hint>
+                <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
+            </mat-form-field> <br/> <br/>
+
+            <div id="buttons-board-create">
+                <button id="cancel-board-create" (click)="cancelCreateBoard()" mat-flat-button>Cancelar</button>
+                <button id="save-board-create" type="submit" (click)="createBoard()" mat-flat-button>Guardar</button>
+            </div>
+        </form>
+    </section>
+</div>
