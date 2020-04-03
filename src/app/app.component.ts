@@ -7,9 +7,10 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { User, UserIdUser } from './dominio/user.domain';
+import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
@@ -27,8 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
   loading = false;
   title: any = 'scrume-front';
 
-
-  //constructor(private router: Router) {}
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
@@ -128,16 +127,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-    this.userService.findUserAuthenticated().subscribe((user: UserIdUser)=>{
-        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
-          this.user = userComplete;
-          this.navigateTo("teams");
-        });
 
-        this.getNotifications();
-
-        this.cargarMenu();
+    
+    
+    this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
+      this.user = user;
+      this.navigateTo("teams");
     });
+
   }
 
   openProfile(){
@@ -146,7 +143,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getNotifications(){
     if (this.user != undefined) {
-      console.log("in");
       this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
         if (invitations.length != 0) {
           this.notifications = true;
