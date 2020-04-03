@@ -7,6 +7,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { UserLogged } from '../dominio/jwt.domain';
 
 @Component({
   selector: 'app-profile',
@@ -65,8 +66,8 @@ export class ProfileComponent implements OnInit {
 
       }
 
-      this.userService.findUserAuthenticated().subscribe((user: UserIdUser) => {
-        this.profileService.getProfile(user.idUser).subscribe((profile: Profile) => {
+       
+        this.profileService.getProfile(this.userService.getUserLogged().idUser).subscribe((profile: Profile) => {
           this.profile = profile;
 
           this.message = "Perfil actualizado.";
@@ -81,7 +82,6 @@ export class ProfileComponent implements OnInit {
         });
       });
 
-    });
 
   }
 

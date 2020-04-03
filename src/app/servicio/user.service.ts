@@ -4,18 +4,20 @@ import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { User, SimpleUserNick, UserIdUser, UserRegister } from '../dominio/user.domain';
 import { Box } from '../dominio/box.domain';
+import { JWToken, UserLog, UserLogged } from '../dominio/jwt.domain';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({providedIn:'root'})
 
 export class UserService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    checkCredentials(user: string, pass: string): Observable<boolean>{
-        return this.httpClient.get<boolean>(this.cabeceraService.getCabecera()+"api/login/isAValidUser", {headers: this.cabeceraService.getCustomBasicAuthentication(user, pass)});
-    }
+     findUserAuthenticated(): Observable<UserIdUser>{
+         return this.httpClient.get<UserIdUser>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
+     }
 
-    findUserAuthenticated(): Observable<UserIdUser>{
-        return this.httpClient.get<UserIdUser>(this.cabeceraService.getCabecera()+"api/user/find-by-authorization", {headers: this.cabeceraService.getBasicAuthentication()});
+    getToken(userlog: UserLog) : Observable<JWToken>{
+      return this.httpClient.post<JWToken>(this.cabeceraService.getCabecera()+"api/login/authenticate", userlog);
     }
 
     getUser(id: number):Observable<User>{
@@ -37,6 +39,11 @@ export class UserService {
 
     registerUser(user: UserRegister) : Observable<UserRegister> {
       return this.httpClient.post<UserRegister>(this.cabeceraService.getCabecera() + "api/login", user);
+    }
+
+    getUserLogged(): UserLogged{
+      let userLogged : UserLogged = jwt_decode(sessionStorage.getItem("loginToken"))['userLoginDto'];
+      return userLogged;
     }
 
 }

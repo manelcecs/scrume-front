@@ -2,6 +2,9 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '../servicio/user.service';
+import { UserLog, JWToken } from '../dominio/jwt.domain';
+
+import * as jwt_decode from 'jwt-decode';
 
 @Component({
     selector: 'login-dialog',
@@ -29,13 +32,11 @@ import { UserService } from '../servicio/user.service';
     }
   
     login() : void {
-      this.userService.checkCredentials(this.email.value, this.pass.value).subscribe((valid: boolean)=>{
-        if(valid){
-          sessionStorage.setItem("loginToken", btoa(this.email.value+":"+this.pass.value));
-          this.dialogRef.close();
-        }else{
-          this.pass.setErrors({invalid: true});
-        }
+      let user : UserLog = {username: this.email.value, password: this.pass.value}
+      this.userService.getToken(user).subscribe((token: JWToken)=>{
+        sessionStorage.setItem("loginToken", token.token);
+        this.dialogRef.close();
+
       });
       
     }
