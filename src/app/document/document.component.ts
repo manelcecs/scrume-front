@@ -212,15 +212,66 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  generarPDF(){
-    //Mi idea del pdf es que no surja a partir del html sino añadiendo los contenidos desde aqui
+  generatePDF(doc: Document){
+  
+    if(doc.type == "REVIEW"){
 
-    // var doc = new jsPDF();
-    // doc.text(35, 25, this.value)
-    // doc.save('retrospectiva.pdf');
+      this.c = {
+        done: this.done,
+        noDone: this.noDone,
+        rePlanning: this.rePlanning
+      }
 
-    // const documentDefinition = { content: 'This is an sample PDF printed with pdfMake' };
-    // pdfMake.createPdf(documentDefinition).open();
+    }else if(doc.type == "RETROSPECTIVE"){
+
+      this.c = {
+        good: this.good,
+        bad: this.bad,
+        improvement: this.improvement
+      }
+
+    }else if(doc.type == "DAILY"){
+
+      this.c = {
+        done: this.done,
+        todo: this.todo,
+        problem: this.problem
+      }
+
+    }else{
+
+      this.c = {
+        entrega: this.entrega,
+        conseguir: this.conseguir
+      }
+
+    }
+
+    this.con = JSON.stringify(this.c);
+
+    let documentComplete = {
+      id: doc.id,
+      name: doc.name,
+      sprint: doc.sprint,
+      type: doc.type,
+      content: this.con
+    }
+
+    this.documentService.editDocument(documentComplete).subscribe((docSaved: Document)=> {
+      this.doc = docSaved;
+      this.openSnackBar(this.message, this.close, false);
+    }, (error) => {
+      this.openSnackBar("El documento tiene demasiadas palabras", "Cerrar", true);
+    }, ()=>{
+      this.documentService.downloadDocument(doc.id).subscribe((data) => {
+        let pdf = new Blob([data], { type: 'application/pdf' });
+        let fileURL = URL.createObjectURL(pdf);
+        var link = document.createElement('a');
+        link.href = fileURL;
+        link.download = doc.name+".pdf";
+        link.click();
+      });
+    });    
 
   }
 

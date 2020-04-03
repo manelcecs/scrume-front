@@ -29,4 +29,8 @@ export class DocumentService {
     getDocuments(idDoc: number): Observable<Document> {
         return this.httpClient.get<Document>(this.cabeceraService.getCabecera() + "api/document/doc/" + idDoc, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    downloadDocument(id: number): any{
+        return this.httpClient.get("https://api-scrume-sp3.herokuapp.com/api/document/doc-pdf/61", {responseType: 'blob'});
+    }
 }
