@@ -71,6 +71,8 @@
             </mat-form-field>
         </div>
         <button id="buttonPDF" mat-flat-button (click)="updateDoc(doc)">Guardar</button>
+        
+        <button id="buttonDownloadPDF" mat-flat-button (click)="generatePDF(doc)">Descargar</button>
     </section>
 
     <section id="pdf-container">
