@@ -65,6 +65,7 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,8 @@ import { ProfileComponent } from './profile/profile.component';
     MatSnackBarModule,
     MatStepperModule,
     NgxPayPalModule,
+    BrowserModule,
+    HttpClientModule,
   ],
   providers: [
     {

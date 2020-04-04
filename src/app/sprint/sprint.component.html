@@ -81,6 +81,10 @@
                     <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
                     <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
                   </tr>
+
+                  <div>
+                    <canvas id="realtime">{{ burnDown }}</canvas>
+                </div>
             </div>
         </div>
     </section>

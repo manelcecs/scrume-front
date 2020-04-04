@@ -22,12 +22,16 @@ import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
 import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Chart } from 'chart.js';
+import { ChartDisplay } from '../dominio/chart.domain';
 
 @Component({
   selector: "app-sprint",
   templateUrl: "./sprint.component.html",
   styleUrls: ["./sprint.component.css"]
 })
+
 export class SprintComponent implements OnInit {
   sprint: SprintDisplay;
   idSprint: number;
@@ -42,8 +46,14 @@ export class SprintComponent implements OnInit {
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private http: HttpClient,
   ) {}
+    /**
+ * The ChartJS Object
+ * @var {any} chart
+ */
+public chart: any = null;
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -71,11 +81,53 @@ export class SprintComponent implements OnInit {
           .subscribe((doc: Document[]) => {
             this.doc = doc;
           });
+
+        // JSON de datos para tabla
+        let json = [{date: "Day 1", points: 43}, {date: "Day 2", points: 67}, {date: "Day 3", points: 12}];
+        let burnDown = this.getChart(json);
       } else {
         this.navigateTo("bienvenida");
       }
     });
   }
+
+  getChart(chartJSON: ChartDisplay[]) {
+    let days: string[] = [];
+    let historyPoints: number[] = [];
+    for (let i = 0; i < chartJSON.length; i++) {
+      days.push(chartJSON[i].date);
+      historyPoints.push(chartJSON[i].points)
+    }
+    // Trabajando con la gráfica
+    this.chart = new Chart('realtime', {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [{ 
+          data: historyPoints,
+          label: "Puntos de historia",
+          borderColor: "#3e95cd",
+          fill: false
+        },
+        { 
+          data: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0],
+          label: "Objetivo",
+          borderColor: "red",
+          fill: false
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Burn Down'
+      }
+    }
+  });
+
+  return this.chart;
+  }
+
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
@@ -417,4 +469,6 @@ export class EditSprintDialog implements OnInit {
         console.log("Errors 1:", this.startDate.errors);
       });
   }
+
+  
 }
