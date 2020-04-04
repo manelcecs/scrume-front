@@ -52,6 +52,48 @@
 }
 
 #formulario{
-    padding-bottom: 40%;
+    padding-bottom: 5%;
     display: block;
+}
+
+/* Datos personales */
+
+#personal {
+
+}
+
+#datos-personales{
+    background-color: black;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#datos-personales:hover{
+    background-color: rgb(63, 63, 70);
+}
+
+#exportar-datos{
+    background-color: black;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#exportar-datos:hover{
+    background-color: rgb(63, 63, 70);
+}
+
+#borrar-datos{
+    background-color: black;
+    color: white;
+    margin-left: 3%;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#borrar-datos:hover{
+    background-color: rgb(63, 63, 70);
 }

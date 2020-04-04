@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { UserLogged } from '../dominio/jwt.domain';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -81,7 +82,6 @@ export class ProfileComponent implements OnInit {
 
         });
       });
-
 
   }
 
