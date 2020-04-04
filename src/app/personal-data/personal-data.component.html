@@ -1,0 +1,28 @@
+<section id="personal">
+
+    <button id="boton-volver" (click)="backToProfile()" mat-flat-button>Volver al perfil</button>
+
+    <h4>Datos Personales</h4>
+    <div>
+        <p>Correo electrónico: {{personal.email}}</p>
+        <p>Nombre: {{personal.name}}</p>
+        <p>Apellidos: {{personal.surnames}}</p>
+        <p>GitUser: {{personal.gitUser}}</p>
+        <p>Nick: {{personal.nick}}</p>
+        <p>URL de la foto: {{personal.photo}}</p>
+    </div>
+</section>
+<section id="personal">
+    <h4>Lista de tus tareas</h4>
+    <div *ngFor="let task of personal.tasks">
+        <p>{{task.title}}</p>
+        <p>{{task.description}}</p>
+        <p>{{task.points}}</p><br>
+    </div>
+</section>
+<section id="personal">
+    <h4>Lista de los equipos en los que estás</h4>
+    <div *ngFor="let team of personal.teams">
+        <p>{{team}}</p><br>
+    </div>
+</section>

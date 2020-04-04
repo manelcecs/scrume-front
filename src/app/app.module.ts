@@ -65,6 +65,7 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { ProfileComponent } from './profile/profile.component';
     ProfileComponent,
     RegisterComponent,
     TermsOfUseComponent,
+    PersonalDataComponent,
   ],
   imports: [
     MatFormFieldModule,

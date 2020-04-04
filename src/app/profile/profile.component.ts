@@ -182,4 +182,8 @@ export class ProfileComponent implements OnInit {
     return this.lastPass.hasError('invalid') ? 'La contraseña es incorrecta.' : '';
   }
 
+  openPersonalData(){
+    this.router.navigate(['personal']);
+  }
+
 }

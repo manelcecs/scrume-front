@@ -1,0 +1,14 @@
+#personal{
+    padding: 1%;
+}
+
+#boton-volver {
+    background-color: #e62e2e;
+    color: white;
+    padding: 4px 9px;
+    text-align: center;
+}
+
+#boton-volver:hover {
+    background-color: #db0f0f;
+}

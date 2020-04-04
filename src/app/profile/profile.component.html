@@ -64,8 +64,8 @@
 
 <div id="personal">
     <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
+        <mat-expansion-panel id="panel">
+          <mat-expansion-panel-header id="cabecera">
             <mat-panel-title>
               Ajustes Personales
             </mat-panel-title>
@@ -75,13 +75,10 @@
           </mat-expansion-panel-header>
           <!-- Interior del desplegable -->
 
-          <button id="datos-personales"  mat-flat-button>Ver datos personales</button>
+          <button id="datos-personales" (click)="openPersonalData()" mat-flat-button>Ver datos personales</button>
           <button id="exportar-datos"  mat-flat-button>Exportar datos personales</button>
           <button id="borrar-datos"  mat-flat-button>Borrar datos personales</button>
 
-        </mat-expansion-panel>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                             (closed)="panelOpenState = false">
         </mat-expansion-panel>
       </mat-accordion>
 </div>
