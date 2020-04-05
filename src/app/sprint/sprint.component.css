@@ -115,3 +115,9 @@ section {
 .tableDocument {
     padding-left: 5%;
 }
+/* Charts */
+@media (min-width: 1000px) {
+    .chart {
+      max-width: 60%;
+    }
+  }

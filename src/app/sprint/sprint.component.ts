@@ -24,7 +24,8 @@ import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chart } from 'chart.js';
-import { ChartDisplay } from '../dominio/chart.domain';
+import { BurnDownDisplay } from '../dominio/burndown.domain';
+import { BurnUpDisplay } from '../dominio/burnup.domain';
 
 @Component({
   selector: "app-sprint",
@@ -39,6 +40,9 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  burnDown: any;
+  burnUp: any;
+  chart: any;
 
   constructor(
     private sprintService: SprintService,
@@ -49,11 +53,6 @@ export class SprintComponent implements OnInit {
     public dialog: MatDialog,
     private http: HttpClient,
   ) {}
-    /**
- * The ChartJS Object
- * @var {any} chart
- */
-public chart: any = null;
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -82,38 +81,67 @@ public chart: any = null;
             this.doc = doc;
           });
 
-        // JSON de datos para tabla
-        let json = [{date: "Day 1", points: 43}, {date: "Day 2", points: 67}, {date: "Day 3", points: 12}];
-        let burnDown = this.getChart(json);
+        // JSON de datos para BurnDown
+        let json1 = [{date: "Day 1", points: 123, totalDates: 13}, {date: "Day 2", points: 120, totalDates: 13}, 
+        {date: "Day 3", points: 98, totalDates: 13}, {date: "Day 4", points: 74, totalDates: 13}, 
+        {date: "Day 5", points: 73, totalDates: 13}, {date: "Day 6", points: 70, totalDates: 13},
+        {date: "Day 7", points: 64, totalDates: 13}, {date: "Day 8", points: 32, totalDates: 13},
+        {date: "Day 9", points: 24, totalDates: 13}, {date: "Day 10", points: 12, totalDates: 13},
+        {date: "Day 11", points: 10, totalDates: 13}, {date: "Day 12", points: 5, totalDates: 13},
+        {date: "Day 13", points: 3, totalDates: 13}];
+        // JSON de datos para BurnUp
+        let json2 = [{date: "Day 1", points: 0, totalHistoryTask: 123}, {date: "Day 2", points: 3, totalHistoryTask: 123}, 
+        {date: "Day 3", points: 5, totalHistoryTask: 123}, {date: "Day 4", points: 10, totalHistoryTask: 123}, 
+        {date: "Day 5", points: 12, totalHistoryTask: 123}, {date: "Day 6", points: 24, totalHistoryTask: 123},
+        {date: "Day 7", points: 32, totalHistoryTask: 123}, {date: "Day 8", points: 46, totalHistoryTask: 123},
+        {date: "Day 9", points: 58, totalHistoryTask: 123}, {date: "Day 10", points: 63, totalHistoryTask: 123},
+        {date: "Day 11", points: 78, totalHistoryTask: 123}, {date: "Day 12", points: 90, totalHistoryTask: 123},
+        {date: "Day 13", points: 112, totalHistoryTask: 123}];
+        this.burnDown = this.getChartBurnDown(json1);
+        this.burnUp = this.getChartBurnUp(json2);
       } else {
         this.navigateTo("bienvenida");
       }
     });
   }
 
-  getChart(chartJSON: ChartDisplay[]) {
-    let days: string[] = [];
-    let historyPoints: number[] = [];
+  getChartBurnDown(chartJSON: BurnDownDisplay[]) {
+    let days1: string[] = [];
+    let historyPoints1: number[] = [];
+    let objetive1: number[] = [];
+    let acum = 0;
     for (let i = 0; i < chartJSON.length; i++) {
-      days.push(chartJSON[i].date);
-      historyPoints.push(chartJSON[i].points)
+      days1.push(chartJSON[i].date);
+      historyPoints1.push(chartJSON[i].points)
+    }
+    for (let x = 0; x < chartJSON[0].totalDates; x++) {
+      let max = chartJSON[0].points;
+      let div = max/chartJSON[0].totalDates+1;
+      acum = max - (div*x);
+      if (x == chartJSON[0].totalDates-1) {
+        objetive1.push(0);
+      } else {
+        objetive1.push(acum);
+      }
     }
     // Trabajando con la gráfica
-    this.chart = new Chart('realtime', {
+    this.chart = new Chart('burnDown', {
       type: 'line',
       data: {
-        labels: days,
+        labels: days1,
         datasets: [{ 
-          data: historyPoints,
+          data: historyPoints1,
           label: "Puntos de historia",
-          borderColor: "#3e95cd",
-          fill: false
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 2
         },
         { 
-          data: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0],
+          data: objetive1,
           label: "Objetivo",
-          borderColor: "red",
-          fill: false
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
         }
       ]
     },
@@ -127,6 +155,50 @@ public chart: any = null;
 
   return this.chart;
   }
+
+  getChartBurnUp(chartJSON: BurnUpDisplay[]) {
+    let days2: string[] = [];
+    let historyPoints2: number[] = [];
+    let objetive2: number[] = [];
+    console.log(objetive2);
+    for (let i = 0; i < chartJSON.length; i++) {
+      days2.push(chartJSON[i].date);
+      historyPoints2.push(chartJSON[i].points);
+      objetive2.push(chartJSON[0].totalHistoryTask);
+    }
+    // Trabajando con la gráfica
+    this.chart = new Chart('burnUp', {
+      type: 'line',
+      data: {
+        labels: days2,
+        datasets: [{ 
+          data: historyPoints2,
+          label: "Puntos de historia",
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 2
+        },
+        { 
+          data: objetive2,
+          label: "Objetivo",
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Burn Up'
+      }
+    }
+  });
+
+  return this.chart;
+  }
+
+
 
 
   navigateTo(route: string): void {
