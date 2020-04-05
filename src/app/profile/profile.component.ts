@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { UserLogged } from '../dominio/jwt.domain';
+import { PersonalService } from '../servicio/personal.service';
+import { PersonalDataAll } from '../dominio/personal.domain';
 
 
 @Component({
@@ -41,7 +43,10 @@ export class ProfileComponent implements OnInit {
   showPass: boolean = false;
   showPassLast: boolean = false;
 
-  constructor(private userService: UserService, private profileService: ProfileService, private router: Router, private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute) { }
+  personal: PersonalDataAll;
+
+  constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
+     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute, private personalService: PersonalService) { }
 
   ngOnInit(): void {
 
@@ -184,6 +189,24 @@ export class ProfileComponent implements OnInit {
 
   openPersonalData(){
     this.router.navigate(['personal']);
+  }
+
+  saveAsProject(){
+    this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
+      this.personal = per;
+      console.log(this.personal);
+      let string = JSON.stringify(this.personal);
+      //you can enter your own file name and extension
+      this.writeContents(this.personal, 'Sample File'+'.txt', 'text/plain');
+    })
+  }
+
+  writeContents(content, fileName, contentType) {
+    var a = document.createElement('a');
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
   }
 
 }
