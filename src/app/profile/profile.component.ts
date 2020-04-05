@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { UserLogged } from '../dominio/jwt.domain';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -44,10 +45,10 @@ export class ProfileComponent implements OnInit {
   showPassLast: boolean = false;
 
   personal: PersonalDataAll;
-  routes: Object[] = [];
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
-     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute, private personalService: PersonalService) { }
+     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
+     private personalService: PersonalService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -188,6 +189,8 @@ export class ProfileComponent implements OnInit {
     return this.lastPass.hasError('invalid') ? 'La contraseña es incorrecta.' : '';
   }
 
+  //Personal Data
+
   openPersonalData(){
     this.router.navigate(['personal']);
   }
@@ -208,6 +211,46 @@ export class ProfileComponent implements OnInit {
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      width: "250px",
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      console.log("holii");
+    });
+  }
+
+}
+
+//Dialog de Confirmation-----------------------------------------------------------------------------------------
+
+@Component({
+  selector: "confirmation",
+  templateUrl: "confirmation.html",
+  styleUrls: ["./confirmation.css"]
+})
+export class ConfirmationDialog implements OnInit {
+
+  routes: Object[] = [];
+  user: User;
+
+  constructor(public dialogRef: MatDialogRef<ConfirmationDialog>, private personalService: PersonalService, private router: Router) {}
+
+  ngOnInit(): void {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(): void {
+    this.personalService.getAnonymize().subscribe(()=> {
+      this.dialogRef.close();
+      this.logOut();
+    })
   }
 
   logOut(): void{
@@ -253,12 +296,6 @@ export class ProfileComponent implements OnInit {
     }else if(method != undefined && id != undefined){
       this.router.navigate([route], {queryParams:{method: method, id: id}});
     }
-  }
-
-  anonimize() {
-    this.personalService.getAnonymize().subscribe(()=> {
-      this.logOut();
-    })
   }
 
 }
