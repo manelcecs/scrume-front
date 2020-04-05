@@ -256,34 +256,7 @@ export class ConfirmationDialog implements OnInit {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
-
-    this.cargarMenu();
     this.navigateTo("bienvenida");
-  }
-
-  cargarMenu() : void{
-    let token = sessionStorage.getItem("loginToken");
-    let logged = token != null && token !== "";
-    console.log("Logged", logged);
-    this.routes = [
-      {
-        title: 'Bienvenida',
-        route: '/bienvenida',
-        icon: 'home',
-        visible: 'true'
-    },{
-        title: 'Equipo',
-        route: '/teams',
-        icon: 'people',
-        visible: logged
-    },{
-      title: 'Mis Tareas',
-        route: '/myTasks',
-        icon: 'list',
-        visible: logged,
-        method: 'getTasksOfUser'
-    }
-  ];
   }
 
   navigateTo(route: string, method?: string, id?: number): void{
