@@ -44,6 +44,7 @@ export class ProfileComponent implements OnInit {
   showPassLast: boolean = false;
 
   personal: PersonalDataAll;
+  routes: Object[] = [];
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
      private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute, private personalService: PersonalService) { }
@@ -197,7 +198,7 @@ export class ProfileComponent implements OnInit {
       console.log(this.personal);
       let string = JSON.stringify(this.personal);
       //you can enter your own file name and extension
-      this.writeContents(this.personal, 'Sample File'+'.txt', 'text/plain');
+      this.writeContents(string, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');
     })
   }
 
@@ -207,6 +208,57 @@ export class ProfileComponent implements OnInit {
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.user = undefined;
+
+    this.cargarMenu();
+    this.navigateTo("bienvenida");
+  }
+
+  cargarMenu() : void{
+    let token = sessionStorage.getItem("loginToken");
+    let logged = token != null && token !== "";
+    console.log("Logged", logged);
+    this.routes = [
+      {
+        title: 'Bienvenida',
+        route: '/bienvenida',
+        icon: 'home',
+        visible: 'true'
+    },{
+        title: 'Equipo',
+        route: '/teams',
+        icon: 'people',
+        visible: logged
+    },{
+      title: 'Mis Tareas',
+        route: '/myTasks',
+        icon: 'list',
+        visible: logged,
+        method: 'getTasksOfUser'
+    }
+  ];
+  }
+
+  navigateTo(route: string, method?: string, id?: number): void{
+    if(method==undefined && id == undefined){
+      this.router.navigate([route]);
+    }else if(method != undefined && id == undefined){
+      this.router.navigate([route], {queryParams:{method: method}});
+    }else if(method == undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{id: id}});
+    }else if(method != undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{method: method, id: id}});
+    }
+  }
+
+  anonimize() {
+    this.personalService.getAnonymize().subscribe(()=> {
+      this.logOut();
+    })
   }
 
 }

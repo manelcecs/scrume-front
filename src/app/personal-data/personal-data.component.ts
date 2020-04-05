@@ -27,4 +27,23 @@ export class PersonalDataComponent implements OnInit {
     this.router.navigate(['profile']);
   }
 
+  saveAsProject(){
+    this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
+      this.personal = per;
+      console.log(this.personal);
+      let string = JSON.stringify(this.personal);
+      //you can enter your own file name and extension
+      let html = document.getElementById('output').innerText;
+      this.writeContents(html, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');
+    })
+  }
+
+  writeContents(content, fileName, contentType) {
+    var a = document.createElement('a');
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+
 }
