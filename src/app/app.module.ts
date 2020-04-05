@@ -65,6 +65,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { environment } from '../environments/environment';
     ProfileComponent,
     RegisterComponent,
     TermsOfUseComponent,
+    PersonalDataComponent,
   ],
   imports: [
     MatFormFieldModule,

@@ -61,4 +61,24 @@
         </form>
     </section>
 </div>
+
+<div id="personal">
+    <mat-accordion>
+        <mat-expansion-panel class="panel">
+          <mat-expansion-panel-header id="cabecera">
+            <div class="panel-content">
+            <mat-panel-title>
+              Ajustes Personales<img src="../../assets/llave.png" alt="" style="height: 25px; width: 25px; margin-top: 5px;">
+            </mat-panel-title>
+            </div>
+          </mat-expansion-panel-header>
+          <!-- Interior del desplegable -->
+          <div class="botones">
+            <button id="datos-personales" (click)="openPersonalData()" mat-flat-button>Ver tus datos</button>
+            <button id="borrar-datos" (click)="openDialog()" mat-flat-button>Borrar tus datos</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>
+
 </div>

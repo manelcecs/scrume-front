@@ -12,3 +12,7 @@ export interface TeamSimple{
     name?: string;
 }
 
+export interface TeamName{
+    name: string;
+}
+
