@@ -48,8 +48,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {MatChipsModule} from '@angular/material/chips';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
@@ -65,6 +63,8 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -131,7 +131,6 @@ import { ProfileComponent } from './profile/profile.component';
     MatDialogModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
@@ -139,6 +138,7 @@ import { ProfileComponent } from './profile/profile.component';
     MatSnackBarModule,
     MatStepperModule,
     NgxPayPalModule,
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     {
