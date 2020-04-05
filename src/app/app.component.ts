@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -11,6 +11,7 @@ import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
 
+@Injectable({providedIn:'root'})
 
 @Component({
   selector: 'app-root',

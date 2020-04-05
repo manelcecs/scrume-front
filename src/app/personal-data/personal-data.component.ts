@@ -30,8 +30,6 @@ export class PersonalDataComponent implements OnInit {
   saveAsProject(){
     this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
       this.personal = per;
-      console.log(this.personal);
-      let string = JSON.stringify(this.personal);
       //you can enter your own file name and extension
       let html = document.getElementById('output').innerText;
       this.writeContents(html, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');

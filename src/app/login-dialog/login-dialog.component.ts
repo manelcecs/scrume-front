@@ -4,8 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '../servicio/user.service';
 import { UserLog, JWToken } from '../dominio/jwt.domain';
 
-import * as jwt_decode from 'jwt-decode';
-
 @Component({
     selector: 'login-dialog',
     templateUrl: 'login-dialog.html',

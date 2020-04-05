@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
 import { User, UserIdUser } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
-import { UserLogged } from '../dominio/jwt.domain';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -256,7 +255,7 @@ export class ConfirmationDialog implements OnInit {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
-    this.navigateTo("bienvenida");
+    window.location.reload();
   }
 
   navigateTo(route: string, method?: string, id?: number): void{
