@@ -18,15 +18,15 @@ export class NotificationsComponent implements OnInit {
   constructor(private invitationService: InvitationService) {}
 
   ngOnInit(): void {
-    timer(0, 500).subscribe(() => {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
-        this.invitationService
-          .getInvitations()
-          .subscribe((invitations: InvitationDisplay[]) => {
-            this.invitations = invitations;
-          });
-      }
-    });
+    // timer(0, 500).subscribe(() => {
+    //   if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+    //     this.invitationService
+    //       .getInvitations()
+    //       .subscribe((invitations: InvitationDisplay[]) => {
+    //         this.invitations = invitations;
+    //       });
+    //   }
+    // });
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {

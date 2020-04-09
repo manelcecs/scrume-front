@@ -53,10 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      timer(0, 10000).subscribe(() => {
+      // timer(3000, 10000).subscribe(() => {
 
-          this.getNotifications();
-      });
+      //     this.getNotifications();
+      // });
 
     }else{
       this.cargarMenu();

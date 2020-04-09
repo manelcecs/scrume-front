@@ -1,0 +1,47 @@
+<form>
+    <h4>Añade alertas a tu Sprint</h4>
+    <div>
+        <mat-form-field>
+            <mat-label>Titulo de la Alerta</mat-label>
+            <select matNativeControl [formControl]="alertTitle">
+                <option value="Sprint Review">Sprint Review</option>
+                <option value="Sprint Retrospective">Sprint Retrospective</option>
+                <option value="Medium-Sprint Review">Medium-Sprint Review</option>
+                <option value="Medium-Sprint Retrospective">Medium-Sprint Retrospective</option>
+                <option value="Demo">Demo</option>
+            </select>
+            <mat-hint>Seleccione el tipo de alerta</mat-hint>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <mat-label>Fecha de la Alerta</mat-label>
+            <input matInput [formControl]="alertDate" [matDatepicker]="alertPicker" />
+            <mat-datepicker-toggle matSuffix [for]="alertPicker"></mat-datepicker-toggle>
+            <mat-datepicker #alertPicker (closed)="beforeTodayDateValidator(alertDate); validDateInSprint(alertDate);">
+            </mat-datepicker>
+            <mat-error *ngIf="alertDate.invalid">{{ getErrorMessageAlertDate() }}</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <button id="add-alert" mat-button (click)="addAlert();" [disabled]="!allowAdd()">
+            Añadir
+        </button>
+    </div>
+    <mat-chip-list>
+        <mat-chip *ngFor="let alert of alerts" (removed)="remove(alert)">
+            {{alert.title}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+</form>
+<br />
+<br />
+<div id="buttons-dialog">
+    <button id="cancel-dialog" mat-button (click)="onNoClick()">
+        Cancelar
+    </button>
+    <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial [disabled]="!validForm()">
+        Guardar
+    </button>
+</div>

@@ -5,7 +5,10 @@ import { ProjectDto, ProjectName } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
-import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormControl, Validators, Form } from '@angular/forms';
+import { NotificationAlert } from '../dominio/notification.domain';
+import { AlertService } from '../servicio/alerts.service';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-project',
@@ -13,6 +16,7 @@ import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from
   styleUrls: ['./project.component.css', './new-sprint-dialog.css']
 })
 export class ProjectComponent implements OnInit {
+  
   project : ProjectDto;
   sprints : SprintDisplay[];
   startDate: Date;
@@ -75,6 +79,19 @@ export class ProjectComponent implements OnInit {
       this.navigateTo("teams");
     });
   }
+
+  openAlertDialog(sprintId: number): void{
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '250px',
+      data: sprintId
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
+        this.sprints = sprint;
+      });
+    });
+  }
 }
 
 
@@ -86,15 +103,22 @@ export class ProjectComponent implements OnInit {
 })
 export class NewSprintDialog implements OnInit{
 
+  idSprintSaved : number;
   project: ProjectName;
   sprint: SprintJsonDates;
   startDate = new FormControl('',  { validators: [Validators.required]});
   endDate = new FormControl('',  { validators: [Validators.required] });
 
+  //alertas de sprint
+  alertDate = new FormControl('');
+  alertTitle = new FormControl('');
+
+  alerts: NotificationAlert[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Sprint,
-    private sprintService: SprintService, private router: Router) {}
+    private sprintService: SprintService, private router: Router, private alertService: AlertService) {}
 
 
   ngOnInit(): void {
@@ -109,12 +133,23 @@ export class NewSprintDialog implements OnInit{
     if (this.validForm()) {
 
       this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
-      console.log(this.sprint);
 
       this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
-        this.dialogRef.close();
-        //FIXME: Recargar la pagina
-        this.router.navigate(["project"], {queryParams:{id:this.project.id}})
+        this.idSprintSaved = sprint.id;
+      }, 
+      (error)=>{
+        console.error(error.error);
+      }, ()=>{
+        if(this.alerts.length > 0){
+          //llamada a crear alertas
+          for(let alert of this.alerts){
+            alert.sprint = this.idSprintSaved;
+            this.alertService.crateAlert(alert).subscribe();
+          }
+          this.dialogRef.close();
+        }else{
+          this.dialogRef.close();
+        }
       });
     }
 
@@ -145,35 +180,20 @@ export class NewSprintDialog implements OnInit{
   }
 
 
-  afterTodayStarDateValidator() {
-    let formControlToTime : number = new Date(this.startDate.value).getTime();
+  beforeTodayDateValidator(date: FormControl){
+    let formControlToTime : number = new Date(date.value).getTime();
+    //Para controlar hoy hasta las 23:59
+    formControlToTime = formControlToTime + 86340000;
     let todayToTime : number = new Date().getTime();
-    console.log("Validator de hoy:", formControlToTime);
     if (formControlToTime < todayToTime) {
-      this.startDate.setErrors({'beforeToday':true});
+      date.setErrors({'beforeToday':true});
     } else {
-      this.startDate.updateValueAndValidity();
+      date.updateValueAndValidity();
     }
-    console.log("ERrores start", this.startDate.errors);
   }
-
-  afterTodayEndDateValidator() {
-    let formControlToTime : number = new Date(this.endDate.value).getTime();
-    let todayToTime : number = new Date().getTime();
-    console.log("Validator de hoy:", formControlToTime);
-    if (formControlToTime < todayToTime) {
-      this.endDate.setErrors({'beforeTodayEnd':true});
-    } else {
-      this.endDate.updateValueAndValidity();
-    }
-    console.log("Errores end", this.endDate.errors);
-  }
-
 
   validDatesValidator() {
-    console.log("Validator de dates");
     this.sprintService.checkDates(this.project.id, this.startDate.value, this.endDate.value).subscribe((res : boolean) => {
-      console.log("Res:", res);
       if (!res) {
         this.startDate.setErrors({'usedDates': true});
         this.endDate.setErrors({'usedDates': true});
@@ -181,20 +201,62 @@ export class NewSprintDialog implements OnInit{
         this.startDate.updateValueAndValidity();
         this.endDate.updateValueAndValidity();
       }
-      console.log("Errors 1:", this.startDate.errors);
     })
   }
 
-    //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
-  // validateStartBeforeEnd(): ValidatorFn {
-  //   return (control: AbstractControl): { [key: string]: any } => {
-  //     let isValid = true;
-  //     if (control.value.getTime() > this.endDate.value.getTime()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'invalid': 'Invalid dates' }
+  //Alert Notificacion
+  addAlert(): void{
+    let alert: NotificationAlert;
 
-  //   };
-  // }
+    alert = {date: new Date(this.alertDate.value), title: this.alertTitle.value};
+    this.alerts.push(alert);
+
+    this.alertDate.setValue('');
+    this.alertTitle.setValue('');
+  }
+
+  remove(alert: NotificationAlert): void{
+    let index: number = this.alerts.indexOf(alert);
+    this.alerts.splice(index, 1);
+
+  }
+
+  allowAdd(): boolean{
+    let allow: boolean = true;
+
+    //las fechas de inicio y fin del sprint están rellenas y válidas
+    allow = allow && this.validForm();
+
+    //Están rellenos pero no requeridos
+    allow = allow && this.alertTitle.value != "";
+    allow = allow && this.alertDate.value != "";
+    //Son válidos
+    allow = allow && this.alertDate.valid;
+
+    return allow;
+  }
+
+  validDateInSprint(date: FormControl){
+    let startDate = new Date(this.startDate.value).getTime();
+    let endDate = new Date(this.endDate.value).getTime();
+
+    let alertDate = new Date(date.value).getTime();
+    //Para controlar hoy hasta las 23:59
+    alertDate = alertDate + 86340000;
+
+    if(startDate > alertDate){
+      this.alertDate.setErrors({'betweenSprint': true});
+    }else if(alertDate > endDate){
+      this.alertDate.setErrors({'betweenSprint': true});
+    }else{
+      this.alertDate.updateValueAndValidity();
+    }
+  }
+
+  getErrorMessageAlertDate(): string{
+    return this.alertDate.hasError('beforeToday')? "La fecha seleccionada no puede ser anterior a la fecha actual" : 
+    this.alertDate.hasError('betweenSprint')? "La fecha de la alerta debe estar dentro del Sprint": "";
+
+  }
 
 }

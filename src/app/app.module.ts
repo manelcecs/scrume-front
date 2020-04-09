@@ -66,6 +66,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { PersonalDataComponent } from './personal-data/personal-data.component';
     RegisterComponent,
     TermsOfUseComponent,
     PersonalDataComponent,
+    AlertComponent,
   ],
   imports: [
     MatFormFieldModule,
