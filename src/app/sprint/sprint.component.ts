@@ -22,6 +22,9 @@ import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
 import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { AlertService } from '../servicio/alerts.service';
+import { NotificationAlert } from '../dominio/notification.domain';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: "app-sprint",
@@ -35,6 +38,8 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  
+  alerts: NotificationAlert[] = [];
 
   constructor(
     private sprintService: SprintService,
@@ -42,7 +47,8 @@ export class SprintComponent implements OnInit {
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +77,10 @@ export class SprintComponent implements OnInit {
           .subscribe((doc: Document[]) => {
             this.doc = doc;
           });
+
+        
+        this.loadAlerts();
+
       } else {
         this.navigateTo("bienvenida");
       }
@@ -179,6 +189,7 @@ export class SprintComponent implements OnInit {
     return this.documentService.deleteDocument(id);
   }
 
+
   openDialogDoc(sprint: SprintDisplay): void {
     const dialogRef = this.dialog.open(NewDocumentDialog, {
       width: "250px",
@@ -196,6 +207,32 @@ export class SprintComponent implements OnInit {
   openDocument(doc: number): void {
     this.router.navigate(["document"], { queryParams: { id: doc } });
   }
+
+  //---------- Alertas
+  openAlertDialog(sprintId: number, alertId?: number): void{
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '250px',
+      data: {idSprint: sprintId, idAlert: alertId}
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
+  deleteAlert(idAlert: number){
+    this.alertService.deleteAlert(idAlert).subscribe(()=>{
+      this.loadAlerts();
+    });
+  }
+
+  private loadAlerts(){
+    this.alertService.getAllAlertsSprint(this.idSprint).subscribe((alerts: NotificationAlert[])=>{
+      this.alerts = alerts;
+    });
+  }
+
+
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------

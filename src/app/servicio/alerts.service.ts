@@ -11,7 +11,14 @@ export class AlertService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     crateAlert(alert: NotificationAlert): Observable<NotificationAlert>{
-        return this.httpClient.post<NotificationAlert>(this.cabeceraService.getCabecera()+"api/notification", alert,{headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.post<NotificationAlert>(this.cabeceraService.getCabecera()+"api/notification", alert, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+    deleteAlert(idAlert: number): Observable<void>{
+        return this.httpClient.delete<void>(this.cabeceraService.getCabecera() + "api/notification/"+idAlert, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getAllAlertsSprint(idSprint: number): Observable<NotificationAlert[]>{
+        return this.httpClient.get<NotificationAlert[]>(this.cabeceraService.getCabecera() + "api/notification/list-all-notifications/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 }

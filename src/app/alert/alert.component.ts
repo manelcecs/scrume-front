@@ -14,6 +14,7 @@ import { SprintDisplay } from '../dominio/sprint.domain';
 export class AlertComponent implements OnInit {
 
   idSprint: number;
+  idAlert: number;
   sprint: SprintDisplay;
   //alertas de sprint
   alertDate = new FormControl('');
@@ -22,12 +23,17 @@ export class AlertComponent implements OnInit {
   alerts: NotificationAlert[] = [];
 
   constructor(public dialogRef: MatDialogRef<AlertComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: number, 
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private alertService: AlertService, 
     private sprintService: SprintService) { }
 
   ngOnInit(): void {
-   this.idSprint = this.data;
+   this.idSprint = this.data.idSprint;
+   if(this.data.idAlert != undefined){
+    this.idAlert = this.data.idAlert;
+   }else{
+     this.idAlert = 0;
+   }
     this.sprintService.getSprint(this.idSprint).subscribe((sprintBD: SprintDisplay)=>{
       this.sprint = sprintBD;
     });
@@ -96,7 +102,7 @@ export class AlertComponent implements OnInit {
   addAlert(): void{
     let alert: NotificationAlert;
 
-    alert = {date: new Date(this.alertDate.value), sprint: this.idSprint, title: this.alertTitle.value};
+    alert = {id: this.idAlert, date: new Date(this.alertDate.value), sprint: this.idSprint, title: this.alertTitle.value};
     this.alerts.push(alert);
 
     this.alertDate.setValue('');

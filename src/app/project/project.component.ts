@@ -7,8 +7,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Form } from '@angular/forms';
 import { NotificationAlert } from '../dominio/notification.domain';
-import { AlertService } from '../servicio/alerts.service';
 import { AlertComponent } from '../alert/alert.component';
+import { AlertService } from '../servicio/alerts.service';
 
 @Component({
   selector: 'app-project',
@@ -37,7 +37,6 @@ export class ProjectComponent implements OnInit {
     }
 
   ngOnInit(): void {
-
   }
 
   openBacklog(): void{
@@ -62,7 +61,7 @@ export class ProjectComponent implements OnInit {
   }
 
 
-  navigateTo(route: String): void{
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
@@ -83,7 +82,7 @@ export class ProjectComponent implements OnInit {
   openAlertDialog(sprintId: number): void{
     const dialogRef = this.dialog.open(AlertComponent, {
       width: '250px',
-      data: sprintId
+      data: {idSprint: sprintId}
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -92,6 +91,7 @@ export class ProjectComponent implements OnInit {
       });
     });
   }
+
 }
 
 

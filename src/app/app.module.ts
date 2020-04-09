@@ -67,6 +67,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import { AlertComponent } from './alert/alert.component';
+import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { AlertComponent } from './alert/alert.component';
     TermsOfUseComponent,
     PersonalDataComponent,
     AlertComponent,
+    MyDailyFormComponent,
   ],
   imports: [
     MatFormFieldModule,
