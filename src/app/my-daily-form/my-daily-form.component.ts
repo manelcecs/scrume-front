@@ -5,6 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Document, Daily, DailyComponent } from '../dominio/document.domain';
 import { AppComponent } from '../app.component';
 import { UserService } from '../servicio/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-my-daily-form',
@@ -25,7 +26,10 @@ export class MyDailyFormComponent implements OnInit {
   daily: Daily;
 
   constructor(public dialogRef: MatDialogRef<MyDailyFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private documentService: DocumentService, private userService: UserService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private documentService: DocumentService,
+     private userService: UserService,
+     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.idSprint = this.data.idSprint;
@@ -69,7 +73,10 @@ export class MyDailyFormComponent implements OnInit {
       this.documento.content = content;
 
       this.documentService.editDocument(this.documento).subscribe(()=>{
-        this.dialogRef.close(true);
+      }, (error)=>{
+        this.openSnackBar("Ha ocurrido un error. Intentelo de nuevo.", "Cerrar", true);
+      }, ()=>{
+        this.openSnackBar("Tu daily se ha creado correctamente.", "Cerrar", false);
       });
     }
   }
@@ -89,6 +96,20 @@ export class MyDailyFormComponent implements OnInit {
       done : this.done.value,
       doing : this.doing.value,
       problems : this.problems.value}
+  }
+
+  openSnackBar(message: string, action: string, error : boolean) {
+    if (error) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      }).afterDismissed().subscribe(() => {
+        this.dialogRef.close();
+      });
+    }
   }
 
 }

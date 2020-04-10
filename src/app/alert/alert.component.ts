@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from '../servicio/alerts.service';
 import { SprintService } from '../servicio/sprint.service';
 import { SprintDisplay } from '../dominio/sprint.domain';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-alert',
@@ -27,7 +28,8 @@ export class AlertComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AlertComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private alertService: AlertService, 
-    private sprintService: SprintService) { }
+    private sprintService: SprintService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
    this.idSprint = this.data.idSprint;
@@ -50,14 +52,23 @@ export class AlertComponent implements OnInit {
     if(this.validForm()){
       if(this.idAlert != undefined){
         this.alert = {id: this.idAlert, date: new Date(this.alertDate.value), sprint: this.idSprint, title: this.alertTitle.value};
-        this.alertService.editAlert(this.alert).subscribe();
+        this.alertService.editAlert(this.alert).subscribe(()=>{},
+        (error)=>{
+          this.openSnackBar("Se ha producido un error al editar la alerta. Intentelo nuevamente.", "Cerrar", true);
+        }, ()=>{
+          this.openSnackBar("La alerta se ha creado correctamente.", "Cerrar", false);
+        });
       }else{
         for(let alert of this.alerts){
-          this.alertService.crateAlert(alert).subscribe();
+          this.alertService.crateAlert(alert).subscribe(()=>{},
+          (error)=>{
+            this.openSnackBar("Se ha producido un error al crear la alerta. Intentelo nuevamente.", "Cerrar", true);
+          });
         }
+        this.openSnackBar("La alerta se ha creado correctamente.", "Cerrar", false);
       }
       
-      this.dialogRef.close();
+      
     }
   }
 
@@ -136,5 +147,18 @@ export class AlertComponent implements OnInit {
       return true;
     }
   }
+
+  openSnackBar(message: string, action: string, error : boolean) {
+    if (error) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      }).afterDismissed().subscribe(() => {
+        this.dialogRef.close();
+      });
+    }
 
 }

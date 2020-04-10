@@ -57,8 +57,8 @@ export class DocumentComponent implements OnInit {
 
         this.idDoc = param.id;
 
-        this.message = "Se ha guardado el documento correctamente"
-        this.close = "Cerrar"
+        this.message = "Se ha guardado el documento correctamente";
+        this.close = "Cerrar";
 
         this.documentService.getDocuments(this.idDoc).subscribe((doc: Document)=> {
           this.doc = doc;

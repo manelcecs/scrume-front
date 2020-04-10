@@ -9,6 +9,7 @@ import { FormControl, Validators, Form } from '@angular/forms';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
 import { AlertService } from '../servicio/alerts.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project',
@@ -118,7 +119,10 @@ export class NewSprintDialog implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Sprint,
-    private sprintService: SprintService, private router: Router, private alertService: AlertService) {}
+    private sprintService: SprintService, 
+    private router: Router, 
+    private alertService: AlertService,
+    private snackBar: MatSnackBar) {}
 
 
   ngOnInit(): void {
@@ -138,17 +142,20 @@ export class NewSprintDialog implements OnInit{
         this.idSprintSaved = sprint.id;
       }, 
       (error)=>{
-        console.error(error.error);
+        this.openSnackBar("Ha ocurrido un error al crear el Sprint.", "Cerrar", true);
       }, ()=>{
         if(this.alerts.length > 0){
           //llamada a crear alertas
           for(let alert of this.alerts){
             alert.sprint = this.idSprintSaved;
-            this.alertService.crateAlert(alert).subscribe();
+            this.alertService.crateAlert(alert).subscribe(()=>{},
+            (error)=>{
+              this.openSnackBar("Ha ocurrido un error al crear las alertas. Intentelo de nuevo en el panel del proyecto.", "Cerrar", false);
+            });
           }
-          this.dialogRef.close();
+          this.openSnackBar("El sprint y las alertas se han creado correctamente.", "Cerrar", false);
         }else{
-          this.dialogRef.close();
+          this.openSnackBar("El sprint se ha creado correctamente.", "Cerrar", false);
         }
       });
     }
@@ -257,6 +264,20 @@ export class NewSprintDialog implements OnInit{
     return this.alertDate.hasError('beforeToday')? "La fecha seleccionada no puede ser anterior a la fecha actual" : 
     this.alertDate.hasError('betweenSprint')? "La fecha de la alerta debe estar dentro del Sprint": "";
 
+  }
+
+  openSnackBar(message: string, action: string, error : boolean) {
+    if (error) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      }).afterDismissed().subscribe(() => {
+        this.dialogRef.close();
+      });
+    }
   }
 
 }
