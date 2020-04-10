@@ -22,6 +22,8 @@ export class AlertComponent implements OnInit {
 
   alerts: NotificationAlert[] = [];
 
+  alert: NotificationAlert;
+
   constructor(public dialogRef: MatDialogRef<AlertComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, 
     private alertService: AlertService, 
@@ -31,8 +33,13 @@ export class AlertComponent implements OnInit {
    this.idSprint = this.data.idSprint;
    if(this.data.idAlert != undefined){
     this.idAlert = this.data.idAlert;
+    this.alertService.getAlert(this.idAlert).subscribe((alert: NotificationAlert)=>{
+      this.alertDate.setValue(new Date(alert.date));
+      this.alertTitle.setValue(alert.title);
+      this.alert = alert;
+    });
    }else{
-     this.idAlert = 0;
+     this.idAlert = undefined;
    }
     this.sprintService.getSprint(this.idSprint).subscribe((sprintBD: SprintDisplay)=>{
       this.sprint = sprintBD;
@@ -41,9 +48,15 @@ export class AlertComponent implements OnInit {
 
   onSaveClick(): void{
     if(this.validForm()){
-      for(let alert of this.alerts){
-        this.alertService.crateAlert(alert).subscribe();
+      if(this.idAlert != undefined){
+        this.alert = {id: this.idAlert, date: new Date(this.alertDate.value), sprint: this.idSprint, title: this.alertTitle.value};
+        this.alertService.editAlert(this.alert).subscribe();
+      }else{
+        for(let alert of this.alerts){
+          this.alertService.crateAlert(alert).subscribe();
+        }
       }
+      
       this.dialogRef.close();
     }
   }
@@ -116,7 +129,12 @@ export class AlertComponent implements OnInit {
   }
 
   validForm(): boolean{
-    return this.alerts.length > 0;
+    if(this.idAlert == undefined){
+
+      return this.alerts.length > 0;
+    }else{
+      return true;
+    }
   }
 
 }

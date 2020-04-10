@@ -8,6 +8,7 @@
               </li>
             </ol>
         </nav>
+        <button *ngIf="!daily" (click)="openMyDailyDialog()">Rellenar daily</button>
     </section>
 
     <section id="progress-sprint">
@@ -40,7 +41,8 @@
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Métricas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="contact" aria-selected="false">Alertas</a>
+                <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
+                </a>
             </li>
         </ul>
 
@@ -85,11 +87,11 @@
                     <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
                   </tr>
             </div>
-            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alert" role="tabpanel" aria-labelledby="contact-tab">
-                <div *ngFor="let alert of alerts; index as i;" class="info-sprint-project">
+            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
+                <div *ngFor="let alert of alerts" class="info-sprint-alerts">
                     La alerta {{alert.title}} será el: {{alert.date | date:'dd/MM/yyyy'}}
                     <div>
-                        <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="edit alert" (click)="openAlertDialog(sprint.id, alert.id)">
+                        <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="edit alert" (click)="openAlertDialog(alert.id)">
                     </div>
                     <div>
                         <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top" alt="remove alert" (click)="deleteAlert(alert.id)">

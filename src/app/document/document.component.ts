@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../servicio/document.service';
-import { Document} from '../dominio/document.domain';
+import { Document, Daily} from '../dominio/document.domain';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -27,9 +27,11 @@ export class DocumentComponent implements OnInit {
   improvement;
   //daily
   nameDaily;
+  dailies: Daily[] = []
+
   done;
-  todo;
-  problem;
+  // todo;
+  // problem;
   //review
   nameReview;
   noDone;
@@ -71,9 +73,11 @@ export class DocumentComponent implements OnInit {
             this.rePlanning = JSON.parse(this.doc.content).rePlanning;
           }else if(doc.type == "DAILY") {
             this.nameDaily = this.doc.name;
-            this.done = JSON.parse(this.doc.content).done;
-            this.todo = JSON.parse(this.doc.content).todo;
-            this.problem = JSON.parse(this.doc.content).problem;
+            let docContent = JSON.parse(this.doc.content);
+            for (let cont of docContent) {
+              let dailyWrited: Daily  = cont;
+              this.dailies.push(dailyWrited);
+            }
           }else{
             this.namePlanning = this.doc.name;
             this.entrega = JSON.parse(this.doc.content).entrega;
@@ -232,11 +236,7 @@ export class DocumentComponent implements OnInit {
 
     }else if(doc.type == "DAILY"){
 
-      this.c = {
-        done: this.done,
-        todo: this.todo,
-        problem: this.problem
-      }
+      this.c = JSON.stringify(this.dailies);
 
     }else{
 
@@ -296,11 +296,7 @@ export class DocumentComponent implements OnInit {
 
     }else if(doc.type == "DAILY"){
 
-      this.c = {
-        done: this.done,
-        todo: this.todo,
-        problem: this.problem
-      }
+      this.c = JSON.stringify(this.dailies);
 
     }else{
 

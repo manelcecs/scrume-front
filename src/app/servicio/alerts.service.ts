@@ -21,4 +21,14 @@ export class AlertService {
     getAllAlertsSprint(idSprint: number): Observable<NotificationAlert[]>{
         return this.httpClient.get<NotificationAlert[]>(this.cabeceraService.getCabecera() + "api/notification/list-all-notifications/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    getAlert(idAlert: number): Observable<NotificationAlert>{
+        return this.httpClient.get<NotificationAlert>(this.cabeceraService.getCabecera() + "api/notification/" + idAlert, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    editAlert(alert: NotificationAlert): Observable<NotificationAlert>{
+        return this.httpClient.put<NotificationAlert>(this.cabeceraService.getCabecera()+"api/notification/"+alert.id, alert, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+   
+
 }

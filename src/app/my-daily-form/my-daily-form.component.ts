@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DocumentService } from '../servicio/document.service';
 import { FormControl, Validators } from '@angular/forms';
 import { Document, Daily, DailyComponent } from '../dominio/document.domain';
+import { AppComponent } from '../app.component';
+import { UserService } from '../servicio/user.service';
 
 @Component({
   selector: 'app-my-daily-form',
@@ -23,34 +25,51 @@ export class MyDailyFormComponent implements OnInit {
   daily: Daily;
 
   constructor(public dialogRef: MatDialogRef<MyDailyFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private documentService: DocumentService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private documentService: DocumentService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.idSprint = this.data.id;
-    this.nombre = this.data.nombre;
+    this.idSprint = this.data.idSprint;
+    this.nombre = this.userService.getUserLogged().username.split('@')[0];
+    
+      //Cambiar a la nueva peticion
+      this.documentService.getTodayDaily(this.idSprint).subscribe((idDoc: number)=>{
+        this.documentService.getDocuments(idDoc).subscribe((doc: Document)=>{
+          if(doc != undefined){
+            this.documento = doc;
+            if(!this.documento.content.startsWith('[') && !this.documento.content.endsWith(']')){
+              this.documento.content = "["+this.documento.content+"]";
+            }
+          }else{
+            let date = new Date();
+            this.documento = {
+              id: 0,
+              name: "Daily "+date.getDay+"-"+date.getMonth()+"-"+date.getFullYear,
+              sprint: this.idSprint,
+              type: "DAILY",
+             content: "[]"
+            }
+          }
+        });
+      });
 
-    //Cambiar a la nueva peticion
-    this.documentService.getDocuments(this.idSprint).subscribe((doc: Document)=>{
-      this.documento = doc;
-    });
   }
 
   onNoClick(): void{
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   onSaveClick(): void{
     if(this.validForm()){
       this.populateDaily();
-      console.log("Contenido que había: ", JSON.parse(this.documento.content))
-      let documentContent : DailyComponent = JSON.parse(this.documento.content);
+      let documentContent : DailyComponent = {daily: JSON.parse(this.documento.content)};
       documentContent.daily.push(this.daily);
 
-      console.log("Contenido a guardar:", JSON.stringify(documentContent));
-      this.documento.content = JSON.stringify(documentContent);
+      let content = JSON.stringify(documentContent);
+      content = content.substring(content.indexOf(':')+1, content.lastIndexOf('}'));
+      this.documento.content = content;
 
       this.documentService.editDocument(this.documento).subscribe(()=>{
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       });
     }
   }
@@ -66,10 +85,10 @@ export class MyDailyFormComponent implements OnInit {
   }
 
   populateDaily(){
-    this.daily.name = this.nombre;
-    this.daily.done = this.done.value;
-    this.daily.doing = this.doing.value;
-    this.daily.problems = this.problems.value;
+    this.daily = {name : this.nombre,
+      done : this.done.value,
+      doing : this.doing.value,
+      problems : this.problems.value}
   }
 
 }

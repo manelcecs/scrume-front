@@ -115,3 +115,9 @@ section {
 .tableDocument {
     padding-left: 5%;
 }
+
+/*Alerts*/
+.info-sprint-alerts{
+    display: flex;
+    align-items: center;
+}
