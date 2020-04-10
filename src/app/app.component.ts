@@ -10,6 +10,7 @@ import { UserService } from './servicio/user.service';
 import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
+import { SecurityBreachService } from './servicio/breach.service';
 
 @Injectable({providedIn:'root'})
 
@@ -29,7 +30,10 @@ export class AppComponent implements OnInit, OnDestroy {
   loading = false;
   title: any = 'scrume-front';
 
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService, private profileService: ProfileService) {
+  isAdmin: boolean;
+
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
+     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -128,12 +132,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-
-    
-    
     this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
       this.user = user;
-      this.navigateTo("teams");
+
+      console.log(" este es el user   " + JSON.stringify(user));
+      this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
+        this.isAdmin = isAdmin;
+        console.log("es admin: " + this.isAdmin);
+
+        if (this.isAdmin == true){
+          this.navigateTo("admin");
+        }else{
+          this.navigateTo("teams");
+        }
+      })
+
     });
 
   }

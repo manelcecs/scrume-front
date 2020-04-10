@@ -20,6 +20,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
   {path: 'profile', component: ProfileComponent},
   {path: 'personal', component: PersonalDataComponent},
+  {path: 'admin', component: SecurityBreachComponent},
 
 ];
 
