@@ -4,6 +4,7 @@ export interface Team {
     id?: number;
     name: string;
     projects?: ProjectDto[];
+    isAdmin?: boolean;
 
 }
 

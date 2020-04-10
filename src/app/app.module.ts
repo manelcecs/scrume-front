@@ -66,6 +66,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
+import {MatTableModule} from '@angular/material/table';
+
 
 @NgModule({
   declarations: [
@@ -141,6 +143,7 @@ import { PersonalDataComponent } from './personal-data/personal-data.component';
     MatStepperModule,
     NgxPayPalModule,
     ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+    MatTableModule,
   ],
   providers: [
     {

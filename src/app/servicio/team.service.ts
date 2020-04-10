@@ -4,6 +4,7 @@ import { CabeceraService } from './cabecera.service';
 import { Team, TeamSimple } from '../dominio/team.domain';
 import { Observable } from 'rxjs';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Member } from '../dominio/user.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -11,7 +12,7 @@ export class TeamService {
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
-    
+
 
     createTeam(team: TeamSimple): Observable<TeamSimple> {
         return this.httpClient.post<TeamSimple>(this.cabeceraService.getCabecera() + "api/team", team, {headers: this.cabeceraService.getBasicAuthentication()});
@@ -24,14 +25,14 @@ export class TeamService {
     deleteTeam(id: number): Observable<Team> {
         return this.httpClient.delete<Team>(this.cabeceraService.getCabecera() + "api/team/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
-    
+
     getAllTeams() : Observable<Team[]> {
         return this.httpClient.get<Team[]>(this.cabeceraService.getCabecera() + "api/team/list", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
-    //Sigue sin estar
-    getTeam(id: number):any{
-        // return this.httpClient.get<Team>(this.cabeceraService.getCabecera() + "/team?id=" + id); 
+
+    getTeam(id: number):Observable<Team>{
+      return this.httpClient.get<Team>(this.cabeceraService.getCabecera() + "api/team/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     getTeamByProjectID(idProject: number): any {
@@ -39,7 +40,24 @@ export class TeamService {
         return this.getTeam(1);
     }
 
-    
+    getTeamMembers(idTeam : number): Observable<Member[]>{
+      return this.httpClient.get<Member[]>(this.cabeceraService.getCabecera() + "api/team/list-members/" + idTeam, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    changeRol(idTeam:number, idMember:number, admin: boolean):Observable<any> {
+      let data = {"idTeam": idTeam,"idUser": idMember,"admin": admin};
+      return this.httpClient.post<any>(this.cabeceraService.getCabecera() + "api/team/change-rol", data,{headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    deleteFromTeam(idTeam:number, idMember:number):Observable<any> {
+      return this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/team/remove-from-team/"+ idMember + "/" + idTeam, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    leaveTeam(idTeam:number): Observable<any>{
+      return this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/team/team-out/" + idTeam,{headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+
 
 }
 
@@ -51,7 +69,7 @@ export class TeamResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        
+
         let method = activatedRoute.queryParams.method;
         if(method === 'getTeam'){
             return this.teams.getTeam(activatedRoute.queryParams.id);

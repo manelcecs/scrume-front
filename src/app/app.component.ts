@@ -128,9 +128,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-
-    
-    
     this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
       this.user = user;
       this.navigateTo("teams");
@@ -143,15 +140,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getNotifications(){
-    if (this.user != undefined) {
-      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
         if (invitations.length != 0) {
           this.notifications = true;
         } else {
           this.notifications = false;
         }
-      });
-    }
+      }
+        });
   }
 
 }

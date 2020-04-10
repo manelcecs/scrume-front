@@ -5,6 +5,7 @@ import {
 } from "../dominio/invitation.domain";
 import { InvitationService } from "../servicio/invitation.service";
 import { timer } from "rxjs";
+import { UserService } from '../servicio/user.service';
 
 @Component({
   selector: "app-notifications",
@@ -15,10 +16,10 @@ export class NotificationsComponent implements OnInit {
   invitations: InvitationDisplay[] = [];
   userSignedIn: number = 0;
 
-  constructor(private invitationService: InvitationService) {}
+  constructor(private invitationService: InvitationService,private userService: UserService) {}
 
   ngOnInit(): void {
-    timer(0, 500).subscribe(() => {
+    timer(0, 10000).subscribe(() => {
       if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
         this.invitationService
           .getInvitations()
