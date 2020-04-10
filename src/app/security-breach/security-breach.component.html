@@ -1,1 +1,21 @@
-<p>security-breach works!</p>
+<h2 id="title">Bienvenido a la administración de Scrume</h2>
+<div id="text-1">
+    <p>En esta ventana información acerca de la aplicación</p>
+    <p>y su control sobre la brecha de seguridad.</p>
+</div>
+<div>
+    <p>El aviso sobre la brecha de seguridad está actualmente </p>
+</div>
+<div id="text-2">
+    <p *ngIf="activated; else elseBlock">ACTIVADO</p>
+    <ng-template #elseBlock>DESACTIVADO</ng-template>
+</div>
+<div id="text-3">
+    <p>Mensaje desde base de datos: {{ message }}</p>
+</div>
+<div id="button-admin">
+    <button id="button-active" *ngIf="!activated" (click)="activeBreach()" mat-flat-button>Activar aviso de brecha de
+        seguridad</button>
+    <button id="button-desactive" *ngIf="activated" (click)="activeBreach()" mat-flat-button>Desactivar aviso de brecha
+        de seguridad</button>
+</div>

@@ -15,7 +15,7 @@ export class SecurityBreachService {
     }
 
     getSecurityBreach(): Observable<Breach> {
-        return this.httpClient.get<Breach>(this.cabeceraService.getCabecera() + "api/workspace", {headers: this.cabeceraService.getBasicAuthentication()});
+        return this.httpClient.get<Breach>(this.cabeceraService.getCabecera() + "api/administrator", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     isAdmin(): Observable<boolean> {
