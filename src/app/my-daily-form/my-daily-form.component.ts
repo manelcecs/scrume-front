@@ -43,7 +43,7 @@ export class MyDailyFormComponent implements OnInit {
             let date = new Date();
             this.documento = {
               id: 0,
-              name: "Daily "+date.getDay+"-"+date.getMonth()+"-"+date.getFullYear,
+              name: "Daily "+date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear(),
               sprint: this.idSprint,
               type: "DAILY",
              content: "[]"
