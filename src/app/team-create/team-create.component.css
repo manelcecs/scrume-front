@@ -50,3 +50,12 @@
     display: flex;
     justify-content: left;
 }
+
+/* Table members */
+table {
+  width: 100%;
+}
+
+mat-icon:hover {
+  cursor: pointer;
+}

@@ -117,6 +117,25 @@ export class TeamComponent implements OnInit {
     });
   }
 
+  leaveTeam(idTeam: number): void{
+    this.teamService.leaveTeam(idTeam).subscribe(() => {
+      this.teamService.getAllTeams().subscribe((teams : Team[] )=>{
+        this.teams = teams;
+        for(let t of this.teams){
+            this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
+            t.projects = projects;
+          });
+        }
+      });
+    }, error => {
+      this._snackBar.open(
+        "Se ha producido un error en el servidor", "Cerrar", {
+          duration: 2000
+        }
+      )
+    });
+  }
+
   openDialogInvite(idTeam: number): void {
     this.dialog.open(InvitationDialog, {
       width: '250px',
