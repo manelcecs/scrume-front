@@ -5,7 +5,7 @@
         <h3>Rellene los siguientes campos</h3>
         <div *ngIf="doc.type == 'DAILY'">
             <mat-form-field class="form-field">
-                <input value={{nameDaily}} (input)="dailyName(nameDailyHTML.value)" placeholder="Nombre del documento" matInput #nameDailyHTML>
+                <input value={{nameDaily}} placeholder="Nombre del documento" matInput #nameDailyHTML disabled>
             </mat-form-field>
 
             <mat-form-field class="form-field">
@@ -78,16 +78,26 @@
     <section id="pdf-container">
         <div id="pdf">
             <div *ngIf="doc.type == 'DAILY'" class="paper">
-                <h3 id="dailyName">{{nameDaily}} | {{doc.type}}</h3>
+                <h3>{{nameDaily}} </h3>
                 <br>
-                <h5>¿Qué he hecho hoy?</h5>
-                <p id="dailyDone">{{done}}</p>
-                <br>
+                <h5>¿Qué he hecho hoy? </h5>
+                <div *ngFor="let daily of dailies">
+                    <p>{{daily.name}}: </p>
+                    <p>{{daily.done}}</p>
+                    <br>
+                </div>
                 <h5>¿Qué voy a hacer hoy?</h5>
-                <p id="dailyTodo">{{todo}}</p>
-                <br>
+                <div *ngFor="let daily of dailies">
+                    <p>{{daily.name}}: </p>
+                    <p>{{daily.doing}}</p>
+                    <br>
+                </div>
                 <h5>¿Qué problemas he tenido?</h5>
-                <p id="dailyProblem">{{problem}}</p>
+                <div *ngFor="let daily of dailies">
+                    <p>{{daily.name}}: </p>
+                    <p>{{daily.problems}}</p>
+                    <br>
+                </div>
             </div>
 
             <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">

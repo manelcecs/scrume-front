@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../servicio/document.service';
-import { Document} from '../dominio/document.domain';
+import { Document, Daily} from '../dominio/document.domain';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../servicio/user.service';
 
 @Component({
   selector: 'app-document',
@@ -27,6 +28,9 @@ export class DocumentComponent implements OnInit {
   improvement;
   //daily
   nameDaily;
+  dailies: Daily[] = []
+  myDaily: Daily;
+
   done;
   todo;
   problem;
@@ -43,7 +47,7 @@ export class DocumentComponent implements OnInit {
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar, private userService: UserService) { }
 
   ngOnInit(): void {
 
@@ -53,8 +57,8 @@ export class DocumentComponent implements OnInit {
 
         this.idDoc = param.id;
 
-        this.message = "Se ha guardado el documento correctamente"
-        this.close = "Cerrar"
+        this.message = "Se ha guardado el documento correctamente";
+        this.close = "Cerrar";
 
         this.documentService.getDocuments(this.idDoc).subscribe((doc: Document)=> {
           this.doc = doc;
@@ -71,9 +75,22 @@ export class DocumentComponent implements OnInit {
             this.rePlanning = JSON.parse(this.doc.content).rePlanning;
           }else if(doc.type == "DAILY") {
             this.nameDaily = this.doc.name;
-            this.done = JSON.parse(this.doc.content).done;
-            this.todo = JSON.parse(this.doc.content).todo;
-            this.problem = JSON.parse(this.doc.content).problem;
+            let docContent = JSON.parse(this.doc.content);
+            console.log("Contenido inicial: ", JSON.stringify(this.doc.content));
+            for (let cont of docContent) {
+              let dailyWrited: Daily  = cont;
+              this.dailies.push(dailyWrited);
+              if(dailyWrited.name == this.userService.getUserLogged().username.split('@')[0]){
+                this.done = dailyWrited.done;
+                this.todo = dailyWrited.doing;
+                this.problem = dailyWrited.problems;
+                this.myDaily = dailyWrited;
+              }
+            }
+            if(this.myDaily == undefined){
+              this.myDaily = {name:this.userService.getUserLogged().username.split('@')[0], done: "", doing: "", problems: ""};
+              this.dailies.push(this.myDaily);
+            }
           }else{
             this.namePlanning = this.doc.name;
             this.entrega = JSON.parse(this.doc.content).entrega;
@@ -95,32 +112,16 @@ export class DocumentComponent implements OnInit {
   }
 
   //Daily
-  dailyName(value: string){
-    this.nameDaily = value;
-    this.doc.name = value;
-    var pdfContainer = document.getElementById("pdf-container");
-    var scrollNow = document.getElementById("dailyName");
-    pdfContainer.scrollTop = scrollNow.clientHeight;
-  }
-
+  
   dailyDone(value: string){
-    this.done = value;
-    var pdfContainer = document.getElementById("pdf-container");
-    var scrollNow = document.getElementById("dailyDone");
-    pdfContainer.scrollTop = scrollNow.clientHeight;
+    this.myDaily.done = value;
   }
 
   dailyTodo(value: string){
-    this.todo = value;
-    var pdfContainer = document.getElementById("pdf-container");
-    var scrollNow = document.getElementById("dailyTodo");
-    pdfContainer.scrollTop = scrollNow.clientHeight;
+    this.myDaily.doing = value;
   }
   dailyProblem(value: string){
-    this.problem = value;
-    var pdfContainer = document.getElementById("pdf-container");
-    var scrollNow = document.getElementById("dailyProblem");
-    pdfContainer.scrollTop = scrollNow.clientHeight;
+    this.myDaily.problems = value;
   }
 
   //Retrospective
@@ -156,7 +157,6 @@ export class DocumentComponent implements OnInit {
 
 
   //Review
-
 
   reviewName(value: string){
     this.nameReview = value;
@@ -231,12 +231,13 @@ export class DocumentComponent implements OnInit {
       }
 
     }else if(doc.type == "DAILY"){
-
-      this.c = {
-        done: this.done,
-        todo: this.todo,
-        problem: this.problem
+      let index = this.dailies.indexOf(this.myDaily);
+      console.log("Elemento con indice: ", index);
+      if(index >= 0){
+        this.dailies.splice(index, 1);
       }
+      this.dailies.push(this.myDaily);
+      this.c = this.dailies;
 
     }else{
 
@@ -295,13 +296,13 @@ export class DocumentComponent implements OnInit {
       }
 
     }else if(doc.type == "DAILY"){
-
-      this.c = {
-        done: this.done,
-        todo: this.todo,
-        problem: this.problem
+      let index = this.dailies.indexOf(this.myDaily);
+      console.log("Elemento con indice: ", index);
+      if(index >= 0){
+        this.dailies.splice(index, 1);
       }
-
+      this.dailies.push(this.myDaily);
+      this.c = this.dailies;
     }else{
 
       this.c = {

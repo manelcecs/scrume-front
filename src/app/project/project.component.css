@@ -87,9 +87,19 @@
     width: 70%;
 }
 
+.name-sprint-project {
+    display: flex;
+    align-items: center;
+}
+
 .name-sprint-project > a{
     cursor: pointer;
 }
+
+.name-sprint-project > img{
+    cursor: pointer;
+}
+
 
 .name-sprint-project > a:hover{
     text-decoration: underline;
@@ -114,7 +124,6 @@
     padding: 0.1%;
     font-size: smaller;
 }
-
 
 
 /*------------------------------*/

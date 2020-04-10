@@ -20,8 +20,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { BoardSimple, BoardNumber, Board } from "../dominio/board.domain";
 import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
-import { Document } from "../dominio/document.domain";
+import { Document, Daily } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { AlertService } from '../servicio/alerts.service';
+import { NotificationAlert } from '../dominio/notification.domain';
+import { AlertComponent } from '../alert/alert.component';
+import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
+import { UserService } from '../servicio/user.service';
 
 @Component({
   selector: "app-sprint",
@@ -36,14 +41,20 @@ export class SprintComponent implements OnInit {
   doc: Document[];
   document: Document;
 
+  alerts: NotificationAlert[] = [];
+
+  daily: boolean = false;
+
   constructor(
     private sprintService: SprintService,
     private boardService: BoardService,
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private alertService: AlertService,
+    private userService: UserService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -71,6 +82,12 @@ export class SprintComponent implements OnInit {
           .subscribe((doc: Document[]) => {
             this.doc = doc;
           });
+
+        this.compruebaDailyRellena();
+
+
+        this.loadAlerts();
+
       } else {
         this.navigateTo("bienvenida");
       }
@@ -179,6 +196,7 @@ export class SprintComponent implements OnInit {
     return this.documentService.deleteDocument(id);
   }
 
+
   openDialogDoc(sprint: SprintDisplay): void {
     const dialogRef = this.dialog.open(NewDocumentDialog, {
       width: "250px",
@@ -196,6 +214,67 @@ export class SprintComponent implements OnInit {
   openDocument(doc: number): void {
     this.router.navigate(["document"], { queryParams: { id: doc } });
   }
+
+  //---------- Alertas
+  openAlertDialog(alertId: number): void {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: '250px',
+      data: { idSprint: this.idSprint, idAlert: alertId }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
+  deleteAlert(idAlert: number) {
+    this.alertService.deleteAlert(idAlert).subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
+  loadAlerts() {
+    console.log("Recogiendo las alertas configuradas:");
+    this.alertService.getAllAlertsSprint(this.idSprint).subscribe((alerts: NotificationAlert[]) => {
+      this.alerts = alerts;
+    }, (error) => {
+      console.error(error.error);
+    });
+  }
+
+  //--------- My Daily Form
+
+  openMyDailyDialog() {
+    const dialogRef = this.dialog.open(MyDailyFormComponent, {
+      width: '250px',
+      data: { idSprint: this.idSprint }
+    });
+
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      this.daily = res;
+    });
+  }
+
+  compruebaDailyRellena() {
+
+    this.documentService.getTodayDaily(this.idSprint).subscribe((idDoc: number) => {
+      this.documentService.getDocuments(idDoc).subscribe((doc: Document) => {
+        if (doc != undefined) {
+          let dailyConts = JSON.parse(doc.content);
+
+          let username = this.userService.getUserLogged().username.split('@')[0];
+          for (let cont of dailyConts) {
+            let dailyWrited: Daily  = cont;
+            if (dailyWrited.name == username) {
+              this.daily = true;
+            }
+          }
+        }
+      });
+    });
+
+  }
+
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------
@@ -226,7 +305,7 @@ export class NewDocumentDialog implements OnInit {
     private documentService: DocumentService,
     private boardService: BoardService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data;
@@ -310,7 +389,7 @@ export class EditSprintDialog implements OnInit {
     public dialogRef: MatDialogRef<EditSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
     private sprintService: SprintService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
@@ -340,26 +419,26 @@ export class EditSprintDialog implements OnInit {
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.startDate.hasError("invalid")
-      ? "La fecha de fin no puede ser anterior a la de inicio"
-      : this.startDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.startDate.hasError("beforeToday")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.startDate.hasError("invalid")
+          ? "La fecha de fin no puede ser anterior a la de inicio"
+          : this.startDate.hasError("usedDates")
+            ? "Ya hay un sprint en las fechas seleccionadas"
+            : this.startDate.hasError("beforeToday")
+              ? "La fecha no puede ser anterior a hoy"
+              : "";
   }
 
   getErrorMessageEndDate(): string {
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.endDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.endDate.hasError("beforeTodayEnd")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.endDate.hasError("usedDates")
+          ? "Ya hay un sprint en las fechas seleccionadas"
+          : this.endDate.hasError("beforeTodayEnd")
+            ? "La fecha no puede ser anterior a hoy"
+            : "";
   }
 
   validForm(): boolean {

@@ -5,3 +5,14 @@ export interface Document {
     content: string;
     sprint: number;
 }
+
+export interface DailyComponent{
+    daily: Daily[];
+}
+
+export interface Daily{
+    name: string;
+    done: string;
+    doing: string;
+    problems: string;
+}

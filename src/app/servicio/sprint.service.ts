@@ -38,7 +38,6 @@ export class SprintService {
 
     checkDates(project : number, starDate: Date, endDate : Date) : Observable<boolean>{
       let data= {"startDate": starDate.toISOString(), "endDate": endDate.toISOString()};
-      console.log("Checking dates:", data);
       return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/sprint/check-dates/" + project, data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 }

@@ -67,6 +67,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import {MatTableModule} from '@angular/material/table';
+import { AlertComponent } from './alert/alert.component';
+import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 
 
 @NgModule({
@@ -103,6 +105,8 @@ import {MatTableModule} from '@angular/material/table';
     RegisterComponent,
     TermsOfUseComponent,
     PersonalDataComponent,
+    AlertComponent,
+    MyDailyFormComponent,
   ],
   imports: [
     MatFormFieldModule,
