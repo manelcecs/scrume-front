@@ -48,8 +48,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {MatChipsModule} from '@angular/material/chips';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
@@ -66,6 +64,13 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClient } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
+import {MatTableModule} from '@angular/material/table';
+import { AlertComponent } from './alert/alert.component';
+import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
+
 
 @NgModule({
   declarations: [
@@ -100,6 +105,9 @@ import { HttpClient } from '@angular/common/http';
     ProfileComponent,
     RegisterComponent,
     TermsOfUseComponent,
+    PersonalDataComponent,
+    AlertComponent,
+    MyDailyFormComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -132,7 +140,6 @@ import { HttpClient } from '@angular/common/http';
     MatDialogModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
@@ -142,6 +149,8 @@ import { HttpClient } from '@angular/common/http';
     NgxPayPalModule,
     BrowserModule,
     HttpClientModule,
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+    MatTableModule,
   ],
   providers: [
     {

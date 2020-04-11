@@ -121,3 +121,9 @@ section {
       max-width: 60%;
     }
   }
+
+/*Alerts*/
+.info-sprint-alerts{
+    display: flex;
+    align-items: center;
+}

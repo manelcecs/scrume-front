@@ -179,7 +179,7 @@ export class RegisterComponent implements OnInit {
       let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
       let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value};
       this.userService.registerUser(user).subscribe(() => {
-        this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+        this.message = "Se ha registrado con éxito. Ya puede usar Scrume. Será deririgido en 5 segundos.";
         this.close = "Cerrar";
         this.openSnackBar(this.message, this.close);
       });
@@ -198,7 +198,7 @@ export class RegisterComponent implements OnInit {
     let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, password: this.passwordControl.value,  username: this.emailControl.value}
     this.userService.registerUser(user).subscribe(() => {
-      this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+      this.message = "Se ha registrado con éxito. Ya puede usar Scrume. Será deririgido en 5 segundos.";
       this.close = "Cerrar";
       this.openSnackBar(this.message, this.close);
     });

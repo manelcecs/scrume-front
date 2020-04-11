@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -11,6 +11,7 @@ import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
 
+@Injectable({providedIn:'root'})
 
 @Component({
   selector: 'app-root',
@@ -52,10 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      timer(0, 10000).subscribe(() => {
+      // timer(3000, 10000).subscribe(() => {
 
-          this.getNotifications();
-      });
+      //     this.getNotifications();
+      // });
 
     }else{
       this.cargarMenu();
@@ -127,9 +128,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getUserInfo(){
-
-    
-    
     this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
       this.user = user;
       this.navigateTo("teams");
@@ -142,15 +140,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getNotifications(){
-    if (this.user != undefined) {
-      this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
         if (invitations.length != 0) {
           this.notifications = true;
         } else {
           this.notifications = false;
         }
-      });
-    }
+      }
+        });
   }
 
 }

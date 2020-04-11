@@ -54,3 +54,9 @@ export interface TaskToList{
     project: ProjectName;
     workspace: BoardName;
 }
+
+export interface TaskData {
+    description: string;
+    points: number;
+    title: string;
+}

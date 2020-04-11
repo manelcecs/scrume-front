@@ -12,17 +12,17 @@
     <nav class="navbar navbar-dark" id="menu-horizontal">
       <div id="menu-horizontal-buttons-left">
         <button mat-icon-button (click)="sidenav.toggle(); sidenavnotifications.close()"><mat-icon>menu</mat-icon></button>
-        <a id="logo" (click)="navigateTo('bienvenida')"><img alt="" src="../assets/logo-2.png" width="auto" height="30" class="d-inline-block align-top"></a>
+        <a id="logo" (click)="navigateTo('bienvenida')"><img alt="" src="../assets/logo.webp" width="auto" height="30" class="d-inline-block align-top"></a>
       </div>
 
       <div id="menu-horizontal-buttons-right">
       <div class="username" *ngIf="user == undefined"><a (click)="navigateTo('register')">Registrarse</a></div>
 
         <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin: 0 10px;">Acceder</a>
-        <img *ngIf="user != undefined" src="../assets/profile.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
-        <img *ngIf="user != undefined" src="../assets/logout.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
-        <img *ngIf="!notifications && user != undefined" src="../assets/notification.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
-        <img *ngIf="notifications && user != undefined" src="../assets/notification-color.png" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
+        <img *ngIf="user != undefined" src="../assets/profile.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
+        <img *ngIf="user != undefined" src="../assets/logout.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
+        <img *ngIf="!notifications && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
+        <img *ngIf="notifications && user != undefined" src="../assets/notification-color.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
 
       </div>
 

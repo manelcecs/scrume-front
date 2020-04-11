@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { User, UserIdUser } from '../dominio/user.domain';
+import { User } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
-import { UserLogged } from '../dominio/jwt.domain';
+import { PersonalService } from '../servicio/personal.service';
+import { PersonalDataAll } from '../dominio/personal.domain';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +43,11 @@ export class ProfileComponent implements OnInit {
   showPass: boolean = false;
   showPassLast: boolean = false;
 
-  constructor(private userService: UserService, private profileService: ProfileService, private router: Router, private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute) { }
+  personal: PersonalDataAll;
+
+  constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
+     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
+     private personalService: PersonalService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -81,7 +88,6 @@ export class ProfileComponent implements OnInit {
 
         });
       });
-
 
   }
 
@@ -180,6 +186,88 @@ export class ProfileComponent implements OnInit {
 
   getErrorLastPass() {
     return this.lastPass.hasError('invalid') ? 'La contraseña es incorrecta.' : '';
+  }
+
+  //Personal Data
+
+  openPersonalData(){
+    this.router.navigate(['personal']);
+  }
+
+  saveAsProject(){
+    this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
+      this.personal = per;
+      console.log(this.personal);
+      let string = JSON.stringify(this.personal);
+      //you can enter your own file name and extension
+      this.writeContents(string, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');
+    })
+  }
+
+  writeContents(content, fileName, contentType) {
+    var a = document.createElement('a');
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      width: "250px",
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      console.log("holii");
+    });
+  }
+
+}
+
+//Dialog de Confirmation-----------------------------------------------------------------------------------------
+
+@Component({
+  selector: "confirmation",
+  templateUrl: "confirmation.html",
+  styleUrls: ["./confirmation.css"]
+})
+export class ConfirmationDialog implements OnInit {
+
+  routes: Object[] = [];
+  user: User;
+
+  constructor(public dialogRef: MatDialogRef<ConfirmationDialog>, private personalService: PersonalService, private router: Router) {}
+
+  ngOnInit(): void {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(): void {
+    this.personalService.getAnonymize().subscribe(()=> {
+      this.dialogRef.close();
+      this.logOut();
+    })
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.user = undefined;
+    window.location.reload();
+  }
+
+  navigateTo(route: string, method?: string, id?: number): void{
+    if(method==undefined && id == undefined){
+      this.router.navigate([route]);
+    }else if(method != undefined && id == undefined){
+      this.router.navigate([route], {queryParams:{method: method}});
+    }else if(method == undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{id: id}});
+    }else if(method != undefined && id != undefined){
+      this.router.navigate([route], {queryParams:{method: method, id: id}});
+    }
   }
 
 }

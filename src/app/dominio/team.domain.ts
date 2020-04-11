@@ -4,11 +4,16 @@ export interface Team {
     id?: number;
     name: string;
     projects?: ProjectDto[];
+    isAdmin?: boolean;
 
 }
 
 export interface TeamSimple{
     id?: number;
     name?: string;
+}
+
+export interface TeamName{
+    name: string;
 }
 
