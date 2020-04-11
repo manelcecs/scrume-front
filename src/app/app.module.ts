@@ -67,6 +67,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import {MatTableModule} from '@angular/material/table';
+import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import {MatTableModule} from '@angular/material/table';
     RegisterComponent,
     TermsOfUseComponent,
     PersonalDataComponent,
+    BadgeMinimumBoxComponent,
   ],
   imports: [
     MatFormFieldModule,

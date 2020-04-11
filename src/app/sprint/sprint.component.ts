@@ -22,6 +22,7 @@ import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
 import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { ValidationService } from '../servicio/validation.service';
 
 @Component({
   selector: "app-sprint",
@@ -35,6 +36,7 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  validationCreateBoard: boolean;
 
   constructor(
     private sprintService: SprintService,
@@ -42,8 +44,9 @@ export class SprintComponent implements OnInit {
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private validationService: ValidationService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -54,15 +57,15 @@ export class SprintComponent implements OnInit {
           .getSprint(this.idSprint)
           .subscribe((sprintDisplay: SprintDisplay) => {
             this.sprint = sprintDisplay;
+            //lista de boards
+            this.boardService
+              .getBoardBySprint(this.idSprint)
+              .subscribe((board: BoardSimple[]) => {
+                this.board = board;
+                this.updateValidatorCreateBoard();
+              });
           });
 
-        //lista de boards
-
-        this.boardService
-          .getBoardBySprint(this.idSprint)
-          .subscribe((board: BoardSimple[]) => {
-            this.board = board;
-          });
 
         //lista de documents
 
@@ -74,6 +77,12 @@ export class SprintComponent implements OnInit {
       } else {
         this.navigateTo("bienvenida");
       }
+    });
+  }
+
+  private updateValidatorCreateBoard(): void {
+    this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
+      this.validationCreateBoard = res;
     });
   }
 
@@ -135,6 +144,7 @@ export class SprintComponent implements OnInit {
         .getBoardBySprint(this.idSprint)
         .subscribe((board: BoardSimple[]) => {
           this.board = board;
+          this.updateValidatorCreateBoard();
         });
 
       this.documentService
@@ -226,7 +236,7 @@ export class NewDocumentDialog implements OnInit {
     private documentService: DocumentService,
     private boardService: BoardService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data;
@@ -310,7 +320,7 @@ export class EditSprintDialog implements OnInit {
     public dialogRef: MatDialogRef<EditSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
     private sprintService: SprintService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
@@ -340,26 +350,26 @@ export class EditSprintDialog implements OnInit {
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.startDate.hasError("invalid")
-      ? "La fecha de fin no puede ser anterior a la de inicio"
-      : this.startDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.startDate.hasError("beforeToday")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.startDate.hasError("invalid")
+          ? "La fecha de fin no puede ser anterior a la de inicio"
+          : this.startDate.hasError("usedDates")
+            ? "Ya hay un sprint en las fechas seleccionadas"
+            : this.startDate.hasError("beforeToday")
+              ? "La fecha no puede ser anterior a hoy"
+              : "";
   }
 
   getErrorMessageEndDate(): string {
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.endDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.endDate.hasError("beforeTodayEnd")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.endDate.hasError("usedDates")
+          ? "Ya hay un sprint en las fechas seleccionadas"
+          : this.endDate.hasError("beforeTodayEnd")
+            ? "La fecha no puede ser anterior a hoy"
+            : "";
   }
 
   validForm(): boolean {

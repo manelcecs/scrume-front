@@ -6,6 +6,7 @@ import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { ValidationService } from '../servicio/validation.service';
 
 @Component({
   selector: 'app-project',
@@ -17,6 +18,8 @@ export class ProjectComponent implements OnInit {
   sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
+  validationCreate: boolean;
+  idTeam: number;
 
   idProject : number;
 
@@ -24,11 +27,16 @@ export class ProjectComponent implements OnInit {
      private router: Router,
      private projectService: ProjectService,
      private sprintService : SprintService,
-     public dialog: MatDialog
+     public dialog: MatDialog,
+     private validationService: ValidationService
     ) {
 
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
+
+      console.log(this.project);
+      this.updateValidatorCreate();
+
 
     }
 
@@ -53,8 +61,15 @@ export class ProjectComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
         this.sprints = sprint;
+        this.updateValidatorCreate();
       });
     });
+  }
+
+  private updateValidatorCreate(): void {
+    this.validationService.checkNumberOfSprints(this.project.team.id, this.sprints.length).subscribe((res: boolean) => {
+      this.validationCreate = res;
+    })
   }
 
 
@@ -75,6 +90,8 @@ export class ProjectComponent implements OnInit {
       this.navigateTo("teams");
     });
   }
+
+
 }
 
 
@@ -108,13 +125,12 @@ export class NewSprintDialog implements OnInit{
   onSaveClick() : void {
     if (this.validForm()) {
 
-      this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
-      console.log(this.sprint);
+      this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}};
 
       this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
         this.dialogRef.close();
         //FIXME: Recargar la pagina
-        this.router.navigate(["project"], {queryParams:{id:this.project.id}})
+        //this.router.navigate(["project"], {queryParams:{id:this.project.id}});
       });
     }
 
@@ -185,16 +201,5 @@ export class NewSprintDialog implements OnInit{
     })
   }
 
-    //Validartor que compruebe si puede crear un sprnt en esas fechas con una query
-  // validateStartBeforeEnd(): ValidatorFn {
-  //   return (control: AbstractControl): { [key: string]: any } => {
-  //     let isValid = true;
-  //     if (control.value.getTime() > this.endDate.value.getTime()) {
-  //       isValid = false;
-  //     }
-  //     return isValid ? null : { 'invalid': 'Invalid dates' }
-
-  //   };
-  // }
 
 }

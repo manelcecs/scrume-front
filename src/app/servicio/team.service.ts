@@ -5,6 +5,7 @@ import { Team, TeamSimple } from '../dominio/team.domain';
 import { Observable } from 'rxjs';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Member } from '../dominio/user.domain';
+import { Box } from '../dominio/box.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -55,6 +56,10 @@ export class TeamService {
 
     leaveTeam(idTeam:number): Observable<any>{
       return this.httpClient.get<any>(this.cabeceraService.getCabecera() + "api/team/team-out/" + idTeam,{headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getMinimumBox(idTeam:number): Observable<Box> {
+      return this.httpClient.get<Box>(this.cabeceraService.getCabecera() + "api/box/minimum-box/" + idTeam,{headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 

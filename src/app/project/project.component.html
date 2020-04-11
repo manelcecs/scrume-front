@@ -7,6 +7,7 @@
               <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">{{project.name}}
                 <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="editProject(project)">
                 <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteProject(project.id)">
+                <app-badge-minimum-box [idTeam]="this.project.team.id"></app-badge-minimum-box>
               </li>
             </ol>
         </nav>
@@ -28,7 +29,7 @@
             <li class="nav-item">
                 <a  style="display: flex; align-items: center;" class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                     Sprints
-                    <img style="margin-left: 10px;" src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialog()">
+                    <img *ngIf="validationCreate" style="margin-left: 10px;" src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialog()">
                 </a>
             </li>
         </ul>
