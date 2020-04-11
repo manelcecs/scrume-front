@@ -160,5 +160,6 @@ export class AlertComponent implements OnInit {
         this.dialogRef.close();
       });
     }
+  }
 
 }
