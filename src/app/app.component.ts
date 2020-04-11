@@ -158,10 +158,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
       this.user = user;
 
-      console.log(" este es el user   " + JSON.stringify(user));
       this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
         this.isAdmin = isAdmin;
-        console.log("es admin: " + this.isAdmin);
 
         if (this.isAdmin == true){
           this.navigateTo("admin");

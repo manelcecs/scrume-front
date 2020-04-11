@@ -48,7 +48,6 @@ export class SecurityBreachComponent implements OnInit {
     this.securityBreachService.getSecurityBreach().subscribe((breach: Breach) => {
       this.breach = breach;
       this.activated = breach.activated;
-      console.log("Está actualmente " + this.activated);
       this.message = breach.message;
 
       this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
