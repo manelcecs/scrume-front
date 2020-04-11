@@ -69,6 +69,7 @@ import { PersonalDataComponent } from './personal-data/personal-data.component';
 import {MatTableModule} from '@angular/material/table';
 import { AlertComponent } from './alert/alert.component';
 import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
 
 
 @NgModule({
@@ -107,6 +108,7 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
     PersonalDataComponent,
     AlertComponent,
     MyDailyFormComponent,
+    SecurityBreachComponent,
   ],
   imports: [
     MatFormFieldModule,
