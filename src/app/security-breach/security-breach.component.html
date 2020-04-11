@@ -1,3 +1,4 @@
+<div *ngIf="isAdmin">
 <h2 id="title">Bienvenido a la administración de Scrume</h2>
 <div id="text-1">
     <p>En esta ventana información acerca de la aplicación</p>
@@ -18,4 +19,5 @@
         seguridad</button>
     <button id="button-desactive" *ngIf="activated" (click)="activeBreach()" mat-flat-button>Desactivar aviso de brecha
         de seguridad</button>
+</div>
 </div>

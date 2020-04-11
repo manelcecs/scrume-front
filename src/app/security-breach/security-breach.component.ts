@@ -9,11 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./security-breach.component.css']
 })
 export class SecurityBreachComponent implements OnInit {
+
   activated: boolean;
   breach: Breach;
   message: string;
   cond: boolean;
   mess: string;
+  isAdmin: boolean;
+
   constructor(private securityBreachService: SecurityBreachService,
     private router: Router) { }
   
@@ -47,6 +50,11 @@ export class SecurityBreachComponent implements OnInit {
       this.activated = breach.activated;
       console.log("Está actualmente " + this.activated);
       this.message = breach.message;
+
+      this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
+        this.isAdmin = isAdmin;
+      });
+
     });
   }
 }

@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = sessionStorage.getItem("loginToken");
     let logged = token != null && token !== "";
     console.log("Logged", logged);
+
     this.routes = [
       {
         title: 'Bienvenida',
@@ -109,6 +110,28 @@ export class AppComponent implements OnInit, OnDestroy {
         method: 'getTasksOfUser'
     }
   ];
+  if(logged) {
+    this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
+      this.isAdmin = isAdmin;
+
+      if(this.isAdmin){
+        this.routes = [
+          {
+            title: 'Bienvenida',
+            route: '/bienvenida',
+            icon: 'home',
+            visible: 'true'
+        },{
+            title: 'Panel Admin',
+            route: '/admin',
+            icon: 'build',
+            visible: 'true'
+        }];
+      }
+
+    });
+  }
+    
   }
 
   openLogin(): void {
