@@ -10,27 +10,13 @@
             sprint.project.name
           }}</a>
         </li>
-        <li
-          style="display: flex; align-items: center;"
-          class="breadcrumb-item active"
-          aria-current="page"
-        >
-          Sprint<img
-            src="../assets/edit.webp"
-            width="auto"
-            height="15"
-            class="d-inline-block align-top"
-            alt=""
-            (click)="openDialog()"
-          />
+        <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">
+          Sprint<img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="openDialog()" />
         </li>
       </ol>
     </nav>
-    <button
-      *ngIf="!daily"
-      (click)="openMyDailyDialog()"
-      matTooltip="Rellenar tu daily"
-    >
+    <button *ngIf="!daily" (click)="openMyDailyDialog()" matTooltip="Rellenar tu daily">
       Rellenar daily
     </button>
   </section>
@@ -42,220 +28,128 @@
     </div>
 
     <div class="progress">
-      <div
-        class="progress-bar bg-success"
-        role="progressbar"
-        style="width: {{ (sprint.completedHP / sprint.totalHP) * 100 }}%"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
+      <div class="progress-bar bg-success" role="progressbar"
+        style="width: {{ (sprint.completedHP / sprint.totalHP) * 100 }}%" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
   </section>
 
   <section id="more-info-sprint">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a
-          class="nav-link active"
-          id="home-tab"
-          data-toggle="tab"
-          href="#home"
-          role="tab"
-          aria-controls="home"
-          aria-selected="true"
-        >
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">
           Tableros
-          <img
-            src="../assets/more.webp"
-            width="auto"
-            height="15"
-            class="d-inline-block align-top"
-            alt=""
-            (click)="createBoard(sprint)"
-          />
+          <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="createBoard(sprint)" />
         </a>
       </li>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          id="profile-tab"
-          data-toggle="tab"
-          href="#profile"
-          role="tab"
-          aria-controls="profile"
-          aria-selected="false"
-        >
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">
           Documentos
-          <img
-            src="../assets/more.webp"
-            width="auto"
-            height="15"
-            class="d-inline-block align-top"
-            alt=""
-            (click)="openDialogDoc(sprint)"
-          />
+          <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="openDialogDoc(sprint)" />
         </a>
       </li>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          id="contact-tab"
-          data-toggle="tab"
-          href="#contact"
-          role="tab"
-          aria-controls="contact"
-          aria-selected="false"
-          >Métricas</a
-        >
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">Métricas</a>
       </li>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          id="alert-tab"
-          data-toggle="tab"
-          href="#alerts"
-          role="tab"
-          aria-controls="alerts"
-          aria-selected="false"
-          >Alertas
+        <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts"
+          aria-selected="false">Alertas
         </a>
       </li>
     </ul>
 
-    </section>
-
-    <section id="more-info-sprint">
-
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
-                    Tableros
-                    <img *ngIf="validationCreateBoard" src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
-                </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
-                  Documentos <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialogDoc(sprint)">
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Métricas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
-                </a>
-            </li>
-        </ul>
-      </div>
-      <div
-        style="padding-top: 10px; background-color: white;"
-        class="tab-pane fade"
-        id="profile"
-        role="tabpanel"
-        aria-labelledby="profile-tab"
-      >
-        <ul class="list-group list-group-flush">
-          <li
-            style="display: flex; align-items: center;"
-            class="list-group-item"
-            *ngFor="let d of doc"
-          >
-            <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
-              <span
-                matBadge="N!"
-                (click)="openDocument(d.id)"
-                matBadgePosition="before"
-                matBadgeColor="red"
-                >&nbsp; Documento nuevo</span
-              >
-              <span class="badge badge-info">{{ d.type }}</span>
-              <img
-                src="../assets/bin.webp"
-                width="auto"
-                height="15"
-                class="d-inline-block align-top"
-                alt=""
-                (click)="deleteDoc(d.id)"
-              />
-            </div>
-            <ng-template #elseBlock>
-              <a (click)="openDocument(d.id)">{{ d.name }} </a>
-              <span class="badge badge-info">{{ d.type }}</span>
-              <img
-                src="../assets/bin.webp"
-                width="auto"
-                height="15"
-                class="d-inline-block align-top"
-                alt=""
-                (click)="deleteDoc(d.id)"
-              />
-            </ng-template>
-          </li>
-        </ul>
-      </div>
-
-      <div
-        style="padding-top: 10px; background-color: white;"
-        class="tab-pane fade"
-        id="contact"
-        role="tabpanel"
-        aria-labelledby="contact-tab"
-      >
-        <tr>
-          <td class="cell-statistics-project">
-            {{ sprint.totalTasks }} tareas
-          </td>
-          <td class="cell-statistics-project">
-            {{ sprint.completedTasks }} tareas hechas
-          </td>
-        </tr>
-        <tr>
-          <td class="cell-statistics-project">
-            {{ sprint.totalHP
-            }}<a matTooltip="Puntos de Historia"> ph </a>totales
-          </td>
-          <td class="cell-statistics-project">
-            {{ sprint.completedHP
-            }}<a matTooltip="Puntos de Historia"> ph </a>realizados
-          </td>
-        </tr>
-      </div>
-      <div
-        style="padding-top: 10px; background-color: white;"
-        class="tab-pane fade"
-        id="alerts"
-        role="tabpanel"
-        aria-labelledby="alert-tab"
-      >
-        <div *ngFor="let alert of alerts" class="info-sprint-alerts">
-          La alerta {{ alert.title }} será el:
-          {{ alert.date | date: "dd/MM/yyyy" }}
-          <div>
-            <img
-              style="margin-left: 10px;"
-              src="../assets/edit.webp"
-              width="auto"
-              height="20"
-              class="d-inline-block align-top"
-              alt="edit alert"
-              (click)="openAlertDialog(alert.id)"
-              matTooltip="Editar esta alerta"
-            />
-          </div>
-          <div>
-            <img
-              style="margin-left: 10px;"
-              src="../assets/bin.webp"
-              width="auto"
-              height="20"
-              class="d-inline-block align-top"
-              alt="remove alert"
-              (click)="deleteAlert(alert.id)"
-              matTooltip="Borrar esta alerta"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
+
+  <section id="more-info-sprint">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">
+          Tableros
+          <img *ngIf="validationCreateBoard" src="../assets/more.webp" width="auto" height="15"
+            class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">
+          Documentos <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="openDialogDoc(sprint)">
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">Métricas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts"
+          aria-selected="false">Alertas
+        </a>
+      </li>
+    </ul>
+</section>
+<section>
+<div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="profile" role="tabpanel"
+  aria-labelledby="profile-tab">
+  <ul class="list-group list-group-flush">
+    <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let d of doc">
+      <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
+        <span matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento
+          nuevo</span>
+        <span class="badge badge-info">{{ d.type }}</span>
+        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+          (click)="deleteDoc(d.id)" />
+      </div>
+      <ng-template #elseBlock>
+        <a (click)="openDocument(d.id)">{{ d.name }} </a>
+        <span class="badge badge-info">{{ d.type }}</span>
+        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+          (click)="deleteDoc(d.id)" />
+      </ng-template>
+    </li>
+  </ul>
+</div>
+
+<div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="contact" role="tabpanel"
+  aria-labelledby="contact-tab">
+  <tr>
+    <td class="cell-statistics-project">
+      {{ sprint.totalTasks }} tareas
+    </td>
+    <td class="cell-statistics-project">
+      {{ sprint.completedTasks }} tareas hechas
+    </td>
+  </tr>
+  <tr>
+    <td class="cell-statistics-project">
+      {{ sprint.totalHP
+            }}<a matTooltip="Puntos de Historia"> ph </a>totales
+    </td>
+    <td class="cell-statistics-project">
+      {{ sprint.completedHP }}<a matTooltip="Puntos de Historia"> ph </a>realizados
+    </td>
+  </tr>
+</div>
+<div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel"
+  aria-labelledby="alert-tab">
+  <div *ngFor="let alert of alerts" class="info-sprint-alerts">
+    La alerta {{ alert.title }} será el:
+    {{ alert.date | date: "dd/MM/yyyy" }}
+    <div>
+      <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20"
+        class="d-inline-block align-top" alt="edit alert" (click)="openAlertDialog(alert.id)"
+        matTooltip="Editar esta alerta" />
+    </div>
+    <div>
+      <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top"
+        alt="remove alert" (click)="deleteAlert(alert.id)" matTooltip="Borrar esta alerta" />
+    </div>
+  </div>
+</div>
+</section>
 </div>
