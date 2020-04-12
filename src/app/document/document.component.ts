@@ -64,12 +64,12 @@ export class DocumentComponent implements OnInit {
           .subscribe((doc: Document) => {
             this.doc = doc;
 
-            if (doc.type == "RETROSPECTIVE") {
+            if (doc.type == "RETROSPECTIVE" || doc.type == "MIDDLE_RETROSPECTIVE") {
               this.nameRetrospective = this.doc.name;
               this.good = JSON.parse(this.doc.content).good;
               this.bad = JSON.parse(this.doc.content).bad;
               this.improvement = JSON.parse(this.doc.content).improvement;
-            } else if (doc.type == "REVIEW") {
+            } else if (doc.type == "REVIEW" || doc.type == "MIDDLE_REVIEW") {
               this.nameReview = this.doc.name;
               this.done = JSON.parse(this.doc.content).done;
               this.noDone = JSON.parse(this.doc.content).noDone;
@@ -219,13 +219,13 @@ export class DocumentComponent implements OnInit {
   }
 
   generatePDF(doc: Document) {
-    if (doc.type == "REVIEW") {
+    if (doc.type == "REVIEW" || doc.type == "MIDDLE_REVIEW") {
       this.c = {
         done: this.done,
         noDone: this.noDone,
         rePlanning: this.rePlanning,
       };
-    } else if (doc.type == "RETROSPECTIVE") {
+    } else if (doc.type == "RETROSPECTIVE" || doc.type == "MIDDLE_RETROSPECTIVE") {
       this.c = {
         good: this.good,
         bad: this.bad,
@@ -233,7 +233,6 @@ export class DocumentComponent implements OnInit {
       };
     } else if (doc.type == "DAILY") {
       let index = this.dailies.indexOf(this.myDaily);
-      console.log("Elemento con indice: ", index);
       if (index >= 0) {
         this.dailies.splice(index, 1);
       }
@@ -282,13 +281,13 @@ export class DocumentComponent implements OnInit {
   }
 
   updateDoc(doc: Document): void {
-    if (doc.type == "REVIEW") {
+    if (doc.type == "REVIEW" || doc.type == "MIDDLE_REVIEW") {
       this.c = {
         done: this.done,
         noDone: this.noDone,
         rePlanning: this.rePlanning,
       };
-    } else if (doc.type == "RETROSPECTIVE") {
+    } else if (doc.type == "RETROSPECTIVE" || doc.type == "MIDDLE_RETROSPECTIVE") {
       this.c = {
         good: this.good,
         bad: this.bad,
@@ -296,7 +295,6 @@ export class DocumentComponent implements OnInit {
       };
     } else if (doc.type == "DAILY") {
       let index = this.dailies.indexOf(this.myDaily);
-      console.log("Elemento con indice: ", index);
       if (index >= 0) {
         this.dailies.splice(index, 1);
       }

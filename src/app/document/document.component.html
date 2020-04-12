@@ -43,7 +43,7 @@
       </mat-form-field>
     </div>
 
-    <div *ngIf="doc.type == 'RETROSPECTIVE'">
+    <div *ngIf="doc.type == 'RETROSPECTIVE' || doc.type == 'MIDDLE_RETROSPECTIVE">
       <mat-form-field class="form-field">
         <input
           value="{{ nameRetrospective }}"
@@ -117,7 +117,7 @@
       </mat-form-field>
     </div>
 
-    <div *ngIf="doc.type == 'REVIEW'">
+    <div *ngIf="doc.type == 'REVIEW' || doc.type == 'MIDDLE_REVIEW">
       <mat-form-field class="form-field">
         <input
           value="{{ nameReview }}"
@@ -203,7 +203,7 @@
         </div>
       </div>
 
-      <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
+      <div *ngIf="doc.type == 'RETROSPECTIVE' || doc.type == 'MIDDLE_RETROSPECTIVE'" class="paper">
         <h3 id="retrospectiveName">{{ nameRetrospective }} | {{ doc.type }}</h3>
         <br />
 
@@ -237,7 +237,7 @@
         <br />
       </div>
 
-      <div *ngIf="doc.type == 'REVIEW'" class="paper">
+      <div *ngIf="doc.type == 'REVIEW' || doc.type == 'MIDDLE_REVIEW" class="paper">
         <h3 id="reviewName">{{ nameReview }} | {{ doc.type }}</h3>
         <br />
         <h5>Elementos de la Lista de Producto se han “Terminado”</h5>

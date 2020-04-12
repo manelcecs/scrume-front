@@ -327,14 +327,14 @@ export class NewDocumentDialog implements OnInit {
   onSaveClick(select: string): void {
     console.log(this.tipo);
     if (this.tipo.valid) {
-      if (select == "REVIEW") {
+      if (select == "REVIEW" || select == "MIDDLE_REVIEW") {
         let json = {
           done: "",
           noDone: "",
           rePlanning: "",
         };
         this.cont = JSON.stringify(json);
-      } else if (select == "RETROSPECTIVE") {
+      } else if (select == "RETROSPECTIVE" || select == "MIDDLE_RETROSPECTIVE") {
         let json = {
           good: "",
           bad: "",
@@ -343,7 +343,7 @@ export class NewDocumentDialog implements OnInit {
         this.cont = JSON.stringify(json);
       } else if (select == "DAILY") {
         this.cont = "[ ]";
-      } else {
+      }else {
         let json = {
           entrega: "",
           conseguir: "",
