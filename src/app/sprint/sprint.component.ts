@@ -263,6 +263,7 @@ export class SprintComponent implements OnInit {
             .getDocuments(idDoc)
             .subscribe((doc: Document) => {
               if (doc != undefined) {
+                // En caso que se produzca un error con las comillas simple doc.content = doc.content.replace(/'/g, '"');
                 let dailyConts = JSON.parse(doc.content);
 
                 let username = this.userService
