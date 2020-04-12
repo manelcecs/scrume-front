@@ -11,6 +11,8 @@ import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
+import { AlertService } from './servicio/alerts.service';
+import { NotificationAlert } from './dominio/notification.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -32,8 +34,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isAdmin: boolean;
 
+  alerts: NotificationAlert[];
+
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
-     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService) {
+     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService,
+     private alertService: AlertService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -57,10 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      // timer(3000, 10000).subscribe(() => {
+      timer(3000, 10000).subscribe(() => {
 
-      //     this.getNotifications();
-      // });
+          //this.getNotifications();
+          this.getAlerts();
+      });
+      
 
     }else{
       this.cargarMenu();
@@ -186,6 +193,13 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
         });
+  }
+
+  getAlerts(){
+    this.alertService.getAllAlertsByPrincipal().subscribe((alerts: NotificationAlert[]) => {
+      this.alerts = alerts;
+      console.log("alertas " + this.getAlerts());
+    });
   }
 
 }
