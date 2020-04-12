@@ -56,7 +56,8 @@ export class SprintComponent implements OnInit {
     public dialog: MatDialog,
     private alertService: AlertService,
     private userService: UserService,
-    private validationService: ValidationService
+    private validationService: ValidationService)
+    {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
