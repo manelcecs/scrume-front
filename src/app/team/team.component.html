@@ -36,7 +36,7 @@
 
       </mat-list-item>
 
-      <img *ngIf="team.isAdmin" src="../assets/more.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="createProject(team)">
+      <img *ngIf="validationCreateTeam[team.id] && team.isAdmin " src="../assets/more.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="createProject(team)">
 
     </div>
   </div>

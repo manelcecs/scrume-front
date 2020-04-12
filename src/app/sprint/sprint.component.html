@@ -29,7 +29,7 @@
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                     Tableros
-                    <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
+                    <img *ngIf="validationCreateBoard" src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
                 </a>
             </li>
             <li class="nav-item">

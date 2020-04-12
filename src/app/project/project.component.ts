@@ -5,11 +5,12 @@ import { ProjectDto, ProjectName } from '../dominio/project.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
-import { FormControl, Validators, Form } from '@angular/forms';
+import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
 import { AlertService } from '../servicio/alerts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ValidationService } from '../servicio/validation.service';
 
 @Component({
   selector: 'app-project',
@@ -22,6 +23,8 @@ export class ProjectComponent implements OnInit {
   sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
+  validationCreate: boolean;
+  idTeam: number;
 
   idProject : number;
 
@@ -29,11 +32,16 @@ export class ProjectComponent implements OnInit {
      private router: Router,
      private projectService: ProjectService,
      private sprintService : SprintService,
-     public dialog: MatDialog
+     public dialog: MatDialog,
+     private validationService: ValidationService
     ) {
 
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
+
+      console.log(this.project);
+      this.updateValidatorCreate();
+
 
     }
 
@@ -57,10 +65,16 @@ export class ProjectComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
         this.sprints = sprint;
+        this.updateValidatorCreate();
       });
     });
   }
 
+  private updateValidatorCreate(): void {
+    this.validationService.checkNumberOfSprints(this.project.team.id, this.sprints.length).subscribe((res: boolean) => {
+      this.validationCreate = res;
+    })
+  }
 
   navigateTo(route: string): void{
     this.router.navigate([route]);

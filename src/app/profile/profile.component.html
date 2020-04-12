@@ -1,84 +1,170 @@
 <div id="main-profile">
+  <section>
+    <div>
+      <h3>Edita tu perfil {{profile.nick}}</h3>
+    </div>
+  </section>
+
+  <div class="alert alert-danger" *ngIf="isBoxExpired">
+    ¡Tu plan ha caducado! Renuévalo en el apartado facturación para poder seguir usando Scrume.
+  </div>
+
+  <div id="formulario">
     <section>
-            <div>
-                <h3>Edita tu perfil {{profile.nick}}</h3> 
-            </div>
+      <form id="form-profile">
+
+        <mat-form-field class="form-field-profile">
+          <img src="{{profile.photo}}" width="100" height="100" alt="">
+          <input #photoImput matInput placeholder="Photo" [formControl]="photo">
+          <mat-hint>{{ photoImput.value?.length || 0 }}/255</mat-hint>
+          <mat-error *ngIf="photo.invalid">{{ getErrorMessageName() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #nameImput matInput placeholder="Nombre" [formControl]="name">
+          <mat-hint>{{ nameImput.value?.length || 0 }}/25</mat-hint>
+          <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #nickImput matInput placeholder="Nick" [formControl]="nick">
+          <mat-hint>{{ nickImput.value?.length || 0 }}/25</mat-hint>
+          <mat-error *ngIf="nick.invalid">{{ getErrorMessageName() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #surnamesImput matInput placeholder="Surnames" [formControl]="surnames">
+          <mat-hint>{{ surnamesImput.value?.length || 0 }}/25</mat-hint>
+          <mat-error *ngIf="surnames.invalid">{{ getErrorMessageName() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #gitUserImput matInput placeholder="User Git" [formControl]="gitUser">
+          <mat-error *ngIf="gitUser.invalid">{{ getErrorMessageName() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #lastPassImput [type]="showPassLast?'text':'password'" matInput placeholder="Contraseña Antigua"
+            [formControl]="lastPass">
+          <mat-icon matSuffix matTooltip="{{showPassLast?'Ocultar contraseña':'Mostrar constraseña'}}"
+            (click)="changePassStateLast()">remove_red_eye</mat-icon>
+          <mat-error *ngIf="lastPass.invalid">{{ getErrorLastPass() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field-profile">
+          <input #newPassImput [type]="showPass?'text':'password'" matInput placeholder="Contraseña Nueva"
+            [formControl]="newPass">
+          <mat-error *ngIf="newPass.invalid">{{ getErrorMessageName() }}</mat-error>
+          <mat-icon matSuffix matTooltip="{{showPass?'Ocultar contraseña':'Mostrar constraseña'}}"
+            (click)="changePassState()">remove_red_eye</mat-icon>
+        </mat-form-field>
+
+        <br /> <br />
+
+        <div id="buttons-profile">
+          <button id="cancel-profile" (click)="cancelEditProfile()" mat-flat-button>Cancelar</button>
+          <button id="save-profile" type="submit" [disabled]="!validForm()" (click)="editProfile()"
+            (click)="openSnackBar(message, close)" mat-flat-button>Guardar</button>
+        </div>
+
+      </form>
     </section>
+  </div>
 
-    <div id="formulario">
-    <section>
-        <form id="form-profile">
-
-            <mat-form-field class="form-field-profile">
-                <img src="{{profile.photo}}" width="100" height="100" alt="">
-                <input #photoImput matInput placeholder="Photo" [formControl]="photo">
-                <mat-hint>{{ photoImput.value?.length || 0 }}/255</mat-hint>
-                <mat-error *ngIf="photo.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="form-field-profile">
-                <input #nameImput matInput placeholder="Nombre" [formControl]="name">
-                <mat-hint>{{ nameImput.value?.length || 0 }}/25</mat-hint>
-                <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="form-field-profile">
-                <input #nickImput matInput placeholder="Nick" [formControl]="nick">
-                <mat-hint>{{ nickImput.value?.length || 0 }}/25</mat-hint>
-                <mat-error *ngIf="nick.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="form-field-profile">
-                <input #surnamesImput matInput placeholder="Surnames" [formControl]="surnames">
-                <mat-hint>{{ surnamesImput.value?.length || 0 }}/25</mat-hint>
-                <mat-error *ngIf="surnames.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="form-field-profile">
-                <input #gitUserImput matInput placeholder="User Git" [formControl]="gitUser">
-                <mat-error *ngIf="gitUser.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-
-            <mat-icon (click)="changePassStateLast()">remove_red_eye</mat-icon>
-            <mat-form-field class="form-field-profile">
-                <input #lastPassImput [type]="showPassLast?'text':'password'" matInput placeholder="Contraseña Antigua" [formControl]="lastPass">
-                <mat-error *ngIf="lastPass.invalid">{{ getErrorLastPass() }}</mat-error>
-            </mat-form-field>
-
-            <mat-icon (click)="changePassState()">remove_red_eye</mat-icon>
-            <mat-form-field class="form-field-profile">
-                <input #newPassImput [type]="showPass?'text':'password'" matInput placeholder="Contraseña Nueva" [formControl]="newPass">
-                <mat-error *ngIf="newPass.invalid">{{ getErrorMessageName() }}</mat-error>
-            </mat-form-field>
-            
-            <br/> <br/>
-            
-            <div id="buttons-profile">
-                <button id="cancel-profile" (click)="cancelEditProfile()" mat-flat-button>Cancelar</button>
-                <button id="save-profile" type="submit" [disabled]="!validForm()" (click)="editProfile()" (click)="openSnackBar(message, close)" mat-flat-button>Guardar</button>
-            </div>
-
-        </form>
-    </section>
-</div>
-
-<div id="personal">
+  <div id="personal">
     <mat-accordion>
-        <mat-expansion-panel class="panel">
-          <mat-expansion-panel-header id="cabecera">
-            <div class="panel-content">
+      <mat-expansion-panel class="panel">
+        <mat-expansion-panel-header id="cabecera">
+          <div class="panel-content">
             <mat-panel-title>
-              Ajustes Personales<img src="../../assets/llave.webp" alt="" style="height: 25px; width: 25px; margin-top: 5px;">
+              Ajustes Personales<img src="../../assets/llave.webp" alt=""
+                style="height: 1em; width: 1em; margin-top: 5px; margin-left: 0.7em;">
             </mat-panel-title>
-            </div>
-          </mat-expansion-panel-header>
-          <!-- Interior del desplegable -->
-          <div class="botones">
-            <button id="datos-personales" (click)="openPersonalData()" mat-flat-button>Ver tus datos</button>
-            <button id="borrar-datos" (click)="openDialog()" mat-flat-button>Borrar tus datos</button>
           </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-</div>
+        </mat-expansion-panel-header>
+        <!-- Interior del desplegable -->
+        <div class="botones">
+          <button id="datos-personales" (click)="openPersonalData()" mat-flat-button>Ver tus datos</button>
+          <button id="borrar-datos" (click)="openDialog()" mat-flat-button>Borrar tus datos</button>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="panel">
+        <mat-expansion-panel-header id="cabecera">
+          <div class="panel-content">
+            <mat-panel-title>
+              Facturación<img src="../../assets/credit_card.webp" alt=""
+                style="height: 1em; width: 1em; margin-top: 3px; margin-left: 0.7em;">
+            </mat-panel-title>
+          </div>
+        </mat-expansion-panel-header>
+        <div id="info-facturacion">
+          Plan actual: {{userLogged.nameBox}}<br />
+          Válido hasta: {{userLogged.endingBoxDate | date:'dd/MM/yyyy'}}
+          <div id="renew-payment" *ngIf="isBoxExpired">
+            <mat-divider></mat-divider>
+            <h6>Seleccione plan</h6>
+            <mat-form-field>
+              <mat-label>Plan</mat-label>
+              <mat-select [formControl]="selectBoxFormControl" (selectionChange)="initConfig()">
+                <mat-option *ngFor="let box of boxesName" [value]="box">
+                  {{box}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div id="payment">
+              <button *ngIf="selectBoxFormControl.value =='BASIC'" id="update-box-button" mat-flat-button
+                (click)="saveBasicPlan()">Actualizar renovación</button>
+              <ngx-paypal *ngIf="selectBoxFormControl.value != 'BASIC'" [config]="payPalConfig"></ngx-paypal>
+            </div>
+            <div class="alert alert-danger"
+              *ngIf="(userLogged.nameBox == 'PRO' && (selectBoxFormControl.value=='BASIC' || selectBoxFormControl.value=='STANDARD')) || (userLogged.nameBox == 'STANDARD' && (selectBoxFormControl.value=='BASIC'))">
+              ¡Si contratas un plan inferior al anterior, perderás algunas funcionalidades!
+            </div>
+            <div class="box-description" id="basic-box-info" *ngIf="selectBoxFormControl.value=='BASIC'">
+              <ul class="list-group">
+                <li class="list-group-item active">
+                  <h6>BASIC (Gratis)</h6>
+                </li>
+                <li class="list-group-item">Posibilidad de gestionar 1 proyecto</li>
+                <li class="list-group-item">1 tablero</li>
+                <li class="list-group-item">1 Sprint de 30 días de duración</li>
+                <li class="list-group-item">Plantillas de los diferentes documentos utilizados en la metodología SCRUM
+                </li>
+              </ul>
+            </div>
+            <div class="box-description" id="standard-box-info" *ngIf="selectBoxFormControl.value=='STANDARD'">
+              <ul class="list-group">
+                <li class="list-group-item active">
+                  <h6>STANDARD (1€/mes)</h6>
+                </li>
+                <li class="list-group-item">Gestión de hasta 3 proyectos</li>
+                <li class="list-group-item">2 tableros por proyecto</li>
+                <li class="list-group-item">Sprints ilimitados</li>
+                <li class="list-group-item">Plantillas de los diferentes documentos utilizados en la metodología SCRUM
+                </li>
+                <li class="list-group-item">Gráficos Burn up y Burn down</li>
+              </ul>
+            </div>
+            <div class="box-description" id="pro-box-info" *ngIf="selectBoxFormControl.value=='PRO'">
+              <ul class="list-group">
+                <li class="list-group-item active">
+                  <h6>PRO (2€/mes)</h6>
+                </li>
+                <li class="list-group-item">Posibilidad de gestionar un número ilimitado de proyectos</li>
+                <li class="list-group-item">Tableros ilimitados por proyecto</li>
+                <li class="list-group-item">Sprints ilimitados</li>
+                <li class="list-group-item">Plantillas de los diferentes documentos utilizados en la metodología SCRUM
+                </li>
+                <li class="list-group-item">Gráficos Burn up y Burn down</li>
+                <li class="list-group-item">Automatización de avisos (reuniones, fin de Sprints, etc.)</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 
 </div>

@@ -27,6 +27,7 @@ import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
 import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
 import { UserService } from '../servicio/user.service';
+import { ValidationService } from '../servicio/validation.service';
 
 @Component({
   selector: "app-sprint",
@@ -40,6 +41,7 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  validationCreateBoard: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -53,8 +55,8 @@ export class SprintComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private alertService: AlertService,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private validationService: ValidationService
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(param => {
@@ -65,15 +67,15 @@ export class SprintComponent implements OnInit {
           .getSprint(this.idSprint)
           .subscribe((sprintDisplay: SprintDisplay) => {
             this.sprint = sprintDisplay;
+            //lista de boards
+            this.boardService
+              .getBoardBySprint(this.idSprint)
+              .subscribe((board: BoardSimple[]) => {
+                this.board = board;
+                this.updateValidatorCreateBoard();
+              });
           });
 
-        //lista de boards
-
-        this.boardService
-          .getBoardBySprint(this.idSprint)
-          .subscribe((board: BoardSimple[]) => {
-            this.board = board;
-          });
 
         //lista de documents
 
@@ -91,6 +93,12 @@ export class SprintComponent implements OnInit {
       } else {
         this.navigateTo("bienvenida");
       }
+    });
+  }
+
+  private updateValidatorCreateBoard(): void {
+    this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
+      this.validationCreateBoard = res;
     });
   }
 
@@ -152,6 +160,7 @@ export class SprintComponent implements OnInit {
         .getBoardBySprint(this.idSprint)
         .subscribe((board: BoardSimple[]) => {
           this.board = board;
+          this.updateValidatorCreateBoard();
         });
 
       this.documentService

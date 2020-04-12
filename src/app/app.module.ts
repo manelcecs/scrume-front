@@ -70,6 +70,8 @@ import {MatTableModule} from '@angular/material/table';
 import { AlertComponent } from './alert/alert.component';
 import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 
 
 @NgModule({
@@ -109,6 +111,7 @@ import { SecurityBreachComponent } from './security-breach/security-breach.compo
     AlertComponent,
     MyDailyFormComponent,
     SecurityBreachComponent,
+    BadgeMinimumBoxComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -155,7 +158,8 @@ import { SecurityBreachComponent } from './security-breach/security-breach.compo
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
-    }
+    },
+    CheckExpirationBoxGuard,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
