@@ -7,14 +7,8 @@ import { ProjectDto } from "../dominio/project.domain";
 import { Observable } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Member } from '../dominio/user.domain';
-import { error } from '@angular/compiler/src/util';
 import { UserService } from '../servicio/user.service';
 import { UserLogged } from '../dominio/jwt.domain';
-import { TouchSequence } from 'selenium-webdriver';
-
-
-
-
 
 @Component({
   selector: "app-team-create",
@@ -62,7 +56,6 @@ export class TeamCreateComponent implements OnInit {
           this.numAdmins = members.filter((member: Member) => member.isAdmin).length
         });
         this.userLogged = this.userService.getUserLogged();
-        console.log("Id logueado", this.userLogged.idUser);
       }
     });
   }
@@ -79,10 +72,8 @@ export class TeamCreateComponent implements OnInit {
             this.team = resp;
             this.navigateTo("teams");
           },
-          error => {
-            this.snackBarError(
-              "Se ha producido un error y no se ha podido editar el equipo"
-            );
+          (error) => {
+            this.errorTeam();
           }
         );
       } else {
@@ -91,14 +82,18 @@ export class TeamCreateComponent implements OnInit {
             this.team = resp;
             this.navigateTo("teams");
           },
-          error => {
-            this.snackBarError(
-              "Se ha producido un error y no se ha podido guardar el equipo"
-            );
+          (error) => {
+            this.errorTeam();
           }
         );
       }
     }
+  }
+
+  private errorTeam(){
+    this.snackBarError(
+      "Se ha producido un error y no se ha podido guardar el equipo"
+    );
   }
 
   private _editTeam(id: number): Observable<TeamSimple> {
@@ -108,7 +103,6 @@ export class TeamCreateComponent implements OnInit {
   }
 
   private _createTeam(): Observable<TeamSimple> {
-    //this.team = {name: this.name.value, projects: this.projects}
     this.team = { id: 0, name: this.name.value };
     return this.teamService.createTeam(this.team);
   }
@@ -117,7 +111,7 @@ export class TeamCreateComponent implements OnInit {
     this.router.navigate(["teams"]);
   }
 
-  getErrorMessageName(): String {
+  getErrorMessageName(): string {
     return this.name.hasError("required")
       ? "Este campo es requerido."
       : this.name.hasError("maxlength")
@@ -129,8 +123,8 @@ export class TeamCreateComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  private snackBarError(error: string): void {
-    this._snackBar.open(error, "Cerrar", {
+  private snackBarError(err: string): void {
+    this._snackBar.open(err, "Cerrar", {
       duration: 2000
     });
   }
@@ -145,13 +139,12 @@ export class TeamCreateComponent implements OnInit {
           this.numAdmins = members.filter((member: Member) => member.isAdmin).length
         }
       })
-    }, error => {
+    }, (error) => {
       this.snackBarError("No se ha podido cambiar el rol del usuario");
     });
   }
 
   deleteFromTeam(idMember: number): void{
-    console.log("IdMember:", idMember, "IdLogged", this.userLogged.idUser);
     this.teamService.deleteFromTeam(this.team.id, idMember).subscribe(() => {
       if (idMember == this.userLogged.idUser) {
         this.navigateTo("teams");
@@ -161,7 +154,7 @@ export class TeamCreateComponent implements OnInit {
           this.numAdmins = members.filter((member: Member) => member.isAdmin).length
         })
       }
-    }, error => {
+    }, (error) => {
       this.snackBarError("No se ha podido eliminar al usuario");
     });
   }

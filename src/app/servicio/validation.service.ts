@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CabeceraService } from './cabecera.service';
-import { Team, TeamSimple } from '../dominio/team.domain';
-import { Observable, Subject } from 'rxjs';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Member } from '../dominio/user.domain';
+import { Observable } from 'rxjs';
 import { Box } from '../dominio/box.domain';
 import { TeamService } from './team.service';
 import { UserService } from './user.service';
@@ -27,16 +23,16 @@ export class ValidationService {
         var validation: boolean;
         validation = true;
         switch (box.name) {
-          case "BASIC": {
+          case "BASIC": 
             if (numberOfProjects >= 1) {
               validation = false;
             }
-          }
-          case "STANDARD": {
+          break;
+          case "STANDARD": 
             if (numberOfProjects >= 3) {
               validation = false;
             }
-          }
+          break;
         }
         observer.next(validation);
         observer.complete();
@@ -78,16 +74,16 @@ export class ValidationService {
         var validation: boolean;
         validation = true;
         switch (box.name) {
-          case "BASIC": {
+          case "BASIC": 
             if (numberOfBoards >= 1) {
               validation = false;
             }
-          }
-          case "STANDARD": {
+          break;
+          case "STANDARD": 
             if (numberOfBoards >= 2) {
               validation = false;
             }
-          }
+          break;
         }
         observer.next(validation);
         observer.complete();
