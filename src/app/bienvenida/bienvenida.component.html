@@ -2,11 +2,14 @@
     <mat-card-header>
         <mat-card-title>
             <mat-icon>web</mat-icon>
-            Nuestras entregas
+            Scrume
         </mat-card-title>
-        <mat-card-subtitle>Enlaces a la aplicación desarrollada en cada sprint</mat-card-subtitle>
+        <mat-card-subtitle>Enlaces a nuestra aplicación desarrollada en cada sprint</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+
+        <img src="../../assets/version.webp">
+        <br>
         <p>Sprint 1: <a href="https://scrume-brand.herokuapp.com/teams">Scrume v1</a></p>
         <p>Sprint 2: <a href="https://scrume-app-s2.herokuapp.com/bienvenida">Scrume v2</a></p>
     </mat-card-content>
@@ -16,9 +19,9 @@
     <mat-card-header>
         <mat-card-title>
             <mat-icon>wb_incandescent</mat-icon>
-            Idea
+            Nuestra idea
         </mat-card-title>
-        <mat-card-subtitle>La aplicación del presente, para marcar tu futuro.</mat-card-subtitle>
+        <mat-card-subtitle>La aplicación del presente, que marcará tu futuro</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <p>Scrume es una herramienta con la cuál puedes aplicar la metodología Scrum a un proyecto informático de una completa, sencilla y asistida.</p>
@@ -40,9 +43,10 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title><mat-icon>border_all</mat-icon>DAFO</mat-card-title>
-        <mat-card-subtitle>Aquí puedes ver nuestro análisis DAFO</mat-card-subtitle>
+        <mat-card-subtitle>Nos sinceramos contigo</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+        <p>Como en todas las empresas, en Scrume tenemos muy claros cuáles son nuestros límites y nuestras oportunidades</p>
         <img src="../../assets/dafo.webp"/>
 
     </mat-card-content>
@@ -51,26 +55,61 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title><mat-icon>accessibility</mat-icon>Clientes</mat-card-title>
-        <mat-card-subtitle>Scrume</mat-card-subtitle>
+        <mat-card-subtitle>Sin ti, no somos nada</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <p>En Scrume tenemos muy presente a nuestros clientes y tenemos planes personalizados para los colectivos que más lo necesitan.</p>
-        <img src="../../assets/schollar.webp"/>
-        <img src="../../assets/proffesional.webp"/>
-        <img src="../../assets/teacher.webp"/>
-        <p>Podemos diferenciar tres tipos de clientes, los profesionales del sector; los alumnos, es decir, los futuros profesionales y el sector educativo.</p>
+        <img src="../../assets/student.webp"/>
+        <img src="../../assets/company.webp"/>
+        <img src="../../assets/proffesor.webp"/>
+        <p>Podemos diferenciar tres tipos de clientes, los alumnos, es decir, los futuros profesionales; los profesionales del sector  y el sector educativo.</p>
     </mat-card-content>
 </mat-card>
 
 <mat-card>
     <mat-card-header>
         <mat-card-title><mat-icon>monetization_on</mat-icon>Precios</mat-card-title>
-        <mat-card-subtitle>Tres modalidades de la aplicación</mat-card-subtitle>
+        <mat-card-subtitle>Nos adaptamos a ti en todo momento</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <img src="../../assets/Precios.webp"/>
-        <p>Plan Free - Un plan de prueba en el cual podras llevar a cabo un sprint con un tablero.</p>
-        <p>Plan Standard - Con este plan podras generar hasta 3 proyectos con sus respectivos tableros durante los sprints necesarios.</p>
+        <p>Plan Basic - Un plan de prueba en el cual podrás llevar a cabo un sprint con un tablero.</p>
+        <p>Plan Standard - Con este plan podrás generar hasta 3 proyectos con sus respectivos tableros durante los sprints necesarios.</p>
         <p>Plan Complete - Todas nuestras funcionalidades para sacar el máximo rendimiento a tus equipos.</p>
     </mat-card-content>
 </mat-card>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title><mat-icon>perm_identity</mat-icon>Contacto</mat-card-title>
+        <mat-card-subtitle>Estamos a tu disposición</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <img src="../../assets/contact.webp"/>
+        <p>Si tienes alguna sugerencia, duda o simplemente aportar tu granito de arena... Nos puedes encontrar en</p>
+        <div>
+        <mat-icon>public</mat-icon> Twitter: @_Scrume_
+        </div>
+        <mat-icon>email</mat-icon> Email: scrumme.corporation@gmail.com
+    </mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title><mat-icon>av_timer</mat-icon>¡Cuenta atrás!</mat-card-title>
+        <mat-card-subtitle>Nuestro lanzamiento será en breve...</mat-card-subtitle>
+    </mat-card-header>
+    <mat-content>    
+        <section>
+            <div class="coming-soon">
+                <div class="time-countdown">
+                    <ul>
+                        <li class="count-bg-one radius"><span id="days">{{day}}</span>Días</li>
+                        <li class="count-bg-two radius"><span id="hours">{{hours}}</span>Horas</li>
+                        <li class="count-bg-three radius"><span id="minutes">{{minutes}}</span>Minutos</li>
+                        <li class="count-bg-four radius"><span id="seconds">{{seconds}}</span>Segundos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </mat-content>
+</mat-card>
+
