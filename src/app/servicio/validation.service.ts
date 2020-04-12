@@ -7,12 +7,13 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Member } from '../dominio/user.domain';
 import { Box } from '../dominio/box.domain';
 import { TeamService } from './team.service';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 
 export class ValidationService {
 
-  constructor(private httpClient: HttpClient, private teamService: TeamService) { }
+  constructor(private httpClient: HttpClient, private teamService: TeamService, private userService: UserService) { }
 
   /**
    * @param idTeam Id del equipo para coger el paquete mínimo
@@ -120,5 +121,9 @@ export class ValidationService {
         observer.complete();
       });
     });
+  }
+
+  isBoxExpired(): boolean {
+    return new Date(this.userService.getUserLogged().endingBoxDate).getTime() < new Date().getTime();
   }
 }

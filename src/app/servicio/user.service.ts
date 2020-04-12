@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { User, SimpleUserNick, UserIdUser, UserRegister } from '../dominio/user.domain';
+import { User, SimpleUserNick, UserIdUser, UserRegister, Renovation } from '../dominio/user.domain';
 import { Box } from '../dominio/box.domain';
 import { JWToken, UserLog, UserLogged } from '../dominio/jwt.domain';
 import * as jwt_decode from 'jwt-decode';
@@ -44,6 +44,10 @@ export class UserService {
     getUserLogged(): UserLogged{
       let userLogged : UserLogged = jwt_decode(sessionStorage.getItem("loginToken"))['userLoginDto'];
       return userLogged;
+    }
+
+    renovateBox(data: Renovation): Observable<Renovation> {
+      return this.httpClient.post<Renovation>(this.cabeceraService.getCabecera() + "api/payment/pay", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 

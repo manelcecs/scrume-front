@@ -68,6 +68,7 @@ import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import {MatTableModule} from '@angular/material/table';
 import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 
 
 @NgModule({
@@ -151,7 +152,8 @@ import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
-    }
+    },
+    CheckExpirationBoxGuard,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

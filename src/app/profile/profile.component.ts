@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../servicio/user.service';
 import { ProfileService } from '../servicio/profile.service';
-import { User } from '../dominio/user.domain';
+import { User, Renovation } from '../dominio/user.domain';
 import { Profile, ProfileSave } from '../dominio/profile.domain';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,10 @@ import { Location } from '@angular/common';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { UserLogged } from '../dominio/jwt.domain';
+import { Box } from '../dominio/box.domain';
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
+import { ValidationService } from '../servicio/validation.service';
 
 
 @Component({
@@ -45,11 +49,27 @@ export class ProfileComponent implements OnInit {
 
   personal: PersonalDataAll;
 
+  userLogged: UserLogged;
+  boxesName = ["BASIC", "STANDARD", "PRO"];
+  boxes: Box[];
+  selectBoxFormControl: FormControl = new FormControl('',{validators: [Validators.required]});
+  public payPalConfig?: IPayPalConfig;
+  isBoxExpired: boolean;
+
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
-     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
-     private personalService: PersonalService,public dialog: MatDialog) { }
+    private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
+    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService ) { }
 
   ngOnInit(): void {
+
+    this.userLogged = this.userService.getUserLogged();
+    this.selectBoxFormControl.setValue(this.userLogged.nameBox);
+    this.userService.getAllBoxes().subscribe((boxes: Box[]) => {
+      this.boxes = boxes;
+      this.initConfig();
+    });
+
+    this.isBoxExpired = this.validationService.isBoxExpired();
 
     this.activatedRoute.queryParams.subscribe(params => {
 
@@ -73,7 +93,7 @@ export class ProfileComponent implements OnInit {
 
       }
 
-       
+
         this.profileService.getProfile(this.userService.getUserLogged().idUser).subscribe((profile: Profile) => {
           this.profile = profile;
 
@@ -157,6 +177,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  openSnackBarAndRedirect() {
+    this._snackBar.open("Su plan se ha renovado con éxito.", "Cerrar", {
+      duration: 4000,
+    }).afterDismissed().subscribe(() => {
+      (this.navigateTo("teams"));
+    });
+  }
+
+  navigateTo(route: string): void{
+    this.router.navigate([route]);
+  }
+
   getErrorMessageName(): string {
     return this.name.hasError('required') ? 'Este campo es requerido.' :
     this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
@@ -218,6 +250,85 @@ export class ProfileComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(() => {
       console.log("holii");
+    });
+  }
+
+  //Renovación del plan------------------------------------------------------------------------------------------
+  initConfig(): void {
+    let paymentInfo;
+    let priceSelectedBox : number;
+    let selectedBox : number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
+    priceSelectedBox = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].price;
+    console.log("Selected",selectedBox);
+    console.log("Price", priceSelectedBox);
+    console.log("FormControl", this.selectBoxFormControl.value);
+    let paypal:IPayPalConfig;
+    this.payPalConfig = {
+    currency: 'EUR',
+    clientId: 'AWOURCDQ1p1qNlLYj9Y_hMW2WsNcOSvLQ4MD-iRdJCqohyLebl1W7_V7ONq0wh_UfhpuZCQtFQZ_0mQi',
+    createOrderOnClient: (data) => <ICreateOrderRequest>{
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: 'EUR',
+            value: priceSelectedBox.toString(),
+            breakdown: {
+              item_total: {
+                currency_code: 'EUR',
+                value: priceSelectedBox.toString()
+              }
+            }
+          },
+          items: [
+            {
+              name: this.selectBoxFormControl + " - Scrume",
+              quantity: '1',
+              category: 'DIGITAL_GOODS',
+              unit_amount: {
+                currency_code: 'EUR',
+                value: priceSelectedBox.toString(),
+              },
+            }
+          ]
+        }
+      ]
+    },
+    advanced: {
+      commit: 'true',
+    },
+    style: {
+      label: 'paypal',
+      layout: "horizontal",
+      size: "responsive"
+    },
+    onApprove: (data, actions) => {
+      paymentInfo = data;
+      actions.order.get();
+    },
+    onClientAuthorization: (data) => {
+      let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+      let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], payerId: paymentInfo["payerID"]};
+      this.userService.renovateBox(renovation).subscribe(() => {
+        this.openSnackBarAndRedirect();
+
+      });
+    },
+    onCancel: (data, actions) => {
+    },
+    onError: err => {
+    },
+    onClick: (data, actions) => {
+    },
+  };
+  }
+
+  saveBasicPlan(){
+    let selectedBox : number = this.boxes.filter(box => box.name == 'BASIC')[0].id;
+    let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
+    this.userService.renovateBox(renovation).subscribe(() => {
+      this.openSnackBarAndRedirect();
     });
   }
 
