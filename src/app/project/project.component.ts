@@ -1,129 +1,142 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ProjectService } from '../servicio/project.service';
-import { ProjectDto, ProjectName } from '../dominio/project.domain';
-import { SprintService } from '../servicio/sprint.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
-import { FormControl, Validators, Form } from '@angular/forms';
-import { NotificationAlert } from '../dominio/notification.domain';
-import { AlertComponent } from '../alert/alert.component';
-import { AlertService } from '../servicio/alerts.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, Inject } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ProjectService } from "../servicio/project.service";
+import { ProjectDto, ProjectName } from "../dominio/project.domain";
+import { SprintService } from "../servicio/sprint.service";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from "@angular/material/dialog";
+import {
+  SprintDisplay,
+  Sprint,
+  SprintJsonDates,
+} from "../dominio/sprint.domain";
+import { FormControl, Validators, Form } from "@angular/forms";
+import { NotificationAlert } from "../dominio/notification.domain";
+import { AlertComponent } from "../alert/alert.component";
+import { AlertService } from "../servicio/alerts.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css', './new-sprint-dialog.css']
+  selector: "app-project",
+  templateUrl: "./project.component.html",
+  styleUrls: ["./project.component.css", "./new-sprint-dialog.css"],
 })
 export class ProjectComponent implements OnInit {
-  
-  project : ProjectDto;
-  sprints : SprintDisplay[];
+  project: ProjectDto;
+  sprints: SprintDisplay[];
   startDate: Date;
   endDate: Date;
 
-  idProject : number;
+  idProject: number;
 
-  constructor(private activatedRoute: ActivatedRoute,
-     private router: Router,
-     private projectService: ProjectService,
-     private sprintService : SprintService,
-     public dialog: MatDialog
-    ) {
-
-      this.project = this.activatedRoute.snapshot.data.project;
-      this.sprints = this.activatedRoute.snapshot.data.sprints;
-
-    }
-
-  ngOnInit(): void {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private projectService: ProjectService,
+    private sprintService: SprintService,
+    public dialog: MatDialog
+  ) {
+    this.project = this.activatedRoute.snapshot.data.project;
+    this.sprints = this.activatedRoute.snapshot.data.sprints;
   }
 
-  openBacklog(): void{
-    this.router.navigate(['backlog'], {queryParams: {id: this.project.id}});
+  ngOnInit(): void {}
+
+  openBacklog(): void {
+    this.router.navigate(["backlog"], { queryParams: { id: this.project.id } });
   }
 
   openTeam(team: number): void {
-    this.router.navigate(['team'], { queryParams: { id: team } });
+    this.router.navigate(["team"], { queryParams: { id: team } });
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {
-      width: '250px',
-      data: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}
+      width: "250px",
+      data: {
+        project: { id: this.project.id, name: this.project.name },
+        startDate: this.startDate,
+        endDate: this.endDate,
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
-        this.sprints = sprint;
-      });
+      this.sprintService
+        .getSprintsOfProject(this.project.id)
+        .subscribe((sprint: SprintDisplay[]) => {
+          this.sprints = sprint;
+        });
     });
   }
 
-
-  navigateTo(route: string): void{
+  navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 
-  navigateToSprint(sprint : Sprint) : void {
-    this.router.navigate(["sprint"], {queryParams: {id : sprint.id}});
+  navigateToSprint(sprint: Sprint): void {
+    this.router.navigate(["sprint"], { queryParams: { id: sprint.id } });
   }
 
-  editProject(project : ProjectDto){
-    this.router.navigate(['createProject'], {queryParams: {id: project.id, action:"edit"}});
-  }
-
-  deleteProject(idProject : number) {
-    this.projectService.deleteProject(idProject).subscribe((project : ProjectDto) => {
-      this.navigateTo("teams");
+  editProject(project: ProjectDto) {
+    this.router.navigate(["createProject"], {
+      queryParams: { id: project.id, action: "edit" },
     });
   }
 
-  openAlertDialog(sprintId: number): void{
+  deleteProject(idProject: number) {
+    this.projectService
+      .deleteProject(idProject)
+      .subscribe((project: ProjectDto) => {
+        this.navigateTo("teams");
+      });
+  }
+
+  openAlertDialog(sprintId: number): void {
     const dialogRef = this.dialog.open(AlertComponent, {
-      width: '250px',
-      data: {idSprint: sprintId}
+      width: "250px",
+      data: { idSprint: sprintId },
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.sprintService.getSprintsOfProject(this.project.id).subscribe((sprint:SprintDisplay[])=>{
-        this.sprints = sprint;
-      });
+      this.sprintService
+        .getSprintsOfProject(this.project.id)
+        .subscribe((sprint: SprintDisplay[]) => {
+          this.sprints = sprint;
+        });
     });
   }
-
 }
-
 
 // DIALOGO PARA CREAR UN SPRINT
 @Component({
-  selector: 'new-sprint-dialog',
-  templateUrl: 'new-sprint-dialog.html',
-  styleUrls: ['./new-sprint-dialog.css']
+  selector: "new-sprint-dialog",
+  templateUrl: "new-sprint-dialog.html",
+  styleUrls: ["./new-sprint-dialog.css"],
 })
-export class NewSprintDialog implements OnInit{
-
-  idSprintSaved : number;
+export class NewSprintDialog implements OnInit {
+  idSprintSaved: number;
   project: ProjectName;
   sprint: SprintJsonDates;
-  startDate = new FormControl('',  { validators: [Validators.required]});
-  endDate = new FormControl('',  { validators: [Validators.required] });
+  startDate = new FormControl("", { validators: [Validators.required] });
+  endDate = new FormControl("", { validators: [Validators.required] });
 
   //alertas de sprint
-  alertDate = new FormControl('');
-  alertTitle = new FormControl('');
+  alertDate = new FormControl("");
+  alertTitle = new FormControl("");
 
   alerts: NotificationAlert[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Sprint,
-    private sprintService: SprintService, 
-    private router: Router, 
+    private sprintService: SprintService,
+    private router: Router,
     private alertService: AlertService,
-    private snackBar: MatSnackBar) {}
-
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.project = this.data.project;
@@ -133,102 +146,143 @@ export class NewSprintDialog implements OnInit{
     this.dialogRef.close();
   }
 
-  onSaveClick() : void {
+  onSaveClick(): void {
     if (this.validForm()) {
+      this.sprint = {
+        id: 0,
+        startDate: new Date(this.startDate.value).toISOString(),
+        endDate: new Date(this.endDate.value).toISOString(),
+        project: { id: this.project.id, name: this.project.name },
+      };
 
-      this.sprint = {id:0, startDate: new Date(this.startDate.value).toISOString(), endDate: new Date(this.endDate.value).toISOString(), project:{id:this.project.id, name:this.project.name}}
-
-      this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
-        this.idSprintSaved = sprint.id;
-      }, 
-      (error)=>{
-        this.openSnackBar("Ha ocurrido un error al crear el Sprint.", "Cerrar", true);
-      }, ()=>{
-        if(this.alerts.length > 0){
-          //llamada a crear alertas
-          for(let alert of this.alerts){
-            alert.sprint = this.idSprintSaved;
-            this.alertService.crateAlert(alert).subscribe(()=>{},
-            (error)=>{
-              this.openSnackBar("Ha ocurrido un error al crear las alertas. Intentelo de nuevo en el panel del proyecto.", "Cerrar", false);
-            });
+      this.sprintService.createSprint(this.sprint).subscribe(
+        (sprint: Sprint) => {
+          this.idSprintSaved = sprint.id;
+        },
+        (error) => {
+          this.openSnackBar(
+            "Ha ocurrido un error al crear el Sprint.",
+            "Cerrar",
+            true
+          );
+        },
+        () => {
+          if (this.alerts.length > 0) {
+            //llamada a crear alertas
+            for (let alert of this.alerts) {
+              alert.sprint = this.idSprintSaved;
+              this.alertService.crateAlert(alert).subscribe(
+                () => {},
+                (error) => {
+                  this.openSnackBar(
+                    "Ha ocurrido un error al crear las alertas. Intentelo de nuevo en el panel del proyecto.",
+                    "Cerrar",
+                    false
+                  );
+                }
+              );
+            }
+            this.openSnackBar(
+              "El sprint y las alertas se han creado correctamente.",
+              "Cerrar",
+              false
+            );
+          } else {
+            this.openSnackBar(
+              "El sprint se ha creado correctamente.",
+              "Cerrar",
+              false
+            );
           }
-          this.openSnackBar("El sprint y las alertas se han creado correctamente.", "Cerrar", false);
-        }else{
-          this.openSnackBar("El sprint se ha creado correctamente.", "Cerrar", false);
         }
-      });
+      );
     }
-
   }
 
-  getErrorMessageStartDate() : string {
-    return this.startDate.hasError('required')?'Este campo es obligatorio':
-    this.startDate.hasError('past')?'La fecha no puede ser en pasado':
-    this.startDate.hasError('invalid')?'La fecha de fin no puede ser anterior a la de inicio':
-    this.startDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':
-    this.startDate.hasError('beforeToday') ? "La fecha no puede ser anterior a hoy" : '';
-  };
-
-  getErrorMessageEndDate() : string {
-    return this.endDate.hasError('required')?'Este campo es obligatorio':
-    this.endDate.hasError('past')?'La fecha no puede ser en pasado':
-    this.endDate.hasError('usedDates')?'Ya hay un sprint en las fechas seleccionadas':
-    this.endDate.hasError('beforeTodayEnd') ? "La fecha no puede ser anterior a hoy" : '';
+  getErrorMessageStartDate(): string {
+    return this.startDate.hasError("required")
+      ? "Este campo es obligatorio"
+      : this.startDate.hasError("past")
+      ? "La fecha no puede ser en pasado"
+      : this.startDate.hasError("invalid")
+      ? "La fecha de fin no puede ser anterior a la de inicio"
+      : this.startDate.hasError("usedDates")
+      ? "Ya hay un sprint en las fechas seleccionadas"
+      : this.startDate.hasError("beforeToday")
+      ? "La fecha no puede ser anterior a hoy"
+      : "";
   }
 
-  validForm():boolean {
+  getErrorMessageEndDate(): string {
+    return this.endDate.hasError("required")
+      ? "Este campo es obligatorio"
+      : this.endDate.hasError("past")
+      ? "La fecha no puede ser en pasado"
+      : this.endDate.hasError("usedDates")
+      ? "Ya hay un sprint en las fechas seleccionadas"
+      : this.endDate.hasError("beforeTodayEnd")
+      ? "La fecha no puede ser anterior a hoy"
+      : "";
+  }
 
+  validForm(): boolean {
     let valid: boolean;
 
     valid = this.endDate.valid && this.startDate.valid;
     return valid;
-
   }
 
-
-  beforeTodayDateValidator(date: FormControl){
-    let formControlToTime : number = new Date(date.value).getTime();
+  beforeTodayDateValidator(date: FormControl) {
+    let formControlToTime: number = new Date(date.value).getTime();
     //Para controlar hoy hasta las 23:59
     formControlToTime = formControlToTime + 86340000;
-    let todayToTime : number = new Date().getTime();
+    let todayToTime: number = new Date().getTime();
     if (formControlToTime < todayToTime) {
-      date.setErrors({'beforeToday':true});
+      date.setErrors({ beforeToday: true });
     } else {
       date.updateValueAndValidity();
     }
   }
 
   validDatesValidator() {
-    this.sprintService.checkDates(this.project.id, this.startDate.value, this.endDate.value).subscribe((res : boolean) => {
-      if (!res) {
-        this.startDate.setErrors({'usedDates': true});
-        this.endDate.setErrors({'usedDates': true});
-      } else if (!(this.startDate.hasError('beforeToday') || this.endDate.hasError('beforeTodayEnd'))) {
-        this.startDate.updateValueAndValidity();
-        this.endDate.updateValueAndValidity();
-      }
-    })
+    this.sprintService
+      .checkDates(this.project.id, this.startDate.value, this.endDate.value)
+      .subscribe((res: boolean) => {
+        if (!res) {
+          this.startDate.setErrors({ usedDates: true });
+          this.endDate.setErrors({ usedDates: true });
+        } else if (
+          !(
+            this.startDate.hasError("beforeToday") ||
+            this.endDate.hasError("beforeTodayEnd")
+          )
+        ) {
+          this.startDate.updateValueAndValidity();
+          this.endDate.updateValueAndValidity();
+        }
+      });
   }
 
   //Alert Notificacion
-  addAlert(): void{
+  addAlert(): void {
     let alert: NotificationAlert;
 
-    alert = {date: new Date(this.alertDate.value), title: this.alertTitle.value};
+    alert = {
+      date: new Date(this.alertDate.value),
+      title: this.alertTitle.value,
+    };
     this.alerts.push(alert);
 
-    this.alertDate.setValue('');
-    this.alertTitle.setValue('');
+    this.alertDate.setValue("");
+    this.alertTitle.setValue("");
   }
 
-  remove(alert: NotificationAlert): void{
+  remove(alert: NotificationAlert): void {
     let index: number = this.alerts.indexOf(alert);
     this.alerts.splice(index, 1);
-
   }
 
-  allowAdd(): boolean{
+  allowAdd(): boolean {
     let allow: boolean = true;
 
     //las fechas de inicio y fin del sprint están rellenas y válidas
@@ -243,7 +297,7 @@ export class NewSprintDialog implements OnInit{
     return allow;
   }
 
-  validDateInSprint(date: FormControl){
+  validDateInSprint(date: FormControl) {
     let startDate = new Date(this.startDate.value).getTime();
     let endDate = new Date(this.endDate.value).getTime();
 
@@ -251,33 +305,37 @@ export class NewSprintDialog implements OnInit{
     //Para controlar hoy hasta las 23:59
     alertDate = alertDate + 86340000;
 
-    if(startDate > alertDate){
-      this.alertDate.setErrors({'betweenSprint': true});
-    }else if(alertDate > endDate){
-      this.alertDate.setErrors({'betweenSprint': true});
-    }else{
+    if (startDate > alertDate) {
+      this.alertDate.setErrors({ betweenSprint: true });
+    } else if (alertDate > endDate) {
+      this.alertDate.setErrors({ betweenSprint: true });
+    } else {
       this.alertDate.updateValueAndValidity();
     }
   }
 
-  getErrorMessageAlertDate(): string{
-    return this.alertDate.hasError('beforeToday')? "La fecha seleccionada no puede ser anterior a la fecha actual" : 
-    this.alertDate.hasError('betweenSprint')? "La fecha de la alerta debe estar dentro del Sprint": "";
-
+  getErrorMessageAlertDate(): string {
+    return this.alertDate.hasError("beforeToday")
+      ? "La fecha seleccionada no puede ser anterior a la fecha actual"
+      : this.alertDate.hasError("betweenSprint")
+      ? "La fecha de la alerta debe estar dentro del Sprint"
+      : "";
   }
 
-  openSnackBar(message: string, action: string, error : boolean) {
+  openSnackBar(message: string, action: string, error: boolean) {
     if (error) {
       this.snackBar.open(message, action, {
         duration: 2000,
       });
     } else {
-      this.snackBar.open(message, action, {
-        duration: 2000,
-      }).afterDismissed().subscribe(() => {
-        this.dialogRef.close();
-      });
+      this.snackBar
+        .open(message, action, {
+          duration: 2000,
+        })
+        .afterDismissed()
+        .subscribe(() => {
+          this.dialogRef.close();
+        });
     }
   }
-
 }

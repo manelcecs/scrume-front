@@ -1,149 +1,257 @@
 <div id="main">
+  <section id="forms">
+    <h3>Rellene los siguientes campos</h3>
+    <div *ngIf="doc.type == 'DAILY'">
+      <mat-form-field class="form-field">
+        <input
+          value="{{ nameDaily }}"
+          placeholder="Nombre del documento"
+          matInput
+          #nameDailyHTML
+          disabled
+        />
+      </mat-form-field>
 
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ done }}"
+          (input)="dailyDone(doneHTML.value)"
+          placeholder="¿Qué he hecho hoy?"
+          matInput
+          #doneHTML
+        ></textarea>
+      </mat-form-field>
 
-    <section id="forms">
-        <h3>Rellene los siguientes campos</h3>
-        <div *ngIf="doc.type == 'DAILY'">
-            <mat-form-field class="form-field">
-                <input value={{nameDaily}} placeholder="Nombre del documento" matInput #nameDailyHTML disabled>
-            </mat-form-field>
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ todo }}"
+          (input)="dailyTodo(todoHTML.value)"
+          placeholder="¿Qué voy a hacer hoy?"
+          matInput
+          #todoHTML
+        ></textarea>
+      </mat-form-field>
 
-            <mat-form-field class="form-field">
-                <textarea value={{done}} (input)="dailyDone(doneHTML.value)" placeholder="¿Qué he hecho hoy?" matInput #doneHTML></textarea>
-            </mat-form-field>
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ problem }}"
+          (input)="dailyProblem(problemHTML.value)"
+          placeholder="¿Qué problemas he tenido?"
+          matInput
+          #problemHTML
+        ></textarea>
+      </mat-form-field>
+    </div>
 
-            <mat-form-field class="form-field">
-                <textarea value={{todo}} (input)="dailyTodo(todoHTML.value)" placeholder="¿Qué voy a hacer hoy?" matInput #todoHTML></textarea>
-            </mat-form-field>
+    <div *ngIf="doc.type == 'RETROSPECTIVE'">
+      <mat-form-field class="form-field">
+        <input
+          value="{{ nameRetrospective }}"
+          (input)="retrospectiveName(nameRetrospectiveHTML.value)"
+          placeholder="Nombre del documento"
+          matInput
+          #nameRetrospectiveHTML
+        />
+      </mat-form-field>
 
-            <mat-form-field class="form-field">
-                <textarea value={{problem}} (input)="dailyProblem(problemHTML.value)" placeholder="¿Qué problemas he tenido?" matInput #problemHTML></textarea>
-            </mat-form-field>
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ good }}"
+          (input)="restrospectiveGood(goodHTML.value)"
+          placeholder="¿Qué he hecho bien?"
+          matInput
+          #goodHTML
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ bad }}"
+          (input)="restrospectiveBad(badHTML.value)"
+          placeholder="¿Qué se ha hecho mal?"
+          matInput
+          #badHTML
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ improvement }}"
+          (input)="restrospectiveImprovement(improvementHTML.value)"
+          placeholder="¿Como podemos mejorar?"
+          matInput
+          #improvementHTML
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="doc.type == 'PLANNING_MEETING'">
+      <mat-form-field class="form-field">
+        <input
+          value="{{ namePlanning }}"
+          (input)="planningName(namePlanningHTML.value)"
+          placeholder="Nombre del documento"
+          matInput
+          #namePlanningHTML
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ entrega }}"
+          (input)="planningEntrega(entregaHTML.value)"
+          placeholder="¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?"
+          matInput
+          #entregaHTML
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ conseguir }}"
+          (input)="planningConseguir(conseguirHTML.value)"
+          placeholder="¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?"
+          matInput
+          #conseguirHTML
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="doc.type == 'REVIEW'">
+      <mat-form-field class="form-field">
+        <input
+          value="{{ nameReview }}"
+          (input)="reviewName(nameReviewHTML.value)"
+          placeholder="Nombre del documento"
+          matInput
+          #nameReviewHTML
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <input
+          value="{{ done }}"
+          (input)="reviewDone(doneHTML.value)"
+          oninput=""
+          placeholder="Elementos de la Lista de Producto se han “Terminado”"
+          matInput
+          #doneHTML
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ noDone }}"
+          (input)="reviewNoDone(nodoneHTML.value)"
+          placeholder="Cuales no se han “Terminado”"
+          matInput
+          #nodoneHTML
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <textarea
+          value="{{ rePlanning }}"
+          (input)="reviewRePlanning(replanningHTML.value)"
+          placeholder="Planificación futura"
+          matInput
+          #replanningHTML
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <button
+      id="buttonPDF"
+      mat-flat-button
+      (click)="updateDoc(doc)"
+      matTooltip="Guardar documento"
+    >
+      Guardar
+    </button>
+
+    <button
+      id="buttonDownloadPDF"
+      mat-flat-button
+      (click)="generatePDF(doc)"
+      matTooltip="Guardar y descargar documento en PDF"
+    >
+      Descargar
+    </button>
+  </section>
+
+  <section id="pdf-container">
+    <div id="pdf">
+      <div *ngIf="doc.type == 'DAILY'" class="paper">
+        <h3>{{ nameDaily }}</h3>
+        <br />
+        <h5>¿Qué he hecho hoy?</h5>
+        <div *ngFor="let daily of dailies">
+          <p>{{ daily.name }}:</p>
+          <p>{{ daily.done }}</p>
+          <br />
         </div>
-
-        <div *ngIf="doc.type == 'RETROSPECTIVE'">
-            <mat-form-field class="form-field">
-                <input value={{nameRetrospective}} (input)="retrospectiveName(nameRetrospectiveHTML.value)" placeholder="Nombre del documento" matInput #nameRetrospectiveHTML>
-            </mat-form-field>
-
-            <mat-form-field class="form-field">
-                <textarea value={{good}} (input)="restrospectiveGood(goodHTML.value)" placeholder="¿Qué he hecho bien?" matInput #goodHTML></textarea>
-            </mat-form-field>
-
-            <mat-form-field class="form-field">
-                <textarea value={{bad}} (input)="restrospectiveBad(badHTML.value)" placeholder="¿Qué se ha hecho mal?" matInput #badHTML></textarea>
-            </mat-form-field>
-
-            <mat-form-field class="form-field">
-                <textarea value={{improvement}} (input)="restrospectiveImprovement(improvementHTML.value)" placeholder="¿Como podemos mejorar?" matInput #improvementHTML></textarea>
-            </mat-form-field>
+        <h5>¿Qué voy a hacer hoy?</h5>
+        <div *ngFor="let daily of dailies">
+          <p>{{ daily.name }}:</p>
+          <p>{{ daily.doing }}</p>
+          <br />
         </div>
-
-        <div *ngIf="doc.type == 'PLANNING_MEETING'">
-            <mat-form-field class="form-field">
-                <input value={{namePlanning}} (input)="planningName(namePlanningHTML.value)" placeholder="Nombre del documento" matInput #namePlanningHTML>
-            </mat-form-field>
-
-            <mat-form-field class="form-field">
-                <textarea value={{entrega}} (input)="planningEntrega(entregaHTML.value)" placeholder="¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?" matInput #entregaHTML></textarea>
-            </mat-form-field>
-
-            <mat-form-field class="form-field">
-                <textarea value={{conseguir}} (input)="planningConseguir(conseguirHTML.value)" placeholder="¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?" matInput #conseguirHTML></textarea>
-            </mat-form-field>
+        <h5>¿Qué problemas he tenido?</h5>
+        <div *ngFor="let daily of dailies">
+          <p>{{ daily.name }}:</p>
+          <p>{{ daily.problems }}</p>
+          <br />
         </div>
+      </div>
 
-        <div *ngIf="doc.type == 'REVIEW'">
-            <mat-form-field class="form-field">
-                <input value={{nameReview}} (input)="reviewName(nameReviewHTML.value)" placeholder="Nombre del documento" matInput #nameReviewHTML>
-            </mat-form-field>
+      <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
+        <h3 id="retrospectiveName">{{ nameRetrospective }} | {{ doc.type }}</h3>
+        <br />
 
-            <mat-form-field class="form-field">
-                <input value={{done}} (input)="reviewDone(doneHTML.value)" oninput="" placeholder="Elementos de la Lista de Producto se han “Terminado”" matInput #doneHTML>
-            </mat-form-field>
+        <h5>¿Qué se ha hecho bien?</h5>
+        <p id="restrospectiveGood">{{ good }}</p>
+        <br />
 
-            <mat-form-field class="form-field">
-                <textarea value={{noDone}} (input)="reviewNoDone(nodoneHTML.value)" placeholder="Cuales no se han “Terminado”" matInput #nodoneHTML></textarea>
-            </mat-form-field>
+        <h5>¿Qué se ha hecho mal?</h5>
+        <p id="restrospectiveBad">{{ bad }}</p>
+        <br />
 
-            <mat-form-field class="form-field">
-                <textarea value={{rePlanning}} (input)="reviewRePlanning(replanningHTML.value)" placeholder="Planificación futura" matInput #replanningHTML></textarea>
-            </mat-form-field>
-        </div>
-        <button id="buttonPDF" mat-flat-button (click)="updateDoc(doc)">Guardar</button>
-        
-        <button id="buttonDownloadPDF" mat-flat-button (click)="generatePDF(doc)">Descargar</button>
-    </section>
+        <h5>¿Como podemos mejorar?</h5>
+        <p id="restrospectiveImprovement">{{ improvement }}</p>
+      </div>
 
-    <section id="pdf-container">
-        <div id="pdf">
-            <div *ngIf="doc.type == 'DAILY'" class="paper">
-                <h3>{{nameDaily}} </h3>
-                <br>
-                <h5>¿Qué he hecho hoy? </h5>
-                <div *ngFor="let daily of dailies">
-                    <p>{{daily.name}}: </p>
-                    <p>{{daily.done}}</p>
-                    <br>
-                </div>
-                <h5>¿Qué voy a hacer hoy?</h5>
-                <div *ngFor="let daily of dailies">
-                    <p>{{daily.name}}: </p>
-                    <p>{{daily.doing}}</p>
-                    <br>
-                </div>
-                <h5>¿Qué problemas he tenido?</h5>
-                <div *ngFor="let daily of dailies">
-                    <p>{{daily.name}}: </p>
-                    <p>{{daily.problems}}</p>
-                    <br>
-                </div>
-            </div>
+      <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
+        <h3 id="planningName">{{ namePlanning }} | {{ doc.type }}</h3>
+        <br />
+        <h5>
+          ¿Qué puede entregarse en el Incremento resultante del Sprint que
+          comienza?:
+        </h5>
+        <p id="planningEntrega">{{ entrega }}</p>
+        <br />
 
-            <div *ngIf="doc.type == 'RETROSPECTIVE'" class="paper">
-                <h3 id="retrospectiveName">{{nameRetrospective}} | {{doc.type}}</h3>
-                <br>
+        <h5>
+          ¿Cómo se conseguirá hacer el trabajo necesario para entregar el
+          Incremento?
+        </h5>
+        <p id="planningConseguir">{{ conseguir }}</p>
+        <br />
+      </div>
 
-                <h5>¿Qué se ha hecho bien?</h5>
-                <p id="restrospectiveGood">{{good}}</p>
-                <br>
+      <div *ngIf="doc.type == 'REVIEW'" class="paper">
+        <h3 id="reviewName">{{ nameReview }} | {{ doc.type }}</h3>
+        <br />
+        <h5>Elementos de la Lista de Producto se han “Terminado”</h5>
+        <p id="reviewDone">{{ done }}</p>
+        <br />
 
-                <h5>¿Qué se ha hecho mal?</h5>
-                <p id="restrospectiveBad">{{bad}}</p>
-                <br>
+        <h5>Cuales no se han “Terminado”</h5>
+        <p id="reviewNoDone">{{ noDone }}</p>
+        <br />
 
-                <h5>¿Como podemos mejorar?</h5>
-                <p id="restrospectiveImprovement">{{improvement}}</p>
-            </div>
-
-            <div *ngIf="doc.type == 'PLANNING_MEETING'" class="paper">
-                <h3 id="planningName">{{namePlanning}} | {{doc.type}}</h3>
-                <br>
-                <h5>¿Qué puede entregarse en el Incremento resultante del Sprint que comienza?:</h5>
-                <p id="planningEntrega">{{entrega}}</p>
-                <br>
-
-                <h5>¿Cómo se conseguirá hacer el trabajo necesario para entregar el Incremento?</h5>
-                <p id="planningConseguir">{{conseguir}}</p>
-                <br>
-            </div>
-
-            <div *ngIf="doc.type == 'REVIEW'" class="paper">
-                <h3 id="reviewName">{{nameReview}} | {{doc.type}}</h3>
-                <br>
-                <h5>Elementos de la Lista de Producto se han “Terminado”</h5>
-                <p id="reviewDone">{{done}}</p>
-                <br>
-
-                <h5>Cuales no se han “Terminado”</h5>
-                <p id="reviewNoDone">{{noDone}}</p>
-                <br>
-
-                <h5>Planificación futura</h5>
-                <p id="reviewRePlanning">{{rePlanning}}</p>
-                <br>
-
-            </div>
-        </div>
-    </section>
+        <h5>Planificación futura</h5>
+        <p id="reviewRePlanning">{{ rePlanning }}</p>
+        <br />
+      </div>
+    </div>
+  </section>
 </div>
