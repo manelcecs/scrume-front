@@ -32,7 +32,8 @@ export class ProjectComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     private sprintService: SprintService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private validationService: ValidationService
   ) {
     this.project = this.activatedRoute.snapshot.data.project;
     this.sprints = this.activatedRoute.snapshot.data.sprints;
