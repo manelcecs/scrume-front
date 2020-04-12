@@ -2,18 +2,18 @@ import { Component, OnInit, Inject } from "@angular/core";
 import {
   Sprint,
   SprintDisplay,
-  SprintJsonDates
+  SprintJsonDates,
 } from "../dominio/sprint.domain";
 import {
   FormControl,
   Validators,
   ValidatorFn,
-  AbstractControl
+  AbstractControl,
 } from "@angular/forms";
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialog
+  MatDialog,
 } from "@angular/material/dialog";
 import { SprintService } from "../servicio/sprint.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -32,7 +32,7 @@ import { ValidationService } from '../servicio/validation.service';
 @Component({
   selector: "app-sprint",
   templateUrl: "./sprint.component.html",
-  styleUrls: ["./sprint.component.css"]
+  styleUrls: ["./sprint.component.css"],
 })
 export class SprintComponent implements OnInit {
   sprint: SprintDisplay;
@@ -60,7 +60,7 @@ export class SprintComponent implements OnInit {
     {}
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(param => {
+    this.activatedRoute.queryParams.subscribe((param) => {
       if (param.id != undefined) {
         this.idSprint = param.id;
 
@@ -88,9 +88,7 @@ export class SprintComponent implements OnInit {
 
         this.compruebaDailyRellena();
 
-
         this.loadAlerts();
-
       } else {
         this.navigateTo("bienvenida");
       }
@@ -110,7 +108,7 @@ export class SprintComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(EditSprintDialog, {
       width: "250px",
-      data: this.sprint
+      data: this.sprint,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.sprintService
@@ -133,7 +131,7 @@ export class SprintComponent implements OnInit {
 
   openBoard(board: number): void {
     this.router.navigate(["board"], {
-      queryParams: { id: board, idSprint: this.idSprint }
+      queryParams: { id: board, idSprint: this.idSprint },
     });
   }
 
@@ -143,7 +141,7 @@ export class SprintComponent implements OnInit {
 
   editBoard(row: BoardNumber, sprint: SprintDisplay): void {
     this.router.navigate(["createBoard"], {
-      queryParams: { idBoard: row.id, idSprint: sprint.id }
+      queryParams: { idBoard: row.id, idSprint: sprint.id },
     });
   }
 
@@ -206,11 +204,10 @@ export class SprintComponent implements OnInit {
     return this.documentService.deleteDocument(id);
   }
 
-
   openDialogDoc(sprint: SprintDisplay): void {
     const dialogRef = this.dialog.open(NewDocumentDialog, {
       width: "250px",
-      data: sprint.id
+      data: sprint.id,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.documentService
@@ -228,8 +225,8 @@ export class SprintComponent implements OnInit {
   //---------- Alertas
   openAlertDialog(alertId: number): void {
     const dialogRef = this.dialog.open(AlertComponent, {
-      width: '250px',
-      data: { idSprint: this.idSprint, idAlert: alertId }
+      width: "250px",
+      data: { idSprint: this.idSprint, idAlert: alertId },
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -244,20 +241,22 @@ export class SprintComponent implements OnInit {
   }
 
   loadAlerts() {
-    console.log("Recogiendo las alertas configuradas:");
-    this.alertService.getAllAlertsSprint(this.idSprint).subscribe((alerts: NotificationAlert[]) => {
-      this.alerts = alerts;
-    }, (error) => {
-      console.error(error.error);
-    });
+    this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+      (alerts: NotificationAlert[]) => {
+        this.alerts = alerts;
+      },
+      (error) => {
+        console.error(error.error);
+      }
+    );
   }
 
   //--------- My Daily Form
 
   openMyDailyDialog() {
     const dialogRef = this.dialog.open(MyDailyFormComponent, {
-      width: '250px',
-      data: { idSprint: this.idSprint }
+      width: "250px",
+      data: { idSprint: this.idSprint },
     });
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
@@ -266,25 +265,36 @@ export class SprintComponent implements OnInit {
   }
 
   compruebaDailyRellena() {
+    this.documentService
+      .getTodayDaily(this.idSprint)
+      .subscribe((idDoc: number) => {
+        if (idDoc != -1) {
+          this.documentService
+            .getDocuments(idDoc)
+            .subscribe((doc: Document) => {
+              if (doc != undefined) {
+                // En caso que se produzca un error con las comillas simple doc.content = doc.content.replace(/'/g, '"');
+                let dailyConts = JSON.parse(doc.content);
 
-    this.documentService.getTodayDaily(this.idSprint).subscribe((idDoc: number) => {
-      this.documentService.getDocuments(idDoc).subscribe((doc: Document) => {
-        if (doc != undefined) {
-          let dailyConts = JSON.parse(doc.content);
-
-          let username = this.userService.getUserLogged().username.split('@')[0];
-          for (let cont of dailyConts) {
-            let dailyWrited: Daily  = cont;
-            if (dailyWrited.name == username) {
-              this.daily = true;
-            }
-          }
+                let username = this.userService
+                  .getUserLogged()
+                  .username.split("@")[0];
+                for (let cont of dailyConts) {
+                  let dailyWrited: Daily = cont;
+                  if (dailyWrited.name == username) {
+                    this.daily = true;
+                    break;
+                  }
+                }
+              }else{
+                this.daily = true;
+              }
+            });
+        } else {
+          this.daily = true;
         }
       });
-    });
-
   }
-
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------
@@ -292,7 +302,7 @@ export class SprintComponent implements OnInit {
 @Component({
   selector: "new-document-dialog",
   templateUrl: "new-document-dialog.html",
-  styleUrls: ["./new-document-dialog.css"]
+  styleUrls: ["./new-document-dialog.css"],
 })
 export class NewDocumentDialog implements OnInit {
   idSprint: number;
@@ -315,7 +325,7 @@ export class NewDocumentDialog implements OnInit {
     private documentService: DocumentService,
     private boardService: BoardService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.idSprint = this.data;
@@ -328,32 +338,26 @@ export class NewDocumentDialog implements OnInit {
   onSaveClick(select: string): void {
     console.log(this.tipo);
     if (this.tipo.valid) {
-      if (select == "REVIEW") {
+      if (select == "REVIEW" || select == "MIDDLE_REVIEW") {
         let json = {
           done: "",
           noDone: "",
-          rePlanning: ""
+          rePlanning: "",
         };
         this.cont = JSON.stringify(json);
-      } else if (select == "RETROSPECTIVE") {
+      } else if (select == "RETROSPECTIVE" || select == "MIDDLE_RETROSPECTIVE") {
         let json = {
           good: "",
           bad: "",
-          improvement: ""
+          improvement: "",
         };
         this.cont = JSON.stringify(json);
       } else if (select == "DAILY") {
-        let json = {
-          name: "",
-          done: "",
-          todo: "",
-          problem: ""
-        };
-        this.cont = JSON.stringify(json);
-      } else {
+        this.cont = "[ ]";
+      }else {
         let json = {
           entrega: "",
-          conseguir: ""
+          conseguir: "",
         };
         this.cont = JSON.stringify(json);
       }
@@ -363,7 +367,7 @@ export class NewDocumentDialog implements OnInit {
         name: "Añade aquí el nombre",
         content: this.cont,
         sprint: this.idSprint,
-        type: select
+        type: select,
       };
 
       this.documentService
@@ -386,7 +390,7 @@ export class NewDocumentDialog implements OnInit {
 @Component({
   selector: "edit-sprint-dialog",
   templateUrl: "edit-sprint-dialog.html",
-  styleUrls: ["./edit-sprint-dialog.css"]
+  styleUrls: ["./edit-sprint-dialog.css"],
 })
 export class EditSprintDialog implements OnInit {
   idSprint: number;
@@ -399,7 +403,7 @@ export class EditSprintDialog implements OnInit {
     public dialogRef: MatDialogRef<EditSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
     private sprintService: SprintService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
@@ -415,12 +419,11 @@ export class EditSprintDialog implements OnInit {
     this.sprint = {
       id: this.idSprint,
       startDate: new Date(this.startDate.value).toISOString(),
-      endDate: new Date(this.endDate.value).toISOString()
+      endDate: new Date(this.endDate.value).toISOString(),
     };
     this.sprintService
       .editSprint(this.idSprint, this.sprint)
       .subscribe((sprint: Sprint) => {
-        //FIXME: Recargar la pagina
         this.dialogRef.close();
       });
   }
@@ -429,26 +432,26 @@ export class EditSprintDialog implements OnInit {
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
-        ? "La fecha no puede ser en pasado"
-        : this.startDate.hasError("invalid")
-          ? "La fecha de fin no puede ser anterior a la de inicio"
-          : this.startDate.hasError("usedDates")
-            ? "Ya hay un sprint en las fechas seleccionadas"
-            : this.startDate.hasError("beforeToday")
-              ? "La fecha no puede ser anterior a hoy"
-              : "";
+      ? "La fecha no puede ser en pasado"
+      : this.startDate.hasError("invalid")
+      ? "La fecha de fin no puede ser anterior a la de inicio"
+      : this.startDate.hasError("usedDates")
+      ? "Ya hay un sprint en las fechas seleccionadas"
+      : this.startDate.hasError("beforeToday")
+      ? "La fecha no puede ser anterior a hoy"
+      : "";
   }
 
   getErrorMessageEndDate(): string {
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
-        ? "La fecha no puede ser en pasado"
-        : this.endDate.hasError("usedDates")
-          ? "Ya hay un sprint en las fechas seleccionadas"
-          : this.endDate.hasError("beforeTodayEnd")
-            ? "La fecha no puede ser anterior a hoy"
-            : "";
+      ? "La fecha no puede ser en pasado"
+      : this.endDate.hasError("usedDates")
+      ? "Ya hay un sprint en las fechas seleccionadas"
+      : this.endDate.hasError("beforeTodayEnd")
+      ? "La fecha no puede ser anterior a hoy"
+      : "";
   }
 
   validForm(): boolean {
