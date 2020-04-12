@@ -43,7 +43,7 @@ export class ProjectComponent implements OnInit {
     this.sprints = this.activatedRoute.snapshot.data.sprints;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   openBacklog(): void {
     this.router.navigate(["backlog"], { queryParams: { id: this.project.id } });
@@ -136,7 +136,7 @@ export class NewSprintDialog implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.project = this.data.project;
@@ -172,7 +172,7 @@ export class NewSprintDialog implements OnInit {
             for (let alert of this.alerts) {
               alert.sprint = this.idSprintSaved;
               this.alertService.crateAlert(alert).subscribe(
-                () => {},
+                () => { },
                 (error) => {
                   this.openSnackBar(
                     "Ha ocurrido un error al crear las alertas. Intentelo de nuevo en el panel del proyecto.",
@@ -203,26 +203,26 @@ export class NewSprintDialog implements OnInit {
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.startDate.hasError("invalid")
-      ? "La fecha de fin no puede ser anterior a la de inicio"
-      : this.startDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.startDate.hasError("beforeToday")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.startDate.hasError("invalid")
+          ? "La fecha de fin no puede ser anterior a la de inicio"
+          : this.startDate.hasError("usedDates")
+            ? "Ya hay un sprint en las fechas seleccionadas"
+            : this.startDate.hasError("beforeToday")
+              ? "La fecha no puede ser anterior a hoy"
+              : "";
   }
 
   getErrorMessageEndDate(): string {
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.endDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.endDate.hasError("beforeTodayEnd")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.endDate.hasError("usedDates")
+          ? "Ya hay un sprint en las fechas seleccionadas"
+          : this.endDate.hasError("beforeTodayEnd")
+            ? "La fecha no puede ser anterior a hoy"
+            : "";
   }
 
   validForm(): boolean {
@@ -318,8 +318,8 @@ export class NewSprintDialog implements OnInit {
     return this.alertDate.hasError("beforeToday")
       ? "La fecha seleccionada no puede ser anterior a la fecha actual"
       : this.alertDate.hasError("betweenSprint")
-      ? "La fecha de la alerta debe estar dentro del Sprint"
-      : "";
+        ? "La fecha de la alerta debe estar dentro del Sprint"
+        : "";
   }
 
   openSnackBar(message: string, action: string, error: boolean) {
