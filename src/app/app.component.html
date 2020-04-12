@@ -16,9 +16,9 @@
       </div>
 
       <div id="menu-horizontal-buttons-right">
-      <div class="username" *ngIf="user == undefined"><a (click)="navigateTo('register')">Registrarse</a></div>
+      <div class="username" *ngIf="user == undefined"><a class="access" (click)="navigateTo('register')">Registrarse</a></div>
 
-        <a *ngIf="user == undefined" (click)="openLogin()" style="color: white; margin: 0 10px;">Acceder</a>
+        <a class="access" *ngIf="user == undefined" (click)="openLogin()" >Acceder</a>
         <img *ngIf="user != undefined" src="../assets/profile.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
         <img *ngIf="user != undefined" src="../assets/logout.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
         <img *ngIf="!notifications && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
