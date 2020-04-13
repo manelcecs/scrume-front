@@ -1,24 +1,47 @@
 <form>
-    <h4>¿Qué has hecho hoy?</h4>
-    <div>
-        <mat-form-field class="form-field">
-            <textarea [formControl]="done" placeholder="¿Qué he hecho hoy?" matInput ></textarea>
-        </mat-form-field>
+  <h4>¿Qué has hecho hoy?</h4>
+  <div>
+    <mat-form-field class="form-field">
+      <textarea
+        [formControl]="done"
+        placeholder="¿Qué he hecho hoy?"
+        matInput
+      ></textarea>
+    </mat-form-field>
 
-        <mat-form-field class="form-field">
-            <textarea [formControl]="doing" placeholder="¿Qué voy a hacer hoy?" matInput ></textarea>
-        </mat-form-field>
+    <mat-form-field class="form-field">
+      <textarea
+        [formControl]="doing"
+        placeholder="¿Qué voy a hacer hoy?"
+        matInput
+      ></textarea>
+    </mat-form-field>
 
-        <mat-form-field class="form-field">
-            <textarea [formControl]="problems" placeholder="¿Qué problemas he tenido?" matInput ></textarea>
-        </mat-form-field>
-    </div>
-    <div>
-        <button id="cancel-dialog" mat-button (click)="onNoClick()">
-            Cancelar
-        </button>
-        <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial>
-            Guardar
-        </button>
-    </div>
+    <mat-form-field class="form-field">
+      <textarea
+        [formControl]="problems"
+        placeholder="¿Qué problemas he tenido?"
+        matInput
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <button
+      id="cancel-dialog"
+      mat-button
+      (click)="onNoClick()"
+      matTooltip="Cancelar creación daily."
+    >
+      Cancelar
+    </button>
+    <button
+      id="save-dialog"
+      mat-button
+      (click)="onSaveClick()"
+      cdkFocusInitial
+      matTooltip="Guardar daily."
+    >
+      Guardar
+    </button>
+  </div>
 </form>

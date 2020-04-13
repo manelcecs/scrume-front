@@ -53,6 +53,9 @@ export class TeamCreateComponent implements OnInit {
         this.teamService.getTeam(this.id).subscribe((team: Team) => {
           this.team = team;
           this.name.setValue(this.team.name);
+          if (!this.team.isAdmin) {
+            this.navigateTo("teams");
+          }
         });
         this.teamService.getTeamMembers(this.id).subscribe((members : Member[]) => {
           this.members = members;
@@ -135,8 +138,12 @@ export class TeamCreateComponent implements OnInit {
   changeRol(idMember: number, isAdmin: boolean): void{
     this.teamService.changeRol(this.team.id, idMember, !isAdmin).subscribe(() => {
       this.teamService.getTeamMembers(this.team.id).subscribe((members: Member[]) => {
-        this.members = members;
-        this.numAdmins = members.filter((member: Member) => member.isAdmin).length
+        if (idMember == this.userLogged.idUser) {
+          this.navigateTo("teams");
+        } else {
+          this.members = members;
+          this.numAdmins = members.filter((member: Member) => member.isAdmin).length
+        }
       })
     }, error => {
       this.snackBarError("No se ha podido cambiar el rol del usuario");

@@ -14,13 +14,12 @@ export class CabeceraService {
     }
 
     getCabecera():string{
-        console.log("path: "+this.path);
         return this.path;
     }
 
     getBasicAuthentication(): HttpHeaders{
         let headers = new HttpHeaders();
-        
+
         headers = headers.append("Authorization", "Bearer " + sessionStorage.getItem("loginToken"));
         headers = headers.append("Content-Type", "application/json");
         headers = headers.append("Access-Control-Allow-Origin", '*');
@@ -31,7 +30,7 @@ export class CabeceraService {
 
     getCustomBasicAuthentication(user: string, pass: string): HttpHeaders{
         let headers = new HttpHeaders();
-        
+
         headers = headers.append("Authorization", "Bearer " + btoa(user+":"+pass));
         headers = headers.append("Content-Type", "application/json");
         headers = headers.append("Access-Control-Allow-Origin", '*');

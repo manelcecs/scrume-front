@@ -74,6 +74,17 @@ mat-sidenav {
     cursor: pointer;
 }
 
+.access { 
+    color: white;
+    background-color: black; 
+    transition-duration: 0.4s;
+    margin-left: 20px;
+}
+
+.access:hover {
+    background-color: #009cbb;
+}
+
 /* ------------------------------- */
 
 /* Menu vertical derecho */

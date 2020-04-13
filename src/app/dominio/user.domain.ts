@@ -44,3 +44,11 @@ export interface Member {
   isAdmin: boolean;
   nickname: string;
 }
+
+export interface Renovation {
+  box: number;
+  expiredDate: string;
+  id: number;
+  orderId?: string;
+  payerId?: string;
+}

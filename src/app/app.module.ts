@@ -70,6 +70,9 @@ import { PersonalDataComponent } from './personal-data/personal-data.component';
 import {MatTableModule} from '@angular/material/table';
 import { AlertComponent } from './alert/alert.component';
 import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 
 
 @NgModule({
@@ -108,6 +111,8 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
     PersonalDataComponent,
     AlertComponent,
     MyDailyFormComponent,
+    SecurityBreachComponent,
+    BadgeMinimumBoxComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -156,7 +161,8 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
-    }
+    },
+    CheckExpirationBoxGuard,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
