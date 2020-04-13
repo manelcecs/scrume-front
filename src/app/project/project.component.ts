@@ -242,10 +242,9 @@ export class NewSprintDialog implements OnInit {
 
   beforeTodayDateValidator(date: FormControl) {
     let formControlToTime: number = new Date(date.value).getTime();
-    //Para controlar hoy hasta las 23:59
-    formControlToTime = formControlToTime + 86340000;
-    let todayToTime: number = new Date().getTime();
-    if (formControlToTime < todayToTime) {
+    let today: Date = new Date();
+    let tomorrowTime: number = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0, 0).getTime();
+    if (formControlToTime < tomorrowTime) {
       date.setErrors({ beforeToday: true });
     } else {
       date.updateValueAndValidity();
@@ -253,7 +252,8 @@ export class NewSprintDialog implements OnInit {
   }
 
   validDatesValidator() {
-    this.sprintService
+    if (this.endDate.value != '' && this.startDate.value != '') {
+      this.sprintService
       .checkDates(this.project.id, this.startDate.value, this.endDate.value)
       .subscribe((res: boolean) => {
         if (!res) {
@@ -263,12 +263,14 @@ export class NewSprintDialog implements OnInit {
           !(
             this.startDate.hasError("beforeToday") ||
             this.endDate.hasError("beforeTodayEnd")
-          )
-        ) {
-          this.startDate.updateValueAndValidity();
-          this.endDate.updateValueAndValidity();
-        }
-      });
+            )
+            ) {
+              this.startDate.updateValueAndValidity();
+              this.endDate.updateValueAndValidity();
+            }
+          });
+    }
+
   }
 
   //Alert Notificacion

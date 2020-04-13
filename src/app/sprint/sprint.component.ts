@@ -43,6 +43,7 @@ export class SprintComponent implements OnInit {
   document: Document;
   validationCreateBoard: boolean;
   validationCreateAlert: boolean;
+  validationCanEdit: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -69,6 +70,7 @@ export class SprintComponent implements OnInit {
           .getSprint(this.idSprint)
           .subscribe((sprintDisplay: SprintDisplay) => {
             this.sprint = sprintDisplay;
+            this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
             //lista de boards
             this.boardService
               .getBoardBySprint(this.idSprint)
@@ -414,6 +416,7 @@ export class EditSprintDialog implements OnInit {
     this.idSprint = this.data.id;
     this.startDate.setValue(new Date(this.data.startDate));
     this.endDate.setValue(new Date(this.data.endDate));
+
   }
 
   onNoClick(): void {

@@ -11,7 +11,7 @@
           }}</a>
         </li>
         <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">
-          Sprint<img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+          Sprint<img *ngIf="validationCanEdit" src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
             (click)="openDialog()" />
         </li>
       </ol>
