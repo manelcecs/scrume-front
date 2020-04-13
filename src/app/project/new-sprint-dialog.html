@@ -39,9 +39,8 @@
           >{{ getErrorMessageEndDate() }}</mat-error
         >
       </mat-form-field>
-    </div>
-    <br />
-    <div>
+    </div><br/>
+    <div *ngIf="data.validationAlerts">
       <form>
         <div>
           <mat-form-field>

@@ -18,11 +18,13 @@ import { ValidationService } from '../servicio/validation.service';
   styleUrls: ["./project.component.css", "./new-sprint-dialog.css"],
 })
 export class ProjectComponent implements OnInit {
-  project: ProjectDto;
-  sprints: SprintDisplay[];
+
+  project : ProjectDto;
+  sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
   validationCreate: boolean;
+  validationCreateAlert: boolean;
   idTeam: number;
 
   idProject: number;
@@ -38,6 +40,9 @@ export class ProjectComponent implements OnInit {
     this.project = this.activatedRoute.snapshot.data.project;
     this.sprints = this.activatedRoute.snapshot.data.sprints;
       this.updateValidatorCreate();
+      this.validationService.checkCanDisplayCreateAlerts(this.project.team.id).subscribe((res: boolean) => {
+        this.validationCreateAlert = res;
+      });
 
     }
 
@@ -52,12 +57,8 @@ export class ProjectComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {
-      width: "250px",
-      data: {
-        project: { id: this.project.id, name: this.project.name },
-        startDate: this.startDate,
-        endDate: this.endDate,
-      },
+      width: '250px',
+      data: {sprint: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}, validationAlerts: this.validationCreateAlert}
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -112,6 +113,10 @@ export class ProjectComponent implements OnInit {
   }
 }
 
+export interface ExchangeData {
+  sprint: Sprint;
+  validationAlerts: boolean;
+}
 // DIALOGO PARA CREAR UN SPRINT
 @Component({
   selector: "new-sprint-dialog",
@@ -122,8 +127,9 @@ export class NewSprintDialog implements OnInit {
   idSprintSaved: number;
   project: ProjectName;
   sprint: SprintJsonDates;
-  startDate = new FormControl("", { validators: [Validators.required] });
-  endDate = new FormControl("", { validators: [Validators.required] });
+  startDate = new FormControl('',  { validators: [Validators.required]});
+  endDate = new FormControl('',  { validators: [Validators.required] });
+  validationCreateAlert:boolean;
 
   //alertas de sprint
   alertDate = new FormControl("");
@@ -133,15 +139,15 @@ export class NewSprintDialog implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Sprint,
+    @Inject(MAT_DIALOG_DATA) public data: ExchangeData,
     private sprintService: SprintService,
     private router: Router,
     private alertService: AlertService,
-    private snackBar: MatSnackBar
-  ) { }
+    private snackBar: MatSnackBar,
+    private validationService: ValidationService) {}
 
   ngOnInit(): void {
-    this.project = this.data.project;
+    this.project = this.data.sprint.project;
   }
 
   onNoClick(): void {

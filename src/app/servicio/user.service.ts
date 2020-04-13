@@ -46,8 +46,8 @@ export class UserService {
       return userLogged;
     }
 
-    renovateBox(data: Renovation): Observable<Renovation> {
-      return this.httpClient.post<Renovation>(this.cabeceraService.getCabecera() + "api/payment/pay", data, {headers: this.cabeceraService.getBasicAuthentication()});
+    renovateBox(data: Renovation): Observable<JWToken> {
+      return this.httpClient.post<JWToken>(this.cabeceraService.getCabecera() + "api/payment/pay", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
 

@@ -42,6 +42,7 @@ export class SprintComponent implements OnInit {
   doc: Document[];
   document: Document;
   validationCreateBoard: boolean;
+  validationCreateAlert: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -75,6 +76,10 @@ export class SprintComponent implements OnInit {
                 this.board = board;
                 this.updateValidatorCreateBoard();
               });
+            this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.id).subscribe((res: boolean) => {
+              console.log("Validacion", res);
+              this.validationCreateAlert = res;
+            })
           });
 
 
