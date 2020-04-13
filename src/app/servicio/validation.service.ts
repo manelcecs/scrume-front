@@ -123,6 +123,20 @@ export class ValidationService {
     });
   }
 
+  checkCanDisplayCreateAlerts(idTeam: number): Observable<boolean> {
+    return new Observable((observer) => {
+      this.teamService.getMinimumBox(idTeam).subscribe((box: Box) => {
+        var validation: boolean;
+        validation = true;
+        if (box.name != "PRO") {
+          validation = false;
+        }
+        observer.next(validation);
+        observer.complete();
+      });
+    });
+  }
+
   isBoxExpired(): boolean {
     return new Date(this.userService.getUserLogged().endingBoxDate).getTime() < new Date().getTime();
   }

@@ -20,7 +20,7 @@
         <mat-error *ngIf="endDate.invalid">{{ getErrorMessageEndDate() }}</mat-error>
       </mat-form-field>
     </div><br/>
-    <div>
+    <div *ngIf="data.validationAlerts">
       <form>
         <div>
           <mat-form-field>

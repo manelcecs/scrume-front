@@ -40,7 +40,7 @@
             <li class="nav-item">
                 <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Métricas</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="validationCreateAlert">
                 <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
                 </a>
             </li>
@@ -87,7 +87,7 @@
                     <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
                   </tr>
             </div>
-            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
+            <div *ngIf="validationCreateAlert" style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
                 <div *ngFor="let alert of alerts" class="info-sprint-alerts">
                     La alerta {{alert.title}} será el: {{alert.date | date:'dd/MM/yyyy'}}
                     <div>

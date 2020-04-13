@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { UserLogged } from '../dominio/jwt.domain';
+import { UserLogged, JWToken } from '../dominio/jwt.domain';
 import { Box } from '../dominio/box.domain';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { ValidationService } from '../servicio/validation.service';
@@ -309,7 +309,8 @@ export class ProfileComponent implements OnInit {
     onClientAuthorization: (data) => {
       let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
       let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], payerId: paymentInfo["payerID"]};
-      this.userService.renovateBox(renovation).subscribe(() => {
+      this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
+        sessionStorage.setItem("loginToken", token.token);
         this.openSnackBarAndRedirect();
 
       });
@@ -327,7 +328,8 @@ export class ProfileComponent implements OnInit {
     let selectedBox : number = this.boxes.filter(box => box.name == 'BASIC')[0].id;
     let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
-    this.userService.renovateBox(renovation).subscribe(() => {
+    this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
+      sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();
     });
   }

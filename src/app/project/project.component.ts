@@ -18,12 +18,13 @@ import { ValidationService } from '../servicio/validation.service';
   styleUrls: ['./project.component.css', './new-sprint-dialog.css']
 })
 export class ProjectComponent implements OnInit {
-  
+
   project : ProjectDto;
   sprints : SprintDisplay[];
   startDate: Date;
   endDate: Date;
   validationCreate: boolean;
+  validationCreateAlert: boolean;
   idTeam: number;
 
   idProject : number;
@@ -41,6 +42,9 @@ export class ProjectComponent implements OnInit {
 
       console.log(this.project);
       this.updateValidatorCreate();
+      this.validationService.checkCanDisplayCreateAlerts(this.project.team.id).subscribe((res: boolean) => {
+        this.validationCreateAlert = res;
+      });
 
 
     }
@@ -59,7 +63,7 @@ export class ProjectComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(NewSprintDialog, {
       width: '250px',
-      data: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}
+      data: {sprint: {project:{id:this.project.id, name:this.project.name},startDate: this.startDate, endDate: this.endDate}, validationAlerts: this.validationCreateAlert}
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -109,7 +113,10 @@ export class ProjectComponent implements OnInit {
 
 }
 
-
+export interface ExchangeData {
+  sprint: Sprint;
+  validationAlerts: boolean;
+}
 // DIALOGO PARA CREAR UN SPRINT
 @Component({
   selector: 'new-sprint-dialog',
@@ -123,6 +130,7 @@ export class NewSprintDialog implements OnInit{
   sprint: SprintJsonDates;
   startDate = new FormControl('',  { validators: [Validators.required]});
   endDate = new FormControl('',  { validators: [Validators.required] });
+  validationCreateAlert:boolean;
 
   //alertas de sprint
   alertDate = new FormControl('');
@@ -132,15 +140,16 @@ export class NewSprintDialog implements OnInit{
 
   constructor(
     public dialogRef: MatDialogRef<NewSprintDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Sprint,
-    private sprintService: SprintService, 
-    private router: Router, 
+    @Inject(MAT_DIALOG_DATA) public data: ExchangeData,
+    private sprintService: SprintService,
+    private router: Router,
     private alertService: AlertService,
-    private snackBar: MatSnackBar) {}
+    private snackBar: MatSnackBar,
+    private validationService: ValidationService) {}
 
 
   ngOnInit(): void {
-    this.project = this.data.project;
+    this.project = this.data.sprint.project;
   }
 
   onNoClick(): void {
@@ -154,7 +163,7 @@ export class NewSprintDialog implements OnInit{
 
       this.sprintService.createSprint(this.sprint).subscribe((sprint : Sprint) => {
         this.idSprintSaved = sprint.id;
-      }, 
+      },
       (error)=>{
         this.openSnackBar("Ha ocurrido un error al crear el Sprint.", "Cerrar", true);
       }, ()=>{
@@ -275,7 +284,7 @@ export class NewSprintDialog implements OnInit{
   }
 
   getErrorMessageAlertDate(): string{
-    return this.alertDate.hasError('beforeToday')? "La fecha seleccionada no puede ser anterior a la fecha actual" : 
+    return this.alertDate.hasError('beforeToday')? "La fecha seleccionada no puede ser anterior a la fecha actual" :
     this.alertDate.hasError('betweenSprint')? "La fecha de la alerta debe estar dentro del Sprint": "";
 
   }

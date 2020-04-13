@@ -42,6 +42,7 @@ export class SprintComponent implements OnInit {
   doc: Document[];
   document: Document;
   validationCreateBoard: boolean;
+  validationCreateAlert: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -75,6 +76,10 @@ export class SprintComponent implements OnInit {
                 this.board = board;
                 this.updateValidatorCreateBoard();
               });
+            this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.id).subscribe((res: boolean) => {
+              console.log("Validacion", res);
+              this.validationCreateAlert = res;
+            })
           });
 
 
@@ -268,20 +273,24 @@ export class SprintComponent implements OnInit {
   compruebaDailyRellena() {
 
     this.documentService.getTodayDaily(this.idSprint).subscribe((idDoc: number) => {
-      this.documentService.getDocuments(idDoc).subscribe((doc: Document) => {
-        if (doc != undefined) {
-          let dailyConts = JSON.parse(doc.content);
+      if (idDoc == -1) {
+        this.daily = true;
+      } else {
+        this.documentService.getDocuments(idDoc).subscribe((doc: Document) => {
+          if (doc != undefined) {
+            let dailyConts = JSON.parse(doc.content);
 
-          let username = this.userService.getUserLogged().username.split('@')[0];
-          for (let cont of dailyConts) {
-            let dailyWrited: Daily  = cont;
-            if (dailyWrited.name == username) {
-              this.daily = true;
+            let username = this.userService.getUserLogged().username.split('@')[0];
+            for (let cont of dailyConts) {
+              let dailyWrited: Daily  = cont;
+              if (dailyWrited.name == username) {
+                this.daily = true;
+              }
             }
           }
-        }
+        });
+      }
       });
-    });
 
   }
 
