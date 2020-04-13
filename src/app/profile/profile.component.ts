@@ -25,9 +25,6 @@ export class ProfileComponent implements OnInit {
 
   user: User;
 
-  message: string;
-  close: string;
-
   profile: Profile;
   profileSave: ProfileSave;
   idUserAccount: number;
@@ -97,9 +94,6 @@ export class ProfileComponent implements OnInit {
         this.profileService.getProfile(this.userService.getUserLogged().idUser).subscribe((profile: Profile) => {
           this.profile = profile;
 
-          this.message = "Perfil actualizado.";
-          this.close = "Cerrar";
-
           this.name.setValue(this.profile.name);
           this.nick.setValue(this.profile.nick);
           this.surnames.setValue(this.profile.surnames);
@@ -136,6 +130,7 @@ export class ProfileComponent implements OnInit {
 
     this.profileService.editProfile(this.profile).subscribe((pro: Profile) => {
       this.profile = pro;
+      this.openSnackBar("Perfil actualizado.", "Cerrar");
 
 
     }, (error) => {
