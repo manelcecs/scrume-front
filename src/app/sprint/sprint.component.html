@@ -55,35 +55,11 @@
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
           aria-selected="false">Métricas</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts"
-          aria-selected="false">Alertas
-        </a>
+      <li class="nav-item" *ngIf="validationCreateAlert">
+          <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
+          </a>
       </li>
     </ul>
-
-    <section id="more-info-sprint">
-
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
-                    Tableros
-                    <img *ngIf="validationCreateBoard" src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
-                </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
-                  Documentos <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="openDialogDoc(sprint)">
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Métricas</a>
-            </li>
-            <li class="nav-item" *ngIf="validationCreateAlert">
-                <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
-                </a>
-            </li>
-        </ul>
 
         <div class="tab-content" id="myTabContent">
             <div style="padding-top: 10px; background-color: white;" class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -145,13 +121,5 @@
                 </div>
             </div>
         </div>
-        <div>
-          <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20"
-            class="d-inline-block align-top" alt="remove alert" (click)="deleteAlert(alert.id)"
-            matTooltip="Borrar esta alerta" />
-        </div>
-      </div>
-    </div>
-  </div>
   </section>
 </div>
