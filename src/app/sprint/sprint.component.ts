@@ -98,25 +98,21 @@ export class SprintComponent implements OnInit {
           .subscribe((doc: Document[]) => {
             this.doc = doc;
           });
+        // Gráficas
+        this.sprintService
+        .getBurnDown(this.idSprint)
+        .subscribe((burnDown: BurnDownDisplay[]) => {
+          this.burnDown = burnDown;
+          this.burnDown = this.getChartBurnDown(burnDown);
+          console.log(burnDown);
+        }) 
 
-        // JSON de datos para BurnDown
-        let json1 = [{date: "Day 1", points: 123, totalDates: 13}, {date: "Day 2", points: 120, totalDates: 13}, 
-        {date: "Day 3", points: 98, totalDates: 13}, {date: "Day 4", points: 74, totalDates: 13}, 
-        {date: "Day 5", points: 73, totalDates: 13}, {date: "Day 6", points: 70, totalDates: 13},
-        {date: "Day 7", points: 64, totalDates: 13}, {date: "Day 8", points: 32, totalDates: 13},
-        {date: "Day 9", points: 24, totalDates: 13}, {date: "Day 10", points: 12, totalDates: 13},
-        {date: "Day 11", points: 10, totalDates: 13}, {date: "Day 12", points: 5, totalDates: 13},
-        {date: "Day 13", points: 3, totalDates: 13}];
-        // JSON de datos para BurnUp
-        let json2 = [{date: "Day 1", points: 0, totalHistoryTask: 123}, {date: "Day 2", points: 3, totalHistoryTask: 123}, 
-        {date: "Day 3", points: 5, totalHistoryTask: 123}, {date: "Day 4", points: 10, totalHistoryTask: 123}, 
-        {date: "Day 5", points: 12, totalHistoryTask: 123}, {date: "Day 6", points: 24, totalHistoryTask: 123},
-        {date: "Day 7", points: 32, totalHistoryTask: 123}, {date: "Day 8", points: 46, totalHistoryTask: 123},
-        {date: "Day 9", points: 58, totalHistoryTask: 123}, {date: "Day 10", points: 63, totalHistoryTask: 123},
-        {date: "Day 11", points: 78, totalHistoryTask: 123}, {date: "Day 12", points: 90, totalHistoryTask: 123},
-        {date: "Day 13", points: 112, totalHistoryTask: 123}];
-        this.burnDown = this.getChartBurnDown(json1);
-        this.burnUp = this.getChartBurnUp(json2);
+        this.sprintService
+        .getBurnUp(this.idSprint)
+        .subscribe((burnup: BurnUpDisplay[]) => {
+          this.burnUp = burnup;
+          this.burnUp = this.getChartBurnUp(burnup);
+        })
 
         this.compruebaDailyRellena();
 
@@ -133,19 +129,25 @@ export class SprintComponent implements OnInit {
     let objetive1: number[] = [];
     let acum = 0;
     for (let i = 0; i < chartJSON.length; i++) {
-      days1.push(chartJSON[i].date);
-      historyPoints1.push(chartJSON[i].points)
+      historyPoints1.push(chartJSON[i].pointsBurnDown)
     }
     for (let x = 0; x < chartJSON[0].totalDates; x++) {
-      let max = chartJSON[0].points;
-      let div = max/chartJSON[0].totalDates+1;
+      days1.push("Day " + (x + 1));
+      console.log("2:" + days1);
+      let max = chartJSON[0].pointsBurnDown;
+      let div = max/chartJSON[0].totalDates;
       acum = max - (div*x);
       if (x == chartJSON[0].totalDates-1) {
         objetive1.push(0);
       } else {
-        objetive1.push(acum);
+        if (acum <= 0) {
+          break
+        } else {
+          objetive1.push(acum);
+        }
       }
     }
+    console.log("Los puntos de historia del burndown" + objetive1);
     // Trabajando con la gráfica
     this.chart = new Chart('burnDown', {
       type: 'line',
@@ -156,7 +158,7 @@ export class SprintComponent implements OnInit {
           label: "Puntos de historia",
           borderColor: "#4e85a8",
           fill: false,
-          pointRadius: 2
+          pointRadius: 0
         },
         { 
           data: objetive1,
@@ -182,10 +184,13 @@ export class SprintComponent implements OnInit {
     let days2: string[] = [];
     let historyPoints2: number[] = [];
     let objetive2: number[] = [];
-    console.log(objetive2);
     for (let i = 0; i < chartJSON.length; i++) {
       days2.push(chartJSON[i].date);
-      historyPoints2.push(chartJSON[i].points);
+      if (i == 0) {
+        historyPoints2.push(0);
+      } else {
+        historyPoints2.push(chartJSON[i].pointsBurnUp);
+      }
       objetive2.push(chartJSON[0].totalHistoryTask);
     }
     // Trabajando con la gráfica
@@ -198,7 +203,7 @@ export class SprintComponent implements OnInit {
           label: "Puntos de historia",
           borderColor: "#4e85a8",
           fill: false,
-          pointRadius: 2
+          pointRadius: 0
         },
         { 
           data: objetive2,

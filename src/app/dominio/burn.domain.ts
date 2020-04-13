@@ -1,11 +1,11 @@
 export interface BurnUpDisplay {
     date: string;
-    points: number;
+    pointsBurnUp: number;
     totalHistoryTask: number;
 }
 
 export interface BurnDownDisplay {
     date: string;
-    points: number;
+    pointsBurnDown: number;
     totalDates: number;
 }
