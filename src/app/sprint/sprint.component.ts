@@ -75,9 +75,8 @@ export class SprintComponent implements OnInit {
               .subscribe((board: BoardSimple[]) => {
                 this.board = board;
                 this.updateValidatorCreateBoard();
-              });
-            this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.id).subscribe((res: boolean) => {
-              console.log("Validacion", res);
+            });
+            this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {
               this.validationCreateAlert = res;
             })
           });
@@ -101,6 +100,7 @@ export class SprintComponent implements OnInit {
   }
 
   private updateValidatorCreateBoard(): void {
+    console.log()
     this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
       this.validationCreateBoard = res;
     });
