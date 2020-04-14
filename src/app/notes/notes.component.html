@@ -1,0 +1,10 @@
+<p>Lista de notas</p>
+<div class="example-boundary">
+    <div *ngFor="let note of notes">
+    <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
+      {{ note.title }}<br>
+       {{ note.content }}
+    </div>
+    </div>
+</div>
+  

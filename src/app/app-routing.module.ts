@@ -22,6 +22,7 @@ import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { NotesComponent } from './notes/notes.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'personal', component: PersonalDataComponent},
   {path: 'admin', component: SecurityBreachComponent},
+  {path: 'notes', component: NotesComponent},
 
 ];
 

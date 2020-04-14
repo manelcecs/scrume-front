@@ -108,6 +108,11 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'list',
         visible: logged,
         method: 'getTasksOfUser'
+    },{
+      title: 'Mis notas',
+      route: '/notes',
+      visible: logged,
+      icon: 'description'
     }
   ];
   if(logged) {

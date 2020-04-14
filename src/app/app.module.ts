@@ -73,6 +73,7 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
 import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import { NotesComponent } from './notes/notes.component';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
     MyDailyFormComponent,
     SecurityBreachComponent,
     BadgeMinimumBoxComponent,
+    NotesComponent,
   ],
   imports: [
     MatFormFieldModule,
