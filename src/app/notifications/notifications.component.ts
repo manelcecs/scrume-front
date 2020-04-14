@@ -6,6 +6,8 @@ import {
 import { InvitationService } from "../servicio/invitation.service";
 import { timer } from "rxjs";
 import { UserService } from '../servicio/user.service';
+import { AlertService } from '../servicio/alerts.service';
+import { NotificationAlert } from '../dominio/notification.domain';
 
 @Component({
   selector: "app-notifications",
@@ -15,17 +17,24 @@ import { UserService } from '../servicio/user.service';
 export class NotificationsComponent implements OnInit {
   invitations: InvitationDisplay[] = [];
   userSignedIn: number = 0;
+  alerts: NotificationAlert[];
 
-  constructor(private invitationService: InvitationService,private userService: UserService) {}
+  constructor(private invitationService: InvitationService,private userService: UserService, private alertService: AlertService) {}
 
   ngOnInit(): void {
     timer(0, 10000).subscribe(() => {
       if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+
         this.invitationService
           .getInvitations()
           .subscribe((invitations: InvitationDisplay[]) => {
             this.invitations = invitations;
           });
+
+        this.alertService.getAllAlertsByPrincipal().subscribe((alerts: NotificationAlert[]) => {
+          this.alerts = alerts;
+        });
+
       }
     });
   }
@@ -52,5 +61,13 @@ export class NotificationsComponent implements OnInit {
 
   rejectInvitation(invitation: InvitationDisplay) {
     this.answerInvitation(invitation, false);
+  }
+
+  // Notifcations Alerts
+
+  deleteNotification(idNoti: number){
+    this.alertService.deleteAlert(idNoti).subscribe(() => {
+      console.log("se ha borrado correctamente");
+    });
   }
 }

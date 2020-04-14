@@ -1,5 +1,5 @@
 
-<div *ngIf="invitations.length == 0" id="empty-notifications">
+<div *ngIf="invitations == undefined && alerts == undefined" id="empty-notifications">
   <img src="../../assets/book.webp" alt="empty">
   <div id="empty-notifications-text">
     <p>No tienes notificaciones :(</p>
@@ -34,4 +34,26 @@
 
   </div>
 
+</div>
+
+<!-- //Notificaciones alertas -->
+
+<div *ngIf="alerts != undefined" id=notifications>
+<div class="notfication">
+<mat-card class="card-notification" *ngFor="let alert of alerts">
+  <mat-card-header>
+    <div mat-card-avatar class="profile-sender-invitation"><img src="../../assets/icons/icon-72x72.webp" alt="Photo of Scrume"></div>
+    <mat-card-title style="font-size: 90%;">{{alert.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+      <table class="buttons-invitation">
+          <tr>
+              <td>
+                <button class="reject-invitation" mat-button (click)="deleteNotification(alert.id)" matTooltip="Eliminar notificación"><mat-icon>close</mat-icon></button>
+              </td>
+          </tr>
+      </table>
+  </mat-card-actions>
+</mat-card>
+</div>
 </div>

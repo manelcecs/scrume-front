@@ -11,6 +11,8 @@ import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
+import { AlertService } from './servicio/alerts.service';
+import { NotificationAlert } from './dominio/notification.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -32,8 +34,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isAdmin: boolean;
 
+  alerts: boolean = false;
+
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
-     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService) {
+     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService,
+     private alertService: AlertService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -61,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
       //     this.getNotifications();
       // });
+      this.getAlerts();
 
     }else{
       this.cargarMenu();
@@ -183,6 +189,18 @@ export class AppComponent implements OnInit, OnDestroy {
           this.notifications = true;
         } else {
           this.notifications = false;
+        }
+      }
+        });
+  }
+
+  getAlerts(){
+    this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
+      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+        if (alerts.length != 0) {
+          this.alerts = true;
+        } else {
+          this.alerts = false;
         }
       }
         });

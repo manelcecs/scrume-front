@@ -21,8 +21,8 @@
         <a class="access" *ngIf="user == undefined" (click)="openLogin()" >Acceder</a>
         <img *ngIf="user != undefined" src="../assets/profile.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
         <img *ngIf="user != undefined" src="../assets/logout.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
-        <img *ngIf="!notifications && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
-        <img *ngIf="notifications && user != undefined" src="../assets/notification-color.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
+        <img *ngIf="!notifications && !alerts && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
+        <img *ngIf="(notifications || alerts) && user != undefined" src="../assets/notification-color.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
 
       </div>
 
