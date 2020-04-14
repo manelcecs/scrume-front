@@ -24,6 +24,7 @@
     "@angular/service-worker": "~9.0.3",
     "@schematics/angular": "^9.0.5",
     "@types/html2canvas": "0.0.35",
+    "chart.js": "^2.9.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.0",

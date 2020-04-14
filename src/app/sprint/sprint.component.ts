@@ -22,6 +22,9 @@ import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
 import { Document, Daily } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Chart } from 'chart.js';
+import { BurnUpDisplay, BurnDownDisplay } from '../dominio/burn.domain';
 import { AlertService } from '../servicio/alerts.service';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
@@ -34,6 +37,7 @@ import { ValidationService } from '../servicio/validation.service';
   templateUrl: "./sprint.component.html",
   styleUrls: ["./sprint.component.css"],
 })
+
 export class SprintComponent implements OnInit {
   sprint: SprintDisplay;
   idSprint: number;
@@ -41,6 +45,9 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  burnDown: any;
+  burnUp: any;
+  chart: any;
   validationCreateBoard: boolean;
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
@@ -56,6 +63,7 @@ export class SprintComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
+    private http: HttpClient,
     private alertService: AlertService,
     private userService: UserService,
     private validationService: ValidationService)
@@ -91,6 +99,21 @@ export class SprintComponent implements OnInit {
           .subscribe((doc: Document[]) => {
             this.doc = doc;
           });
+        // Gráficas
+        this.sprintService
+        .getBurnDown(this.idSprint)
+        .subscribe((burnDown: BurnDownDisplay[]) => {
+          this.burnDown = burnDown;
+          this.burnDown = this.getChartBurnDown(burnDown);
+          console.log(burnDown);
+        }) 
+
+        this.sprintService
+        .getBurnUp(this.idSprint)
+        .subscribe((burnup: BurnUpDisplay[]) => {
+          this.burnUp = burnup;
+          this.burnUp = this.getChartBurnUp(burnup);
+        })
 
         this.compruebaDailyRellena();
 
@@ -100,6 +123,111 @@ export class SprintComponent implements OnInit {
       }
     });
   }
+
+  getChartBurnDown(chartJSON: BurnDownDisplay[]) {
+    let days1: string[] = [];
+    let historyPoints1: number[] = [];
+    let objetive1: number[] = [];
+    let acum = 0;
+    for (let i = 0; i < chartJSON.length; i++) {
+      historyPoints1.push(chartJSON[i].pointsBurnDown)
+    }
+    for (let x = 0; x < chartJSON[0].totalDates; x++) {
+      days1.push("Day " + (x + 1));
+      console.log("2:" + days1);
+      let max = chartJSON[0].pointsBurnDown;
+      let div = max/chartJSON[0].totalDates;
+      acum = max - (div*x);
+      if (x == chartJSON[0].totalDates-1) {
+        objetive1.push(0);
+      } else {
+        if (acum <= 0) {
+          break
+        } else {
+          objetive1.push(acum);
+        }
+      }
+    }
+    console.log("Los puntos de historia del burndown" + objetive1);
+    // Trabajando con la gráfica
+    this.chart = new Chart('burnDown', {
+      type: 'line',
+      data: {
+        labels: days1,
+        datasets: [{ 
+          data: historyPoints1,
+          label: "Puntos de historia",
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 0
+        },
+        { 
+          data: objetive1,
+          label: "Objetivo",
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Burn Down'
+      }
+    }
+  });
+
+  return this.chart;
+  }
+
+  getChartBurnUp(chartJSON: BurnUpDisplay[]) {
+    let days2: string[] = [];
+    let historyPoints2: number[] = [];
+    let objetive2: number[] = [];
+    for (let i = 0; i < chartJSON.length; i++) {
+      days2.push(chartJSON[i].date);
+      if (i == 0) {
+        historyPoints2.push(0);
+      } else {
+        historyPoints2.push(chartJSON[i].pointsBurnUp);
+      }
+      objetive2.push(chartJSON[0].totalHistoryTask);
+    }
+    // Trabajando con la gráfica
+    this.chart = new Chart('burnUp', {
+      type: 'line',
+      data: {
+        labels: days2,
+        datasets: [{ 
+          data: historyPoints2,
+          label: "Puntos de historia",
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 0
+        },
+        { 
+          data: objetive2,
+          label: "Objetivo",
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Burn Up'
+      }
+    }
+  });
+
+  return this.chart;
+  }
+
+
+
 
   private updateValidatorCreateBoard(): void {
     console.log()
@@ -517,4 +645,6 @@ export class EditSprintDialog implements OnInit {
         console.log("Errors 1:", this.startDate.errors);
       });
   }
+
+  
 }
