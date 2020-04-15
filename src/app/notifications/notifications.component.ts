@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import {
   InvitationDisplay,
   AnswerInvitation
 } from "../dominio/invitation.domain";
 import { InvitationService } from "../servicio/invitation.service";
-import { timer } from "rxjs";
 import { UserService } from '../servicio/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-notifications",
@@ -13,21 +13,16 @@ import { UserService } from '../servicio/user.service';
   styleUrls: ["./notifications.component.css"]
 })
 export class NotificationsComponent implements OnInit {
-  invitations: InvitationDisplay[] = [];
+
+
+  @Input() invitations: InvitationDisplay[] = [];
+  @Output() onAnswerInvitations: EventEmitter<any> = new EventEmitter();
   userSignedIn: number = 0;
 
-  constructor(private invitationService: InvitationService,private userService: UserService) {}
+  constructor(private invitationService: InvitationService,private userService: UserService, public _snackbar: MatSnackBar) {}
 
   ngOnInit(): void {
-    timer(0, 10000).subscribe(() => {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
-        this.invitationService
-          .getInvitations()
-          .subscribe((invitations: InvitationDisplay[]) => {
-            this.invitations = invitations;
-          });
-      }
-    });
+
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {
@@ -38,11 +33,7 @@ export class NotificationsComponent implements OnInit {
     this.invitationService
       .answerInvitation(invitation.id, answeredInvitation)
       .subscribe(() => {
-        this.invitationService
-          .getInvitations()
-          .subscribe((invitations: InvitationDisplay[]) => {
-            this.invitations = invitations;
-          });
+        this.onAnswerInvitations.emit(null);
       });
   }
 

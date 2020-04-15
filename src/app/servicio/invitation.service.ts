@@ -24,8 +24,10 @@ export class InvitationService {
 
     }
 
-    getSuggestedUsers(idTeam: number) : Observable<UserNick[]> {
-      let data = {"team" : idTeam, "users" : [], "word" : ""};
+    getSuggestedUsers(idTeam: number, users: UserNick[], word: string) : Observable<UserNick[]> {
+      let usersid: number[] = [];
+      users.forEach(user => usersid.push(user.id));
+      let data = {"team" : idTeam, "users" : usersid, "word" : word};
       return this.httpClient.post<UserNick[]>(this.cabeceraService.getCabecera() + "api/team/findByNick", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
