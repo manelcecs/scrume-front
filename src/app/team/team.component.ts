@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild, Injectable } from '@angular/core';
 import { Team } from '../dominio/team.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
@@ -17,9 +17,10 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { InvitationService } from '../servicio/invitation.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';
+
 
 @Component({
   selector: 'app-team',
@@ -52,7 +53,6 @@ export class TeamComponent implements OnInit {
         t.projects = projects;
         this.validationService.checkNumberOfProjects(t.id, projects.length).subscribe((res: boolean) => {
           this.validationCreateTeam[t.id] = res;
-          console.log("Errores",this.validationCreateTeam);
         })
       }, (error) => {
       });
@@ -148,6 +148,7 @@ export class TeamComponent implements OnInit {
       data: idTeam
     });
   }
+
 }
 
 
@@ -170,25 +171,26 @@ export class InvitationDialog implements OnInit {
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('', { validators: [Validators.required] });
+  usersCtrl = new FormControl('', { validators: [Validators.required] });
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
   allUsers: UserNick[] = [];
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
     public dialogRef: MatDialogRef<InvitationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: number, private invitationService: InvitationService) {
+    @Inject(MAT_DIALOG_DATA) public data: number, private invitationService: InvitationService, public snackbar: MatSnackBar) {
     this.team = this.data;
-    this.invitationService.getSuggestedUsers(this.team).subscribe((res: UserNick[]) => {
+    this.invitationService.getSuggestedUsers(this.team, [], "").subscribe((res: UserNick[]) => {
       this.allUsers = res;
-      this.filteredUsers = this.fruitCtrl.valueChanges.pipe(
-        startWith(null),
-        map((user: UserNick | null) => user ? this._filter(user) : this.allUsers.slice()));
-    })
-  }
+      this.usersCtrl.valueChanges.subscribe(() => {
+        this.filteredUsers = this.invitationService.getSuggestedUsers(this.team, this.users, this.usersCtrl.value);
+        });
+      });
+    }
+
 
   ngOnInit(): void {
 
@@ -211,7 +213,7 @@ export class InvitationDialog implements OnInit {
       input.value = '';
     }
 
-    this.fruitCtrl.setValue(null);
+    this.usersCtrl.setValue(null);
   }
 
   remove(user: UserNick): void {
@@ -224,14 +226,14 @@ export class InvitationDialog implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.users.push(event.option.value);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.userInput.nativeElement.value = '';
+    this.usersCtrl.setValue(null);
   }
 
-  private _filter(value: UserNick): UserNick[] {
-    const filterValue = value.nick.toLowerCase();
+  private _filter(value: string): UserNick[] {
+    const filterValue = value.toLowerCase();
 
-    return this.allUsers.filter(user => user.nick.toLowerCase().indexOf(filterValue) === 0);
+    return this.allUsers.filter(user => user.nick.toLowerCase().startsWith(filterValue));
   }
 
   onSaveClick(): void {
@@ -240,6 +242,10 @@ export class InvitationDialog implements OnInit {
     let invitation: InvitationDto = { message: this.messageFormControl.value, team: this.team, recipients: recipients };
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();
+    }, (error) => {
+      this.snackbar.open("Se ha producido un error al mandar la invitación", "Cerrar", {
+        duration: 3000
+      })
     });
   }
 
@@ -253,4 +259,6 @@ export class InvitationDialog implements OnInit {
     valid = this.messageFormControl.valid && this.users.length != 0;
     return valid;
   }
+
+
 }
