@@ -20,9 +20,10 @@ export class NotificationsComponent implements OnInit {
 
 
   @Input() invitations: InvitationDisplay[] = [];
+  @Input() alerts: NotificationAlert[] = [];
   @Output() onAnswerInvitations: EventEmitter<any> = new EventEmitter();
+  @Output() onDiscardNotification: EventEmitter<any> = new EventEmitter();
   userSignedIn: number = 0;
-  alerts: NotificationAlert[];
   date: string;
   daily: boolean = false;
   idSprint: number = 59;
@@ -67,18 +68,22 @@ export class NotificationsComponent implements OnInit {
 
   deleteNotification(idNoti: number){
     this.alertService.deleteAlert(idNoti).subscribe(() => {
+      this.onAnswerInvitations.emit(null);
       console.log("se ha borrado correctamente");
     });
   }
 
-   openMyDailyDialog() {
+   openMyDailyDialog(idNoti: number) {
      const dialogRef = this.dialog.open(MyDailyFormComponent, {
        width: "250px",
        data: { idSprint: this.idSprint },
      });
+     console.log("el id del sprint" + this.idSprint);
 
      dialogRef.afterClosed().subscribe((res: boolean) => {
        this.daily = res;
+       //Aqui creo que meter el delete en un futuro
+       //this.deleteNotification(idNoti);
      });
    }
 

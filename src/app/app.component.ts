@@ -13,7 +13,6 @@ import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
 import { AlertService } from './servicio/alerts.service';
 import { NotificationAlert } from './dominio/notification.domain';
-import { TeamComponent } from './team/team.component';
 
 @Injectable({providedIn:'root'})
 
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
   idioma: string  = "es";
   notifications : boolean = false;
   invitations: InvitationDisplay[];
-  @ViewChildren(TeamComponent) teamComponent: TeamComponent;
 
   user : User;
 
@@ -38,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
 
   alerts: boolean = false;
+  alertsColection: NotificationAlert[];
 
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
      private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService,
@@ -67,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
       timer(0, 5000).subscribe(() => {
           this.getNotifications();
+          this.getAlerts();
       });
 
       this.getAlerts();
@@ -189,7 +189,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
     this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
       this.invitations = invitations;
-      console.log("Invitaciones", invitations);
       if (invitations.length != 0) {
           this.notifications = true;
         } else {
@@ -209,15 +208,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getAlerts(){
-    this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+    if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+      this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
+        this.alertsColection = alerts;
         if (alerts.length != 0) {
           this.alerts = true;
         } else {
           this.alerts = false;
         }
-      }
-        });
+      });
+    }
   }
 
 }
