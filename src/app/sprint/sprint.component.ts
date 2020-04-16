@@ -105,7 +105,6 @@ export class SprintComponent implements OnInit {
         .subscribe((burnDown: BurnDownDisplay[]) => {
           this.burnDown = burnDown;
           this.burnDown = this.getChartBurnDown(burnDown);
-          console.log(burnDown);
         }) 
 
         this.sprintService
@@ -134,7 +133,6 @@ export class SprintComponent implements OnInit {
     }
     for (let x = 0; x < chartJSON[0].totalDates; x++) {
       days1.push("Day " + (x + 1));
-      console.log("2:" + days1);
       let max = chartJSON[0].pointsBurnDown;
       let div = max/chartJSON[0].totalDates;
       acum = max - (div*x);
@@ -148,7 +146,6 @@ export class SprintComponent implements OnInit {
         }
       }
     }
-    console.log("Los puntos de historia del burndown" + objetive1);
     // Trabajando con la gráfica
     this.chart = new Chart('burnDown', {
       type: 'line',

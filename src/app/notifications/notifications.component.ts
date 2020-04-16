@@ -26,7 +26,6 @@ export class NotificationsComponent implements OnInit {
   userSignedIn: number = 0;
   date: string;
   daily: boolean = false;
-  idSprint: number = 59;
 
   constructor(
     private invitationService: InvitationService,
@@ -73,17 +72,16 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-   openMyDailyDialog(idNoti: number) {
+   openMyDailyDialog(idNoti: number, idSprint: number) {
      const dialogRef = this.dialog.open(MyDailyFormComponent, {
        width: "250px",
-       data: { idSprint: this.idSprint },
+       data: { idSprint: idSprint },
      });
-     console.log("el id del sprint" + this.idSprint);
+     console.log("el id del sprint" + idSprint);
 
      dialogRef.afterClosed().subscribe((res: boolean) => {
        this.daily = res;
-       //Aqui creo que meter el delete en un futuro
-       //this.deleteNotification(idNoti);
+       this.deleteNotification(idNoti);
      });
    }
 

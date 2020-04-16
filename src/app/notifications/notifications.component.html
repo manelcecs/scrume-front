@@ -49,7 +49,7 @@
       <table class="buttons-invitation">
           <tr>
               <td *ngIf="alert.title.substring(0, 30) == 'Debes rellenar la daily de hoy'  && alert.title.substring(32, 42) == date ">
-                <button class="accept-invitation" mat-button (click)="openMyDailyDialog(alert.id)" matTooltip="Rellenar tu daily"><mat-icon>done</mat-icon></button>
+                <button class="accept-invitation" mat-button (click)="openMyDailyDialog(alert.id, alert.idSprint)" matTooltip="Rellenar tu daily"><mat-icon>done</mat-icon></button>
               </td>
               <td>
                 <button class="reject-invitation" mat-button (click)="deleteNotification(alert.id)" matTooltip="Eliminar notificación"><mat-icon>close</mat-icon></button>
