@@ -29,12 +29,12 @@ export class UserService {
     }
 
     getAllBoxes() : Observable<Box[]>{
-      return this.httpClient.get<Box[]>(this.cabeceraService.getCabecera() + "api/box/all", {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.get<Box[]>(this.cabeceraService.getCabecera() + "api/box/all");
     }
 
     isValidEmail(email : string) : Observable<boolean> {
       let data = {"username": email};
-      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/login/isAValidEmail", data, {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/login/isAValidEmail", data);
     }
 
     registerUser(user: UserRegister) : Observable<UserRegister> {
@@ -49,10 +49,5 @@ export class UserService {
     renovateBox(data: Renovation): Observable<JWToken> {
       return this.httpClient.post<JWToken>(this.cabeceraService.getCabecera() + "api/payment/pay", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
-
-
-
-
-
 
 }
