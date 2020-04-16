@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Injectable,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable, ViewChild, ViewChildren,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -13,6 +13,7 @@ import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
 import { AlertService } from './servicio/alerts.service';
 import { NotificationAlert } from './dominio/notification.domain';
+import { TeamComponent } from './team/team.component';
 
 @Injectable({providedIn:'root'})
 
@@ -26,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   routes: Object[] = [];
   idioma: string  = "es";
   notifications : boolean = false;
+  invitations: InvitationDisplay[];
+  @ViewChildren(TeamComponent) teamComponent: TeamComponent;
 
   user : User;
 
@@ -62,12 +65,11 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      // timer(3000, 10000).subscribe(() => {
+      timer(0, 5000).subscribe(() => {
+          this.getNotifications();
+      });
 
-      //     this.getNotifications();
-      // });
       this.getAlerts();
-
     }else{
       this.cargarMenu();
 
@@ -137,7 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     });
   }
-    
+
   }
 
   openLogin(): void {
@@ -148,6 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
       let token = sessionStorage.getItem("loginToken");
       if(token != null && token != ""){
         this.getUserInfo();
+        this.cargarMenu();
       }
     });
   }
@@ -183,15 +186,26 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getNotifications(){
+    if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
     this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
-        if (invitations.length != 0) {
+      this.invitations = invitations;
+      console.log("Invitaciones", invitations);
+      if (invitations.length != 0) {
           this.notifications = true;
         } else {
           this.notifications = false;
         }
-      }
-        });
+      });
+    }
+  }
+
+  updateTeams(){
+    console.log(this.router.url);
+    if (this.router.url == "/teams") {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/teams']);
+    }
   }
 
   getAlerts(){

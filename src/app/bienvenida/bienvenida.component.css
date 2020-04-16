@@ -14,11 +14,11 @@ img {
 
 mat-card-content{
     text-align: center;
-    font-family: lato;
+    font-family: lato, Arial, sans-serif;
 }
 
 mat-card-header{
-    font-family: eras;
+    font-family: eras, Arial, sans-serif;
 }
 
 section {

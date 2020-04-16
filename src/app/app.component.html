@@ -36,7 +36,7 @@
   </mat-sidenav-content>
 
   <mat-sidenav #sidenavnotifications mode="over" position="end" [fixedInViewport]="true" [fixedTopGap]="70">
-    <app-notifications ></app-notifications>
+    <app-notifications [invitations]="invitations" (onAnswerInvitations)="getNotifications(); updateTeams();"></app-notifications>
 
   </mat-sidenav>
 

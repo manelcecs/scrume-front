@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import {
   InvitationDisplay,
   AnswerInvitation
 } from "../dominio/invitation.domain";
 import { InvitationService } from "../servicio/invitation.service";
-import { timer } from "rxjs";
 import { UserService } from '../servicio/user.service';
 import { AlertService } from '../servicio/alerts.service';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-notifications",
@@ -17,7 +17,10 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ["./notifications.component.css"]
 })
 export class NotificationsComponent implements OnInit {
-  invitations: InvitationDisplay[] = [];
+
+
+  @Input() invitations: InvitationDisplay[] = [];
+  @Output() onAnswerInvitations: EventEmitter<any> = new EventEmitter();
   userSignedIn: number = 0;
   alerts: NotificationAlert[];
   date: string;
@@ -28,30 +31,16 @@ export class NotificationsComponent implements OnInit {
     private invitationService: InvitationService,
     private userService: UserService,
     private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public _snackbar: MatSnackBar
     ) {}
 
   ngOnInit(): void {
-    timer(0, 10000).subscribe(() => {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
-
-        this.invitationService
-          .getInvitations()
-          .subscribe((invitations: InvitationDisplay[]) => {
-            this.invitations = invitations;
-          });
-
-        this.alertService.getAllAlertsByPrincipal().subscribe((alerts: NotificationAlert[]) => {
-          this.alerts = alerts;
           let generalDate = new Date;
           let day = generalDate.getUTCDate();
           let month = generalDate.getUTCMonth()+1;
           let year = generalDate.getUTCFullYear();
           this.date = day + "/0" + month + "/" + year;
-        });
-
-      }
-    });
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {
@@ -62,11 +51,7 @@ export class NotificationsComponent implements OnInit {
     this.invitationService
       .answerInvitation(invitation.id, answeredInvitation)
       .subscribe(() => {
-        this.invitationService
-          .getInvitations()
-          .subscribe((invitations: InvitationDisplay[]) => {
-            this.invitations = invitations;
-          });
+        this.onAnswerInvitations.emit(null);
       });
   }
 

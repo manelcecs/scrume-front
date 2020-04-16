@@ -101,6 +101,13 @@
                     <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
                     <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
                   </tr>
+
+                  <div class="chart">
+                    <canvas id="burnDown">{{ burnDown }}</canvas>
+                </div>
+                <div class="chart">
+                    <canvas id="burnUp">{{ burnUp }}</canvas>
+                </div>
             </div>
             <div *ngIf="validationCreateAlert" style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
                 <div *ngFor="let alert of alerts" class="info-sprint-alerts">

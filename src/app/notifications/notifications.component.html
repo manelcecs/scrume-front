@@ -1,12 +1,12 @@
 
-<div *ngIf="invitations == undefined && alerts == undefined" id="empty-notifications">
+<div *ngIf="invitations == undefined || invitations.length == 0 || alerts == undefined" id="empty-notifications">
   <img src="../../assets/book.webp" alt="empty">
   <div id="empty-notifications-text">
     <p>No tienes notificaciones :(</p>
   </div>
 </div>
 
-<div *ngIf="invitations.length != 0" id=notifications>
+<div *ngIf="invitations != undefined && invitations.length != 0" id=notifications>
   <div class="notfication">
       <mat-card class="card-notification" *ngFor="let invitation of invitations">
           <mat-card-header>
