@@ -74,15 +74,16 @@ mat-sidenav {
     cursor: pointer;
 }
 
-.access { 
+.access {
     color: white;
-    background-color: black; 
+    background-color: black;
     transition-duration: 0.4s;
     margin-left: 20px;
 }
 
 .access:hover {
     background-color: #009cbb;
+    cursor: pointer;
 }
 
 /* ------------------------------- */

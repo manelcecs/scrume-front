@@ -8,7 +8,7 @@
     </mat-form-field>
   </div>
   <mat-form-field class="example-chip-list">
-    <mat-chip-list #chipList aria-label="Fruit selection">
+    <mat-chip-list #chipList aria-label="User selection">
       <mat-chip
         *ngFor="let user of users"
         [selectable]="selectable"
@@ -19,8 +19,8 @@
       </mat-chip>
       <input
       placeholder="Añadir usuarios"
-      #fruitInput
-      [formControl]="fruitCtrl"
+      #userInput
+      [formControl]="usersCtrl"
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
