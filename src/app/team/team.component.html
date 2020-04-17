@@ -9,9 +9,9 @@
   <div *ngFor="let team of teams">
     <div class="team-title">
       <h4>{{team.name}}</h4>
-      <img *ngIf="team.isAdmin" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="editTeam(team)">
-      <img *ngIf="team.isAdmin" src="../assets/add-user.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openDialogInvite(team.id)">
-      <img *ngIf="team.isAdmin" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="deleteTeam(team.id)">
+      <img *ngIf="team.isAdmin" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="" matTooltip="Editar y gestionar miembros" (click)="editTeam(team)">
+      <img *ngIf="team.isAdmin" src="../assets/add-user.webp" width="auto" height="25" class="d-inline-block align-top" alt="" matTooltip="Invitar usuarios" (click)="openDialogInvite(team.id)">
+      <img *ngIf="team.isAdmin" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top" alt="" matTooltip="Borrar equipo" (click)="deleteTeam(team.id)">
       <img src="../assets/leave.webp" width="auto" height="25" class="d-inline-block align-top" alt="" matTooltip="Salir del equipo" (click)="leaveTeam(team.id)">
 
     </div>
@@ -36,7 +36,7 @@
 
       </mat-list-item>
 
-      <img *ngIf="validationCreateTeam[team.id] && team.isAdmin " src="../assets/more.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="createProject(team)">
+      <img *ngIf="validationCreateTeam[team.id] && team.isAdmin " src="../assets/more.webp" width="auto" height="25" class="d-inline-block align-top create-projects" alt="" matTooltip="Crear un proyecto" (click)="createProject(team)">
 
     </div>
   </div>
