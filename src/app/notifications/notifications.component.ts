@@ -25,7 +25,7 @@ export class NotificationsComponent implements OnInit {
   @Output() onDiscardNotification: EventEmitter<any> = new EventEmitter();
   userSignedIn: number = 0;
   date: string;
-  daily: boolean = false;
+  daily: boolean;
 
   constructor(
     private invitationService: InvitationService,
@@ -36,11 +36,14 @@ export class NotificationsComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-          let generalDate = new Date;
-          let day = generalDate.getUTCDate();
-          let month = generalDate.getUTCMonth()+1;
-          let year = generalDate.getUTCFullYear();
-          this.date = day + "/0" + month + "/" + year;
+          let generalDate = new Date();
+          console.log("la fecha de hoy " + generalDate.toISOString());
+          for (let noti of this.alerts){
+            let today = generalDate.toISOString().split('T')[0];
+            let notiDay = new Date(noti.date).toISOString().split('T')[0];
+            console.log(today + " y " +notiDay);
+            noti.isDaily = today === notiDay;
+          }
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {
@@ -81,7 +84,9 @@ export class NotificationsComponent implements OnInit {
 
      dialogRef.afterClosed().subscribe((res: boolean) => {
        this.daily = res;
-       this.deleteNotification(idNoti);
+       if(this.daily){
+         this.deleteNotification(idNoti);
+       }
      });
    }
 

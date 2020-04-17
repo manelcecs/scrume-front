@@ -82,6 +82,7 @@ export class MyDailyFormComponent implements OnInit {
   onSaveClick(): void {
     if (this.validForm()) {
       this.populateDaily();
+      console.log(" el error " + JSON.parse(this.documento.content));
       let documentContent: DailyComponent = {
         daily: JSON.parse(this.documento.content),
       };
@@ -145,7 +146,7 @@ export class MyDailyFormComponent implements OnInit {
         })
         .afterDismissed()
         .subscribe(() => {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         });
     }
   }
