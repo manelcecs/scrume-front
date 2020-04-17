@@ -4,7 +4,7 @@
 
 #forms{
     width: 40%;
-    padding: 2% 5%; 
+    padding: 2% 5%;
 }
 
 #forms > div{
@@ -21,7 +21,7 @@
 
 
 #pdf-container{
-    width: 60%; 
+    width: 60%;
     padding: 4% 8% 0% 8%;
     background-color: #E7E7E7;
     height: 730px;
@@ -29,10 +29,10 @@
 }
 
 /* #pdf{
-    background-color: rgba(212, 212, 212, 0.082); 
+    background-color: rgba(212, 212, 212, 0.082);
     width: 100%;
     padding: 0% 12%;
-    height: 500px; 
+    height: 500px;
 }*/
 
 .paper {
@@ -51,9 +51,18 @@
     word-wrap: break-word;
     white-space: pre-line;
   }
-  
+
   /*.paper > p{
-  
+
   }*/
 
-  
+#cancel {
+  background-color: #e62e2e;
+  color: white;
+  margin-left: 1em;
+}
+
+#cancel:hover {
+  background-color: #db0f0f;
+}
+
