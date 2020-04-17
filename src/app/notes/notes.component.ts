@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NoteDisplay } from '../dominio/note.domain';
+import { UserService } from '../servicio/user.service';
+import { UserLogged } from '../dominio/jwt.domain';
+import { NoteService } from '../servicio/note.service';
 
 @Component({
   selector: 'app-notes',
@@ -11,24 +14,31 @@ import { NoteDisplay } from '../dominio/note.domain';
 export class NotesComponent implements OnInit {
 holaMundo: string;
 notes: NoteDisplay[];
+user: UserLogged;
 
   constructor(private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private noteService: NoteService) { }
 
   ngOnInit(): void {
+   this.user = this.userService.getUserLogged();
    this.notes = [{
-      id: 12,
-      title: 'Nota personal',
-      content: 'Contenido'
+      content: 'Contenido',
+      id: 3456,
+      user : this.user
     }, {
-      id: 15,
-      title: 'Nota 2',
-      content: 'Contenido 2'
+      content: 'Contenido 2',
+      id: 3457,
+      user: this.user
     }];
+  }
+
+  createNote() {
     
   }
 
-  drop(event: CdkDragDrop<{title: string, content: string}[]>) {
+  drop(event: CdkDragDrop<{content: string}[]>) {
     moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
   }
 

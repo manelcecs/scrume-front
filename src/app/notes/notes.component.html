@@ -1,4 +1,6 @@
 <p>Lista de notas</p>
+<img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="createNote(content)" />
 <div class="example-boundary">
     <div *ngFor="let note of notes">
     <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>

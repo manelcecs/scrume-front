@@ -1,5 +1,7 @@
+import { UserLogged } from './jwt.domain';
+
 export interface NoteDisplay {
-    id: number;
-    title: string;
     content: string;
+    id: number;
+    user: UserLogged;
 }

@@ -74,6 +74,7 @@ import { SecurityBreachComponent } from './security-breach/security-breach.compo
 import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 import { NotesComponent } from './notes/notes.component';
+import { CreateNotesDialogComponent } from './create-notes-dialog/create-notes-dialog.component';
 
 
 @NgModule({
@@ -115,6 +116,7 @@ import { NotesComponent } from './notes/notes.component';
     SecurityBreachComponent,
     BadgeMinimumBoxComponent,
     NotesComponent,
+    CreateNotesDialogComponent,
   ],
   imports: [
     MatFormFieldModule,
