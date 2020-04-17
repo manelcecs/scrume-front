@@ -130,6 +130,7 @@ export class NewSprintDialog implements OnInit {
   startDate = new FormControl('',  { validators: [Validators.required]});
   endDate = new FormControl('',  { validators: [Validators.required] });
   validationCreateAlert:boolean;
+  loading: boolean = false;
 
   //alertas de sprint
   alertDate = new FormControl("");
@@ -156,6 +157,7 @@ export class NewSprintDialog implements OnInit {
 
   onSaveClick(): void {
     if (this.validForm()) {
+      this.loading = true;
       this.sprint = {
         id: 0,
         startDate: new Date(this.startDate.value).toISOString(),
@@ -182,6 +184,7 @@ export class NewSprintDialog implements OnInit {
               this.alertService.crateAlert(alert).subscribe(
                 () => { },
                 (error) => {
+                  this.loading = false;
                   this.openSnackBar(
                     "Ha ocurrido un error al crear las alertas. Intentelo de nuevo en el panel del proyecto.",
                     "Cerrar",
@@ -190,12 +193,14 @@ export class NewSprintDialog implements OnInit {
                 }
               );
             }
+            this.loading = false;
             this.openSnackBar(
               "El sprint y las alertas se han creado correctamente.",
               "Cerrar",
               false
             );
           } else {
+            this.loading = false;
             this.openSnackBar(
               "El sprint se ha creado correctamente.",
               "Cerrar",

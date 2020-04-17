@@ -183,7 +183,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
     this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
       this.invitations = invitations;
-      console.log("Invitaciones", invitations);
       if (invitations.length != 0) {
           this.notifications = true;
         } else {

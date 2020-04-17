@@ -23,7 +23,6 @@
         <img *ngIf="user != undefined" src="../assets/logout.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
         <img *ngIf="!notifications && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
         <img *ngIf="notifications && user != undefined" src="../assets/notification-color.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
-
       </div>
 
     </nav>

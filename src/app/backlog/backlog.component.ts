@@ -11,6 +11,7 @@ import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-shee
 import { SprintWorkspace } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -192,6 +193,7 @@ export class NewTaskDialog implements OnInit{
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: [Validators.required]});
+  loading: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
@@ -210,9 +212,14 @@ export class NewTaskDialog implements OnInit{
 
   onSaveClick() : void {
     if (this.validForm()) {
+      this.loading = true;
+      console.log("Loading");
       this.task = {title:this.title.value, description:this.description.value};
       this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
         this.dialogRef.close();
+        this.loading = false;
+      }, (error) => {
+        this.loading = false;
       });
     }
   }
@@ -243,6 +250,7 @@ export class EditTaskDialog implements OnInit{
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
   description = new FormControl('',  { validators: [Validators.required]});
+  loading: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
@@ -262,10 +270,13 @@ export class EditTaskDialog implements OnInit{
 
   onSaveClick() : void {
     if (this.validForm()) {
-
+      this.loading = true;
       this.task = {id:this.idTask, title:this.title.value, description:this.description.value};
       this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
         this.dialogRef.close();
+        this.loading = false;
+      }, (error) => {
+        this.loading = false;
       });
     }
   }

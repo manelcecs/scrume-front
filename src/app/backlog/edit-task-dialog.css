@@ -21,3 +21,10 @@
 #buttons-dialog {
     justify-content: center;
 }
+
+#title-card {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
