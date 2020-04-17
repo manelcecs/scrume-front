@@ -41,14 +41,14 @@
           aria-selected="true">
           Tableros
           <img *ngIf="validationCreateBoard" src="../assets/more.webp" width="auto" height="15"
-            class="d-inline-block align-top" alt="" (click)="createBoard(sprint)">
+            class="d-inline-block align-top" alt="" matTooltip="Crear un tablero" (click)="createBoard(sprint)">
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
           aria-selected="false">
           Documentos <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
-            (click)="openDialogDoc(sprint)">
+          matTooltip="Crear un documento" (click)="openDialogDoc(sprint)">
         </a>
       </li>
       <li class="nav-item">
@@ -66,9 +66,9 @@
 
                 <ul class="list-group list-group-flush">
                     <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let t of board">
-                        <p (click)="openBoard(t.id)">{{t.name}}</p>
-                        <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="editBoard(t,sprint)">
-                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteBoard(t)">
+                        <p class="navigable" (click)="openBoard(t.id)">{{t.name}}</p>
+                        <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Editar tablero" (click)="editBoard(t,sprint)">
+                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Eliminar tablero" (click)="deleteBoard(t)">
                     </li>
                 </ul>
 
@@ -78,14 +78,14 @@
                 <ul class="list-group list-group-flush">
                     <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let d of doc">
                         <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
-                            <span matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>
+                            <span class="navigable" matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>
                             <span class="badge badge-info">{{d.type}}</span>
-                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteDoc(d.id)">
+                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
                         </div>
                         <ng-template #elseBlock>
-                            <a (click)="openDocument(d.id)" >{{d.name}} </a>
+                            <a class="navigable" (click)="openDocument(d.id)" >{{d.name}} </a>
                             <span class="badge badge-info">{{d.type}}</span>
-                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt="" (click)="deleteDoc(d.id)">
+                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt="" matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
                         </ng-template>
                     </li>
                 </ul>
@@ -113,10 +113,10 @@
                 <div *ngFor="let alert of alerts" class="info-sprint-alerts">
                     La alerta {{alert.title}} será el: {{alert.date | date:'dd/MM/yyyy'}}
                     <div>
-                        <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="edit alert" (click)="openAlertDialog(alert.id)">
+                        <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top action" alt="edit alert" matTooltip="Editar alerta" (click)="openAlertDialog(alert.id)">
                     </div>
                     <div>
-                        <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top" alt="remove alert" (click)="deleteAlert(alert.id)">
+                        <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top action" alt="remove alert" matTooltip="Borrar alerta" (click)="deleteAlert(alert.id)">
                     </div>
                 </div>
             </div>
