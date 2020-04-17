@@ -5,6 +5,8 @@ import { NoteDisplay } from '../dominio/note.domain';
 import { UserService } from '../servicio/user.service';
 import { UserLogged } from '../dominio/jwt.domain';
 import { NoteService } from '../servicio/note.service';
+import { CreateNotesDialogComponent } from '../create-notes-dialog/create-notes-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-notes',
@@ -15,6 +17,8 @@ export class NotesComponent implements OnInit {
 holaMundo: string;
 notes: NoteDisplay[];
 user: UserLogged;
+dialog: MatDialog;
+sinnotas: string;
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -23,19 +27,32 @@ user: UserLogged;
 
   ngOnInit(): void {
    this.user = this.userService.getUserLogged();
-   this.notes = [{
-      content: 'Contenido',
-      id: 3456,
-      user : this.user
-    }, {
-      content: 'Contenido 2',
-      id: 3457,
-      user: this.user
-    }];
+   this.noteService.listNotes().subscribe((notes: NoteDisplay[]) => {
+    this.notes = notes;
+    if (this.notes.length == 0) {
+      this.sinnotas = "No hay notas";
+    }
+   });
   }
 
-  createNote() {
-    
+  getDelete(idNote: number) {
+    this.noteService.deleteNote(idNote).subscribe((note: NoteDisplay) => {
+      // TODO
+    })
+  }
+
+  openCreateNoteDialog(): void {
+    const dialogRef = this.dialog.open(CreateNotesDialogComponent, {
+      width: "250px",
+    });
+    // TODO
+    /*dialogRef.afterClosed().subscribe(() => {
+      this.noteService
+        .
+        .subscribe((note: Document[]) => {
+          this.doc = doc;
+        });
+    });*/
   }
 
   drop(event: CdkDragDrop<{content: string}[]>) {

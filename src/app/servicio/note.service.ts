@@ -12,7 +12,19 @@ import { User } from '../dominio/user.domain';
 export class NoteService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
+        listNotes(): Observable<NoteDisplay[]> {
+            return this.httpClient.get<NoteDisplay[]>(this.cabeceraService.getCabecera() + "api/personalList", {headers: this.cabeceraService.getBasicAuthentication()});
+        }
+
+        deleteNote(idNote: number): Observable<NoteDisplay>{
+            return this.httpClient.delete<NoteDisplay>(this.cabeceraService.getCabecera() + "api/personalList" + idNote, {headers: this.cabeceraService.getBasicAuthentication()});
+        }
+
         createNote(content: string): Observable<NoteDisplay>{
             return this.httpClient.post<NoteDisplay>(this.cabeceraService.getCabecera() + "api/personalList", content, {headers: this.cabeceraService.getBasicAuthentication()});
+        }
+
+        updateNote(idNote: number, content: string): Observable<NoteDisplay>{
+            return this.httpClient.put<NoteDisplay>(this.cabeceraService.getCabecera() + "api/listPersonal" + idNote, {headers: this.cabeceraService.getBasicAuthentication()});
         }
 }
