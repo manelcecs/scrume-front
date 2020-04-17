@@ -119,6 +119,10 @@ export class DocumentComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+  navigateToSprint(): void {
+    this.router.navigate(["sprint"], {queryParams:{id: this.doc.sprint}})
+  }
+
   //Daily
 
   dailyDone(value: string) {

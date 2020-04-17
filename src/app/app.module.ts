@@ -41,7 +41,7 @@ import { SprintComponent, EditSprintDialog, NewDocumentDialog } from './sprint/s
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -165,6 +165,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
       useValue: { displayDefaultIndicatorType: false }
     },
     CheckExpirationBoxGuard,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
