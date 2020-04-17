@@ -73,6 +73,7 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
 import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -156,6 +157,7 @@ import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
     HttpClientModule,
     ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
     MatTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     {

@@ -1,4 +1,7 @@
-<h4>Crear sprint</h4>
+<div id=title-card>
+    <h4>Crear sprint </h4>
+      <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+  </div>
 <div>
   <form id="prueba">
     <div>
@@ -43,7 +46,7 @@
     <div *ngIf="data.validationAlerts">
       <form>
         <div>
-          <mat-form-field>
+          <mat-form-field style="width: 100%;">
             <mat-label>Titulo de la Alerta</mat-label>
             <select matNativeControl [formControl]="alertTitle">
               <option value="Sprint Review">Sprint Review</option>
@@ -113,8 +116,8 @@
         mat-button
         (click)="onSaveClick()"
         cdkFocusInitial
-        [disabled]="!validForm()"
         matTooltip="Guardar Sprint"
+        [disabled]="loading"
       >
         Guardar
       </button>

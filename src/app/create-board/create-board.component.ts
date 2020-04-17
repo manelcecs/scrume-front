@@ -101,7 +101,7 @@ export class CreateBoardComponent implements OnInit {
   }
 
   cancelCreateBoard(): void {
-    this.router.navigate(['sprint']);
+    this.router.navigate(['sprint'], { queryParams: { id: this.idSprint} });
   }
 
   getErrorMessageName(): String {
