@@ -113,13 +113,10 @@ export class BoardComponent implements OnInit {
 
   moveTask(idDest: number, idtask: number): void {
     this.taskSend = {destiny: idDest, task: idtask};
-    this.taskservice.moveTask(this.taskSend).subscribe((task : TaskMove) => {
-      console.log(JSON.stringify(task));
-    });
+    this.taskservice.moveTask(this.taskSend).subscribe(() => {});
   }
 
   onClick(event): any {
-    console.log(event.target.dataset.index);
   }
 
   addUsers(task: TaskDto){
