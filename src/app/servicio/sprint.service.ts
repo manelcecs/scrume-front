@@ -73,7 +73,14 @@ export class SprintResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
 
-        console.log("Iniciando el resolver");
-        return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
+        let method = activatedRoute.queryParams.method;
+        let id = activatedRoute.queryParams.id;
+
+        if(method == "list"){
+          return this.sprintService.getSprintsOfProject(id);
+        }else if(method == "get"){
+          return this.sprintService.getSprint(id);
+        }
+        
     }
 }

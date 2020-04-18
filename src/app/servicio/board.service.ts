@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Board, BoardSimple, BoardNumber } from '../dominio/board.domain';
 import { Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({providedIn:'root'})
 
@@ -35,4 +36,19 @@ export class BoardService {
         return this.httpClient.get<BoardSimple>(this.cabeceraService.getCabecera() + "api/workspace/last-by-project/" + id, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+}
+
+@Injectable({providedIn: 'root'})
+export class BoardResolverService implements Resolve<any>{
+
+    constructor(private boardService: BoardService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+        let id = activatedRoute.queryParams.id;
+
+        return this.boardService.getBoard(id);
+
+    }
 }

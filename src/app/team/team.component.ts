@@ -17,7 +17,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { InvitationService } from '../servicio/invitation.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { map, startWith, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';
 
@@ -77,8 +76,7 @@ export class TeamComponent implements OnInit {
   }
 
   openProject(proj: ProjectDto): void {
-    console.log(JSON.stringify(proj));
-    this.router.navigate(['project'], { queryParams: { id: proj.id } });
+    this.router.navigate(['project'], { queryParams: { method: "list", id: proj.id } });
   }
 
   createProject(team: Team): void {
@@ -103,7 +101,7 @@ export class TeamComponent implements OnInit {
     this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[]) => {
       if (sprints.length != 0) {
         idSprint = sprints[sprints.length - 1].id;
-        this.router.navigate(['sprint'], { queryParams: { id: idSprint } });
+        this.router.navigate(['sprint'], { queryParams: { method: "get", id: idSprint } });
       } else {
         this._snackBar.open("No hay ningún sprint", "Cerrar", {
           duration: 5000,

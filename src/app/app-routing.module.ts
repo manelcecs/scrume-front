@@ -22,6 +22,8 @@ import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BoardResolverService } from './servicio/board.service';
+import { ProfileResolverService } from './servicio/profile.service';
 
 
 const routes: Routes = [
@@ -31,16 +33,16 @@ const routes: Routes = [
   {path: 'teamsCreate', component: TeamCreateComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createProject', component: CreateProjectComponent, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'sprint', component: SprintComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'sprint', component: SprintComponent, resolve:{sprint: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createBoard', component: CreateBoardComponent, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'board', component: BoardComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'board', component: BoardComponent, resolve:{board: BoardResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'invitation', component: CreateInvitationComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'terms-of-use', component: TermsOfUseComponent},
   {path: 'document', component: DocumentComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'profile', component: ProfileComponent},
+  {path: 'profile', component: ProfileComponent, resolve:{profile: ProfileResolverService}},
   {path: 'personal', component: PersonalDataComponent},
   {path: 'admin', component: SecurityBreachComponent},
 
