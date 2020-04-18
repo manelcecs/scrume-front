@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Injectable, ViewChild, ViewChildren,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable, } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';

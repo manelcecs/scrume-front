@@ -63,7 +63,6 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
-import { HttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';

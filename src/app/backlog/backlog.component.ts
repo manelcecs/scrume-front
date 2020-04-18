@@ -11,7 +11,6 @@ import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-shee
 import { SprintWorkspace } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
-import { timer } from 'rxjs';
 
 
 @Component({
