@@ -8,6 +8,8 @@ import { Board} from '../dominio/board.domain';
 import { TaskService } from '../servicio/task.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AssingTaskDialog } from '../assing-task/assing-task.dialog.component';
+import { SprintDisplay } from '../dominio/sprint.domain';
+import { SprintService } from '../servicio/sprint.service';
 
 @Component({
   selector: 'app-board',
@@ -21,11 +23,11 @@ export class BoardComponent implements OnInit {
   task: TaskMove;
   n: number;
   taskSend: TaskMove;
-  message: string;
   idSprint: number;
+  sprint: SprintDisplay;
 
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
-     private taskservice: TaskService, private dialog: MatDialog) { }
+     private taskservice: TaskService, private dialog: MatDialog, private sprintService: SprintService) { }
 
   ngOnInit(): void {
 
@@ -34,13 +36,14 @@ export class BoardComponent implements OnInit {
        if(param.id != undefined){
          this.idBoard = param.id;
          this.idSprint = param.idSprint;
+         this.sprintService.getSprint(this.idSprint).subscribe((sprint:SprintDisplay)=>{
+            this.sprint = sprint;
+         });
 
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
           });
 
-       }else if(param.id == 0) {
-          this.message = "Debes actualizar algún tablero para acceder desde aquí";
        }
      });
 
@@ -108,6 +111,10 @@ export class BoardComponent implements OnInit {
 
   navigateTo(route: String): void{
     this.router.navigate([route]);
+  }
+
+  openProject(proj: number): void {
+    this.router.navigate(["project"], { queryParams: { id: proj } });
   }
 
   moveTask(idDest: number, idtask: number): void {
