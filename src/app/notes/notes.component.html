@@ -1,13 +1,16 @@
-<p>Lista de notas</p>
+<h3>Mis notas personales</h3>
 <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
-            (click)="openCreateNoteDialog(note)">
+   (click)="openCreateNoteDialog(0);">
 <div class="example-boundary">
     <div *ngFor="let note of notes">
     <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
       {{ note.title }}<br>
        {{ note.content }}
+       <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+            (click)="openCreateNoteDialog(note.id);">
+       <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+       (click)="getDelete(note.id)">
     </div>
     </div>
-   <p> {{ sinnotas }} </p>
 </div>
   

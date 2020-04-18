@@ -14,10 +14,9 @@ import { UserLogged } from '../dominio/jwt.domain';
   styleUrls: ['./create-notes-dialog.component.css']
 })
 export class CreateNotesDialogComponent implements OnInit {
-  content: string;
   idNote: number;
 
-  validator: FormControl = new FormControl("", {
+  content: FormControl = new FormControl("", {
     validators: [Validators.required],
   });
 
@@ -25,14 +24,21 @@ export class CreateNotesDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CreateNotesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: NoteDisplay,
+    @Inject(MAT_DIALOG_DATA) public data: number,
     private snackBar: MatSnackBar,
     private noteService: NoteService,
     private userService: UserService
-  ) {}
+  ) {  }
 
   ngOnInit(): void {
-    this.idNote = this.data.id;
+    this.idNote = this.data;
+    if (this.idNote > 0) {
+      this.noteService.getNote(this.idNote).subscribe((note: NoteDisplay) => {
+        this.note = note;
+        this.content.setValue(this.note.content);
+      })
+    }
+
   }
 
   onNoClick(): void {
@@ -41,22 +47,16 @@ export class CreateNotesDialogComponent implements OnInit {
 
   validForm() {
     let valid: boolean = true;
-    valid = valid && this.validator.valid;
+    valid = valid && this.content.valid;
     return valid;
-  }
-
-  createJSON() {
-    this.note = {
-      id: 0,
-      content: this.content,
-      user: this.userService.getUserLogged()
-    }
   }
 
   onSaveClick(): void {
     if (this.validForm()) {
-      if (this.idNote != undefined) {
-        this.noteService.updateNote(this.idNote, this.content).subscribe(() => {},
+      if (this.idNote > 0) {
+        this.note = { content: this.content.value };
+        console.log("La nota que se da es " +  JSON.stringify(this.note));
+        this.noteService.updateNote(this.note, this.idNote).subscribe(() => {},
           (error) => {
             this.openSnackBar(
               "Ha ocurrido un error. Inténtelo de nuevo.",
@@ -66,15 +66,15 @@ export class CreateNotesDialogComponent implements OnInit {
           },
           () => {
             this.openSnackBar(
-              "Tu daily se ha creado correctamente.",
+              "Tu nota se ha actualizado correctamente.",
               "Cerrar",
               false
             );
           }
         );
       } else {
-      this.createJSON();
-      this.noteService.createNote(this.content).subscribe(() => {},
+      this.note = {content: this.content.value};
+      this.noteService.createNote(this.note).subscribe(() => {},
       (error) => {
         this.openSnackBar(
           "Ha ocurrido un error. Inténtelo de nuevo.",
@@ -84,7 +84,7 @@ export class CreateNotesDialogComponent implements OnInit {
       },
       () => {
         this.openSnackBar(
-          "Tu daily se ha creado correctamente.",
+          "Tu nota se ha creado correctamente.",
           "Cerrar",
           false
         );
@@ -108,6 +108,10 @@ export class CreateNotesDialogComponent implements OnInit {
             this.dialogRef.close();
           });
       }
+    }
+
+  getErrorMessageName(): string {
+    return this.content.hasError('required') ? 'Este campo es requerido.' :'';
     }
   }
 

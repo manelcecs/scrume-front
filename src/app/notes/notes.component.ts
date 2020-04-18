@@ -3,10 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NoteDisplay } from '../dominio/note.domain';
 import { UserService } from '../servicio/user.service';
-import { UserLogged } from '../dominio/jwt.domain';
 import { NoteService } from '../servicio/note.service';
-import { CreateNotesDialogComponent } from '../create-notes-dialog/create-notes-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateNotesDialogComponent } from '../create-notes-dialog/create-notes-dialog.component';
 
 @Component({
   selector: 'app-notes',
@@ -14,45 +13,47 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-holaMundo: string;
 notes: NoteDisplay[];
-user: UserLogged;
-dialog: MatDialog;
-sinnotas: string;
+contenidoNota: string;
+
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private noteService: NoteService) { }
+    private noteService: NoteService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
-   this.user = this.userService.getUserLogged();
-   this.noteService.listNotes().subscribe((notes: NoteDisplay[]) => {
+   this.noteService
+   .listNotes()
+   .subscribe((notes: NoteDisplay[]) => {
     this.notes = notes;
-    if (this.notes.length == 0) {
-      this.sinnotas = "No hay notas";
-    }
    });
   }
 
+
   getDelete(idNote: number) {
     this.noteService.deleteNote(idNote).subscribe((note: NoteDisplay) => {
-      // TODO
+      this.noteService
+        .listNotes()
+        .subscribe((notes: NoteDisplay[]) => {
+          this.notes = notes;
+        });
     })
   }
 
-  openCreateNoteDialog(): void {
+  openCreateNoteDialog(idNote: number): void {
     const dialogRef = this.dialog.open(CreateNotesDialogComponent, {
       width: "250px",
+      data: idNote,
     });
-    // TODO
-    /*dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe(() => {
       this.noteService
-        .
-        .subscribe((note: Document[]) => {
-          this.doc = doc;
+        .listNotes()
+        .subscribe((notes: NoteDisplay[]) => {
+          this.notes = notes;
         });
-    });*/
+    });
   }
 
   drop(event: CdkDragDrop<{content: string}[]>) {
