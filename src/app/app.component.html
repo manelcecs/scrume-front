@@ -8,8 +8,8 @@
     </ul>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <nav class="navbar navbar-dark" id="menu-horizontal">
+  <mat-sidenav-content style="overflow: hidden;">
+    <nav style="z-index: top;" class="navbar navbar-dark" id="menu-horizontal">
       <div id="menu-horizontal-buttons-left">
         <button mat-icon-button (click)="sidenav.toggle(); sidenavnotifications.close()"><mat-icon>menu</mat-icon></button>
         <a id="logo" (click)="navigateTo('bienvenida')"><img alt="" src="../assets/logo.webp" width="auto" height="30" class="d-inline-block align-top"></a>
