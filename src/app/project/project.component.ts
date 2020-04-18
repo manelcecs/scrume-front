@@ -7,7 +7,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { SprintDisplay, Sprint, SprintJsonDates } from '../dominio/sprint.domain';
 import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
 import { NotificationAlert } from '../dominio/notification.domain';
-import { AlertComponent } from '../alert/alert.component';
 import { AlertService } from '../servicio/alerts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';

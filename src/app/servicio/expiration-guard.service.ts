@@ -1,7 +1,5 @@
 import { CanActivate, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
-import { UserService } from "./user.service";
-import { UserLog, UserLogged } from "../dominio/jwt.domain";
 import { ValidationService } from './validation.service';
 
 @Injectable()

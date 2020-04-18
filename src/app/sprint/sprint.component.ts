@@ -20,15 +20,14 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { BoardSimple, BoardNumber, Board } from "../dominio/board.domain";
 import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
-import { Document, Daily } from "../dominio/document.domain";
+import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
 import { BurnUpDisplay, BurnDownDisplay } from '../dominio/burn.domain';
 import { AlertService } from '../servicio/alerts.service';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
-import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
 import { UserService } from '../servicio/user.service';
 import { ValidationService } from '../servicio/validation.service';
 
