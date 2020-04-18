@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
-import { SprintDisplay, Sprint } from '../dominio/sprint.domain';
 import { TaskSimple, TaskDto, TaskMove, TaskEstimate, TaskToList } from '../dominio/task.domain';
-import { Board } from '../dominio/board.domain';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({providedIn:'root'})
@@ -53,13 +51,8 @@ export class TaskResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
-        let method = activatedRoute.queryParams.method;
-        switch(method){
-            case 'getTasksOfUser':
-                return this.task.getTasksOfUser();
-            default:
-                return this.task.getTasksOfUser();
-        }
+        //let method = activatedRoute.queryParams.method;
+        return this.task.getTasksOfUser();
     }
 }
 

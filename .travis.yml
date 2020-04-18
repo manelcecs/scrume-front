@@ -15,17 +15,20 @@ jobs:
             secure: GrJrDuk14zvHrelcFsh5X25XoXTP1ftIYq/I7/0fOfsXLzWWCtyyWNl0HgmSvBmwZ7flMTczUnSFv5Pw4/PVqMmenZhPQAEXVPyNBaoCdVoybiIR7lsPQWO/u7tFH/J2TUgzjywyGNnFcMVaYSYF9DLmE1wL2ITShmhAti9EhU9u8xmUtE+JVA4QzgPkca7AIt7lpYNyv9BB3U92T0pGDq1ReIQ/7JD5Sj5hNNC68cgH1HK3+hr5QMhdJsAbcOxxzjYwRTTSHCiFvvhC+trX7gI64QcxzMl9bCm8bOl6dkDE/YY1rtDPiz0+hF9PD4Wzh0qZrRXD8AGu5/GGpQDT4yMr3wc4dSoCdWTqCEMl1zIxZLWc+Te9bYtX109jhurDXC41QT0lrBGJPJRTbsuklBRjAjByqp5Nv3c6bszVEI9T6GhDtPRmhx7rJwVqxFSP6ba+VFRkKnGD4MN56Zd6Goiu3AJcrH67Z/ftsieIqML9iWYiz9pB3a5CxJ9t5qmW3XE2D3KK4h+te6BH1bDaG+XJq8mdZqmDO/fEgCxuEcKOUmYRfDerpI7eBJxrC2Q9Gu/7kpid7ZqWUPGeY5MUVaXsa0ssXH5QHI2jg8GuZTE8FSjTt/dT61AgEI2h/IyEcgEYFD7tpXNwV2cOJNwlo4OWxKpdQ8CZhyO2dNjzT+Y=
 
       script:
-        - npm audit fix
         - npm fund
+        - npm audit fix
         - sonar-scanner
       deploy:
         provider: heroku
-        app: scrume-app-s2
+        app: scrume-app-s3
         strategy: git
         api_key:
           secure: CZyp19G2iOAHgiktaUK7KuIcYQshlO1Cfis4c0LvVZ/pfKvXtw7UeYTCgj8TT9VYljPEElJtzv4k6lvX8TeyX7yHvhUYni166cjkgC/xwkRADggUU6WdKNUB/OqMRaNBlI1509gmyiUFZsjLOeRf1UFSN51cOpFh/MKWTU/r3GrHJ7lUaaEYoO1+nTTiz0o6QwXTrxJBw4wnPYK+p6inL2UPNjZAUjI6VxzgUdp3LazD4xptWJaJeGWGvUH8nWYvQf1U1nLeYbLQ/cTODRjcYCGSLP42vY4zXZhJKZAIgdd5ECQxF3+7zzzfqC/pzoxQp3msB6T5857mtAED3ZeO1cz9QJLU3hxYoKuVUM7+OkmbjkgE6mQvUwfWFW0A7c9K5eSLf4Qh0dI60vVX7VpPErQHrXHVfXULS3duNvZLxlFNLmpIN98R9nHyKNWMwySM9gbaHxeqLCshkZxsmCcr1cePVuJDzk7e+p4io85M+CDVZ5OKOjObKNKw57whB3bAtWhgo6XVDCa5mn4bel/lU4iZWcpE+PGMcov47O54GhgWaA3NdW0p0XEn5UK293m+r6T3XDZQJupuekIxkpJmV/7niP+HEitw3zUWHP2Fv7adIQdzDuqQDToXW3kvE5orvzbvYdjAN4zuRnPBXcwwYucAJx2hnu2sTPMohgRewI4=
         on: 
-          branch: integration2
+          branch: 
+            - integration3
+            - develop
+
 notifications:
   email:
     on_failure: manuelc.p.g@gmail.com

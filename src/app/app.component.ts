@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable, ViewChild, ViewChildren,  } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -7,8 +7,13 @@ import { InvitationDisplay } from './dominio/invitation.domain';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialog } from './login-dialog/login-dialog.component';
 import { UserService } from './servicio/user.service';
-import { UserNick, User } from './dominio/user.domain';
-import { query } from '@angular/animations';
+import { User } from './dominio/user.domain';
+import { ProfileService } from './servicio/profile.service';
+import { timer } from 'rxjs';
+import { SecurityBreachService } from './servicio/breach.service';
+import { TeamComponent } from './team/team.component';
+
+@Injectable({providedIn:'root'})
 
 @Component({
   selector: 'app-root',
@@ -20,16 +25,18 @@ export class AppComponent implements OnInit, OnDestroy {
   routes: Object[] = [];
   idioma: string  = "es";
   notifications : boolean = false;
+  invitations: InvitationDisplay[];
+  @ViewChildren(TeamComponent) teamComponent: TeamComponent;
 
   user : User;
 
   loading = false;
   title: any = 'scrume-front';
 
+  isAdmin: boolean;
 
-  //constructor(private router: Router) {}
-  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, 
-    private invitationService : InvitationService, private dialog: MatDialog, private userService: UserService) {
+  constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
+     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -52,7 +59,11 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = sessionStorage.getItem("loginToken");
     if(token != null && token !== ""){
       this.getUserInfo();
-      
+
+      timer(0, 5000).subscribe(() => {
+          this.getNotifications();
+      });
+
     }else{
       this.cargarMenu();
 
@@ -81,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let token = sessionStorage.getItem("loginToken");
     let logged = token != null && token !== "";
     console.log("Logged", logged);
+
     this.routes = [
       {
         title: 'Bienvenida',
@@ -100,6 +112,28 @@ export class AppComponent implements OnInit, OnDestroy {
         method: 'getTasksOfUser'
     }
   ];
+  if(logged) {
+    this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
+      this.isAdmin = isAdmin;
+
+      if(this.isAdmin){
+        this.routes = [
+          {
+            title: 'Bienvenida',
+            route: '/bienvenida',
+            icon: 'home',
+            visible: 'true'
+        },{
+            title: 'Panel Admin',
+            route: '/admin',
+            icon: 'build',
+            visible: 'true'
+        }];
+      }
+
+    });
+  }
+
   }
 
   openLogin(): void {
@@ -110,6 +144,7 @@ export class AppComponent implements OnInit, OnDestroy {
       let token = sessionStorage.getItem("loginToken");
       if(token != null && token != ""){
         this.getUserInfo();
+        this.cargarMenu();
       }
     });
   }
@@ -117,24 +152,53 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
+
+    this.cargarMenu();
     this.navigateTo("bienvenida");
   }
 
   getUserInfo(){
-    this.userService.findUserAuthenticated().subscribe((user: UserNick)=>{
-        this.userService.getUser(user.idUser).subscribe((userComplete: User)=>{
-          this.user = userComplete;
-          this.navigateTo("teams");
-        });
+    this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
+      this.user = user;
 
-        this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
-          if (invitations.length != 0) {
-            this.notifications = true;
-          }
-        });
-      
-        this.cargarMenu();
+      this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
+        this.isAdmin = isAdmin;
+
+        if (this.isAdmin == true){
+          this.navigateTo("admin");
+        }else{
+          this.navigateTo("teams");
+        }
+      })
+
     });
+
+  }
+
+  openProfile(){
+    this.navigateTo("profile");
+  }
+
+  getNotifications(){
+    if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+    this.invitationService.getInvitations().subscribe((invitations : InvitationDisplay[]) => {
+      this.invitations = invitations;
+      if (invitations.length != 0) {
+          this.notifications = true;
+        } else {
+          this.notifications = false;
+        }
+      });
+    }
+  }
+
+  updateTeams(){
+    console.log(this.router.url);
+    if (this.router.url == "/teams") {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/teams']);
+    }
   }
 
 }

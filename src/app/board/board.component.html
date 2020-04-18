@@ -3,6 +3,10 @@
 
 <div id="main">
 
+  <button *ngIf="idSprint != undefined" style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
+    Volver al Sprint
+</button>
+
   <div id="boards-container" cdkDropListGroup>
     <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">
       <div class="nameColum">
@@ -10,24 +14,23 @@
       </div>
 
       <hr>
-  
+
       <div class="nombreTarea" class="example-box" *ngFor="let tarea of colum.tasks" cdkDrag>
-        <div class="nombreTarea">
+        <div *ngIf="tarea.title != undefined" class="nombreTarea">
           <p>{{tarea.title}}</p>
 
           <div style="display: flex; align-items: center;">
-            <div class="roundImage"*ngFor="let user of tarea.users">
-              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo !== undefined && user.photo !== '' " src="{{user.photo}}" />
-              <img style="margin-right: 10px" alt="{{user.nick}}" width="40" height="40" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png" *ngIf="user.photo == undefined || user.photo == '' " />
+            <div class="roundImage"*ngFor="let user of tarea.users" matTooltip="{{user.nick}}">
+              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo != undefined && user.photo !== '' " src="{{user.photo}}" width="30" height="30" class="d-inline-block align-top user-img"/>
+              <img style="margin-right: 10px" alt="{{user.nick}}" *ngIf="!(user.photo != undefined && user.photo !== '') " width="30" height="30" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png"/>
             </div>
-            <img src="../assets/add-user.png" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="addUsers(tarea)">
+            <img src="../assets/add-user.webp" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="addUsers(tarea)">
           </div>
 
         </div>
       </div>
-  
+
     </div>
   </div>
 
 </div>
-    

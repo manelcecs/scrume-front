@@ -4,11 +4,12 @@ import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint, SprintJsonDates, SprintWorkspace } from '../dominio/sprint.domain';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { BurnDownDisplay, BurnUpDisplay } from '../dominio/burn.domain';
 
 @Injectable({providedIn:'root'})
 
 export class SprintService {
-   
+
 
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
@@ -35,6 +36,19 @@ export class SprintService {
     listTodoColumnsOfAProject(idProject: number): Observable<SprintWorkspace[]> {
       return this.httpClient.get<SprintWorkspace[]>(this.cabeceraService.getCabecera() + "api/workspace/list-todo-columns/" + idProject, {headers: this.cabeceraService.getBasicAuthentication()});
     }
+
+    checkDates(project : number, starDate: Date, endDate : Date) : Observable<boolean>{
+      let data= {"startDate": starDate.toISOString(), "endDate": endDate.toISOString()};
+      return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/sprint/check-dates/" + project, data, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getBurnDown(idSprint : number): Observable<BurnDownDisplay[]>{
+      return this.httpClient.get<BurnDownDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/burndown/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getBurnUp(idSprint : number): Observable<BurnUpDisplay[]>{
+      return this.httpClient.get<BurnUpDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/burnup/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
 }
 
 
@@ -58,7 +72,7 @@ export class SprintResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        
+
         console.log("Iniciando el resolver");
         return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
     }

@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { TaskToList } from '../dominio/task.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -15,9 +14,9 @@ export class MyTasksComponent implements OnInit {
   tasksMap: Map<string, TaskToList[]> = new Map<string, TaskToList[]>();
 
   constructor(private router: Router,
-    private activatedRoute: ActivatedRoute) { 
+    private activatedRoute: ActivatedRoute) {
     this.tasks = this.activatedRoute.snapshot.data.tasks;
-    
+
     for(let t of this.tasks){
 
       let projName = t.project.name;
@@ -41,7 +40,7 @@ export class MyTasksComponent implements OnInit {
   }
 
   openProject(idProj: number){
-    this.navigateTo('sprint', idProj, 'getTeam');
+    this.navigateTo('project',idProj, 'getTeam');
   }
 
   openBoard(idWork: number){
@@ -54,7 +53,7 @@ export class MyTasksComponent implements OnInit {
     }else{
       this.router.navigate([route], {queryParams:{id: id, method: method}});
     }
-    
+
   }
 
 }

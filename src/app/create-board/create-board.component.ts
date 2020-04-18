@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../servicio/board.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BoardSimple, Board, BoardNumber } from '../dominio/board.domain';
+import { Board, BoardNumber } from '../dominio/board.domain';
 import { Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -42,7 +42,7 @@ export class CreateBoardComponent implements OnInit {
 
         });
 
-        
+
       }
 
      });
@@ -60,25 +60,29 @@ export class CreateBoardComponent implements OnInit {
 
   createBoard(): void {
 
-    if (this.idBoard != undefined){
+    if (this.validForm()){
 
-       this._editBoard().subscribe((resp: BoardNumber) => {
 
-         this.boardEdit = resp;
-         this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
-       });
+      if (this.idBoard != undefined){
 
-    }else{
+        this._editBoard().subscribe((resp: BoardNumber) => {
 
-      this._createBoard().subscribe((resp: BoardNumber) => {
+          this.boardEdit = resp;
+          this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
+        });
 
-        this.boardCreate = resp;
-        this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
-      });
+      }else{
+
+        this._createBoard().subscribe((resp: BoardNumber) => {
+
+          this.boardCreate = resp;
+          this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
+        });
+
+      }
+
 
     }
-
-
   }
 
   private _editBoard(): Observable<BoardNumber>{
@@ -97,7 +101,7 @@ export class CreateBoardComponent implements OnInit {
   }
 
   cancelCreateBoard(): void {
-    this.router.navigate(['sprint']);
+    this.router.navigate(['sprint'], { queryParams: { id: this.idSprint} });
   }
 
   getErrorMessageName(): String {

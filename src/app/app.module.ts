@@ -1,4 +1,4 @@
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,24 +41,40 @@ import { SprintComponent, EditSprintDialog, NewDocumentDialog } from './sprint/s
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {MatChipsModule} from '@angular/material/chips';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
 import { LoginDialog } from './login-dialog/login-dialog.component';
+import { RegisterComponent } from './register/register.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { AssingTaskDialog } from './assing-task/assing-task.dialog.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ProfileComponent } from './profile/profile.component';
+import { HttpClient } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
+import {MatTableModule} from '@angular/material/table';
+import { AlertComponent } from './alert/alert.component';
+import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
@@ -89,7 +105,15 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     DocumentComponent,
     NewDocumentDialog,
     AssingTaskDialog,
-    MyTasksComponent
+    MyTasksComponent,
+    ProfileComponent,
+    RegisterComponent,
+    TermsOfUseComponent,
+    PersonalDataComponent,
+    AlertComponent,
+    MyDailyFormComponent,
+    SecurityBreachComponent,
+    BadgeMinimumBoxComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -122,14 +146,27 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatDialogModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
     MatBadgeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatStepperModule,
+    NgxPayPalModule,
+    BrowserModule,
+    HttpClientModule,
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+    MatTableModule,
+    MatProgressSpinnerModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+    },
+    CheckExpirationBoxGuard,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

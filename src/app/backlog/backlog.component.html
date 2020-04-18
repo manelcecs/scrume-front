@@ -4,7 +4,7 @@
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a (click)="openTeam()">{{project.team.name}}</a></li>
+              <li class="breadcrumb-item"><a (click)="navigateTo('teams')">{{project.team.name}}</a></li>
               <li class="breadcrumb-item"><a (click)="openProject()">{{project.name}}</a></li>
               <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">Product Backlog</li>
             </ol>
@@ -25,16 +25,16 @@
         </div>
 
         <div id="task-list">
-            
+
         <mat-accordion>
             <mat-expansion-panel *ngFor="let task of project.tasks | filter:searchValue">
                 <mat-expansion-panel-header>
                     <mat-panel-title class="panel-title">
                         <div class="tasks-buttons-container">
-                            <img src="../assets/edit.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEditTask(task)">
-                            <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="deleteTask(task)">
-                            <img src="../assets/card.png" *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" width="auto" height="17" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEstimateTask(task.id)">
-                            <img src="../assets/move.png" *ngIf="task.finalPoints != 0 && task.column == undefined" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openSelectSprint(task.id)">
+                            <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Editar tarea" (click)="openEditTask(task)">
+                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Borrar tarea" (click)="deleteTask(task)">
+                            <img src="../assets/card.webp" *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" width="auto" height="17" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Estimar tarea" (click)="openEstimateTask(task.id)">
+                            <img src="../assets/move.webp" *ngIf="task.finalPoints != 0 && task.column == undefined" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Mover a un tablero de un sprint" (click)="openSelectSprint(task.id)">
                         </div>
                         <span class="separator">|</span>
                         <span>{{task.title}}</span>

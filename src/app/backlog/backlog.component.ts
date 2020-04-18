@@ -1,19 +1,17 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Team, TeamSimple } from '../dominio/team.domain';
-import { ProjectDto, ProjectComplete, ProjectName } from '../dominio/project.domain';
+import { ProjectComplete, ProjectName } from '../dominio/project.domain';
 import { ProjectService } from '../servicio/project.service';
 import { TeamService } from '../servicio/team.service';
-import { NewSprintDialog } from '../project/project.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TaskDto, TaskSimple, TaskBacklog, TaskMove, TaskEstimate } from '../dominio/task.domain';
-import { FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { TaskDto, TaskSimple, TaskMove, TaskEstimate } from '../dominio/task.domain';
+import { FormControl, Validators} from '@angular/forms';
 import { TaskService } from '../servicio/task.service';
 import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
-import {MatListModule} from '@angular/material/list';
-import { Sprint, SprintDisplay, SprintWorkspace } from '../dominio/sprint.domain';
+import { SprintWorkspace } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -29,8 +27,8 @@ export class BacklogComponent implements OnInit {
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog, 
-    private taskService: TaskService, private bottomSheet: MatBottomSheet) { 
+    private projectService: ProjectService, private teamService: TeamService,private dialog: MatDialog,
+    private taskService: TaskService, private bottomSheet: MatBottomSheet) {
 
       this.idProject = this.activatedRoute.snapshot.data.project.id;
       this.project = this.activatedRoute.snapshot.data.project;
@@ -194,7 +192,8 @@ export class NewTaskDialog implements OnInit{
   project: ProjectName;
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
-  description = new FormControl('',  { validators: []});
+  description = new FormControl('',  { validators: [Validators.required]});
+  loading: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<NewTaskDialog>,
@@ -212,10 +211,17 @@ export class NewTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {title:this.title.value, description:this.description.value};
-    this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
-      this.dialogRef.close();
-    });
+    if (this.validForm()) {
+      this.loading = true;
+      console.log("Loading");
+      this.task = {title:this.title.value, description:this.description.value};
+      this.taskService.createTask(this.project.id, this.task).subscribe((task: TaskSimple)=>{
+        this.dialogRef.close();
+        this.loading = false;
+      }, (error) => {
+        this.loading = false;
+      });
+    }
   }
 
   getErrorMessageTitle() : String {
@@ -243,7 +249,8 @@ export class EditTaskDialog implements OnInit{
   idTask: number;
   task: TaskSimple;
   title = new FormControl('',  { validators: [Validators.required]});
-  description = new FormControl('',  { validators: []});
+  description = new FormControl('',  { validators: [Validators.required]});
+  loading: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditTaskDialog>,
@@ -262,21 +269,27 @@ export class EditTaskDialog implements OnInit{
   }
 
   onSaveClick() : void {
-    this.task = {id:this.idTask, title:this.title.value, description:this.description.value};
-    this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
-      this.dialogRef.close();
-    });
+    if (this.validForm()) {
+      this.loading = true;
+      this.task = {id:this.idTask, title:this.title.value, description:this.description.value};
+      this.taskService.editTask(this.idTask, this.task).subscribe(()=>{
+        this.dialogRef.close();
+        this.loading = false;
+      }, (error) => {
+        this.loading = false;
+      });
+    }
   }
 
-  getErrorMessageTitle() : String {
+  getErrorMessageTitle() : string {
     return this.title.hasError('required')?'Este campo es obligatorio':'';
   };
 
-  getErrorMessageDescription() : String {
+  getErrorMessageDescription() : string {
     return this.description.hasError('required')?'Este campo es obligatorio':'';
   };
 
- 
+
 
   validForm():boolean {
     let valid: boolean;

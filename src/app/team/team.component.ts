@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild, Injectable } from '@angular/core';
 import { Team } from '../dominio/team.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
 import { ProjectDto } from '../dominio/project.domain';
-import { Board, BoardSimple } from '../dominio/board.domain';
-import { Sprint, SprintDisplay } from '../dominio/sprint.domain';
+import { BoardSimple } from '../dominio/board.domain';
+import { SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { ProjectService } from '../servicio/project.service';
 import { Observable } from 'rxjs';
@@ -16,8 +16,11 @@ import { UserNick } from '../dominio/user.domain';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { InvitationService } from '../servicio/invitation.service';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {map, startWith} from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { map, startWith, filter } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ValidationService } from '../servicio/validation.service';
+
 
 @Component({
   selector: 'app-team',
@@ -29,9 +32,10 @@ export class TeamComponent implements OnInit {
   options = {
     autoClose: true,
     keepAfterRouteChange: true
-};
+  };
   teams: Team[];
   boardNumber: number;
+  validationCreateTeam: {[key: number] : boolean} = {};
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -39,45 +43,24 @@ export class TeamComponent implements OnInit {
     private sprintService: SprintService,
     private projectService: ProjectService,
     private boardService: BoardService,
-    public dialog: MatDialog
-    ) { 
-  
-      this.teams = this.activatedRoute.snapshot.data.teams;
-    }
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar, private validationService: ValidationService
+  ) {
 
-  ngOnInit(): void {
-      for(let t of this.teams){
-        this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
-          t.projects = projects;
-        }, (error)=>{
-      console.log("Error al hacer la petición a BD. "+error);
-      //error("Error al hacer la petición a BD.", this.options);
+    this.teams = this.activatedRoute.snapshot.data.teams;
+    for (let t of this.teams) {
+      this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) => {
+        t.projects = projects;
+        this.validationService.checkNumberOfProjects(t.id, projects.length).subscribe((res: boolean) => {
+          this.validationCreateTeam[t.id] = res;
+        })
+      }, (error) => {
       });
     }
-  } //añadir subscribe((teams:IPaginationPage<Teams>)=>{this.teams = teams});
+  }
 
-//BORRAR
-// descargarPDF():void {
-//   const data = 'some text';
-//   var blob = new Blob([data], { type: "application/pdf"});
-//   this.ss = blob;
-//   this.fileURL = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-// }
-
-// generarPDF(){
-//   html2canvas(document.getElementById('paper'), {
-//      // Opciones
-//      allowTaint: true,
-//      useCORS: false,
-//      // Calidad del PDF
-//      scale: 1
-//   }).then(function(canvas) {
-//   //var img = canvas.toDataURL("image/png");
-//   var doc = new jsPDF();
-//   //doc.addImage(img,'PNG',7, 20, 195, 105);
-//   doc.save('prueba.pdf');
-//  });
-//}
+  ngOnInit(): void {
+  }
 
   //-----------------
 
@@ -85,52 +68,83 @@ export class TeamComponent implements OnInit {
     this.router.navigate(['teamsCreate']);
   }
 
-  editTeam(row: Team): void{
-    this.router.navigate(['teamsCreate'], {queryParams: {id: row.id}});
+  editTeam(row: Team): void {
+    this.router.navigate(['teamsCreate'], { queryParams: { id: row.id } });
   }
 
-  navigateTo(route: string): void{
+  navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 
-  openProject(proj: ProjectDto): void{
+  openProject(proj: ProjectDto): void {
     console.log(JSON.stringify(proj));
-    this.router.navigate(['project'], {queryParams: {id: proj.id}});
+    this.router.navigate(['project'], { queryParams: { id: proj.id } });
   }
 
-  createProject(team: Team): void{
-    this.router.navigate(['createProject'], {queryParams: {id: team.id, action: "create"}});
+  createProject(team: Team): void {
+    this.router.navigate(['createProject'], { queryParams: { id: team.id, action: "create" } });
   }
 
-  openBoard(idProj: number): void{
-    this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple)=>{
+  openBoard(idProj: number): void {
+    this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple) => {
       this.boardNumber = board.id;
-      this.router.navigate(['board'], {queryParams: {id: this.boardNumber}});
+      if (this.boardNumber != 0) {
+        this.router.navigate(['board'], { queryParams: { id: this.boardNumber } });
+      } else {
+        this._snackBar.open("No hay un tablero actualizado recientemente", "Cerrar", {
+          duration: 5000,
+        });
+      }
     });
   }
 
-  openSprint(proj: ProjectDto): void{
-    let idSprint : number;
-    this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[])=>{
-      idSprint = sprints[sprints.length-1].id;
-      this.router.navigate(['sprint'], {queryParams:{id : idSprint}});
+  openSprint(proj: ProjectDto): void {
+    let idSprint: number;
+    this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[]) => {
+      if (sprints.length != 0) {
+        idSprint = sprints[sprints.length - 1].id;
+        this.router.navigate(['sprint'], { queryParams: { id: idSprint } });
+      } else {
+        this._snackBar.open("No hay ningún sprint", "Cerrar", {
+          duration: 5000,
+        });
+      }
     });
   }
 
-  getProjectsOfTeam(id: number): Observable<ProjectDto[]>{
+  getProjectsOfTeam(id: number): Observable<ProjectDto[]> {
     return this.projectService.getProjectsByTeam(id);
   }
 
-  deleteTeam(idTeam : number): void {
+  deleteTeam(idTeam: number): void {
     this.teamService.deleteTeam(idTeam).subscribe(() => {
-      this.teamService.getAllTeams().subscribe((teams : Team[] )=>{
+      this.teamService.getAllTeams().subscribe((teams: Team[]) => {
         this.teams = teams;
-        for(let t of this.teams){
-            this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) =>{
+        for (let t of this.teams) {
+          this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) => {
             t.projects = projects;
           });
         }
       });
+    });
+  }
+
+  leaveTeam(idTeam: number): void {
+    this.teamService.leaveTeam(idTeam).subscribe(() => {
+      this.teamService.getAllTeams().subscribe((teams: Team[]) => {
+        this.teams = teams;
+        for (let t of this.teams) {
+          this.getProjectsOfTeam(t.id).subscribe((projects: ProjectDto[]) => {
+            t.projects = projects;
+          });
+        }
+      });
+    }, error => {
+      this._snackBar.open(
+        "Se ha producido un error en el servidor", "Cerrar", {
+        duration: 2000
+      }
+      )
     });
   }
 
@@ -140,6 +154,7 @@ export class TeamComponent implements OnInit {
       data: idTeam
     });
   }
+
 }
 
 
@@ -148,39 +163,40 @@ export class TeamComponent implements OnInit {
   templateUrl: 'invite-dialog.html',
   styleUrls: ['./invite-dialog.css']
 })
-export class InvitationDialog implements OnInit{
+export class InvitationDialog implements OnInit {
 
   team: number;
-  invitation : InvitationDto;
+  invitation: InvitationDto;
   //users : number[];
-  usersBD : UserNick[];
+  usersBD: UserNick[];
   searchValue;
-  messageFormControl = new FormControl('', {validators: [Validators.required]});
+  messageFormControl = new FormControl('', { validators: [Validators.required] });
   // suggestedUsers : Observable<UserNick[]>;
 
   visible = true;
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('', {validators: [Validators.required]});
+  usersCtrl = new FormControl('', { validators: [Validators.required] });
   filteredUsers: Observable<UserNick[]>;
   users: UserNick[] = [];
   allUsers: UserNick[] = [];
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
     public dialogRef: MatDialogRef<InvitationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: number, private invitationService : InvitationService) {
-      this.team = this.data;
-      this.invitationService.getSuggestedUsers(this.team).subscribe((res : UserNick[]) => {
-        this.allUsers = res;
-        this.filteredUsers = this.fruitCtrl.valueChanges.pipe(
-          startWith(null),
-          map((user: UserNick | null) => user ? this._filter(user) : this.allUsers.slice()));
-      })
+    @Inject(MAT_DIALOG_DATA) public data: number, private invitationService: InvitationService, public snackbar: MatSnackBar) {
+    this.team = this.data;
+    this.invitationService.getSuggestedUsers(this.team, [], "").subscribe((res: UserNick[]) => {
+      this.allUsers = res;
+      this.usersCtrl.valueChanges.subscribe(() => {
+        this.filteredUsers = this.invitationService.getSuggestedUsers(this.team, this.users, this.usersCtrl.value);
+        });
+      });
     }
+
 
   ngOnInit(): void {
 
@@ -203,7 +219,7 @@ export class InvitationDialog implements OnInit{
       input.value = '';
     }
 
-    this.fruitCtrl.setValue(null);
+    this.usersCtrl.setValue(null);
   }
 
   remove(user: UserNick): void {
@@ -216,33 +232,39 @@ export class InvitationDialog implements OnInit{
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.users.push(event.option.value);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.userInput.nativeElement.value = '';
+    this.usersCtrl.setValue(null);
   }
 
-  private _filter(value: UserNick): UserNick[] {
-    const filterValue = value.nick.toLowerCase();
+  private _filter(value: string): UserNick[] {
+    const filterValue = value.toLowerCase();
 
-    return this.allUsers.filter(user => user.nick.toLowerCase().indexOf(filterValue) === 0);
+    return this.allUsers.filter(user => user.nick.toLowerCase().startsWith(filterValue));
   }
 
-  onSaveClick() : void {
-    let recipients : number[] = [];
-    this.users.forEach(user => recipients.push(user.idUser));
-    let invitation : InvitationDto= {message: this.messageFormControl.value, team: this.team, recipients: recipients};
+  onSaveClick(): void {
+    let recipients: number[] = [];
+    this.users.forEach(user => recipients.push(user.id));
+    let invitation: InvitationDto = { message: this.messageFormControl.value, team: this.team, recipients: recipients };
     this.invitationService.createInvitation(invitation).subscribe(() => {
       this.dialogRef.close();
+    }, (error) => {
+      this.snackbar.open("Se ha producido un error al mandar la invitación", "Cerrar", {
+        duration: 3000
+      })
     });
   }
 
-  getErrorMessageMessage() : string {
-    return this.messageFormControl.hasError('required')?'El mensaje es obligatorio':'';
-  };
+  getErrorMessageMessage(): string {
+    return this.messageFormControl.hasError('required') ? 'El mensaje es obligatorio' : '';
+  }
 
 
-  validForm():boolean {
+  validForm(): boolean {
     let valid: boolean;
     valid = this.messageFormControl.valid && this.users.length != 0;
     return valid;
   }
+
+
 }

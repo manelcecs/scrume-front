@@ -2,7 +2,7 @@ mat-sidenav-container {
     height: 100%;
 }
 
-#principal{
+/* #principal{
     overflow: auto;
     height: 100%;
 
@@ -10,7 +10,7 @@ mat-sidenav-container {
 
 #principal::-webkit-scrollbar{
     z-index: top;
-}
+} */
 
 
 /* Menu horizontal */
@@ -18,10 +18,9 @@ mat-sidenav-container {
 #menu-horizontal{
     height: 70px;
     width: 100%;
-    background-color: lightslategray;
+    background-color: black;
     color: whitesmoke;
     padding: 1%;
-    background-color: black;
     position: sticky;
     top: 0;
     z-index: 5235235235;
@@ -75,6 +74,18 @@ mat-sidenav {
     cursor: pointer;
 }
 
+.access {
+    color: white;
+    background-color: black;
+    transition-duration: 0.4s;
+    margin-left: 20px;
+}
+
+.access:hover {
+    background-color: #009cbb;
+    cursor: pointer;
+}
+
 /* ------------------------------- */
 
 /* Menu vertical derecho */
@@ -87,3 +98,4 @@ mat-sidenav {
         border-radius: 0px;
     }
 } */
+

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, Validator, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ProjectService } from '../servicio/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectDto } from '../dominio/project.domain';
 import { Observable } from 'rxjs';
-import { Team } from '../dominio/team.domain';
 
 @Component({
   selector: 'app-create-project',
@@ -46,11 +45,9 @@ export class CreateProjectComponent implements OnInit {
 
           this.idEquipo = params.id;
         }else{
-          console.log("Nice try...");
           this.navigateTo("teams");
         }
       }else{
-        console.log("Nice try...");
         this.navigateTo("teams");
       }
 
@@ -60,23 +57,26 @@ export class CreateProjectComponent implements OnInit {
 
   createProject(): void {
 
-    if (this.idProyecto != undefined){
+    if (this.validForm()) {
 
-      this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
-        this.project = resp;
-        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
-      });
+      if (this.idProyecto != undefined){
 
-    }else{
-      console.log("proyecto: "+ JSON.stringify(this.project));
-      this._createProject().subscribe((resp: ProjectDto) => {
+        this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
-        this.project = resp;
-        this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+          this.project = resp;
+          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+        });
 
-      });
+      }else{
+        this._createProject().subscribe((resp: ProjectDto) => {
 
+          this.project = resp;
+          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+
+        });
+
+      }
     }
 
   }
@@ -106,7 +106,9 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  validForm():Boolean {
+
+
+  validForm():boolean {
 
     let valid: boolean;
 

@@ -1,30 +1,124 @@
-<h4>Crear sprint</h4>
+<div id=title-card>
+    <h4>Crear sprint </h4>
+      <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+  </div>
 <div>
-  <form id="prueba" action="" method="POST">
-
+  <form id="prueba">
     <div>
       <mat-form-field>
         <mat-label>Fecha de inicio</mat-label>
-        <input matInput [formControl]="startDate" [matDatepicker]="pickerStar" />
-        <mat-datepicker-toggle matSuffix [for]="pickerStar"></mat-datepicker-toggle>
-        <mat-datepicker #pickerStar></mat-datepicker>
-        <mat-error *ngIf="startDate.invalid">{{ getErrorMessageStartDate() }}</mat-error>
+        <input
+          matInput
+          [formControl]="startDate"
+          [matDatepicker]="pickerStar"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerStar"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #pickerStar
+          (closed)="beforeTodayDateValidator(startDate);validDatesValidator();"
+        ></mat-datepicker>
+        <mat-error *ngIf="startDate.invalid"
+          >{{ getErrorMessageStartDate() }}</mat-error
+        >
       </mat-form-field>
     </div>
+    <br />
     <div>
       <mat-form-field>
         <mat-label>Fecha de fin</mat-label>
-        <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd" />
-        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-        <mat-datepicker #pickerEnd></mat-datepicker>
-        <mat-error *ngIf="endDate.invalid">{{ getErrorMessageEndDate() }}</mat-error>
+      <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd"/>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerEnd"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #pickerEnd
+          (closed)="beforeTodayDateValidator(endDate);validDatesValidator();"
+        ></mat-datepicker>
+        <mat-error *ngIf="endDate.invalid"
+          >{{ getErrorMessageEndDate() }}</mat-error
+        >
       </mat-form-field>
+    </div><br/>
+    <div *ngIf="data.validationAlerts">
+      <form>
+        <div>
+          <mat-form-field style="width: 100%;">
+            <mat-label>Titulo de la Alerta</mat-label>
+            <select matNativeControl [formControl]="alertTitle">
+              <option value="Sprint Review">Sprint Review</option>
+              <option value="Sprint Retrospective">Sprint Retrospective</option>
+              <option value="Medium-Sprint Review">Medium-Sprint Review</option>
+              <option value="Medium-Sprint Retrospective"
+                >Medium-Sprint Retrospective</option
+              >
+              <option value="Demo">Demo</option>
+            </select>
+            <mat-hint>Seleccione el tipo de alerta</mat-hint>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Fecha de la Alerta</mat-label>
+            <input
+              matInput
+              [formControl]="alertDate"
+              [matDatepicker]="alertPicker"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="alertPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #alertPicker
+              (closed)="beforeTodayDateValidator(alertDate); validDateInSprint(alertDate);"
+            ></mat-datepicker>
+            <mat-error *ngIf="alertDate.invalid"
+              >{{ getErrorMessageAlertDate() }}</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            id="add-alert"
+            mat-button
+            (click)="addAlert();"
+            [disabled]="!allowAdd()"
+            matTooltip="Añadir alerta al sprint"
+          >
+            Añadir
+          </button>
+        </div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let alert of alerts" (removed)="remove(alert)">
+            {{alert.title}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </form>
     </div>
+    <br />
+    <br />
     <div id="buttons-dialog">
-      <button id="cancel-dialog" mat-button (click)="onNoClick()">
+      <button
+        id="cancel-dialog"
+        mat-button
+        (click)="onNoClick()"
+        matTooltip="Cancelar creación del Sprint."
+      >
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="!validForm()" cdkFocusInitial>
+      <button
+        id="save-dialog"
+        mat-button
+        (click)="onSaveClick()"
+        cdkFocusInitial
+        matTooltip="Guardar Sprint"
+        [disabled]="loading"
+      >
         Guardar
       </button>
     </div>
