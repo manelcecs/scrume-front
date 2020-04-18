@@ -114,8 +114,6 @@ export class SprintComponent implements OnInit {
           this.burnUp = this.getChartBurnUp(burnup);
         })
 
-        this.compruebaDailyRellena();
-
         this.loadAlerts();
       } else {
         this.navigateTo("bienvenida");
@@ -383,50 +381,6 @@ export class SprintComponent implements OnInit {
     );
   }
 
-  //--------- My Daily Form
-
-  openMyDailyDialog() {
-    const dialogRef = this.dialog.open(MyDailyFormComponent, {
-      width: "250px",
-      data: { idSprint: this.idSprint },
-    });
-
-    dialogRef.afterClosed().subscribe((res: boolean) => {
-      this.daily = res;
-    });
-  }
-
-  compruebaDailyRellena() {
-    this.documentService
-      .getTodayDaily(this.idSprint)
-      .subscribe((idDoc: number) => {
-        if (idDoc != -1) {
-          this.documentService
-            .getDocuments(idDoc)
-            .subscribe((doc: Document) => {
-              if (doc != undefined) {
-                // En caso que se produzca un error con las comillas simple doc.content = doc.content.replace(/'/g, '"');
-                let dailyConts = JSON.parse(doc.content);
-
-                let username = this.userService
-                  .getUserLogged()
-                  .username.split("@")[0];
-                for (let cont of dailyConts) {
-                  let dailyWrited: Daily = cont;
-                  if (dailyWrited.name == username) {
-                    this.daily = true;
-                    break;
-                  }
-                }
-              }else{
-                this.daily = true;
-              }
-            });
-        } else {
-          this.daily = true;
-        }
-      });
-  }
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------

@@ -40,7 +40,7 @@
 
 <div *ngIf="alerts != undefined" id=notifications>
 <div class="notfication">
-<mat-card class="card-notification" *ngFor="let alert of alerts">
+<mat-card class="card-notification" *ngFor="let alert of alertas">
   <mat-card-header>
     <div mat-card-avatar class="profile-sender-invitation"><img src="../../assets/icons/icon-72x72.webp" alt="Photo of Scrume"></div>
     <mat-card-title style="font-size: 90%;">{{alert.title}}</mat-card-title>
@@ -49,10 +49,10 @@
       <table class="buttons-invitation">
           <tr>
               <td *ngIf="alert.isDaily">
-                <button class="accept-invitation" mat-button (click)="openMyDailyDialog(alert.id, alert.idSprint)" matTooltip="Rellenar tu daily"><mat-icon>done</mat-icon></button>
+                <button class="accept-invitation" mat-button (click)="openMyDailyDialog(alert, alert.idSprint)" matTooltip="Rellenar tu daily"><mat-icon>done</mat-icon></button>
               </td>
               <td>
-                <button class="reject-invitation" mat-button (click)="deleteNotification(alert.id)" matTooltip="Eliminar notificación"><mat-icon>close</mat-icon></button>
+                <button class="reject-invitation" mat-button (click)="deleteNotification(alert)" matTooltip="Eliminar notificación"><mat-icon>close</mat-icon></button>
               </td>
           </tr>
       </table>

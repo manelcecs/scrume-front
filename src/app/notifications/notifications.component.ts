@@ -26,6 +26,7 @@ export class NotificationsComponent implements OnInit {
   userSignedIn: number = 0;
   date: string;
   daily: boolean;
+  alertas: NotificationAlert[];
 
   constructor(
     private invitationService: InvitationService,
@@ -36,14 +37,16 @@ export class NotificationsComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-          let generalDate = new Date();
-          console.log("la fecha de hoy " + generalDate.toISOString());
-          for (let noti of this.alerts){
+        let generalDate = new Date();
+        this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
+          this.alertas = alerts;
+          for (let noti of this.alertas){
             let today = generalDate.toISOString().split('T')[0];
             let notiDay = new Date(noti.date).toISOString().split('T')[0];
-            console.log(today + " y " +notiDay);
             noti.isDaily = today === notiDay;
           }
+        });
+          
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {
@@ -68,24 +71,25 @@ export class NotificationsComponent implements OnInit {
 
   // Notifcations Alerts
 
-  deleteNotification(idNoti: number){
-    this.alertService.deleteAlert(idNoti).subscribe(() => {
+  deleteNotification(alert: NotificationAlert){
+    this.alertService.deleteAlert(alert.id).subscribe(() => {
       this.onAnswerInvitations.emit(null);
       console.log("se ha borrado correctamente");
+      let index = this.alertas.indexOf(alert);
+      this.alertas.splice(index, 1);
     });
   }
 
-   openMyDailyDialog(idNoti: number, idSprint: number) {
+   openMyDailyDialog(alert: NotificationAlert, idSprint: number) {
      const dialogRef = this.dialog.open(MyDailyFormComponent, {
        width: "250px",
        data: { idSprint: idSprint },
      });
-     console.log("el id del sprint" + idSprint);
 
      dialogRef.afterClosed().subscribe((res: boolean) => {
        this.daily = res;
        if(this.daily){
-         this.deleteNotification(idNoti);
+         this.deleteNotification(alert);
        }
      });
    }
