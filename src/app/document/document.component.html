@@ -159,32 +159,22 @@
         ></textarea>
       </mat-form-field>
     </div>
-    <button
-      id="buttonPDF"
-      mat-flat-button
-      (click)="updateDoc(doc)"
-      matTooltip="Guardar documento"
-    >
-      Guardar
-    </button>
 
-    <button
-      id="buttonDownloadPDF"
-      mat-flat-button
-      (click)="generatePDF(doc)"
-      matTooltip="Guardar y descargar documento en PDF"
-    >
-      Descargar
-    </button>
+    <div style="display: flex; justify-content: space-evenly;">
+      <button class="button-sprints" mat-flat-button (click)="updateDoc(doc)" matTooltip="Guardar documento">
+        Guardar
+      </button>
+  
+      <button class="button-sprints" mat-flat-button (click)="generatePDF(doc)"  matTooltip="Guardar y descargar documento en PDF">
+        Descargar
+      </button>
+  
+      <button id="cancel" mat-flat-button (click)="navigateToSprint()" matTooltip="Cancelar cambios y volver al sprint">
+        Cancelar
+      </button>
+    </div>
+    
 
-    <button
-      id="cancel"
-      mat-flat-button
-      (click)="navigateToSprint()"
-      matTooltip="Cancelar cambios y volver al sprint"
-    >
-      Cancelar
-    </button>
   </section>
 
   <section id="pdf-container">

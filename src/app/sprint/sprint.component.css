@@ -81,29 +81,6 @@ section {
 
 }
 
-.menu-sprint{
-    padding: 30px 15px; 
-    background-color: white;
-}
-
-.menu-sprint > ul > li{
-    display: flex; 
-    align-items: center; 
-}
-
-.menu-sprint > ul > li > div{
-    display: flex; 
-    align-items: center; 
-}
-
-.menu-sprint > ul > li > div > span,img{
-    margin-left: 10px; 
-}
-
-.menu-sprint > ul > li > img{ 
-    margin-left: 10px;
-}
-
 /* Barra de progreso del sprint */
 #progress-table-sprint{
     margin-top: 3%;
@@ -113,6 +90,40 @@ section {
 
 .date-sprint{
     width: 5%;
+}
+
+/* Contenido General  */
+.menu-sprint{
+    padding: 30px 15px; 
+    background-color: white;
+}
+
+.menu-sprint > ul{
+    width: 100%;
+}
+
+.menu-sprint > ul > li{
+    display: flex; 
+    align-items: center; 
+    flex-wrap: wrap;
+    padding-top: 20px;
+}
+
+.menu-sprint > ul > li > div{
+    display: flex; 
+    align-items: center; 
+}
+
+.menu-sprint > ul > li > span,img{
+    margin-left: 10px; 
+}
+
+.menu-sprint > ul > li > div > span,img{
+    margin-left: 10px; 
+}
+
+.menu-sprint > ul > li > img{ 
+    margin-left: 10px;
 }
 
 /* Lista de tableros */
@@ -131,6 +142,18 @@ section {
 }
 
 /* Métricas y gráficos */
+
+.menu-sprint-graph{
+    padding: 30px 15px; 
+    background-color: white;
+}
+
+.menu-sprint-graph > div{ 
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
 #dashboard-sprint {
     width: 100%;
     margin-top: 13%;
@@ -146,6 +169,29 @@ section {
   font-size: smaller;
 }
 
+
+
+@media (min-width: 1000px) {
+    .chart {
+      max-width: 60%;
+      margin: 0 20%;
+    }
+    .statistics{
+        width: 50%;
+        margin: 0 25%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .img-empty{
+        width: 90%;
+        height: auto;
+    }
+    #progress-sprint{
+        margin-bottom: 20px;
+    }
+  }
+
 /*Board*/
 .tableBoard {
     padding: 5%;
@@ -156,12 +202,7 @@ section {
 .tableDocument {
     padding-left: 5%;
 }
-/* Charts */
-@media (min-width: 1000px) {
-    .chart {
-      max-width: 60%;
-    }
-  }
+
 
 /*Alerts*/
 .info-sprint-alerts{
