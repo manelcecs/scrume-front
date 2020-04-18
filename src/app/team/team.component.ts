@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef, ViewChild, Injectable } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { Team } from '../dominio/team.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
@@ -17,7 +17,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { InvitationService } from '../servicio/invitation.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { map, startWith, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';
 
