@@ -1,15 +1,15 @@
-<h3>Mis notas personales</h3>
-<img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
-   (click)="openCreateNoteDialog(0);">
+<h3>Mis notas personales
+   <img id="create" src="../assets/more.webp" class="d-inline-block align-top" alt=""
+   (click)="openCreateNoteDialog(0);" width="auto" height="25" matTooltip="Crear una nota">
+</h3>
 <div class="example-boundary">
     <div *ngFor="let note of notes">
     <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
-      {{ note.title }}<br>
-       {{ note.content }}
+       {{ note.content }}<br>
        <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
-            (click)="openCreateNoteDialog(note.id);">
+            (click)="openCreateNoteDialog(note.id);" matTooltip="Editar esta nota">
        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
-       (click)="getDelete(note.id)">
+       (click)="getDelete(note.id)" matTooltip="Borrar esta nota"><br>
     </div>
     </div>
 </div>

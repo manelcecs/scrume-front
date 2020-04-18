@@ -5,8 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoteService } from '../servicio/note.service';
 import { NoteDisplay } from '../dominio/note.domain';
 import { UserService } from '../servicio/user.service';
-import { NotesComponent } from '../notes/notes.component';
-import { UserLogged } from '../dominio/jwt.domain';
 
 @Component({
   selector: 'app-create-notes-dialog',
