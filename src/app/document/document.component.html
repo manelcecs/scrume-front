@@ -160,19 +160,23 @@
       </mat-form-field>
     </div>
 
-    <div style="display: flex; justify-content: space-evenly;">
+    <div style="display: flex; justify-content: space-evenly; position: relative;">
+      <button id="cancel" mat-flat-button (click)="navigateToSprint()" matTooltip="Cancelar cambios y volver al sprint">
+        Cancelar
+      </button>
+
       <button class="button-sprints" mat-flat-button (click)="updateDoc(doc)" matTooltip="Guardar documento">
         Guardar
       </button>
   
       <button class="button-sprints" mat-flat-button (click)="generatePDF(doc)"  matTooltip="Guardar y descargar documento en PDF">
         Descargar
-      </button>
-  
-      <button id="cancel" mat-flat-button (click)="navigateToSprint()" matTooltip="Cancelar cambios y volver al sprint">
-        Cancelar
-      </button>
+      </button>   
+      <div id="view-preview">
+        <img  src="../assets/eye.webp" width="auto" height="22" class="d-inline-block align-top" alt="eye" (click)="viewPreview()" />
+      </div>
     </div>
+
     
 
   </section>
@@ -251,6 +255,14 @@
         <p id="reviewRePlanning">{{ rePlanning }}</p>
         <br />
       </div>
+    </div>  
+
+    <div id="quit-view-preview">
+      <img  src="../assets/cross.webp" width="auto" height="15" class="d-inline-block align-top" alt="cross" (click)="quitViewPreview()" />
     </div>
+
   </section>
 </div>
+
+
+<input id="preview" type="hidden" value="false"/>

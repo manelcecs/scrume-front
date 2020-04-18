@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DocumentService } from "../servicio/document.service";
 import { Document, Daily } from "../dominio/document.domain";
@@ -19,6 +19,7 @@ export class DocumentComponent implements OnInit {
 
   message: string;
   close: string;
+  preview: string;
 
   //retrospective
   nameRetrospective;
@@ -52,10 +53,10 @@ export class DocumentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.preview = "vivo";
     this.activatedRoute.queryParams.subscribe((param) => {
       if (param.id != undefined) {
         this.idDoc = param.id;
-
         this.message = "Se ha guardado el documento correctamente";
         this.close = "Cerrar";
 
@@ -198,6 +199,8 @@ export class DocumentComponent implements OnInit {
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
 
+  
+
   //Planning
 
   planningName(value: string) {
@@ -221,6 +224,76 @@ export class DocumentComponent implements OnInit {
     var scrollNow = document.getElementById("planningConseguir");
     pdfContainer.scrollTop = scrollNow.clientHeight;
   }
+
+  viewPreview(){
+    var formContainer = document.getElementById("forms");
+    var pdfContainer = document.getElementById("pdf-container");
+    var quitViewPreview = document.getElementById("quit-view-preview");
+    formContainer.style.display = "none";
+    pdfContainer.style.display = "block";
+    pdfContainer.style.width = "100%";
+    quitViewPreview.style.display = "block";
+
+    var preview = document.getElementById("preview");
+    preview.setAttribute("value", "true");
+  }
+
+  quitViewPreview(){
+    var formContainer = document.getElementById("forms");
+    var pdfContainer = document.getElementById("pdf-container");
+    formContainer.style.display = "block";
+    formContainer.style.width = "100%";
+    pdfContainer.style.display = "none";
+
+    var preview = document.getElementById("preview");
+    preview.setAttribute("value", "false");
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+  var pdfContainer = document.getElementById("pdf-container");
+  var formContainer = document.getElementById("forms");
+  var viewPreview = document.getElementById("view-preview");
+  var quitViewPreview = document.getElementById("quit-view-preview");
+  var w = window.innerWidth;
+
+  if (w >= 900){
+    pdfContainer.style.display = "block";
+    pdfContainer.style.width = "60%";
+
+    formContainer.style.display = "block";
+    formContainer.style.width = "40%";
+
+    viewPreview.style.display = "none";
+    quitViewPreview.style.display = "none";
+  } else{
+    var preview = document.getElementById("preview");
+    var previewValue = preview.getAttribute("value");
+    if(previewValue == "false"){
+      pdfContainer.style.display = "none";
+      formContainer.style.display = "block";
+      formContainer.style.width = "100%";
+      viewPreview.style.display = "block";
+    }
+
+    if(previewValue == "true"){
+      formContainer.style.display = "none";
+      pdfContainer.style.display = "block";
+      pdfContainer.style.width = "100%";
+      quitViewPreview.style.display = "block";
+    }
+  }
+
+  // console.log("Tamano: " + w +" | Preview: " + this.preview)
+  // if(w >= 900){
+  //   pdfContainer.style.display = "block";
+  //   pdfContainer.style.width = "60%";
+  //   quitViewPreview.style.display = "None";
+  // }
+  //   if(w < 900 && quitViewPreview.style.display == "None"){
+  //     pdfContainer.style.display = "none";
+  //   }
+}
 
   generatePDF(doc: Document) {
     if (doc.type == "REVIEW" || doc.type == "MIDDLE_REVIEW") {

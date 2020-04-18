@@ -1,79 +1,87 @@
 #forms{
-    width: 40%;
-    height: 90%;
-    padding: 2% 5%;
-    overflow-y: auto;
-    position: fixed;
+  width: 40%;
+  height: 90%;
+  padding: 2% 5%;
+  overflow-y: auto;
+  position: fixed;
 }
 
+
+
 #forms > div{
-    float: left;
-    width: 100%;
-    padding: 5% 5%;
+  float: left;
+  width: 100%;
+  padding: 5% 5%;
+}
+
+#view-preview{
+  display: none;
+  position: absolute; 
+  top:-475px; 
+  right: 10px; 
+  cursor: pointer; 
+  opacity: 0.7;
 }
 
 .form-field{
-    float: left;
-    width: 100%;
-    margin-bottom: 20px;
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-
 #pdf-container{
-    float: right;
-    height: 100%;
-    width: 60%;
-    padding: 4% 8% 0% 8%;
-    background-color: #E7E7E7;
-    
+  display: block; 
+  float: right;
+  height: 100%;
+  width: 60%;
+  padding: 4% 8% 0% 8%;
+  background-color: #E7E7E7;
+  position: relative;
+  
+}
+
+#quit-view-preview{
+  display: none;
+  position: absolute; 
+  top:20px; 
+  left: 20px; 
+  cursor: pointer; 
+  opacity: 0.7;
 }
 
 .paper {
-    background: #fff;
-    box-shadow:
-      0 -1px 1px rgba(0,0,0,0.15),
-      0 -10px 0 -5px #eee,
-      0 -10px 1px -4px rgba(0,0,0,0.15),
-      0 -20px 0 -10px #eee,
-      0 -20px 1px -9px rgba(0,0,0,0.15);
-    padding: 8% 10%;
-    width: 100%;
-    min-height: 900px;
-    height: auto;
-    margin: 2%;
-    word-wrap: break-word;
-    white-space: pre-line;
-  }
-
+  background: #fff;
+  box-shadow:
+    0 -1px 1px rgba(0,0,0,0.15),
+    0 -10px 0 -5px #eee,
+    0 -10px 1px -4px rgba(0,0,0,0.15),
+    0 -20px 0 -10px #eee,
+    0 -20px 1px -9px rgba(0,0,0,0.15);
+  padding: 8% 10%;
+  width: 100%;
+  min-height: 900px;
+  height: auto;
+  margin: 2%;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
 
 #cancel {
-  background-color: #e62e2e;
-  color: white;
+background-color: #e62e2e;
+color: white;
 }
 
 #cancel:hover {
-  background-color: #db0f0f;
+background-color: #db0f0f;
 }
 
 .button-sprints {
-  background-color: #38B6FF;
-  color: white;
+background-color: #38B6FF;
+color: white;
 }
+
 .button-sprints:hover {
-  background-color: #18A1F0;
-}
-
-
-
-@media (max-width: 900px) {
-  #pdf-container{
-    display: none;  
-  }
-
-  #forms{
-    width: 100%;
-  }
-
+background-color: #18A1F0;
 }
 
 
