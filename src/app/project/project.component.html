@@ -46,9 +46,6 @@
             <div class="title-progress-project">
               <div class="name-sprint-project">
                 <a (click)="navigateToSprint(sprint)" matTooltip="Ver sprint">Sprint {{ i + 1 }}</a>
-                <img style="margin-left: 10px;" src="../assets/alert-sign.webp" matTooltip="Añadir alertas al sprint"
-                  width="auto" height="20" class="d-inline-block align-top" alt="add alert"
-                  (click)="openAlertDialog(sprint.id)" *ngIf="validationCreateAlert" />
               </div>
               <div class="progress progress-project">
                 <div class="progress-bar bg-success" role="progressbar" style="width: {{

@@ -240,6 +240,17 @@ export class SprintComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+  openCreateAlert(sprintId: number): void {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: "250px",
+      data: { idSprint: sprintId },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(EditSprintDialog, {
       width: "250px",

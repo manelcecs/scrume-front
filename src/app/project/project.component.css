@@ -36,7 +36,12 @@
 }
 
 /*-----------------*/
+#myTabContent{
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
 
+}
 
 /* Descripcion and product backlog */
 

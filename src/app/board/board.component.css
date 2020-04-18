@@ -1,6 +1,30 @@
 #main{
-  padding: 3% 2%;
+  padding: 3% 10%;
 }
+
+/* Header */
+
+
+#header-board{
+  min-width: 10em;
+  width: 100%;
+  height: auto;
+}
+
+#header-board > nav > ol{ 
+  background-color: #fafafa;
+}
+
+#header-board > nav > ol > li > a{ 
+  font-size: 18px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+#header-board > nav > ol > li{ 
+  font-size: 18px;
+}
+
 
 /* Tableros */
 

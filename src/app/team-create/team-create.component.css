@@ -54,8 +54,15 @@
 /* Table members */
 table {
   width: 100%;
+  margin-top: 20px;
 }
 
 mat-icon:hover {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 745px) {
+    #main-team{
+        padding: 3% 10%;
+    }
+  }

@@ -97,20 +97,7 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  openAlertDialog(sprintId: number): void {
-    const dialogRef = this.dialog.open(AlertComponent, {
-      width: "250px",
-      data: { idSprint: sprintId },
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.sprintService
-        .getSprintsOfProject(this.project.id)
-        .subscribe((sprint: SprintDisplay[]) => {
-          this.sprints = sprint;
-        });
-    });
-  }
+  
 }
 
 export interface ExchangeData {

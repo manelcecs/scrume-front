@@ -89,7 +89,8 @@ export class TeamComponent implements OnInit {
     this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple) => {
       this.boardNumber = board.id;
       if (this.boardNumber != 0) {
-        this.router.navigate(['board'], { queryParams: { id: this.boardNumber } });
+        this.router.navigate(['board'], { queryParams: { id: this.boardNumber} });
+        //this.router.navigate(['board'], { queryParams: { id: this.boardNumber,  idSprint: board.sprint.id} });
       } else {
         this._snackBar.open("No hay un tablero actualizado recientemente", "Cerrar", {
           duration: 5000,
