@@ -105,7 +105,6 @@ export class SprintComponent implements OnInit {
         .subscribe((burnDown: BurnDownDisplay[]) => {
           this.burnDown = burnDown;
           this.burnDown = this.getChartBurnDown(burnDown);
-          console.log(burnDown);
         }) 
 
         this.sprintService
@@ -114,8 +113,6 @@ export class SprintComponent implements OnInit {
           this.burnUp = burnup;
           this.burnUp = this.getChartBurnUp(burnup);
         })
-
-        this.compruebaDailyRellena();
 
         this.loadAlerts();
       } else {
@@ -134,7 +131,6 @@ export class SprintComponent implements OnInit {
     }
     for (let x = 0; x < chartJSON[0].totalDates; x++) {
       days1.push("Day " + (x + 1));
-      console.log("2:" + days1);
       let max = chartJSON[0].pointsBurnDown;
       let div = max/chartJSON[0].totalDates;
       acum = max - (div*x);
@@ -148,7 +144,6 @@ export class SprintComponent implements OnInit {
         }
       }
     }
-    console.log("Los puntos de historia del burndown" + objetive1);
     // Trabajando con la gráfica
     this.chart = new Chart('burnDown', {
       type: 'line',
@@ -238,6 +233,17 @@ export class SprintComponent implements OnInit {
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
+  }
+
+  openCreateAlert(sprintId: number): void {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: "250px",
+      data: { idSprint: sprintId },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
   }
 
   openDialog(): void {
@@ -386,50 +392,6 @@ export class SprintComponent implements OnInit {
     );
   }
 
-  //--------- My Daily Form
-
-  openMyDailyDialog() {
-    const dialogRef = this.dialog.open(MyDailyFormComponent, {
-      width: "250px",
-      data: { idSprint: this.idSprint },
-    });
-
-    dialogRef.afterClosed().subscribe((res: boolean) => {
-      this.daily = res;
-    });
-  }
-
-  compruebaDailyRellena() {
-    this.documentService
-      .getTodayDaily(this.idSprint)
-      .subscribe((idDoc: number) => {
-        if (idDoc != -1) {
-          this.documentService
-            .getDocuments(idDoc)
-            .subscribe((doc: Document) => {
-              if (doc != undefined) {
-                // En caso que se produzca un error con las comillas simple doc.content = doc.content.replace(/'/g, '"');
-                let dailyConts = JSON.parse(doc.content);
-
-                let username = this.userService
-                  .getUserLogged()
-                  .username.split("@")[0];
-                for (let cont of dailyConts) {
-                  let dailyWrited: Daily = cont;
-                  if (dailyWrited.name == username) {
-                    this.daily = true;
-                    break;
-                  }
-                }
-              }else{
-                this.daily = true;
-              }
-            });
-        } else {
-          this.daily = true;
-        }
-      });
-  }
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------

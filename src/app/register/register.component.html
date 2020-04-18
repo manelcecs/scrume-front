@@ -1,11 +1,9 @@
 <div id="register-main">
-  <mat-horizontal-stepper linear #stepper>
+  <mat-horizontal-stepper labelPosition="bottom" #stepper>
 
-
-
-    <mat-step [stepControl]="signUpFormGroup" state="signUp">
+    <mat-step [stepControl]="signUpFormGroup"  state="signUp">
       <form [formGroup]="signUpFormGroup">
-        <ng-template matStepLabel>Registro</ng-template>
+        <ng-template matStepLabel style="display: none;">Registro</ng-template>
 
         <mat-form-field class="register-input">
           <mat-label>Email</mat-label>

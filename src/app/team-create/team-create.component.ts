@@ -36,7 +36,7 @@ export class TeamCreateComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  private id: number;
+  id: number;
   team: Team;
 
   name: FormControl = new FormControl("", {

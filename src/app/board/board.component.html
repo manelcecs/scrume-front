@@ -1,11 +1,23 @@
-{{message}}
-
-
 <div id="main">
 
-  <button *ngIf="idSprint != undefined" style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
-    Volver al Sprint
-</button>
+  <section id="header-board">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a (click)="navigateTo('teams')">{{sprint.project.team.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a (click)="back()">Sprint</a>
+        </li>
+        <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">
+          {{ board.name }}
+        </li>
+      </ol>
+    </nav>
+  </section>
 
   <div id="boards-container" cdkDropListGroup>
     <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">
@@ -20,9 +32,9 @@
           <p>{{tarea.title}}</p>
 
           <div style="display: flex; align-items: center;">
-            <div class="roundImage"*ngFor="let user of tarea.users">
-              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo != undefined && user.photo !== '' " src="{{user.photo}}" width="40" height="40" class="d-inline-block align-top user-img"/>
-              <img style="margin-right: 10px" alt="{{user.nick}}" *ngIf="!(user.photo != undefined && user.photo !== '') " width="40" height="40" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png"/>
+            <div class="roundImage"*ngFor="let user of tarea.users" matTooltip="{{user.nick}}">
+              <img style="margin-right: 10px" alt="userPhoto{{user.nick}}" *ngIf="user.photo != undefined && user.photo !== '' " src="{{user.photo}}" width="30" height="30" class="d-inline-block align-top user-img"/>
+              <img style="margin-right: 10px" alt="{{user.nick}}" *ngIf="!(user.photo != undefined && user.photo !== '') " width="30" height="30" class="d-inline-block align-top user-img" alt="" src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-4/512/User-blue-icon.png"/>
             </div>
             <img src="../assets/add-user.webp" width="auto" height="20" class="d-inline-block align-top" alt="" (click)="addUsers(tarea)">
           </div>

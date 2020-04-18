@@ -19,27 +19,21 @@
       </div>
     </form>
   </section>
-</div>
 
-<div *ngIf="team != undefined" id="members-team">
+
+<div *ngIf="id != undefined" id="members-team">
   <table mat-table [dataSource]="members" class="mat-elevation-z8">
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- Position Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let element"> {{element.email}} <span *ngIf="element.isAdmin"class="badge badge-primary">ADMIN</span></td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="nickname">
         <th mat-header-cell *matHeaderCellDef> Nickname </th>
       <td mat-cell *matCellDef="let element"> {{element.nickname}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
@@ -56,4 +50,4 @@
   </table>
 </div>
 
-
+</div>

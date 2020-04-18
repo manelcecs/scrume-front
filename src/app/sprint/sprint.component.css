@@ -5,31 +5,38 @@
     height: auto;
 }
 
-#header-sprint > nav > ol{ 
+#header-sprint > nav > ol{
     background-color: #fafafa;
 }
 
-#header-sprint > nav > ol > li > a{ 
+#header-sprint > nav > ol > li > a{
     font-size: 18px;
     color: #007bff;
     cursor: pointer;
 }
 
-#header-sprint > nav > ol > li{ 
+#header-sprint > nav > ol > li{
     font-size: 18px;
 }
-#header-sprint > nav > ol > li> img{ 
+#header-sprint > nav > ol > li> img{
     margin-left: 15px;
     margin-bottom: 3px;
     cursor: pointer;
 }
 
 
-#header-sprint > nav > ol > li > a:hover{ 
+#header-sprint > nav > ol > li > a:hover{
     font-size: 18px;
     color: #1976d2;
 }
 
+.navigable:hover {
+  cursor: pointer;
+}
+
+.action:hover{
+  cursor: pointer;
+}
 /* ---------------- */
 
 /* More info sprint */
@@ -67,6 +74,35 @@ section {
 
 /* Sprint header */
 
+#myTabContent{
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+
+}
+
+.menu-sprint{
+    padding: 30px 15px; 
+    background-color: white;
+}
+
+.menu-sprint > ul > li{
+    display: flex; 
+    align-items: center; 
+}
+
+.menu-sprint > ul > li > div{
+    display: flex; 
+    align-items: center; 
+}
+
+.menu-sprint > ul > li > div > span,img{
+    margin-left: 10px; 
+}
+
+.menu-sprint > ul > li > img{ 
+    margin-left: 10px;
+}
 
 /* Barra de progreso del sprint */
 #progress-table-sprint{
@@ -87,6 +123,11 @@ section {
 
 #list-section-workspace-sprint > mat-list {
     width: 100%;
+}
+
+.navigable:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* Métricas y gráficos */
@@ -126,4 +167,14 @@ section {
 .info-sprint-alerts{
     display: flex;
     align-items: center;
+}
+
+
+.button-sprints {
+    background-color: #38B6FF;
+    color: white;
+    margin-left: 1em;
+}
+.button-sprints:hover {
+    background-color: #18A1F0;
 }
