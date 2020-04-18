@@ -244,7 +244,6 @@ export class ProfileComponent implements OnInit {
       width: "250px",
     });
     dialogRef.afterClosed().subscribe(() => {
-      console.log("holii");
     });
   }
 
