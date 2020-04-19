@@ -17,7 +17,6 @@ export class BadgeMinimumBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Idteam",this.idTeam);
     this.teamService.getMinimumBox(this.idTeam).subscribe((box: Box) => {
        this.boxName = box.name;
      });

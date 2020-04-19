@@ -59,8 +59,7 @@ export class SprintWorkspaceResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        console.log("Iniciando el resolver: Sprints");
-        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.id);
+        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.idSprint);
     }
 }
 
@@ -74,11 +73,16 @@ export class SprintResolverService implements Resolve<any>{
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
 
         let method = activatedRoute.queryParams.method;
-        let id = activatedRoute.queryParams.id;
+
+
 
         if(method == "list"){
+          
+          let id = activatedRoute.queryParams.idProject;
           return this.sprintService.getSprintsOfProject(id);
         }else if(method == "get"){
+          
+          let id = activatedRoute.queryParams.idSprint;
           return this.sprintService.getSprint(id);
         }
         

@@ -25,6 +25,7 @@ import { SecurityBreachComponent } from './security-breach/security-breach.compo
 import { BoardResolverService } from './servicio/board.service';
 import { ProfileResolverService } from './servicio/profile.service';
 import { NotesComponent } from './notes/notes.component';
+import { DocumentResolverService } from './servicio/document.service';
 
 
 const routes: Routes = [
@@ -34,14 +35,14 @@ const routes: Routes = [
   {path: 'teamsCreate', component: TeamCreateComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createProject', component: CreateProjectComponent, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'sprint', component: SprintComponent, resolve:{sprint: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'sprint', component: SprintComponent, resolve:{sprint: SprintResolverService, documents: DocumentResolverService, boards: BoardResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createBoard', component: CreateBoardComponent, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'board', component: BoardComponent, resolve:{board: BoardResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'board', component: BoardComponent, resolve:{board: BoardResolverService, sprint : SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'invitation', component: CreateInvitationComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'terms-of-use', component: TermsOfUseComponent},
-  {path: 'document', component: DocumentComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'document', component: DocumentComponent, canActivate: [CheckExpirationBoxGuard], resolve:{document: DocumentResolverService}},
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'profile', component: ProfileComponent, resolve:{profile: ProfileResolverService}},
   {path: 'personal', component: PersonalDataComponent},

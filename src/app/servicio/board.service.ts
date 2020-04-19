@@ -46,9 +46,16 @@ export class BoardResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        let id = activatedRoute.queryParams.id;
+        let id = activatedRoute.queryParams.idBoard;
+        let idSprint = activatedRoute.queryParams.idSprint;
 
-        return this.boardService.getBoard(id);
+        
+        if(id == undefined && idSprint != undefined){
+            return this.boardService.getBoardBySprint(idSprint);
+        }else{
+            return this.boardService.getBoard(id);
+        }
+
 
     }
 }

@@ -6,9 +6,7 @@ import {
 } from "../dominio/sprint.domain";
 import {
   FormControl,
-  Validators,
-  ValidatorFn,
-  AbstractControl,
+  Validators
 } from "@angular/forms";
 import {
   MatDialogRef,
@@ -66,35 +64,23 @@ export class SprintComponent implements OnInit {
     private alertService: AlertService,
     private userService: UserService,
     private validationService: ValidationService) {
-    this.sprint = this.activatedRoute.snapshot.data.sprint;
+      this.sprint = this.activatedRoute.snapshot.data.sprint;
+      this.idSprint = this.sprint.id;
+      this.board = this.activatedRoute.snapshot.data.boards;
+      this.doc = this.activatedRoute.snapshot.data.documents;
+
   }
 
   ngOnInit(): void {
 
     if (this.sprint != undefined) {
 
-      this.idSprint = this.sprint.id;
-
       this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
-      //lista de boards
-      this.boardService
-        .getBoardBySprint(this.idSprint)
-        .subscribe((board: BoardSimple[]) => {
-          this.board = board;
-          this.updateValidatorCreateBoard();
-        });
 
       //validacion
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {
         this.validationCreateAlert = res;
       })
-
-      //lista de documents
-      this.documentService
-        .getDocumentsBySprint(this.idSprint)
-        .subscribe((doc: Document[]) => {
-          this.doc = doc;
-        });
 
       // Gráficas
       this.sprintService
@@ -259,7 +245,7 @@ export class SprintComponent implements OnInit {
   }
 
   openProject(proj: number): void {
-    this.router.navigate(["project"], { queryParams: { method: "list", id: proj } });
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj} });
   }
 
   openTeam(team: number): void {
@@ -269,9 +255,7 @@ export class SprintComponent implements OnInit {
   //Board-----------------------------------------------------------------------------------------------------------------------------------
 
   openBoard(board: number): void {
-    this.router.navigate(["board"], {
-      queryParams: { id: board, idSprint: this.idSprint },
-    });
+    this.router.navigate(['board'], { queryParams: { idBoard: board,  idSprint: this.idSprint, method: "get"} });
   }
 
   createBoard(row: SprintDisplay): void {

@@ -79,7 +79,7 @@ export class ProjectComponent implements OnInit {
   }
 
   navigateToSprint(sprint: Sprint): void {
-    this.router.navigate(["sprint"], { queryParams: { method:"get", id: sprint.id } });
+    this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: sprint.id } });
   }
 
   editProject(project: ProjectDto) {
