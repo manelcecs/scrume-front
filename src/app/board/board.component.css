@@ -74,9 +74,32 @@
   border-radius: 50%;
 }
 
-@media only screen and (max-width: 600px)  {
-  body{
-    orientation: landscape;
-    /* orientation: portrait; */
+@media only screen and (max-width: 800px)  {
+  #main{
+    padding: 3% 5%;
   }
+  
+}
+
+@media only screen and (max-width: 600px)  {
+  #main{
+    padding: 3% 1%;
+  }
+  
+}
+
+@media only screen and (max-width: 500px)  {
+  #main{
+    padding: 3% 0%;
+  }
+
+  #boards-container{
+    display: flex;
+    justify-content: center;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+  
 }
