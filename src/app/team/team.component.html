@@ -12,7 +12,7 @@
       <img *ngIf="team.isAdmin" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top" alt="" matTooltip="Editar y gestionar miembros" (click)="editTeam(team)">
       <img *ngIf="team.isAdmin" src="../assets/add-user.webp" width="auto" height="25" class="d-inline-block align-top" alt="" matTooltip="Invitar usuarios" (click)="openDialogInvite(team.id)">
       <img *ngIf="team.isAdmin" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top" alt="" matTooltip="Borrar equipo" (click)="deleteTeam(team.id)">
-      <img src="../assets/leave.webp" width="auto" height="25" class="d-inline-block align-top" alt="" matTooltip="Salir del equipo" (click)="leaveTeam(team.id)">
+      <img src="../assets/leave.webp" width="auto" height="25" class="d-inline-block align-top" style="opacity: 0.75;" alt="" matTooltip="Salir del equipo" (click)="leaveTeam(team.id)">
 
     </div>
 
@@ -26,9 +26,9 @@
 
           <mat-card class="project-card-none">
 
-            <img src="../assets/board.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openBoard(project.id)">
-            <img src="../assets/report.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openSprint(project)">
-            <img src="../assets/project.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openProject(project)">
+            <img matTooltip="Ir al tablero actual" src="../assets/board.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openBoard(project.id)">
+            <img matTooltip="Ir al sprint actual" src="../assets/report.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openSprint(project)">
+            <img matTooltip="Ir al proyecto" src="../assets/project.webp" width="auto" height="30" class="d-inline-block align-top" alt="" (click)="openProject(project)">
 
           </mat-card>
 

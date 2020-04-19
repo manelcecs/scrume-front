@@ -11,7 +11,7 @@
 #cancel-dialog {
     background-color: #e62e2e;
     color: white;
-    margin-left: 1em;
+    margin-right: 1em;
 }
 
 #cancel-dialog:hover {
@@ -19,5 +19,5 @@
 }
 
 #buttons-dialog {
-    justify-content: center;
+    margin-top: 30px;
 }

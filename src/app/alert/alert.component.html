@@ -1,11 +1,11 @@
-<form>
+<form style="text-align: center;">
   <h4>
     {{
       idAlert != undefined ? "Añade alertas a tu Sprint" : "Modifica tu alerta"
     }}
   </h4>
   <div>
-    <mat-form-field>
+    <mat-form-field style="width: 100%;"> 
       <mat-label>Titulo de la Alerta</mat-label>
       <select matNativeControl [formControl]="alertTitle">
         <option value="Sprint Review">Sprint Review</option>
@@ -49,7 +49,7 @@
       Añadir
     </button>
   </div>
-  <mat-chip-list *ngIf="idAlert == undefined">
+  <mat-chip-list style="display: flex; justify-content: center;" *ngIf="idAlert == undefined">
     <mat-chip
       *ngFor="let alert of alerts"
       (removed)="remove(alert)"

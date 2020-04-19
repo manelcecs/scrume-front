@@ -58,31 +58,6 @@
 
 /* Datos personales */
 
-#datos-personales{
-    background-color: black;
-    color: white;
-    padding: 4px 9px;
-    margin-bottom: 1px;
-    text-align: center;
-    width: 100%;
-}
-
-#datos-personales:hover{
-    background-color: rgb(63, 63, 70);
-}
-
-#borrar-datos{
-    background-color: black;
-    color: white;
-    padding: 4px 9px;
-    text-align: center;
-    width: 100%;
-}
-
-#borrar-datos:hover{
-    background-color: rgb(63, 63, 70);
-}
-
 #panel{
     width: 100%;
 }
@@ -102,7 +77,19 @@
 }
 
 .botones {
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botones > button{
+    background-color: #38B6FF;
+    color: white;
+    margin-left: 1em;
+}
+
+.botones > button:hover{
+    background-color: #18A1F0;
 }
 
 mat-icon:hover {
