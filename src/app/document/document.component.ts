@@ -116,7 +116,7 @@ export class DocumentComponent implements OnInit {
   }
 
   navigateToSprint(): void {
-    this.router.navigate(["sprint"], {queryParams:{id: this.doc.sprint}})
+    this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: this.doc.sprint } });
   }
 
   //Daily
@@ -407,10 +407,8 @@ export class DocumentComponent implements OnInit {
         })
         .afterDismissed()
         .subscribe(() => {
-          this.router.navigate(["sprint"], {
-            queryParams: { id: this.doc.sprint },
+          this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: this.doc.sprint } });
           });
-        });
     }
   }
 }
