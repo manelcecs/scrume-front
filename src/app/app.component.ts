@@ -97,7 +97,6 @@ export class AppComponent implements OnInit, OnDestroy {
   cargarMenu() : void{
     let token = sessionStorage.getItem("loginToken");
     let logged = token != null && token !== "";
-    console.log("Logged", logged);
 
     this.routes = [
       {
@@ -175,7 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
         this.isAdmin = isAdmin;
 
-        if (this.isAdmin == true){
+        if (this.isAdmin){
           this.navigateTo("admin");
         }else{
           this.navigateTo("teams");
@@ -204,7 +203,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   updateTeams(){
-    console.log(this.router.url);
     if (this.router.url == "/teams") {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';

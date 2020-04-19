@@ -19,7 +19,6 @@ export class DocumentComponent implements OnInit {
 
   message: string;
   close: string;
-  preview: string;
 
   //retrospective
   nameRetrospective;
@@ -50,70 +49,66 @@ export class DocumentComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private _snackBar: MatSnackBar,
     private userService: UserService
-  ) {}
+  ) {
+
+    this.doc = this.activatedRoute.snapshot.data.document;
+
+  }
 
   ngOnInit(): void {
-    this.preview = "vivo";
-    this.activatedRoute.queryParams.subscribe((param) => {
-      if (param.id != undefined) {
-        this.idDoc = param.id;
-        this.message = "Se ha guardado el documento correctamente";
-        this.close = "Cerrar";
 
-        this.documentService
-          .getDocuments(this.idDoc)
-          .subscribe((doc: Document) => {
-            this.doc = doc;
+    if(this.doc != undefined){
+      
+      this.idDoc = this.doc.id;
 
-            if (doc.type == "RETROSPECTIVE" || doc.type == "MIDDLE_RETROSPECTIVE") {
-              this.nameRetrospective = this.doc.name;
-              this.good = JSON.parse(this.doc.content).good;
-              this.bad = JSON.parse(this.doc.content).bad;
-              this.improvement = JSON.parse(this.doc.content).improvement;
-            } else if (doc.type == "REVIEW" || doc.type == "MIDDLE_REVIEW") {
-              this.nameReview = this.doc.name;
-              this.done = JSON.parse(this.doc.content).done;
-              this.noDone = JSON.parse(this.doc.content).noDone;
-              this.rePlanning = JSON.parse(this.doc.content).rePlanning;
-            } else if (doc.type == "DAILY") {
-              this.nameDaily = this.doc.name;
-              let docContent = JSON.parse(this.doc.content);
-              console.log(
-                "Contenido inicial: ",
-                JSON.stringify(this.doc.content)
-              );
-              for (let cont of docContent) {
-                let dailyWrited: Daily = cont;
-                this.dailies.push(dailyWrited);
-                if (
-                  dailyWrited.name ==
-                  this.userService.getUserLogged().username.split("@")[0]
-                ) {
-                  this.done = dailyWrited.done;
-                  this.todo = dailyWrited.doing;
-                  this.problem = dailyWrited.problems;
-                  this.myDaily = dailyWrited;
-                }
-              }
-              if (this.myDaily == undefined) {
-                this.myDaily = {
-                  name: this.userService.getUserLogged().username.split("@")[0],
-                  done: "",
-                  doing: "",
-                  problems: "",
-                };
-                this.dailies.push(this.myDaily);
-              }
-            } else {
-              this.namePlanning = this.doc.name;
-              this.entrega = JSON.parse(this.doc.content).entrega;
-              this.conseguir = JSON.parse(this.doc.content).conseguir;
-            }
-          });
+      this.message = "Se ha guardado el documento correctamente";
+      this.close = "Cerrar";
+
+      if (this.doc.type == "RETROSPECTIVE" || this.doc.type == "MIDDLE_RETROSPECTIVE") {
+        this.nameRetrospective = this.doc.name;
+        this.good = JSON.parse(this.doc.content).good;
+        this.bad = JSON.parse(this.doc.content).bad;
+        this.improvement = JSON.parse(this.doc.content).improvement;
+      } else if (this.doc.type == "REVIEW" || this.doc.type == "MIDDLE_REVIEW") {
+        this.nameReview = this.doc.name;
+        this.done = JSON.parse(this.doc.content).done;
+        this.noDone = JSON.parse(this.doc.content).noDone;
+        this.rePlanning = JSON.parse(this.doc.content).rePlanning;
+      } else if (this.doc.type == "DAILY") {
+        this.nameDaily = this.doc.name;
+        let docContent = JSON.parse(this.doc.content);
+        for (let cont of docContent) {
+          let dailyWrited: Daily = cont;
+          this.dailies.push(dailyWrited);
+          if (
+            dailyWrited.name ==
+            this.userService.getUserLogged().username.split("@")[0]
+          ) {
+            this.done = dailyWrited.done;
+            this.todo = dailyWrited.doing;
+            this.problem = dailyWrited.problems;
+            this.myDaily = dailyWrited;
+          }
+        }
+        if (this.myDaily == undefined) {
+          this.myDaily = {
+            name: this.userService.getUserLogged().username.split("@")[0],
+            done: "",
+            doing: "",
+            problems: "",
+          };
+          this.dailies.push(this.myDaily);
+        }
       } else {
-        this.navigateTo("bienvenida");
+        this.namePlanning = this.doc.name;
+        this.entrega = JSON.parse(this.doc.content).entrega;
+        this.conseguir = JSON.parse(this.doc.content).conseguir;
       }
-    });
+
+    }else {
+      this.navigateTo("bienvenida");
+    }
+
   }
 
   navigateTo(route: string): void {
@@ -284,15 +279,6 @@ export class DocumentComponent implements OnInit {
     }
   }
 
-  // console.log("Tamano: " + w +" | Preview: " + this.preview)
-  // if(w >= 900){
-  //   pdfContainer.style.display = "block";
-  //   pdfContainer.style.width = "60%";
-  //   quitViewPreview.style.display = "None";
-  // }
-  //   if(w < 900 && quitViewPreview.style.display == "None"){
-  //     pdfContainer.style.display = "none";
-  //   }
 }
 
   generatePDF(doc: Document) {

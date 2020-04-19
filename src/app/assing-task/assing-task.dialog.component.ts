@@ -63,7 +63,6 @@ import { TaskService } from '../servicio/task.service';
         this.usersOfTeam.push(user);
         this.usersOfTask.splice(this.usersOfTask.indexOf(user),1);
       },(error)=>{
-        console.log("Error", error);
       },()=>{
         this.cancel();
       });

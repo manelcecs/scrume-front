@@ -48,9 +48,8 @@ export class ProjectResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        
-        console.log("Iniciando el resolver");
-        return this.projectService.getProject(activatedRoute.queryParams.id);
+
+        return this.projectService.getProject(activatedRoute.queryParams.idProject);
     }
 }
 
@@ -64,6 +63,6 @@ export class ProjectWithTaskResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
         
-        return this.projectService.getProjectWithTasks(activatedRoute.queryParams.id);
+        return this.projectService.getProjectWithTasks(activatedRoute.queryParams.idProject);
     }
 }

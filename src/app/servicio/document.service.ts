@@ -3,6 +3,7 @@ import { CabeceraService } from './cabecera.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Document } from '../dominio/document.domain'
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 
@@ -38,4 +39,27 @@ export class DocumentService {
         return this.httpClient.get<number>(this.cabeceraService.getCabecera() + "api/document/daily/" + idsprint, { headers: this.cabeceraService.getBasicAuthentication() });
     }
 
+}
+
+@Injectable({providedIn: 'root'})
+export class DocumentResolverService implements Resolve<any>{
+
+    constructor(private documentService: DocumentService){
+
+    }
+
+    resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
+
+        let id = activatedRoute.queryParams.id;
+        let idSprint = activatedRoute.queryParams.idSprint;
+
+        if(idSprint == undefined && id != undefined){
+
+            return this.documentService.getDocuments(id);
+        }else if(idSprint != undefined && id == undefined){
+            return this.documentService.getDocumentsBySprint(idSprint);
+        }
+
+        
+    }
 }

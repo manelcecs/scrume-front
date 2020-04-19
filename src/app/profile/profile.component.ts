@@ -55,7 +55,19 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
-    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService ) { }
+    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService ) { 
+
+      
+        this.profile = this.activatedRoute.snapshot.data.profile;
+
+        this.name.setValue(this.profile.name);
+        this.nick.setValue(this.profile.nick);
+        this.surnames.setValue(this.profile.surnames);
+        this.photo.setValue(this.profile.photo);
+        this.gitUser.setValue(this.profile.gitUser);
+
+
+    }
 
   ngOnInit(): void {
 
@@ -67,41 +79,6 @@ export class ProfileComponent implements OnInit {
     });
 
     this.isBoxExpired = this.validationService.isBoxExpired();
-
-    this.activatedRoute.queryParams.subscribe(params => {
-
-      this.idUserAccount = params.id;
-
-      if(params.id != undefined){
-
-        this.profileSave = {
-          id: 0,
-          gitUser: "",
-          idUserAccount: this.idUserAccount,
-          name: "",
-          nick: "",
-          photo: "",
-          surnames: ""
-        }
-
-        this.profileService.createProfile(this.profileSave).subscribe((profile: ProfileSave)=>{
-          this.profileSave = profile;
-        });
-
-      }
-
-
-        this.profileService.getProfile(this.userService.getUserLogged().idUser).subscribe((profile: Profile) => {
-          this.profile = profile;
-
-          this.name.setValue(this.profile.name);
-          this.nick.setValue(this.profile.nick);
-          this.surnames.setValue(this.profile.surnames);
-          this.photo.setValue(this.profile.photo);
-          this.gitUser.setValue(this.profile.gitUser);
-
-        });
-      });
 
   }
 

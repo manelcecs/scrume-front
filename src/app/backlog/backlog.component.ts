@@ -40,12 +40,12 @@ export class BacklogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  navigateTo(route: String): void{
+  navigateTo(route: string): void{
     this.router.navigate([route]);
   }
 
   openProject(): void{
-    this.router.navigate(['project'], {queryParams: {id: this.project.id}});
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: this.project.id } });
   }
 
   openTeam(): void{

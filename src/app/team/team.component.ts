@@ -76,8 +76,7 @@ export class TeamComponent implements OnInit {
   }
 
   openProject(proj: ProjectDto): void {
-    console.log(JSON.stringify(proj));
-    this.router.navigate(['project'], { queryParams: { id: proj.id } });
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj.id } });
   }
 
   createProject(team: Team): void {
@@ -86,11 +85,9 @@ export class TeamComponent implements OnInit {
 
   openBoard(idProj: number): void {
     this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple) => {
-      console.log(board);
       this.boardNumber = board.id;
       if (this.boardNumber != 0) {
-        //this.router.navigate(['board'], { queryParams: { id: this.boardNumber} });
-        this.router.navigate(['board'], { queryParams: { id: this.boardNumber,  idSprint: board.sprint.id} });
+        this.router.navigate(['board'], { queryParams: { idBoard: this.boardNumber,  idSprint: board.sprint.id, method: "get"} });
       } else {
         this._snackBar.open("No hay un tablero actualizado recientemente", "Cerrar", {
           duration: 5000,
@@ -104,7 +101,7 @@ export class TeamComponent implements OnInit {
     this.sprintService.getSprintsOfProject(proj.id).subscribe((sprints: SprintDisplay[]) => {
       if (sprints.length != 0) {
         idSprint = sprints[sprints.length - 1].id;
-        this.router.navigate(['sprint'], { queryParams: { id: idSprint } });
+        this.router.navigate(['sprint'], { queryParams: { method: "get", idSprint: idSprint } });
       } else {
         this._snackBar.open("No hay ningún sprint", "Cerrar", {
           duration: 5000,
