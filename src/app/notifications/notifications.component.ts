@@ -37,6 +37,7 @@ export class NotificationsComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
+      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
         let generalDate = new Date();
         this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
           this.alertas = alerts;
@@ -46,6 +47,7 @@ export class NotificationsComponent implements OnInit {
             noti.isDaily = today === notiDay;
           }
         });
+      }
           
   }
 
