@@ -66,3 +66,23 @@ button {
 button:hover {
   background-color: #18A1F0;
 }
+
+/* Titulos de los pasos */
+
+
+.mat-step-label{
+  display: none !important;
+}
+
+/* Botones de seleccionar el plan */
+.select-plan-table > td > *{
+  display: inline-block;
+}
+
+
+/* Responsive */
+@media (max-width: 535px) {
+  #register-main {
+    margin: 0 0;
+  }
+}

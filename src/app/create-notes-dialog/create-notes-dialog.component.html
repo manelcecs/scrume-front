@@ -1,0 +1,37 @@
+<form>
+    <section>
+            <div>
+                <h3>{{ idNote > 0?'Editar':'Crear' }} una nota</h3>
+            </div>
+    </section>
+    <div>
+      <mat-form-field class="form-field">
+        <textarea
+          [formControl]="content"
+          placeholder="Contenido"
+          matInput
+        >
+    </textarea>
+    <mat-error *ngIf="content.invalid">{{ getErrorMessageName() }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <button
+        id="cancel-dialog"
+        mat-button
+        (click)="onNoClick()"
+        matTooltip="Cancelar creación de nota"
+      >
+        Cancelar
+      </button>
+      <button
+        id="save-dialog"
+        mat-button
+        (click)="onSaveClick()"
+        cdkFocusInitial
+        matTooltip="Guardar nota"
+      >
+        Guardar
+      </button>
+    </div>
+  </form>

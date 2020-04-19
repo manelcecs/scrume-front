@@ -63,7 +63,6 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
-import { HttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PersonalDataComponent } from './personal-data/personal-data.component';
@@ -73,6 +72,8 @@ import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
 import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
 import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import { NotesComponent } from './notes/notes.component';
+import { CreateNotesDialogComponent } from './create-notes-dialog/create-notes-dialog.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
@@ -114,6 +115,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MyDailyFormComponent,
     SecurityBreachComponent,
     BadgeMinimumBoxComponent,
+    NotesComponent,
+    CreateNotesDialogComponent,
   ],
   imports: [
     MatFormFieldModule,

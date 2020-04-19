@@ -1,11 +1,23 @@
-{{message}}
-
-
 <div id="main">
 
-  <button *ngIf="idSprint != undefined" style="background-color:red; color: white; margin: 1%;" id="back" mat-button (click)="back()">
-    Volver al Sprint
-</button>
+  <section id="header-board">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a (click)="navigateTo('teams')">{{sprint.project.team.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a (click)="openProject(sprint.project.id)">{{sprint.project.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a (click)="back()">Sprint</a>
+        </li>
+        <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">
+          {{ board.name }}
+        </li>
+      </ol>
+    </nav>
+  </section>
 
   <div id="boards-container" cdkDropListGroup>
     <div id="colum.name" *ngFor="let colum of board.columns" cdkDropList [cdkDropListData]="colum.name" class="example-list" (cdkDropListDropped)="drop($event)">

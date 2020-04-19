@@ -8,6 +8,8 @@ import { Board} from '../dominio/board.domain';
 import { TaskService } from '../servicio/task.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AssingTaskDialog } from '../assing-task/assing-task.dialog.component';
+import { SprintDisplay } from '../dominio/sprint.domain';
+import { SprintService } from '../servicio/sprint.service';
 
 @Component({
   selector: 'app-board',
@@ -21,11 +23,11 @@ export class BoardComponent implements OnInit {
   task: TaskMove;
   n: number;
   taskSend: TaskMove;
-  message: string;
   idSprint: number;
+  sprint: SprintDisplay;
 
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
-     private taskservice: TaskService, private dialog: MatDialog) { 
+     private taskservice: TaskService, private dialog: MatDialog, private sprintService: SprintService) { 
        this.board = this.activatedRoute.snapshot.data.board;
      }
 
@@ -37,6 +39,9 @@ export class BoardComponent implements OnInit {
           this.idSprint = params.idSprint;
          });
 
+         this.sprintService.getSprint(this.idSprint).subscribe((sprint:SprintDisplay)=>{
+            this.sprint = sprint;
+         });
           this.boardService.getBoard(this.idBoard).subscribe((board:Board)=>{
              this.board = board;
           });
@@ -109,6 +114,10 @@ export class BoardComponent implements OnInit {
 
   navigateTo(route: String): void{
     this.router.navigate([route]);
+  }
+
+  openProject(proj: number): void {
+    this.router.navigate(["project"], { queryParams: { id: proj } });
   }
 
   moveTask(idDest: number, idtask: number): void {

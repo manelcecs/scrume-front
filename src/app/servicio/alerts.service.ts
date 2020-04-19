@@ -29,6 +29,9 @@ export class AlertService {
     editAlert(alert: NotificationAlert): Observable<NotificationAlert>{
         return this.httpClient.put<NotificationAlert>(this.cabeceraService.getCabecera()+"api/notification/"+alert.id, alert, {headers: this.cabeceraService.getBasicAuthentication()});
     }
-   
 
+    getAllAlertsByPrincipal(): Observable<NotificationAlert[]>{
+        return this.httpClient.get<NotificationAlert[]>(this.cabeceraService.getCabecera() + "api/notification/list-my-notifications", {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+   
 }

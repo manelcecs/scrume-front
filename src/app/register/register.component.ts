@@ -35,6 +35,7 @@ export class RegisterComponent implements OnInit {
   passwordControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$')]);
 
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
+  acceptTerms : FormControl = new FormControl(false, [Validators.requiredTrue]);
 
   constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
 
@@ -46,6 +47,7 @@ export class RegisterComponent implements OnInit {
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       confirmPasswordControl: this.confirmPasswordControl,
+      accetpTerms: this.acceptTerms
     });
     this.selectPlanFormGroup = this._formBuilder.group({
     });
@@ -90,6 +92,9 @@ export class RegisterComponent implements OnInit {
     this.confirmPasswordControl.hasError('notSamePassword') ? 'Las contraseñas no coinciden.' : '';
   }
 
+  getErrorAcceptTerms(){
+    return this.acceptTerms.hasError('required') ? 'Debe leer y aceptar los términos y usos.':'';
+  }
 
   notNullSelectedPlan(): boolean {
     let inputRadioButton = document.querySelector('input[name="selected-plan"]:checked');

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef, ViewChild, Injectable } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { Team } from '../dominio/team.domain';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeamService } from '../servicio/team.service';
@@ -85,9 +85,11 @@ export class TeamComponent implements OnInit {
 
   openBoard(idProj: number): void {
     this.boardService.getBoardByProject(idProj).subscribe((board: BoardSimple) => {
+      console.log(board);
       this.boardNumber = board.id;
       if (this.boardNumber != 0) {
-        this.router.navigate(['board'], { queryParams: { id: this.boardNumber } });
+        //this.router.navigate(['board'], { queryParams: { id: this.boardNumber} });
+        this.router.navigate(['board'], { queryParams: { id: this.boardNumber,  idSprint: board.sprint.id} });
       } else {
         this._snackBar.open("No hay un tablero actualizado recientemente", "Cerrar", {
           duration: 5000,

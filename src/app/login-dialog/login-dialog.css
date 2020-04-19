@@ -11,7 +11,7 @@
 #cancel-dialog {
     background-color: #e62e2e;
     color: white;
-    margin-left: 1em;
+    margin-right: 1em;
 }
 
 #cancel-dialog:hover {
@@ -24,4 +24,15 @@
 
 mat-icon:hover {
   cursor: pointer;
+}
+
+
+#save-dialog {
+    background-color: #38B6FF;
+    color: white;
+    margin-left: 1em;
+}
+
+#save-dialog:hover {
+    background-color: #18A1F0;
 }

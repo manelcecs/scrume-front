@@ -24,6 +24,7 @@ import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 import { SecurityBreachComponent } from './security-breach/security-breach.component';
 import { BoardResolverService } from './servicio/board.service';
 import { ProfileResolverService } from './servicio/profile.service';
+import { NotesComponent } from './notes/notes.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, resolve:{profile: ProfileResolverService}},
   {path: 'personal', component: PersonalDataComponent},
   {path: 'admin', component: SecurityBreachComponent},
+  {path: 'notes', component: NotesComponent},
 
 ];
 

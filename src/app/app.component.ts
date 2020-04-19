@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Injectable, ViewChild, ViewChildren,  } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable, } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -11,7 +11,8 @@ import { User } from './dominio/user.domain';
 import { ProfileService } from './servicio/profile.service';
 import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
-import { TeamComponent } from './team/team.component';
+import { AlertService } from './servicio/alerts.service';
+import { NotificationAlert } from './dominio/notification.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -26,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
   idioma: string  = "es";
   notifications : boolean = false;
   invitations: InvitationDisplay[];
-  @ViewChildren(TeamComponent) teamComponent: TeamComponent;
 
   user : User;
 
@@ -35,8 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isAdmin: boolean;
 
+  alerts: boolean = false;
+  alertsColection: NotificationAlert[];
+
   constructor(private router: Router, private httpClient: HttpClient, private cabeceraService: CabeceraService, private invitationService : InvitationService,
-     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService) {
+     private dialog: MatDialog, private userService: UserService, private profileService: ProfileService, private securityBreachService: SecurityBreachService,
+     private alertService: AlertService) {
     this.router.events.subscribe((event: RouterEvent) =>{
       switch(true){
         case event instanceof NavigationStart: {
@@ -62,8 +66,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
       timer(0, 5000).subscribe(() => {
           this.getNotifications();
+          this.getAlerts();
       });
 
+      this.getAlerts();
     }else{
       this.cargarMenu();
 
@@ -110,6 +116,11 @@ export class AppComponent implements OnInit, OnDestroy {
         icon: 'list',
         visible: logged,
         method: 'getTasksOfUser'
+    },{
+      title: 'Mis notas',
+      route: '/notes',
+      visible: logged,
+      icon: 'description'
     }
   ];
   if(logged) {
@@ -198,6 +209,19 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/teams']);
+    }
+  }
+
+  getAlerts(){
+    if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
+      this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
+        this.alertsColection = alerts;
+        if (alerts.length != 0) {
+          this.alerts = true;
+        } else {
+          this.alerts = false;
+        }
+      });
     }
   }
 

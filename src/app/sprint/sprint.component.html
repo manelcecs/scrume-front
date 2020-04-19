@@ -1,4 +1,5 @@
 <div id="main-sprint">
+
   <section id="header-sprint">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -11,14 +12,11 @@
           }}</a>
         </li>
         <li style="display: flex; align-items: center;" class="breadcrumb-item active" aria-current="page">
-          Sprint<img *ngIf="validationCanEdit" src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+          Sprint<img *ngIf="validationCanEdit" matTooltip="Editar sprint" src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
             (click)="openDialog()" />
         </li>
       </ol>
     </nav>
-    <button *ngIf="!daily" (click)="openMyDailyDialog()" matTooltip="Rellenar tu daily">
-      Rellenar daily
-    </button>
   </section>
 
   <section id="progress-sprint">
@@ -47,7 +45,8 @@
       <li class="nav-item">
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
           aria-selected="false">
-          Documentos <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
+          Documentos 
+          <img src="../assets/more.webp" width="auto" height="15" class="d-inline-block align-top" alt=""
           matTooltip="Crear un documento" (click)="openDialogDoc(sprint)">
         </a>
       </li>
@@ -57,69 +56,95 @@
       </li>
       <li class="nav-item" *ngIf="validationCreateAlert">
           <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
+            <img src="../assets/more.webp" matTooltip="Añadir alertas al sprint" width="auto" height="15" class="d-inline-block align-top" alt="add alert" (click)="openCreateAlert(sprint.id)" *ngIf="validationCreateAlert" />
           </a>
       </li>
     </ul>
 
-        <div class="tab-content" id="myTabContent">
-            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-content" id="myTabContent" >
 
-                <ul class="list-group list-group-flush">
-                    <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let t of board">
-                        <p class="navigable" (click)="openBoard(t.id)">{{t.name}}</p>
-                        <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Editar tablero" (click)="editBoard(t,sprint)">
-                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Eliminar tablero" (click)="deleteBoard(t)">
-                    </li>
-                </ul>
+        <div class="tab-pane fade show active menu-sprint" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-            </div>
-            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let t of board">
+                    <p class="navigable" (click)="openBoard(t.id)">{{t.name}}</p>
+                    <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Editar tablero" (click)="editBoard(t,sprint)">
+                    <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Eliminar tablero" (click)="deleteBoard(t)">
+                </li>
+            </ul>
 
-                <ul class="list-group list-group-flush">
-                    <li style="display: flex; align-items: center;" class="list-group-item" *ngFor="let d of doc">
-                        <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
-                            <span class="navigable" matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>
-                            <span class="badge badge-info">{{d.type}}</span>
-                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
-                        </div>
-                        <ng-template #elseBlock>
-                            <a class="navigable" (click)="openDocument(d.id)" >{{d.name}} </a>
-                            <span class="badge badge-info">{{d.type}}</span>
-                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt="" matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
-                        </ng-template>
-                    </li>
-                </ul>
-
+            <div *ngIf="board.length == 0" style="text-align: center;">
+              <img src="../assets/emptyboards.webp" width="auto" height="275" class="d-inline-block align-top action" alt="">
+              <p>¡Ups, no tienes tableros!</p>
+              <p>Crea uno pulsando el botón + al lado de tableros :D</p>
             </div>
 
-            <div style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                <tr>
-                    <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
-                    <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
-                  </tr>
-                  <tr>
-                    <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
-                    <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
-                  </tr>
+        </div>
 
-                  <div class="chart">
-                    <canvas id="burnDown">{{ burnDown }}</canvas>
-                </div>
-                <div class="chart">
-                    <canvas id="burnUp">{{ burnUp }}</canvas>
-                </div>
-            </div>
-            <div *ngIf="validationCreateAlert" style="padding-top: 10px; background-color: white;" class="tab-pane fade" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
-                <div *ngFor="let alert of alerts" class="info-sprint-alerts">
-                    La alerta {{alert.title}} será el: {{alert.date | date:'dd/MM/yyyy'}}
-                    <div>
-                        <img style="margin-left: 10px;" src="../assets/edit.webp" width="auto" height="20" class="d-inline-block align-top action" alt="edit alert" matTooltip="Editar alerta" (click)="openAlertDialog(alert.id)">
+        <div class="tab-pane fade menu-sprint" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let d of doc">
+                    <div *ngIf="d.name == 'Añade aquí el nombre'; else elseBlock">
+                        <span class="navigable" matBadge="N!" (click)="openDocument(d.id)" matBadgePosition="before" matBadgeColor="red">&nbsp; Documento nuevo</span>
+                        <span class="badge badge-info">{{d.type}}</span>
+                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
                     </div>
-                    <div>
-                        <img style="margin-left: 10px;" src="../assets/bin.webp" width="auto" height="20" class="d-inline-block align-top action" alt="remove alert" matTooltip="Borrar alerta" (click)="deleteAlert(alert.id)">
-                    </div>
-                </div>
+                    <ng-template #elseBlock>
+                        <span class="navigable" (click)="openDocument(d.id)" >{{d.name}} </span>
+                        <span class="badge badge-info">{{d.type}}</span>
+                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt="" matTooltip="Borrar documento" (click)="deleteDoc(d.id)">
+                    </ng-template>
+                </li>
+            </ul>
+            <div *ngIf="doc.length == 0" style="text-align: center;">
+              <img src="../assets/emptydocs.webp" width="auto" height="225" class="d-inline-block align-top action img-empty" alt="">
+              <p>¡Oh no, aún no tienes documentos!</p>
+              <p>Crea uno pulsando el botón + al lado de documentos :D</p>
             </div>
         </div>
+
+        <div class="tab-pane fade menu-sprint-graph" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          
+          <div class="statistics">
+            <tr>
+              <td class="cell-statistics-project">{{sprint.totalTasks}} tareas</td>
+              <td class="cell-statistics-project">{{sprint.completedTasks}} tareas hechas</td>
+            </tr>
+              <tr>
+                <td class="cell-statistics-project">{{sprint.totalHP}}<a matTooltip="Puntos de Historia"> ph </a>totales</td>
+                <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
+            </tr>
+          </div>  
+          
+            <div class="chart">
+                <canvas id="burnDown">{{ burnDown }}</canvas>
+            </div>
+  
+            <div class="chart">
+                <canvas id="burnUp">{{ burnUp }}</canvas>
+            </div>
+
+        </div>
+
+        <div *ngIf="validationCreateAlert" class="tab-pane fade menu-sprint" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
+          
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let alert of alerts">
+                <p>La alerta {{alert.title}} será el: {{alert.date | date:'dd/MM/yyyy'}}</p>
+                <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt="edit alert" matTooltip="Editar alerta" (click)="openAlertDialog(alert.id)">
+                <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt="remove alert" matTooltip="Borrar alerta" (click)="deleteAlert(alert.id)">
+              </li>
+          </ul>
+          
+          <div *ngIf="alerts.length == 0" style="text-align: center;">
+            <img src="../assets/emptyalerts.webp" width="auto" height="225" class="d-inline-block align-top action img-empty" alt="">
+            <p>¡Vaya, todavía no tienes alertas!</p>
+            <p>Crea una pulsando el botón + al lado de alertas :D</p>
+          </div>
+        </div>
+
+    </div>
+
   </section>
+
 </div>

@@ -7,13 +7,8 @@ import { ProjectDto } from "../dominio/project.domain";
 import { Observable } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Member } from '../dominio/user.domain';
-import { error } from '@angular/compiler/src/util';
 import { UserService } from '../servicio/user.service';
 import { UserLogged } from '../dominio/jwt.domain';
-import { TouchSequence } from 'selenium-webdriver';
-
-
-
 
 
 @Component({
@@ -79,7 +74,7 @@ export class TeamCreateComponent implements OnInit {
             this.team = resp;
             this.navigateTo("teams");
           },
-          error => {
+          (error) => {
             this.snackBarError(
               "Se ha producido un error y no se ha podido editar el equipo"
             );
@@ -91,7 +86,7 @@ export class TeamCreateComponent implements OnInit {
             this.team = resp;
             this.navigateTo("teams");
           },
-          error => {
+          (error) => {
             this.snackBarError(
               "Se ha producido un error y no se ha podido guardar el equipo"
             );
@@ -129,8 +124,8 @@ export class TeamCreateComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  private snackBarError(error: string): void {
-    this._snackBar.open(error, "Cerrar", {
+  private snackBarError(errorString: string): void {
+    this._snackBar.open(errorString, "Cerrar", {
       duration: 2000
     });
   }
@@ -145,7 +140,7 @@ export class TeamCreateComponent implements OnInit {
           this.numAdmins = members.filter((member: Member) => member.isAdmin).length
         }
       })
-    }, error => {
+    }, (error) => {
       this.snackBarError("No se ha podido cambiar el rol del usuario");
     });
   }
@@ -161,7 +156,7 @@ export class TeamCreateComponent implements OnInit {
           this.numAdmins = members.filter((member: Member) => member.isAdmin).length
         })
       }
-    }, error => {
+    }, (error) => {
       this.snackBarError("No se ha podido eliminar al usuario");
     });
   }
