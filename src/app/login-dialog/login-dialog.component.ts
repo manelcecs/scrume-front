@@ -20,6 +20,8 @@ import { Breach } from '../dominio/breach.domain';
     breach: Breach;
     activated: boolean;
 
+    disabled: boolean;
+
 
     constructor(
       public dialogRef: MatDialogRef<LoginDialog>,
@@ -32,9 +34,10 @@ import { Breach } from '../dominio/breach.domain';
         this.breach = breach;
         this.activated = breach.activated;
         if (this.activated) {
-          this.warning = "Hay una brecha de seguridad, por favor compruebe sus credenciales."
+          this.warning = "Hay una brecha de seguridad, por favor compruebe sus credenciales.";
         }
       });
+
     }
 
     cancel(): void {
@@ -42,11 +45,13 @@ import { Breach } from '../dominio/breach.domain';
     }
 
     login() : void {
+      this.disabled = true;
       let user : UserLog = {username: this.email.value, password: this.pass.value}
       this.userService.getToken(user).subscribe((token: JWToken)=>{
         sessionStorage.setItem("loginToken", token.token);
         this.dialogRef.close();
       }, (error) => {
+        this.disabled = false;
         this.pass.setErrors({invalid: true});
       });
     }
@@ -59,11 +64,21 @@ import { Breach } from '../dominio/breach.domain';
     validForm(): boolean{
       let valid: boolean = true;
 
-      valid = valid && this.email.valid;
-      valid = valid && this.pass.valid;
+        valid = valid && this.email.valid;
+        valid = valid && this.pass.valid;
+      
 
       return valid
     }
+    
+    abled(): boolean{
+      if(this.disabled){
+        return true;
+      }else{
+        return !this.validForm();
+      }
+    }
+
     changePassState(){
         this.showPass = !this.showPass;
     }
