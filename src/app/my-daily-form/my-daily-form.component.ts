@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DocumentService } from "../servicio/document.service";
 import { FormControl, Validators } from "@angular/forms";
 import { Document, Daily, DailyComponent } from "../dominio/document.domain";
-import { AppComponent } from "../app.component";
 import { UserService } from "../servicio/user.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
