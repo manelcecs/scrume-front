@@ -74,8 +74,6 @@ export class SprintResolverService implements Resolve<any>{
 
         let method = activatedRoute.queryParams.method;
 
-
-
         if(method == "list"){
           
           let id = activatedRoute.queryParams.idProject;
