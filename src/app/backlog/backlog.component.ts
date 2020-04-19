@@ -32,9 +32,6 @@ export class BacklogComponent implements OnInit {
       this.idProject = this.activatedRoute.snapshot.data.project.id;
       this.project = this.activatedRoute.snapshot.data.project;
       this.sprints = this.activatedRoute.snapshot.data.sprints;
-      console.log(this.idProject);
-      console.log(JSON.stringify(this.project));
-      console.log(JSON.stringify(this.idProject));
     }
 
   ngOnInit(): void {

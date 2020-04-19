@@ -49,7 +49,7 @@ export class ProjectResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
 
-        return this.projectService.getProject(activatedRoute.queryParams.idProject);
+            return this.projectService.getProject(activatedRoute.queryParams.idProject);
     }
 }
 

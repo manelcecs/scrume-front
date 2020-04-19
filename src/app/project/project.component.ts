@@ -47,7 +47,7 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {}
   openBacklog(): void {
-    this.router.navigate(["backlog"], { queryParams: { id: this.project.id } });
+    this.router.navigate(["backlog"], { queryParams: { idProject: this.project.id, method: "list"} });
   }
 
   openTeam(team: number): void {
