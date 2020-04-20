@@ -208,6 +208,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   updateTeams(){
+    console.log();
     if (this.router.url == "/teams") {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
