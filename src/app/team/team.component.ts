@@ -76,7 +76,19 @@ export class TeamComponent implements OnInit {
   }
 
   openProject(proj: ProjectDto): void {
-    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj.id } });
+    this.sprintService.getSprintsOfProject(proj.id).subscribe(() => {
+      this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj.id } });
+    },(error) => {
+      if(error.message = "The minimum team box is basic, so you can only manage a 30-day sprint") {
+      this.openSnackBar(
+        "Tu rango es BASIC, tu solo puedes manejar un sprint de 30 días.",
+        "Cerrar",
+        true
+      );
+      }
+    },
+    () => {
+    });
   }
 
   createProject(team: Team): void {
@@ -107,6 +119,16 @@ export class TeamComponent implements OnInit {
           duration: 5000,
         });
       }
+    },(error) => {
+      if(error.message = "The minimum team box is basic, so you can only manage a 30-day sprint") {
+      this.openSnackBar(
+        "Tu rango es BASIC, tu solo puedes manejar un sprint de 30 días.",
+        "Cerrar",
+        true
+      );
+      }
+    },
+    () => {
     });
   }
 
@@ -124,7 +146,37 @@ export class TeamComponent implements OnInit {
           });
         }
       });
-    });
+    },(error) => {
+      this.openSnackBar(
+        "Para borrar un equipo, el único miembro debe ser el administrador.",
+        "Cerrar",
+        true
+      );
+    },
+    () => {
+      this.openSnackBar(
+        "Se ha borrado correctamente.",
+        "Cerrar",
+        false
+      );
+    }
+  );
+  }
+
+  openSnackBar(message: string, action: string, error: boolean) {
+    if (error) {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this._snackBar
+        .open(message, action, {
+          duration: 2000,
+        })
+        .afterDismissed()
+        .subscribe(() => {
+        });
+    }
   }
 
   leaveTeam(idTeam: number): void {

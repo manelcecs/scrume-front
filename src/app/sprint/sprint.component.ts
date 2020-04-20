@@ -66,10 +66,10 @@ export class SprintComponent implements OnInit {
     private alertService: AlertService,
     private userService: UserService,
     private validationService: ValidationService) {
-      this.sprint = this.activatedRoute.snapshot.data.sprint;
-      this.idSprint = this.sprint.id;
-      this.board = this.activatedRoute.snapshot.data.boards;
-      this.doc = this.activatedRoute.snapshot.data.documents;
+    this.sprint = this.activatedRoute.snapshot.data.sprint;
+    this.idSprint = this.sprint.id;
+    this.board = this.activatedRoute.snapshot.data.boards;
+    this.doc = this.activatedRoute.snapshot.data.documents;
 
   }
 
@@ -89,22 +89,27 @@ export class SprintComponent implements OnInit {
       // Gráficas
       //Validación
       this.validationService.checkCanDisplayGraphics(this.sprint.project.team.id).subscribe((res: boolean) => {
+        let total: number;
         this.sprintService
-        .getBurnDown(this.idSprint)
-        .subscribe((burnDown: BurnDownDisplay[]) => {
-          this.burnDown = burnDown;
-          this.burnDown = this.getChartBurnDown(burnDown);
-        });
+          .getBurnDown(this.idSprint)
+          .subscribe((burnDown: BurnDownDisplay[]) => {
+            this.burnDown = burnDown;
+            this.burnDown = this.getChartBurnDown(burnDown);
+          });
 
-      this.sprintService
-        .getBurnUp(this.idSprint)
-        .subscribe((burnup: BurnUpDisplay[]) => {
-          this.burnUp = burnup;
-          this.burnUp = this.getChartBurnUp(burnup);
-        });
+        this.sprintService
+          .getBurnUp(this.idSprint)
+          .subscribe((burnup: BurnUpDisplay[]) => {
+            this.burnUp = burnup;
+            let momentoFinal = new Date(this.sprint.endDate).getTime();
+            let momentoInicial = new Date(this.sprint.startDate).getTime();
+            console.log("La resta es " + (momentoFinal - momentoInicial));
+            let total = Math.round((momentoFinal - momentoInicial) / (1000 * 60 * 60 * 24));
+            this.burnUp = this.getChartBurnUp(burnup, total);
+          });
         this.validationDisplayChart = res;
       });
-     
+
       //Carga alertas
       this.loadAlerts();
 
@@ -120,7 +125,7 @@ export class SprintComponent implements OnInit {
     let objetive1: number[] = [];
     let acum = 0;
     for (let i = 0; i < chartJSON.length; i++) {
-      historyPoints1.push(chartJSON[i].pointsBurnDown)
+      historyPoints1.push(chartJSON[i].pointsBurnDown);
     }
     for (let x = 0; x < chartJSON[0].totalDates; x++) {
       days1.push("Day " + (x + 1));
@@ -130,9 +135,7 @@ export class SprintComponent implements OnInit {
       if (x == chartJSON[0].totalDates - 1) {
         objetive1.push(0);
       } else {
-        if (acum <= 0) {
-          break
-        } else {
+        if (acum > 0) {
           objetive1.push(acum);
         }
       }
@@ -169,18 +172,25 @@ export class SprintComponent implements OnInit {
     return this.chart;
   }
 
-  getChartBurnUp(chartJSON: BurnUpDisplay[]) {
+  getChartBurnUp(chartJSON: BurnUpDisplay[], total: number) {
     let days2: string[] = [];
     let historyPoints2: number[] = [];
     let objetive2: number[] = [];
+    let acum: number = 0;
+    console.log("El número de días " + total);
+    for (let x = 0; x <= total; x++) {
+      days2.push("Day " + (x + 1));
+      let div = chartJSON[0].totalHistoryTask / total;
+      acum = acum + div;
+      objetive2.push(acum);
+    }
+
     for (let i = 0; i < chartJSON.length; i++) {
-      days2.push(chartJSON[i].date);
       if (i == 0) {
         historyPoints2.push(0);
       } else {
         historyPoints2.push(chartJSON[i].pointsBurnUp);
       }
-      objetive2.push(chartJSON[0].totalHistoryTask);
     }
     // Trabajando con la gráfica
     this.chart = new Chart('burnUp', {
@@ -254,7 +264,7 @@ export class SprintComponent implements OnInit {
   }
 
   openProject(proj: number): void {
-    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj} });
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj } });
   }
 
   openTeam(team: number): void {
@@ -264,7 +274,7 @@ export class SprintComponent implements OnInit {
   //Board-----------------------------------------------------------------------------------------------------------------------------------
 
   openBoard(board: number): void {
-    this.router.navigate(['board'], { queryParams: { idBoard: board,  idSprint: this.idSprint, method: "get"} });
+    this.router.navigate(['board'], { queryParams: { idBoard: board, idSprint: this.idSprint, method: "get" } });
   }
 
   createBoard(row: SprintDisplay): void {
@@ -375,17 +385,17 @@ export class SprintComponent implements OnInit {
   loadAlerts() {
     this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
       this.lanzarPeticion = comp;
-    })
-    if(this.lanzarPeticion) {
-    this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
-      (alerts: NotificationAlert[]) => {
-        this.alerts = alerts;
-      },
-      (error) => {
-        console.error(error.error);
-      }
-    );
-  }
+      if(this.lanzarPeticion) {
+      this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+        (alerts: NotificationAlert[]) => {
+          this.alerts = alerts;
+        },
+        (error) => {
+          console.error(error.error);
+        }
+      );
+    }
+    });
   }
 
 }
