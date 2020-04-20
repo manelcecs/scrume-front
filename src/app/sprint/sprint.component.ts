@@ -48,6 +48,7 @@ export class SprintComponent implements OnInit {
   validationCreateBoard: boolean;
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
+  validationDisplayChart: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -83,7 +84,9 @@ export class SprintComponent implements OnInit {
       })
 
       // Gráficas
-      this.sprintService
+      //Validación
+      this.validationService.checkCanDisplayGraphics(this.sprint.project.team.id).subscribe((res: boolean) => {
+        this.sprintService
         .getBurnDown(this.idSprint)
         .subscribe((burnDown: BurnDownDisplay[]) => {
           this.burnDown = burnDown;
@@ -96,7 +99,9 @@ export class SprintComponent implements OnInit {
           this.burnUp = burnup;
           this.burnUp = this.getChartBurnUp(burnup);
         });
-
+        this.validationDisplayChart = res;
+      });
+     
       //Carga alertas
       this.loadAlerts();
 
