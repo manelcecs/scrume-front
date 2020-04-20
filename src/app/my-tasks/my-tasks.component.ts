@@ -36,24 +36,15 @@ export class MyTasksComponent implements OnInit {
 
   ngOnInit(): void {
 
-
   }
 
   openProject(idProj: number){
-    this.navigateTo('project',idProj, 'getTeam');
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: idProj } });
   }
 
-  openBoard(idWork: number){
-    this.navigateTo('board', idWork);
+  openBoard(idWork: number, sprint: number){
+    this.router.navigate(['board'], { queryParams: { idBoard: idWork,  idSprint: sprint, method: "get"} });
   }
 
-  navigateTo(route: string, id: number, method?: string){
-    if(method != undefined){
-      this.router.navigate([route], {queryParams:{id: id}});
-    }else{
-      this.router.navigate([route], {queryParams:{id: id, method: method}});
-    }
-
-  }
 
 }
