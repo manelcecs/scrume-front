@@ -119,13 +119,14 @@ export class AlertComponent implements OnInit {
 
   beforeTodayDateValidator(date: FormControl) {
     let formControlToTime: number = new Date(date.value).getTime();
-    //Para controlar hoy hasta las 23:59
-    formControlToTime = formControlToTime + 86340000;
-    let todayToTime: number = new Date().getTime();
-    if (formControlToTime < todayToTime) {
-      date.setErrors({ beforeToday: true });
+    let today: Date = new Date();
+    let tomorrowTime: number = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0, 0).getTime();
+    if (formControlToTime < tomorrowTime) {
+      this.alertDate.setErrors({ beforeToday: true });
     } else {
-      date.updateValueAndValidity();
+      if (this.alertDate.hasError("beforeToday")) {
+        delete this.alertDate.errors["beforeToday"];
+      }
     }
   }
 
@@ -142,13 +143,15 @@ export class AlertComponent implements OnInit {
     } else if (alertDate > endDate) {
       this.alertDate.setErrors({ betweenSprint: true });
     } else {
-      this.alertDate.updateValueAndValidity();
+      if (this.alertDate.hasError("betweenSprint")) {
+        delete this.alertDate.errors["betweenSprint"];
+      }
     }
   }
 
   getErrorMessageAlertDate(): string {
     return this.alertDate.hasError("beforeToday")
-      ? "La fecha seleccionada no puede ser anterior a la fecha actual"
+      ? "La fecha seleccionada no puede ser anterior o igual a la fecha actual"
       : this.alertDate.hasError("betweenSprint")
       ? "La fecha de la alerta debe estar dentro del Sprint"
       : "";

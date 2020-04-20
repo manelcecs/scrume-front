@@ -5,7 +5,7 @@
     }}
   </h4>
   <div>
-    <mat-form-field style="width: 100%;"> 
+    <mat-form-field style="width: 100%;">
       <mat-label>Titulo de la Alerta</mat-label>
       <select matNativeControl [formControl]="alertTitle">
         <option value="Sprint Review">Sprint Review</option>
@@ -37,7 +37,7 @@
         getErrorMessageAlertDate()
       }}</mat-error>
     </mat-form-field>
-  </div>
+  </div><br/>
   <div *ngIf="idAlert == undefined">
     <button
       id="add-alert"
