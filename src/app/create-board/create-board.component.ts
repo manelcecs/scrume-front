@@ -68,7 +68,10 @@ export class CreateBoardComponent implements OnInit {
         this._editBoard().subscribe((resp: BoardNumber) => {
 
           this.boardEdit = resp;
-          this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
+        }, (error)=>{
+
+        }, ()=>{
+          this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: this.idSprint } });
         });
 
       }else{
@@ -76,7 +79,11 @@ export class CreateBoardComponent implements OnInit {
         this._createBoard().subscribe((resp: BoardNumber) => {
 
           this.boardCreate = resp;
-          this.router.navigate(["sprint"], {queryParams: {id:this.idSprint}});
+          
+        }, (error)=>{
+
+        }, ()=>{
+          this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: this.idSprint } });
         });
 
       }
@@ -101,7 +108,7 @@ export class CreateBoardComponent implements OnInit {
   }
 
   cancelCreateBoard(): void {
-    this.router.navigate(['sprint']);
+    this.router.navigate(["sprint"], { queryParams: { method:"get", idSprint: this.idSprint } });
   }
 
   getErrorMessageName(): String {

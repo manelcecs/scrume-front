@@ -1,17 +1,18 @@
 <h4>Acceder</h4>
 <div>
+    <p style="color:red;">{{ warning }}</p>
     <div>
       <mat-form-field style="width: 100%;">
         <mat-label>Email</mat-label>
-        <input matInput [formControl]="email" />
+        <input matInput [formControl]="email" (input)="updateValidationInvalidPassword()"/>
         <mat-error *ngIf="email.invalid">{{ getErrorMessageEmail() }}</mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field>
         <mat-label>Contraseña</mat-label>
-        <input matInput [formControl]="pass" [type]="showPass? 'text' : 'password'" />
-        <mat-icon matSuffix (click)="changePassState()">remove_red_eye</mat-icon>
+        <input matInput [formControl]="pass" [type]="showPass? 'text' : 'password'"/>
+        <mat-icon matSuffix (click)="changePassState()" matTooltip="{{showPass? 'Ocultar contraseña' : 'Mostrar contraseña'}}">remove_red_eye</mat-icon>
         <mat-error *ngIf="pass.invalid">{{ getErrorMessagePass() }}</mat-error>
       </mat-form-field>
     </div>
@@ -20,7 +21,7 @@
       <button id="cancel-dialog" mat-button (click)="cancel()">
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="login()" [disabled]="!validForm()" cdkFocusInitial>
+      <button id="save-dialog" mat-button (click)="login()" [disabled]="abled()" cdkFocusInitial>
         Acceder
       </button>
     </div>

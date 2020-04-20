@@ -65,15 +65,21 @@ export class CreateProjectComponent implements OnInit {
         this._editProject(this.project.id).subscribe((resp: ProjectDto) => {
 
           this.project = resp;
-          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
+        }, (error)=>{
+          //Add error
+        }, ()=>{
+          this.router.navigate(['project'], { queryParams: { method: "list", idProject: this.project.id } });
         });
 
       }else{
         this._createProject().subscribe((resp: ProjectDto) => {
 
           this.project = resp;
-          this.router.navigate(["project"], {queryParams: {id:this.project.id}});
 
+        }, (error)=>{
+          //Add error
+        }, ()=>{
+          this.router.navigate(['project'], { queryParams: { method: "list", idProject: this.project.id } });
         });
 
       }

@@ -1,16 +1,14 @@
+<div style="text-align: center;">
 <h4>Crear documento nuevo</h4>
-<div>
-    <form id="prueba">
-
-
-
+    <form style="margin-top: 20px;" id="prueba">
         <mat-form-field>
             <mat-label>Selecciona una opción</mat-label>
             <mat-select [(value)]="selected" [formControl]="tipo">
                 <mat-option value="REVIEW">REVIEW</mat-option>
+                <mat-option value="MIDDLE_REVIEW">MIDDLE REVIEW</mat-option>
                 <mat-option value="PLANNING_MEETING">PLANNING MEETING</mat-option>
+                <mat-option value="MIDDLE_RETROSPECTIVE">MIDDLE RETROSPECTIVE</mat-option>
                 <mat-option value="RETROSPECTIVE">RETROSPECTIVE</mat-option>
-                <mat-option value="DAILY">DAILY</mat-option>
             </mat-select>
             <mat-error *ngIf="tipo.invalid">{{getTipoErrorMessage()}}</mat-error>
         </mat-form-field>

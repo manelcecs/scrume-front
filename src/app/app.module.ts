@@ -41,15 +41,13 @@ import { SprintComponent, EditSprintDialog, NewDocumentDialog } from './sprint/s
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {MatChipsModule} from '@angular/material/chips';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { CreateBoardComponent } from './create-board/create-board.component';
@@ -65,6 +63,19 @@ import { DocumentComponent } from './document/document.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ProfileComponent } from './profile/profile.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
+import {MatTableModule} from '@angular/material/table';
+import { AlertComponent } from './alert/alert.component';
+import { MyDailyFormComponent } from './my-daily-form/my-daily-form.component';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BadgeMinimumBoxComponent } from './badge-minimum-box/badge-minimum-box.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import { NotesComponent } from './notes/notes.component';
+import { CreateNotesDialogComponent } from './create-notes-dialog/create-notes-dialog.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
@@ -99,6 +110,13 @@ import { ProfileComponent } from './profile/profile.component';
     ProfileComponent,
     RegisterComponent,
     TermsOfUseComponent,
+    PersonalDataComponent,
+    AlertComponent,
+    MyDailyFormComponent,
+    SecurityBreachComponent,
+    BadgeMinimumBoxComponent,
+    NotesComponent,
+    CreateNotesDialogComponent,
   ],
   imports: [
     MatFormFieldModule,
@@ -131,7 +149,6 @@ import { ProfileComponent } from './profile/profile.component';
     MatDialogModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatBottomSheetModule,
     MatListModule,
     MatChipsModule,
@@ -139,12 +156,19 @@ import { ProfileComponent } from './profile/profile.component';
     MatSnackBarModule,
     MatStepperModule,
     NgxPayPalModule,
+    BrowserModule,
+    HttpClientModule,
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+    MatTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { displayDefaultIndicatorType: false }
-    }
+    },
+    CheckExpirationBoxGuard,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

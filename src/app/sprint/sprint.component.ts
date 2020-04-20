@@ -2,18 +2,16 @@ import { Component, OnInit, Inject } from "@angular/core";
 import {
   Sprint,
   SprintDisplay,
-  SprintJsonDates
+  SprintJsonDates,
 } from "../dominio/sprint.domain";
 import {
   FormControl,
-  Validators,
-  ValidatorFn,
-  AbstractControl
+  Validators
 } from "@angular/forms";
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialog
+  MatDialog,
 } from "@angular/material/dialog";
 import { SprintService } from "../servicio/sprint.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -22,12 +20,21 @@ import { BoardService } from "../servicio/board.service";
 import { Observable } from "rxjs";
 import { Document } from "../dominio/document.domain";
 import { DocumentService } from "../servicio/document.service";
+import { HttpClient } from '@angular/common/http';
+import { Chart } from 'chart.js';
+import { BurnUpDisplay, BurnDownDisplay } from '../dominio/burn.domain';
+import { AlertService } from '../servicio/alerts.service';
+import { NotificationAlert } from '../dominio/notification.domain';
+import { AlertComponent } from '../alert/alert.component';
+import { UserService } from '../servicio/user.service';
+import { ValidationService } from '../servicio/validation.service';
 
 @Component({
   selector: "app-sprint",
   templateUrl: "./sprint.component.html",
-  styleUrls: ["./sprint.component.css"]
+  styleUrls: ["./sprint.component.css"],
 })
+
 export class SprintComponent implements OnInit {
   sprint: SprintDisplay;
   idSprint: number;
@@ -35,6 +42,18 @@ export class SprintComponent implements OnInit {
   boardDelete: BoardNumber;
   doc: Document[];
   document: Document;
+  burnDown: any;
+  burnUp: any;
+  chart: any;
+  validationCreateBoard: boolean;
+  validationCreateAlert: boolean;
+  validationCanEdit: boolean;
+  validationDisplayChart: boolean;
+
+  alerts: NotificationAlert[] = [];
+
+  daily: boolean = false;
+  lanzarPeticion: boolean;
 
   constructor(
     private sprintService: SprintService,
@@ -42,38 +61,176 @@ export class SprintComponent implements OnInit {
     private documentService: DocumentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private http: HttpClient,
+    private alertService: AlertService,
+    private userService: UserService,
+    private validationService: ValidationService) {
+    this.sprint = this.activatedRoute.snapshot.data.sprint;
+    this.idSprint = this.sprint.id;
+    this.board = this.activatedRoute.snapshot.data.boards;
+    this.doc = this.activatedRoute.snapshot.data.documents;
+
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(param => {
-      if (param.id != undefined) {
-        this.idSprint = param.id;
+
+    if (this.sprint != undefined) {
+
+      this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
+
+      //validacion
+      this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {
+        this.validationCreateAlert = res;
+      })
+
+      this.updateValidatorCreateBoard();
+
+      // Gráficas
+      //Validación
+      this.validationService.checkCanDisplayGraphics(this.sprint.project.team.id).subscribe((res: boolean) => {
+        let total: number;
+        this.sprintService
+          .getBurnDown(this.idSprint)
+          .subscribe((burnDown: BurnDownDisplay[]) => {
+            this.burnDown = burnDown;
+            this.burnDown = this.getChartBurnDown(burnDown);
+          });
 
         this.sprintService
-          .getSprint(this.idSprint)
-          .subscribe((sprintDisplay: SprintDisplay) => {
-            this.sprint = sprintDisplay;
+          .getBurnUp(this.idSprint)
+          .subscribe((burnup: BurnUpDisplay[]) => {
+            this.burnUp = burnup;
+            let momentoFinal = new Date(this.sprint.endDate).getTime();
+            let momentoInicial = new Date(this.sprint.startDate).getTime();
+            console.log("La resta es " + (momentoFinal - momentoInicial));
+            let total = Math.round((momentoFinal - momentoInicial) / (1000 * 60 * 60 * 24));
+            this.burnUp = this.getChartBurnUp(burnup, total);
           });
+        this.validationDisplayChart = res;
+      });
 
-        //lista de boards
+      //Carga alertas
+      this.loadAlerts();
 
-        this.boardService
-          .getBoardBySprint(this.idSprint)
-          .subscribe((board: BoardSimple[]) => {
-            this.board = board;
-          });
+    } else {
+      this.navigateTo("bienvenida");
+    }
 
-        //lista de documents
+  }
 
-        this.documentService
-          .getDocumentsBySprint(this.idSprint)
-          .subscribe((doc: Document[]) => {
-            this.doc = doc;
-          });
+  getChartBurnDown(chartJSON: BurnDownDisplay[]) {
+    let days1: string[] = [];
+    let historyPoints1: number[] = [];
+    let objetive1: number[] = [];
+    let acum = 0;
+    for (let i = 0; i < chartJSON.length; i++) {
+      historyPoints1.push(chartJSON[i].pointsBurnDown);
+    }
+    for (let x = 0; x < chartJSON[0].totalDates; x++) {
+      days1.push("Day " + (x + 1));
+      let max = chartJSON[0].pointsBurnDown;
+      let div = max / chartJSON[0].totalDates;
+      acum = max - (div * x);
+      if (x == chartJSON[0].totalDates - 1) {
+        objetive1.push(0);
       } else {
-        this.navigateTo("bienvenida");
+        if (acum > 0) {
+          objetive1.push(acum);
+        }
       }
+    }
+    // Trabajando con la gráfica
+    this.chart = new Chart('burnDown', {
+      type: 'line',
+      data: {
+        labels: days1,
+        datasets: [{
+          data: historyPoints1,
+          label: "Puntos de historia",
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 0
+        },
+        {
+          data: objetive1,
+          label: "Objetivo",
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
+        }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Burn Down'
+        }
+      }
+    });
+
+    return this.chart;
+  }
+
+  getChartBurnUp(chartJSON: BurnUpDisplay[], total: number) {
+    let days2: string[] = [];
+    let historyPoints2: number[] = [];
+    let objetive2: number[] = [];
+    let acum: number = 0;
+    console.log("El número de días " + total);
+    for (let x = 0; x <= total; x++) {
+      days2.push("Day " + (x + 1));
+      let div = chartJSON[0].totalHistoryTask / total;
+      acum = acum + div;
+      objetive2.push(acum);
+    }
+
+    for (let i = 0; i < chartJSON.length; i++) {
+      if (i == 0) {
+        historyPoints2.push(0);
+      } else {
+        historyPoints2.push(chartJSON[i].pointsBurnUp);
+      }
+    }
+    // Trabajando con la gráfica
+    this.chart = new Chart('burnUp', {
+      type: 'line',
+      data: {
+        labels: days2,
+        datasets: [{
+          data: historyPoints2,
+          label: "Puntos de historia",
+          borderColor: "#4e85a8",
+          fill: false,
+          pointRadius: 0
+        },
+        {
+          data: objetive2,
+          label: "Objetivo",
+          borderColor: "#333333",
+          fill: false,
+          pointRadius: 0
+        }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Burn Up'
+        }
+      }
+    });
+
+    return this.chart;
+  }
+
+
+
+
+  private updateValidatorCreateBoard(): void {
+    this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
+      this.validationCreateBoard = res;
+      console.log("puedes crear mas?" + this.validationCreateBoard);
     });
   }
 
@@ -81,10 +238,21 @@ export class SprintComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+  openCreateAlert(sprintId: number): void {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: "250px",
+      data: { idSprint: sprintId },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(EditSprintDialog, {
       width: "250px",
-      data: this.sprint
+      data: this.sprint,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.sprintService
@@ -96,7 +264,7 @@ export class SprintComponent implements OnInit {
   }
 
   openProject(proj: number): void {
-    this.router.navigate(["project"], { queryParams: { id: proj } });
+    this.router.navigate(['project'], { queryParams: { method: "list", idProject: proj } });
   }
 
   openTeam(team: number): void {
@@ -106,9 +274,7 @@ export class SprintComponent implements OnInit {
   //Board-----------------------------------------------------------------------------------------------------------------------------------
 
   openBoard(board: number): void {
-    this.router.navigate(["board"], {
-      queryParams: { id: board, idSprint: this.idSprint }
-    });
+    this.router.navigate(['board'], { queryParams: { idBoard: board, idSprint: this.idSprint, method: "get" } });
   }
 
   createBoard(row: SprintDisplay): void {
@@ -117,7 +283,7 @@ export class SprintComponent implements OnInit {
 
   editBoard(row: BoardNumber, sprint: SprintDisplay): void {
     this.router.navigate(["createBoard"], {
-      queryParams: { idBoard: row.id, idSprint: sprint.id }
+      queryParams: { idBoard: row.id, idSprint: sprint.id },
     });
   }
 
@@ -135,6 +301,7 @@ export class SprintComponent implements OnInit {
         .getBoardBySprint(this.idSprint)
         .subscribe((board: BoardSimple[]) => {
           this.board = board;
+          this.updateValidatorCreateBoard();
         });
 
       this.documentService
@@ -182,7 +349,7 @@ export class SprintComponent implements OnInit {
   openDialogDoc(sprint: SprintDisplay): void {
     const dialogRef = this.dialog.open(NewDocumentDialog, {
       width: "250px",
-      data: sprint.id
+      data: sprint.id,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.documentService
@@ -196,6 +363,41 @@ export class SprintComponent implements OnInit {
   openDocument(doc: number): void {
     this.router.navigate(["document"], { queryParams: { id: doc } });
   }
+
+  //---------- Alertas
+  openAlertDialog(alertId: number): void {
+    const dialogRef = this.dialog.open(AlertComponent, {
+      width: "250px",
+      data: { idSprint: this.idSprint, idAlert: alertId },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
+  deleteAlert(idAlert: number) {
+    this.alertService.deleteAlert(idAlert).subscribe(() => {
+      this.loadAlerts();
+    });
+  }
+
+  loadAlerts() {
+    this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
+      this.lanzarPeticion = comp;
+      if(this.lanzarPeticion) {
+      this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+        (alerts: NotificationAlert[]) => {
+          this.alerts = alerts;
+        },
+        (error) => {
+          console.error(error.error);
+        }
+      );
+    }
+    });
+  }
+
 }
 
 //Dialog de Crear Document--------------------------------------------------------------------------------
@@ -203,7 +405,7 @@ export class SprintComponent implements OnInit {
 @Component({
   selector: "new-document-dialog",
   templateUrl: "new-document-dialog.html",
-  styleUrls: ["./new-document-dialog.css"]
+  styleUrls: ["./new-document-dialog.css"],
 })
 export class NewDocumentDialog implements OnInit {
   idSprint: number;
@@ -226,7 +428,7 @@ export class NewDocumentDialog implements OnInit {
     private documentService: DocumentService,
     private boardService: BoardService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data;
@@ -239,32 +441,26 @@ export class NewDocumentDialog implements OnInit {
   onSaveClick(select: string): void {
     console.log(this.tipo);
     if (this.tipo.valid) {
-      if (select == "REVIEW") {
+      if (select == "REVIEW" || select == "MIDDLE_REVIEW") {
         let json = {
           done: "",
           noDone: "",
-          rePlanning: ""
+          rePlanning: "",
         };
         this.cont = JSON.stringify(json);
-      } else if (select == "RETROSPECTIVE") {
+      } else if (select == "RETROSPECTIVE" || select == "MIDDLE_RETROSPECTIVE") {
         let json = {
           good: "",
           bad: "",
-          improvement: ""
+          improvement: "",
         };
         this.cont = JSON.stringify(json);
       } else if (select == "DAILY") {
-        let json = {
-          name: "",
-          done: "",
-          todo: "",
-          problem: ""
-        };
-        this.cont = JSON.stringify(json);
+        this.cont = "[ ]";
       } else {
         let json = {
           entrega: "",
-          conseguir: ""
+          conseguir: "",
         };
         this.cont = JSON.stringify(json);
       }
@@ -274,7 +470,7 @@ export class NewDocumentDialog implements OnInit {
         name: "Añade aquí el nombre",
         content: this.cont,
         sprint: this.idSprint,
-        type: select
+        type: select,
       };
 
       this.documentService
@@ -297,7 +493,7 @@ export class NewDocumentDialog implements OnInit {
 @Component({
   selector: "edit-sprint-dialog",
   templateUrl: "edit-sprint-dialog.html",
-  styleUrls: ["./edit-sprint-dialog.css"]
+  styleUrls: ["./edit-sprint-dialog.css"],
 })
 export class EditSprintDialog implements OnInit {
   idSprint: number;
@@ -310,12 +506,13 @@ export class EditSprintDialog implements OnInit {
     public dialogRef: MatDialogRef<EditSprintDialog>,
     @Inject(MAT_DIALOG_DATA) public data: SprintDisplay,
     private sprintService: SprintService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data.id;
     this.startDate.setValue(new Date(this.data.startDate));
     this.endDate.setValue(new Date(this.data.endDate));
+
   }
 
   onNoClick(): void {
@@ -326,12 +523,11 @@ export class EditSprintDialog implements OnInit {
     this.sprint = {
       id: this.idSprint,
       startDate: new Date(this.startDate.value).toISOString(),
-      endDate: new Date(this.endDate.value).toISOString()
+      endDate: new Date(this.endDate.value).toISOString(),
     };
     this.sprintService
       .editSprint(this.idSprint, this.sprint)
       .subscribe((sprint: Sprint) => {
-        //FIXME: Recargar la pagina
         this.dialogRef.close();
       });
   }
@@ -340,26 +536,26 @@ export class EditSprintDialog implements OnInit {
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.startDate.hasError("invalid")
-      ? "La fecha de fin no puede ser anterior a la de inicio"
-      : this.startDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.startDate.hasError("beforeToday")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.startDate.hasError("invalid")
+          ? "La fecha de fin no puede ser anterior a la de inicio"
+          : this.startDate.hasError("usedDates")
+            ? "Ya hay un sprint en las fechas seleccionadas"
+            : this.startDate.hasError("beforeToday")
+              ? "La fecha no puede ser anterior a hoy"
+              : "";
   }
 
   getErrorMessageEndDate(): string {
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
-      ? "La fecha no puede ser en pasado"
-      : this.endDate.hasError("usedDates")
-      ? "Ya hay un sprint en las fechas seleccionadas"
-      : this.endDate.hasError("beforeTodayEnd")
-      ? "La fecha no puede ser anterior a hoy"
-      : "";
+        ? "La fecha no puede ser en pasado"
+        : this.endDate.hasError("usedDates")
+          ? "Ya hay un sprint en las fechas seleccionadas"
+          : this.endDate.hasError("beforeTodayEnd")
+            ? "La fecha no puede ser anterior a hoy"
+            : "";
   }
 
   validForm(): boolean {
@@ -417,4 +613,6 @@ export class EditSprintDialog implements OnInit {
         console.log("Errors 1:", this.startDate.errors);
       });
   }
+
+
 }

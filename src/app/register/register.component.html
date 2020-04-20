@@ -1,11 +1,9 @@
 <div id="register-main">
-  <mat-horizontal-stepper linear #stepper>
+  <mat-horizontal-stepper linear labelPosition="bottom" #stepper>
 
-
-
-    <mat-step [stepControl]="signUpFormGroup" state="signUp">
+    <mat-step [stepControl]="signUpFormGroup"  state="signUp">
       <form [formGroup]="signUpFormGroup">
-        <ng-template matStepLabel>Registro</ng-template>
+        <ng-template matStepLabel style="display: none;">Registro</ng-template>
 
         <mat-form-field class="register-input">
           <mat-label>Email</mat-label>
@@ -25,9 +23,11 @@
           <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
         </mat-form-field>
 
+        <mat-checkbox class="example-margin" formControlName="accetpTerms">He leído y acepto los  <a (click)="navigateTo('terms-of-use')" target="_blank" style="color: lightskyblue; cursor: pointer;">términos y condiciones de la plataforma</a></mat-checkbox>
+        <mat-error><small>{{getErrorAcceptTerms()}}</small></mat-error>
+
         <div>
-          <button mat-button matStepperNext>Siguiente*</button><br/>
-          <small>*Haciendo click en "siguiente" acepta los <a (click)="navigateTo('terms-of-use')" target="_blank" style="color: lightskyblue; cursor: pointer;">términos y condiciones de la plataforma</a></small>
+          <button mat-button matStepperNext>Siguiente</button><br/>
         </div>
       </form>
     </mat-step>
@@ -44,7 +44,7 @@
                       <mat-divider></mat-divider>
                     </div>
                     <div class="img-plan-card">
-                      <img src="../../assets/archives.png" alt="basic-plan">
+                      <img src="../../assets/archives.webp" alt="basic-plan">
                     </div>
                   <div class="price-plan-card">
 
@@ -58,7 +58,7 @@
                     <mat-divider></mat-divider>
                   </div>
                   <div class="img-plan-card">
-                    <img src="../../assets/analysis.png" alt="standard-plan">
+                    <img src="../../assets/analysis.webp" alt="standard-plan">
                   </div>
                   <div class="price-plan-card">
 
@@ -72,7 +72,7 @@
                     <mat-divider></mat-divider>
                   </div>
                   <div class="img-plan-card">
-                    <img src="../../assets/creativity.png" alt="pro-plan">
+                    <img src="../../assets/creativity.webp" alt="pro-plan">
                   </div>
                   <div class="price-plan-card">
 
@@ -98,10 +98,10 @@
                 <p>1 tablero</p>
               </td>
               <td>
-                <p>2 tableros por proyecto</p>
+                <p>2 tableros por sprint</p>
               </td>
               <td>
-                <p>Tableros ilimitados por proyecto</p>
+                <p>Tableros ilimitados por sprint</p>
               </td>
             </tr>
             <!-- Sprints -->
@@ -110,7 +110,7 @@
                 <p>1 Sprint de 30 días de duración</p>
               </td>
               <td>
-                <p>Sprints ilimitados.</p>
+                <p>Sprints ilimitados</p>
               </td>
               <td>
                 <p>Sprints ilimitados</p>
@@ -149,21 +149,11 @@
                 <p></p>
               </td>
               <td>
-                <p>Automatización de avisos (reuniones, fin de Sprints, etc.)</p>
+                <p>Automatización de avisos eventos de Scrum</p>
               </td>
             </tr>
             <!-- Sincronizacion con github -->
-            <tr class="feature-plan-table">
-              <td>
-                <p></p>
-              </td>
-              <td>
-                <p></p>
-              </td>
-              <td>
-                <p>Automatización de commits en GitHub</p>
-              </td>
-            </tr>
+
             <tr class="price-plan-table">
               <td>
                 <mat-divider></mat-divider>
@@ -181,21 +171,18 @@
                 <p>por usuario al mes</p>
               </td>
             </tr>
-            <tr class="Select-plan-table">
+            <tr class="select-plan-table">
                 <td>
                   <mat-radio-button class="plan-radio-button" value="BASIC" name="selected-plan" [checked]="true" [required]="true" (change)="initConfig()">
-                    Selecccionar plan Basic
-                  </mat-radio-button>
+                  </mat-radio-button><p>Seleccionar plan Basic</p>
                 </td>
                 <td>
                   <mat-radio-button class="plan-radio-button" value="STANDARD" name="selected-plan" [required]="true" (change)="initConfig()">
-                    Selecccionar plan Standard
-                  </mat-radio-button>
+                  </mat-radio-button><p>Seleccionar plan STANDARD</p>
                 </td>
                 <td>
                   <mat-radio-button class="plan-radio-button" value="PRO" name="selected-plan" [required]="true" (change)="initConfig()">
-                    Selecccionar plan Pro
-                  </mat-radio-button>
+                  </mat-radio-button><p>Seleccionar plan PRO</p>
               </tr>
           </table>
 

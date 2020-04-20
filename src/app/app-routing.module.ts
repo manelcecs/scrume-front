@@ -19,26 +19,35 @@ import { DocumentComponent } from './document/document.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
+import { PersonalDataComponent } from './personal-data/personal-data.component';
+import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
+import { SecurityBreachComponent } from './security-breach/security-breach.component';
+import { BoardResolverService } from './servicio/board.service';
+import { ProfileResolverService } from './servicio/profile.service';
+import { NotesComponent } from './notes/notes.component';
+import { DocumentResolverService } from './servicio/document.service';
 
 
 const routes: Routes = [
 
   {path: 'bienvenida', component: BienvenidaComponent},
-  {path: 'teams', component: TeamComponent, resolve:{teams: TeamResolverService}},
-  {path: 'teamsCreate', component: TeamCreateComponent},
-  {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}},
-  {path: 'createProject', component: CreateProjectComponent},
-  {path: 'sprint', component: SprintComponent},
-  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}},
-  {path: 'createBoard', component: CreateBoardComponent},
-  {path: 'board', component: BoardComponent},
-  {path: 'invitation', component: CreateInvitationComponent},
+  {path: 'teams', component: TeamComponent, resolve:{teams: TeamResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'teamsCreate', component: TeamCreateComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'createProject', component: CreateProjectComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'sprint', component: SprintComponent, resolve:{sprint: SprintResolverService, documents: DocumentResolverService, boards: BoardResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'createBoard', component: CreateBoardComponent, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'board', component: BoardComponent, resolve:{board: BoardResolverService, sprint : SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'invitation', component: CreateInvitationComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'terms-of-use', component: TermsOfUseComponent},
-  {path: 'document', component: DocumentComponent},
-  {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}},
-  {path: 'profile', component: ProfileComponent},
-
+  {path: 'document', component: DocumentComponent, canActivate: [CheckExpirationBoxGuard], resolve:{document: DocumentResolverService}},
+  {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'profile', component: ProfileComponent, resolve:{profile: ProfileResolverService}},
+  {path: 'personal', component: PersonalDataComponent},
+  {path: 'admin', component: SecurityBreachComponent},
+  {path: 'notes', component: NotesComponent},
 
 ];
 
@@ -46,4 +55,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+ }

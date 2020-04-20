@@ -35,6 +35,7 @@ export class RegisterComponent implements OnInit {
   passwordControl: FormControl = new FormControl('', [Validators.required, Validators.pattern('^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$')]);
 
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
+  acceptTerms : FormControl = new FormControl(false, [Validators.requiredTrue]);
 
   constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
 
@@ -46,6 +47,7 @@ export class RegisterComponent implements OnInit {
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       confirmPasswordControl: this.confirmPasswordControl,
+      accetpTerms: this.acceptTerms
     });
     this.selectPlanFormGroup = this._formBuilder.group({
     });
@@ -90,6 +92,9 @@ export class RegisterComponent implements OnInit {
     this.confirmPasswordControl.hasError('notSamePassword') ? 'Las contraseñas no coinciden.' : '';
   }
 
+  getErrorAcceptTerms(){
+    return this.acceptTerms.hasError('required') ? 'Debe leer y aceptar los términos y usos.':'';
+  }
 
   notNullSelectedPlan(): boolean {
     let inputRadioButton = document.querySelector('input[name="selected-plan"]:checked');
@@ -179,7 +184,7 @@ export class RegisterComponent implements OnInit {
       let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
       let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], password: this.passwordControl.value, payerId: paymentInfo["payerID"], username: this.emailControl.value};
       this.userService.registerUser(user).subscribe(() => {
-        this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+        this.message = "Se ha registrado con éxito. Ya puede usar Scrume. Será deririgido en 5 segundos.";
         this.close = "Cerrar";
         this.openSnackBar(this.message, this.close);
       });
@@ -198,7 +203,7 @@ export class RegisterComponent implements OnInit {
     let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     let user : UserRegister = {id: 0, box: selectedBox, expiredDate: expiredDate, password: this.passwordControl.value,  username: this.emailControl.value}
     this.userService.registerUser(user).subscribe(() => {
-      this.message = "Se ha registrado con éxito. Ya puede usar Scrume";
+      this.message = "Se ha registrado con éxito. Ya puede usar Scrume. Será deririgido en 5 segundos.";
       this.close = "Cerrar";
       this.openSnackBar(this.message, this.close);
     });

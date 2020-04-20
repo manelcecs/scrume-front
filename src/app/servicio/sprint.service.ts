@@ -4,6 +4,7 @@ import { CabeceraService } from './cabecera.service';
 import { Observable } from 'rxjs';
 import { SprintDisplay, Sprint, SprintJsonDates, SprintWorkspace } from '../dominio/sprint.domain';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { BurnDownDisplay, BurnUpDisplay } from '../dominio/burn.domain';
 
 @Injectable({providedIn:'root'})
 
@@ -38,8 +39,15 @@ export class SprintService {
 
     checkDates(project : number, starDate: Date, endDate : Date) : Observable<boolean>{
       let data= {"startDate": starDate.toISOString(), "endDate": endDate.toISOString()};
-      console.log("Checking dates:", data);
       return this.httpClient.post<boolean>(this.cabeceraService.getCabecera() + "api/sprint/check-dates/" + project, data, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getBurnDown(idSprint : number): Observable<BurnDownDisplay[]>{
+      return this.httpClient.get<BurnDownDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/burndown/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
+    getBurnUp(idSprint : number): Observable<BurnUpDisplay[]>{
+      return this.httpClient.get<BurnUpDisplay[]>(this.cabeceraService.getCabecera() + "api/sprint/burnup/" + idSprint, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 }
 
@@ -51,8 +59,7 @@ export class SprintWorkspaceResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        console.log("Iniciando el resolver: Sprints");
-        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.id);
+        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.idProject);
     }
 }
 
@@ -65,7 +72,17 @@ export class SprintResolverService implements Resolve<any>{
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
 
-        console.log("Iniciando el resolver");
-        return this.sprintService.getSprintsOfProject(activatedRoute.queryParams.id);
+        let method = activatedRoute.queryParams.method;
+
+        if(method == "list"){
+          
+          let id = activatedRoute.queryParams.idProject;
+          return this.sprintService.getSprintsOfProject(id);
+        }else if(method == "get"){
+          
+          let id = activatedRoute.queryParams.idSprint;
+          return this.sprintService.getSprint(id);
+        }
+        
     }
 }

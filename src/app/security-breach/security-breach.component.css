@@ -1,0 +1,27 @@
+#title {
+    margin-top: 50px;
+    text-align: center;
+}
+
+div {
+    text-align: center;
+    margin-top: 15px;
+}
+
+button {
+    color: white;
+}
+
+#button-active {
+    background-color: #e62e2e;
+}
+
+#button-desactive {
+    background-color: green;
+}
+
+#text-2 {
+    font-weight: bold;
+}
+
+

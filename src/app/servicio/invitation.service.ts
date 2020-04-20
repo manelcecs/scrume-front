@@ -12,7 +12,7 @@ export class InvitationService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getInvitations() : Observable<InvitationDisplay[]> {
-        return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/team/list-invitations", {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/team/list-invitations", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     createInvitation(invitation : InvitationDto) : Observable<InvitationDto> {
@@ -24,8 +24,10 @@ export class InvitationService {
 
     }
 
-    getSuggestedUsers(idTeam: number) : Observable<UserNick[]> {
-      let data = {"team" : idTeam, "users" : [], "word" : ""};
+    getSuggestedUsers(idTeam: number, users: UserNick[], word: string) : Observable<UserNick[]> {
+      let usersid: number[] = [];
+      users.forEach(user => usersid.push(user.id));
+      let data = {"team" : idTeam, "users" : usersid, "word" : word};
       return this.httpClient.post<UserNick[]>(this.cabeceraService.getCabecera() + "api/team/findByNick", data, {headers: this.cabeceraService.getBasicAuthentication()});
     }
 

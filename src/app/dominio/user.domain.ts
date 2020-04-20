@@ -37,3 +37,18 @@ export interface SimpleUserNick {
   nick: string;
   photo?: string;
 }
+
+export interface Member {
+  email: string;
+  id: number;
+  isAdmin: boolean;
+  nickname: string;
+}
+
+export interface Renovation {
+  box: number;
+  expiredDate: string;
+  id: number;
+  orderId?: string;
+  payerId?: string;
+}

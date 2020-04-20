@@ -2,7 +2,7 @@ import { ColumDto } from './colum.domian';
 import { Sprint } from './sprint.domain';
 
 export interface Board {
-    id?: Number;
+    id?: number;
     name: string;
     columns: ColumDto[];
 }

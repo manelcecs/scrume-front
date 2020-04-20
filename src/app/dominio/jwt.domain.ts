@@ -10,11 +10,7 @@ export class UserLog{
 export class UserLogged {
     idUser : number;
     username: string;
-    endingBoxDate : BoxDate;
+    endingBoxDate : Date;
+    nameBox: string;
 }
 
-export class BoxDate {
-    dayOfMonth : number;
-    year: number;
-    monthValue : number;
-}

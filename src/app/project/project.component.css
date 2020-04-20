@@ -36,7 +36,12 @@
 }
 
 /*-----------------*/
+#myTabContent{
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
 
+}
 
 /* Descripcion and product backlog */
 
@@ -87,9 +92,19 @@
     width: 70%;
 }
 
+.name-sprint-project {
+    display: flex;
+    align-items: center;
+}
+
 .name-sprint-project > a{
     cursor: pointer;
 }
+
+.name-sprint-project > img{
+    cursor: pointer;
+}
+
 
 .name-sprint-project > a:hover{
     text-decoration: underline;
@@ -114,7 +129,6 @@
     padding: 0.1%;
     font-size: smaller;
 }
-
 
 
 /*------------------------------*/

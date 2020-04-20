@@ -31,10 +31,10 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title class="panel-title">
                         <div class="tasks-buttons-container">
-                            <img src="../assets/edit.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEditTask(task)">
-                            <img src="../assets/bin.png" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="deleteTask(task)">
-                            <img src="../assets/card.png" *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" width="auto" height="17" class="d-inline-block align-top task-list-buttons" alt="" (click)="openEstimateTask(task.id)">
-                            <img src="../assets/move.png" *ngIf="task.finalPoints != 0 && task.column == undefined" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" (click)="openSelectSprint(task.id)">
+                            <img src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Editar tarea" (click)="openEditTask(task)">
+                            <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Borrar tarea" (click)="deleteTask(task)">
+                            <img src="../assets/card.webp" *ngIf="task.estimatedPoints == 0 && task.finalPoints == 0" width="auto" height="17" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Estimar tarea" (click)="openEstimateTask(task.id)">
+                            <img src="../assets/move.webp" *ngIf="task.finalPoints != 0 && task.column == undefined" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Mover a un tablero de un sprint" (click)="openSelectSprint(task.id)">
                         </div>
                         <span class="separator">|</span>
                         <span>{{task.title}}</span>

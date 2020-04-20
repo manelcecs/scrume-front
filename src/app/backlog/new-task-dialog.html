@@ -1,4 +1,7 @@
-<h4>Crear tarea</h4>
+<div id=title-card>
+  <h4>Crear tarea </h4>
+    <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+</div>
 <div>
   <form id="prueba" action="" method="POST">
     <div>
@@ -17,7 +20,7 @@
       <button id="cancel-dialog" mat-button (click)="onNoClick()">
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="onSaveClick()" cdkFocusInitial>
+      <button id="save-dialog" mat-button (click)="onSaveClick()" [disabled]="loading" cdkFocusInitial>
         Guardar
       </button>
     </div>
