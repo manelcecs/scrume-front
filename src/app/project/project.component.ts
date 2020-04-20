@@ -199,7 +199,6 @@ export class NewSprintDialog implements OnInit {
   }
 
   getErrorMessageStartDate(): string {
-    console.log("Start date", this.startDate.errors);
     return this.startDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.startDate.hasError("past")
@@ -214,7 +213,6 @@ export class NewSprintDialog implements OnInit {
   }
 
   getErrorMessageEndDate(): string {
-    console.log("EndDate",this.endDate.errors);
     return this.endDate.hasError("required")
       ? "Este campo es obligatorio"
       : this.endDate.hasError("past")
