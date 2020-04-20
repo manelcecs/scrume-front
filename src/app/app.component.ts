@@ -60,16 +60,16 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void{
     this.cargarMenu();
 
+    timer(0, 10000).subscribe(() => {
+        console.log("Se piden notificaciones");
+        this.getNotifications();
+        this.getAlerts();
+    });
+
     let token = sessionStorage.getItem("loginToken");
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      timer(0, 10000).subscribe(() => {
-          this.getNotifications();
-          this.getAlerts();
-      });
-
-      this.getAlerts();
     }else{
       this.cargarMenu();
 
