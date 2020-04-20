@@ -29,6 +29,8 @@ export class ProfileComponent implements OnInit {
   profileSave: ProfileSave;
   idUserAccount: number;
 
+  preNick: string;
+
   name: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
   nick: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25), Validators.pattern(/^\S+$/)] });
   surnames: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
@@ -59,6 +61,8 @@ export class ProfileComponent implements OnInit {
 
       
         this.profile = this.activatedRoute.snapshot.data.profile;
+
+        this.preNick = this.profile.nick;
 
         this.name.setValue(this.profile.name);
         this.nick.setValue(this.profile.nick);
@@ -115,12 +119,12 @@ export class ProfileComponent implements OnInit {
         this.lastPass.setErrors({ invalid: true });
       }else if(error.error.message == "The new password must have an uppercase, a lowercase, a number and at least 8 characters"){
         this.newPass.setErrors({ invalid: true });
+      }else if(error.error.message == "The nick is not unique"){
+        this.nick.setErrors({ unique: true });
       }
     },
       () => {
-        if (this.newPass.value == "") {
-          console.log("se queda igual la contraseña");
-        } else {
+        if (this.newPass.value != "") {
           let email = atob(sessionStorage.getItem("loginToken")).split(":")[0];
           sessionStorage.setItem("loginToken", btoa(email + ":" + this.newPassword));
         }
@@ -169,6 +173,7 @@ export class ProfileComponent implements OnInit {
     this.nick.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
     this.nick.hasError('pattern') ? 'No puede tener espacios en blanco.' :
     this.nick.hasError('required') ? 'Este campo es requerido.' :
+    this.nick.hasError('unique') ? 'Este nick ya está en uso. Pruebe otro.' :
     this.surnames.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
     this.surnames.hasError('required') ? 'Este campo es requerido.' :
     this.gitUser.hasError('pattern') ? 'No puede tener espacios en blanco.' :
