@@ -104,9 +104,10 @@ export class ValidationService {
     return new Observable((observer) => {
       this.teamService.getMinimumBox(idTeam).subscribe((box: Box) => {
         var validation: boolean;
-        validation = true;
-        if (box.name == "BASIC") {
+        if (box.name === "BASIC") {
           validation = false;
+        } else {
+          validation = true;
         }
         observer.next(validation);
         observer.complete();
