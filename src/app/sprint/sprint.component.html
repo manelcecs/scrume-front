@@ -115,7 +115,7 @@
                 <td class="cell-statistics-project">{{sprint.completedHP}}<a matTooltip="Puntos de Historia"> ph </a>realizados</td>
             </tr>
           </div>  
-          
+          <div *ngIf="validationDisplayChart">
             <div class="chart">
                 <canvas id="burnDown">{{ burnDown }}</canvas>
             </div>
@@ -123,7 +123,7 @@
             <div class="chart">
                 <canvas id="burnUp">{{ burnUp }}</canvas>
             </div>
-
+          </div>
         </div>
 
         <div *ngIf="validationCreateAlert" class="tab-pane fade menu-sprint" id="alerts" role="tabpanel" aria-labelledby="alert-tab">

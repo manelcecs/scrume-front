@@ -124,7 +124,37 @@ export class TeamComponent implements OnInit {
           });
         }
       });
-    });
+    },(error) => {
+      this.openSnackBar(
+        "Para borrar un equipo, el único miembro debe ser el administrador.",
+        "Cerrar",
+        true
+      );
+    },
+    () => {
+      this.openSnackBar(
+        "Se ha borrado correctamente.",
+        "Cerrar",
+        false
+      );
+    }
+  );
+  }
+
+  openSnackBar(message: string, action: string, error: boolean) {
+    if (error) {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this._snackBar
+        .open(message, action, {
+          duration: 2000,
+        })
+        .afterDismissed()
+        .subscribe(() => {
+        });
+    }
   }
 
   leaveTeam(idTeam: number): void {
