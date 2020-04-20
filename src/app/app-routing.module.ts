@@ -36,7 +36,7 @@ const routes: Routes = [
   {path: 'project', component: ProjectComponent, resolve:{project: ProjectResolverService, sprints: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createProject', component: CreateProjectComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'sprint', component: SprintComponent, resolve:{sprint: SprintResolverService, documents: DocumentResolverService, boards: BoardResolverService}, canActivate: [CheckExpirationBoxGuard]},
-  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
+  {path: 'backlog', component: BacklogComponent, resolve: {project: ProjectWithTaskResolverService, sprints: SprintWorkspaceResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'createBoard', component: CreateBoardComponent, canActivate: [CheckExpirationBoxGuard]},
   {path: 'board', component: BoardComponent, resolve:{board: BoardResolverService, sprint : SprintResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'invitation', component: CreateInvitationComponent, canActivate: [CheckExpirationBoxGuard]},
