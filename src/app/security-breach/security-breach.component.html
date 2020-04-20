@@ -11,7 +11,7 @@
     <p *ngIf="activated; else elseBlock">ACTIVADO</p>
     <ng-template #elseBlock>DESACTIVADO</ng-template>
 </div>
-<div id="text-3">
+<div *ngIf="activated" id="text-3">
     <p>Mensaje desde base de datos: {{ message }}</p>
 </div>
 <div id="button-admin">
