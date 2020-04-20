@@ -10,6 +10,7 @@ import { NotificationAlert } from '../dominio/notification.domain';
 import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: "app-notifications",
@@ -63,7 +64,15 @@ export class NotificationsComponent implements OnInit {
 
   deleteNotification(alert: NotificationAlert){
     this.alertService.deleteAlert(alert.id).subscribe(() => {
-      this.onAnswerInvitations.emit(null);
+      this.onDiscardNotification.emit(null);
+    }, (error: HttpErrorResponse) => {
+      if (error.status == 401) {
+        this.onDiscardNotification.emit(null);
+        this._snackbar.open("El paquete mínimo del equipo no permite esta acción", "Cerrar", {
+          duration: 5000
+        })
+      }
+
     });
   }
 
