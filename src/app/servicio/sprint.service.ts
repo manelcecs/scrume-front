@@ -59,7 +59,7 @@ export class SprintWorkspaceResolverService implements Resolve<any>{
     }
 
     resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot){
-        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.idSprint);
+        return this.sprintService.listTodoColumnsOfAProject(activatedRoute.queryParams.idProject);
     }
 }
 
