@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if(token != null && token !== ""){
       this.getUserInfo();
 
-      timer(0, 5000).subscribe(() => {
+      timer(0, 10000).subscribe(() => {
           this.getNotifications();
           this.getAlerts();
       });
@@ -162,6 +162,8 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut(): void{
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
+    this.notifications = undefined;
+    this.alertsColection = undefined;
 
     this.cargarMenu();
     this.navigateTo("bienvenida");
@@ -170,6 +172,9 @@ export class AppComponent implements OnInit, OnDestroy {
   getUserInfo(){
     this.userService.getUser(this.userService.getUserLogged().idUser).subscribe((user: User)=>{
       this.user = user;
+
+      this.getNotifications();
+      this.getAlerts();
 
       this.securityBreachService.isAdmin().subscribe((isAdmin: boolean)=>{
         this.isAdmin = isAdmin;
@@ -214,6 +219,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
       this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
         this.alertsColection = alerts;
+        let generalDate = new Date();
+        for (let noti of this.alertsColection){
+          let today = generalDate.toISOString().split('T')[0];
+          let notiDay = new Date(noti.date).toISOString().split('T')[0];
+          noti.isDaily = today === notiDay;
+        }
         if (alerts.length != 0) {
           this.alerts = true;
         } else {
