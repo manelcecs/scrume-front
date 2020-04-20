@@ -52,6 +52,7 @@ export class SprintComponent implements OnInit {
   alerts: NotificationAlert[] = [];
 
   daily: boolean = false;
+  lanzarPeticion: boolean;
 
   constructor(
     private sprintService: SprintService,
@@ -367,6 +368,10 @@ export class SprintComponent implements OnInit {
   }
 
   loadAlerts() {
+    this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
+      this.lanzarPeticion = comp;
+    })
+    if(this.lanzarPeticion) {
     this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
       (alerts: NotificationAlert[]) => {
         this.alerts = alerts;
@@ -375,6 +380,7 @@ export class SprintComponent implements OnInit {
         console.error(error.error);
       }
     );
+  }
   }
 
 }
