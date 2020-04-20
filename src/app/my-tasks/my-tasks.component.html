@@ -2,29 +2,29 @@
   <h3>Mis Tareas asignadas</h3>
 </section>
 <section id="main-tasks">
-  
+
     <div *ngFor="let key of tasksMap.keys()">
       <div class="project-title">
         <h4>{{key}}</h4>
       </div>
-    
+
       <div class="project-tasks">
-        
+
         <mat-list-item *ngFor="let task of tasksMap.get(key)">
-  
+
           <mat-card class="project-task">
-  
+
             <p class="project-task-title"> {{task.title}}</p>
-  
-            <mat-icon (click)="openProject(task.project.id)">work</mat-icon>
-            <mat-icon *ngIf="task.workspace != null" (click)="openBoard(task.workspace.id, task.sprint)">table_chart</mat-icon>
-          
+
+            <mat-icon (click)="openProject(task.project.id)" matTooltip="Abrir proyecto">work</mat-icon>
+            <mat-icon *ngIf="task.workspace != null" (click)="openBoard(task.workspace.id, task.sprint)" matTooltip="Abrir tablero">table_chart</mat-icon>
+
             </mat-card>
-  
+
         </mat-list-item>
-      
+
       </div>
     </div>
-  
-  
+
+
   </section>

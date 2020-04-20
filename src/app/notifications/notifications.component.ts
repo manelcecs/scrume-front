@@ -26,29 +26,17 @@ export class NotificationsComponent implements OnInit {
   userSignedIn: number = 0;
   date: string;
   daily: boolean;
-  alertas: NotificationAlert[];
 
   constructor(
     private invitationService: InvitationService,
-    private userService: UserService,
     private alertService: AlertService,
     public dialog: MatDialog,
     public _snackbar: MatSnackBar
     ) {}
 
   ngOnInit(): void {
-      if (sessionStorage.getItem("loginToken") != null && sessionStorage.getItem("loginToken") !== "") {
-        let generalDate = new Date();
-        this.alertService.getAllAlertsByPrincipal().subscribe((alerts : NotificationAlert[]) => {
-          this.alertas = alerts;
-          for (let noti of this.alertas){
-            let today = generalDate.toISOString().split('T')[0];
-            let notiDay = new Date(noti.date).toISOString().split('T')[0];
-            noti.isDaily = today === notiDay;
-          }
-        });
-      }
-          
+
+
   }
 
   answerInvitation(invitation: InvitationDisplay, answer: boolean) {
@@ -76,9 +64,6 @@ export class NotificationsComponent implements OnInit {
   deleteNotification(alert: NotificationAlert){
     this.alertService.deleteAlert(alert.id).subscribe(() => {
       this.onAnswerInvitations.emit(null);
-      console.log("se ha borrado correctamente");
-      let index = this.alertas.indexOf(alert);
-      this.alertas.splice(index, 1);
     });
   }
 
