@@ -29,10 +29,10 @@ export class SecurityBreachComponent implements OnInit {
     
     if (this.activated) {
       this.cond = false;
-      this.mess = "We don't found a security breach in system.";
+      this.mess = this.message;
     } else {
       this.cond = true;
-      this.mess = "We found a security breach in the system.";
+      this.mess = this.message;
     }
     let breachJSON = {
       activated: this.cond,

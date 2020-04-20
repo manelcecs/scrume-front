@@ -34,7 +34,7 @@ import { Breach } from '../dominio/breach.domain';
         this.breach = breach;
         this.activated = breach.activated;
         if (this.activated) {
-          this.warning = "Hay una brecha de seguridad, por favor compruebe sus credenciales.";
+          this.warning = breach.message;
         }
       });
 
