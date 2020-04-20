@@ -48,10 +48,12 @@ export class SprintComponent implements OnInit {
   validationCreateBoard: boolean;
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
+  validationDisplayChart: boolean;
 
   alerts: NotificationAlert[] = [];
 
   daily: boolean = false;
+  lanzarPeticion: boolean;
 
   constructor(
     private sprintService: SprintService,
@@ -82,8 +84,12 @@ export class SprintComponent implements OnInit {
         this.validationCreateAlert = res;
       })
 
+      this.updateValidatorCreateBoard();
+
       // Gráficas
-      this.sprintService
+      //Validación
+      this.validationService.checkCanDisplayGraphics(this.sprint.project.team.id).subscribe((res: boolean) => {
+        this.sprintService
         .getBurnDown(this.idSprint)
         .subscribe((burnDown: BurnDownDisplay[]) => {
           this.burnDown = burnDown;
@@ -96,7 +102,9 @@ export class SprintComponent implements OnInit {
           this.burnUp = burnup;
           this.burnUp = this.getChartBurnUp(burnup);
         });
-
+        this.validationDisplayChart = res;
+      });
+     
       //Carga alertas
       this.loadAlerts();
 
@@ -212,6 +220,7 @@ export class SprintComponent implements OnInit {
   private updateValidatorCreateBoard(): void {
     this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
       this.validationCreateBoard = res;
+      console.log("puedes crear mas?" + this.validationCreateBoard);
     });
   }
 
@@ -364,6 +373,10 @@ export class SprintComponent implements OnInit {
   }
 
   loadAlerts() {
+    this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
+      this.lanzarPeticion = comp;
+    })
+    if(this.lanzarPeticion) {
     this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
       (alerts: NotificationAlert[]) => {
         this.alerts = alerts;
@@ -372,6 +385,7 @@ export class SprintComponent implements OnInit {
         console.error(error.error);
       }
     );
+  }
   }
 
 }

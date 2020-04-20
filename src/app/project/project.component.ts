@@ -96,7 +96,7 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  
+
 }
 
 export interface ExchangeData {
@@ -219,9 +219,10 @@ export class NewSprintDialog implements OnInit {
         ? "La fecha no puede ser en pasado"
         : this.endDate.hasError("usedDates")
           ? "Ya hay un sprint en las fechas seleccionadas"
-          : this.endDate.hasError("beforeTodayEnd")
+          : this.endDate.hasError("beforeToday")
             ? "La fecha no puede ser anterior a hoy"
-            : "";
+            : this.endDate.hasError("endBeforeStart") ? "La fecha de fin no puede ser anterior o igual a la de inicio"
+              : '';
   }
 
   validForm(): boolean {
@@ -238,7 +239,10 @@ export class NewSprintDialog implements OnInit {
     if (formControlToTime < tomorrowTime) {
       date.setErrors({ beforeToday: true });
     } else {
-      date.updateValueAndValidity();
+      if (date.hasError("beforeToday")){
+        delete date.errors["beforeToday"];
+
+      }
     }
   }
 
@@ -250,16 +254,15 @@ export class NewSprintDialog implements OnInit {
         if (!res) {
           this.startDate.setErrors({ usedDates: true });
           this.endDate.setErrors({ usedDates: true });
-        } else if (
-          !(
-            this.startDate.hasError("beforeToday") ||
-            this.endDate.hasError("beforeTodayEnd")
-            )
-            ) {
-              this.startDate.updateValueAndValidity();
-              this.endDate.updateValueAndValidity();
-            }
-          });
+        } else {
+          if (this.startDate.hasError("usedDates")){
+            delete this.startDate.errors["usedDates"];
+          }
+          if (this.endDate.hasError("usedDates")) {
+            delete this.startDate.errors["usedDates"];
+          }
+        }
+      });
     }
 
   }
@@ -311,7 +314,23 @@ export class NewSprintDialog implements OnInit {
     } else if (alertDate > endDate) {
       this.alertDate.setErrors({ betweenSprint: true });
     } else {
-      this.alertDate.updateValueAndValidity();
+      if (this.alertDate.hasError("betweenSprint")) {
+        delete this.alertDate.errors["betweenSprint"];
+      }
+    }
+  }
+
+  validEndStartDate() {
+    let startDate = new Date(this.startDate.value);
+    let endDate = new Date(this.endDate.value).getTime();
+    let startDateTomorrow: number = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()+1, 0, 0, 0, 0).getTime();
+
+    if (startDateTomorrow > endDate) {
+      this.endDate.setErrors({ "endBeforeStart": true });
+    } else {
+      if (this.endDate.hasError("endBeforeStart")) {
+        delete this.endDate.errors["endBeforeStart"];
+      }
     }
   }
 

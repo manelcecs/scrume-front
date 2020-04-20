@@ -48,3 +48,8 @@
     color: black;
     margin-top: 1%;
 }
+
+/* iconos */
+mat-icon:hover {
+  cursor: pointer;
+}

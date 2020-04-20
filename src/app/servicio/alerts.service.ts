@@ -31,7 +31,7 @@ export class AlertService {
     }
 
     getAllAlertsByPrincipal(): Observable<NotificationAlert[]>{
-        return this.httpClient.get<NotificationAlert[]>(this.cabeceraService.getCabecera() + "api/notification/list-my-notifications", {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.get<NotificationAlert[]>(this.cabeceraService.getCabecera() + "api/notification/list-my-notifications", {headers: this.cabeceraService.getBasicAuthentication()});
     }
-   
+
 }

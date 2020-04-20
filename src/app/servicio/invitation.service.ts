@@ -12,7 +12,7 @@ export class InvitationService {
     constructor(private httpClient:HttpClient, private cabeceraService:CabeceraService){}
 
     getInvitations() : Observable<InvitationDisplay[]> {
-        return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/team/list-invitations", {headers: this.cabeceraService.getBasicAuthentication()});
+      return this.httpClient.get<InvitationDisplay[]>(this.cabeceraService.getCabecera() + "api/team/list-invitations", {headers: this.cabeceraService.getBasicAuthentication()});
     }
 
     createInvitation(invitation : InvitationDto) : Observable<InvitationDto> {

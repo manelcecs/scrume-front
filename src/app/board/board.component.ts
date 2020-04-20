@@ -29,7 +29,9 @@ export class BoardComponent implements OnInit {
   constructor(private router: Router, private boardService: BoardService, private activatedRoute: ActivatedRoute,
     private taskservice: TaskService, private dialog: MatDialog, private sprintService: SprintService) {
     this.board = this.activatedRoute.snapshot.data.board;
+
     this.sprint = this.activatedRoute.snapshot.data.sprint;
+
   }
 
   ngOnInit(): void {

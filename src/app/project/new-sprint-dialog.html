@@ -36,7 +36,7 @@
         ></mat-datepicker-toggle>
         <mat-datepicker
           #pickerEnd
-          (closed)="beforeTodayDateValidator(endDate);validDatesValidator();"
+          (closed)="beforeTodayDateValidator(endDate);validDatesValidator(); validEndStartDate();"
         ></mat-datepicker>
         <mat-error *ngIf="endDate.invalid"
           >{{ getErrorMessageEndDate() }}</mat-error
