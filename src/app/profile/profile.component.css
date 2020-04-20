@@ -105,3 +105,16 @@ mat-icon:hover {
 #update-box-button:hover {
   background-color: #18A1F0;
 }
+
+
+@media (max-width: 650px) {
+    #main-profile {
+        padding: 3% 15%;
+    }
+  }
+
+  @media (max-width: 450px) {
+    #main-profile {
+        padding: 3% 5%;
+    }
+  }

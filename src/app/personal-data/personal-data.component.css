@@ -1,3 +1,7 @@
+#main-personal-data{
+    padding: 2% 15%;
+}
+
 #personal{
     padding: 1%;
 }
@@ -5,9 +9,8 @@
 #boton-volver {
     background-color: #e62e2e;
     color: white;
-    padding: 4px 9px;
     text-align: center;
-    margin: 5px;
+    margin-right: 1em;
 }
 
 #boton-volver:hover {
@@ -15,13 +18,11 @@
 }
 
 #exportar-datos{
-    background-color: black;
+    background-color: #38B6FF;
     color: white;
-    padding: 4px 9px;
-    text-align: center;
-    margin: 5px;
+    margin-left: 1em;
 }
 
 #exportar-datos:hover{
-    background-color: rgb(63, 63, 70);
+    background-color: #18A1F0;
 }
