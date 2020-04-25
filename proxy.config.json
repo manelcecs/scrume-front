@@ -1,11 +1,11 @@
 {
     "/api/*": {
-      "target": "https://api-scrume-sp3.herokuapp.com",
+      "target": "https://api-scrume-sp4.herokuapp.com",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug",
       "pathRewrite":{
-        "^/api" : "https://api-scrume-sp3.herokuapp.com/api"
+        "^/api" : "https://api-scrume-sp4.herokuapp.com/api"
       }
     }
   }
