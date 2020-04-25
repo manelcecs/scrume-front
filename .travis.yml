@@ -20,13 +20,13 @@ jobs:
         - sonar-scanner
       deploy:
         provider: heroku
-        app: scrume-app-s3
+        app: scrume-app-s4
         strategy: git
         api_key:
           secure: CZyp19G2iOAHgiktaUK7KuIcYQshlO1Cfis4c0LvVZ/pfKvXtw7UeYTCgj8TT9VYljPEElJtzv4k6lvX8TeyX7yHvhUYni166cjkgC/xwkRADggUU6WdKNUB/OqMRaNBlI1509gmyiUFZsjLOeRf1UFSN51cOpFh/MKWTU/r3GrHJ7lUaaEYoO1+nTTiz0o6QwXTrxJBw4wnPYK+p6inL2UPNjZAUjI6VxzgUdp3LazD4xptWJaJeGWGvUH8nWYvQf1U1nLeYbLQ/cTODRjcYCGSLP42vY4zXZhJKZAIgdd5ECQxF3+7zzzfqC/pzoxQp3msB6T5857mtAED3ZeO1cz9QJLU3hxYoKuVUM7+OkmbjkgE6mQvUwfWFW0A7c9K5eSLf4Qh0dI60vVX7VpPErQHrXHVfXULS3duNvZLxlFNLmpIN98R9nHyKNWMwySM9gbaHxeqLCshkZxsmCcr1cePVuJDzk7e+p4io85M+CDVZ5OKOjObKNKw57whB3bAtWhgo6XVDCa5mn4bel/lU4iZWcpE+PGMcov47O54GhgWaA3NdW0p0XEn5UK293m+r6T3XDZQJupuekIxkpJmV/7niP+HEitw3zUWHP2Fv7adIQdzDuqQDToXW3kvE5orvzbvYdjAN4zuRnPBXcwwYucAJx2hnu2sTPMohgRewI4=
         on: 
           branch: 
-            - integration3
+            - integration4
             - develop
 
 notifications:
