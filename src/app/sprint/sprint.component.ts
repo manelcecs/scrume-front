@@ -230,7 +230,6 @@ export class SprintComponent implements OnInit {
   private updateValidatorCreateBoard(): void {
     this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
       this.validationCreateBoard = res;
-      console.log("puedes crear mas?" + this.validationCreateBoard);
     });
   }
 

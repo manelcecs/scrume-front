@@ -64,6 +64,8 @@ export class DocumentComponent implements OnInit {
       this.message = "Se ha guardado el documento correctamente";
       this.close = "Cerrar";
 
+      this.onResize();
+
       if (this.doc.type == "RETROSPECTIVE" || this.doc.type == "MIDDLE_RETROSPECTIVE") {
         this.nameRetrospective = this.doc.name;
         this.good = JSON.parse(this.doc.content).good;
@@ -236,16 +238,18 @@ export class DocumentComponent implements OnInit {
   quitViewPreview(){
     var formContainer = document.getElementById("forms");
     var pdfContainer = document.getElementById("pdf-container");
+    var viewPreview = document.getElementById("view-preview");
     formContainer.style.display = "block";
     formContainer.style.width = "100%";
     pdfContainer.style.display = "none";
+    viewPreview.style.display = "block";
 
     var preview = document.getElementById("preview");
     preview.setAttribute("value", "false");
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize() {
   var pdfContainer = document.getElementById("pdf-container");
   var formContainer = document.getElementById("forms");
   var viewPreview = document.getElementById("view-preview");
