@@ -62,6 +62,10 @@ export class TeamService {
       return this.httpClient.get<Box>(this.cabeceraService.getCabecera() + "api/box/minimum-box/" + idTeam,{headers: this.cabeceraService.getBasicAuthentication()});
     }
 
+    isAdminByTeam(id: number): Observable<boolean> {
+      return this.httpClient.get<boolean>(this.cabeceraService.getCabecera() + "api/team/isAdmin/" + id ,{headers: this.cabeceraService.getBasicAuthentication()});
+    }
+
 
 
 }

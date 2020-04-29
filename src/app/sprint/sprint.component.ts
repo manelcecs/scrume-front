@@ -28,6 +28,7 @@ import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
 import { UserService } from '../servicio/user.service';
 import { ValidationService } from '../servicio/validation.service';
+import { TeamService } from '../servicio/team.service';
 
 @Component({
   selector: "app-sprint",
@@ -49,6 +50,7 @@ export class SprintComponent implements OnInit {
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
   validationDisplayChart: boolean;
+  validationEditBoard: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -65,7 +67,8 @@ export class SprintComponent implements OnInit {
     private http: HttpClient,
     private alertService: AlertService,
     private userService: UserService,
-    private validationService: ValidationService) {
+    private validationService: ValidationService,
+    private teamService: TeamService) {
     this.sprint = this.activatedRoute.snapshot.data.sprint;
     this.idSprint = this.sprint.id;
     this.board = this.activatedRoute.snapshot.data.boards;
@@ -78,6 +81,11 @@ export class SprintComponent implements OnInit {
     if (this.sprint != undefined) {
 
       this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
+
+      this.teamService.isAdminByTeam(this.sprint.project.team.id).subscribe((bol: boolean) => {
+        this.validationEditBoard = bol;
+      });
+       
 
       //validacion
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {

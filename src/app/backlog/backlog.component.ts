@@ -24,6 +24,7 @@ export class BacklogComponent implements OnInit {
   idProject: number;
   project: ProjectComplete;
   sprints: SprintWorkspace[];
+  compruebaBorrar: boolean;
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
@@ -36,6 +37,9 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.teamService.isAdminByTeam(this.project.team.id).subscribe((bol: boolean) => {
+      this.compruebaBorrar = bol;
+    });
   }
 
   navigateTo(route: string): void {
