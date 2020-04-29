@@ -54,7 +54,7 @@
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
           aria-selected="false">Métricas</a>
       </li>
-      <li class="nav-item" *ngIf="validationCreateAlert && validationEditBoard">
+      <li class="nav-item" *ngIf="validationCreateAlert && compruebaAdminTeam">
           <a class="nav-link" id="alert-tab" data-toggle="tab" href="#alerts" role="tab" aria-controls="alerts" aria-selected="false">Alertas
             <img src="../assets/more.webp" matTooltip="Añadir alertas al sprint" width="auto" height="15" class="d-inline-block align-top" alt="add alert" (click)="openCreateAlert(sprint.id)" *ngIf="validationCreateAlert" />
           </a>
@@ -68,8 +68,8 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item" *ngFor="let t of board">
                     <p class="navigable" (click)="openBoard(t.id)">{{t.name}}</p>
-                    <img *ngIf="validationEditBoard" src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Editar tablero" (click)="editBoard(t,sprint)">
-                    <img *ngIf="validationEditBoard" src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Eliminar tablero" (click)="deleteBoard(t)">
+                    <img *ngIf="compruebaAdminTeam" src="../assets/edit.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Editar tablero" (click)="editBoard(t,sprint)">
+                    <img *ngIf="compruebaAdminTeam" src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top action" alt=""  matTooltip="Eliminar tablero" (click)="deleteBoard(t)">
                 </li>
             </ul>
 
@@ -126,7 +126,7 @@
           </div>
         </div>
 
-        <div *ngIf="validationCreateAlert && validationEditBoard" class="tab-pane fade menu-sprint" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
+        <div *ngIf="validationCreateAlert && compruebaAdminTeam" class="tab-pane fade menu-sprint" id="alerts" role="tabpanel" aria-labelledby="alert-tab">
           
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let alert of alerts">

@@ -50,7 +50,7 @@ export class SprintComponent implements OnInit {
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
   validationDisplayChart: boolean;
-  validationEditBoard: boolean;
+  compruebaAdminTeam: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -81,10 +81,6 @@ export class SprintComponent implements OnInit {
     if (this.sprint != undefined) {
 
       this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
-
-      this.teamService.isAdminByTeam(this.sprint.project.team.id).subscribe((bol: boolean) => {
-        this.validationEditBoard = bol;
-      });
        
 
       //validacion
@@ -119,7 +115,11 @@ export class SprintComponent implements OnInit {
       });
 
       //Carga alertas
-      this.loadAlerts();
+      this.teamService.isAdminByTeam(this.sprint.project.team.id).subscribe((bol: boolean) => {
+        this.compruebaAdminTeam = bol;
+        this.loadAlerts();
+      });
+      
 
     } else {
       this.navigateTo("bienvenida");
@@ -390,20 +390,23 @@ export class SprintComponent implements OnInit {
   }
 
   loadAlerts() {
-    this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
-      this.lanzarPeticion = comp;
-      if(this.lanzarPeticion) {
-      this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
-        (alerts: NotificationAlert[]) => {
-          this.alerts = alerts;
-        },
-        (error) => {
-          console.error(error.error);
-        }
-      );
+    if(this.compruebaAdminTeam) {
+      console.log("de puta madre");
+      this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
+        this.lanzarPeticion = comp;
+        if(this.lanzarPeticion) {
+        this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+          (alerts: NotificationAlert[]) => {
+            this.alerts = alerts;
+          },
+          (error) => {
+            console.error(error.error);
+          }
+        );
+      }
+      });
     }
-    });
-  }
+    }
 
 }
 
