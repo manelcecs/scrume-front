@@ -107,7 +107,6 @@ export class SprintComponent implements OnInit {
             this.burnUp = burnup;
             let momentoFinal = new Date(this.sprint.endDate).getTime();
             let momentoInicial = new Date(this.sprint.startDate).getTime();
-            console.log("La resta es " + (momentoFinal - momentoInicial));
             let total = Math.round((momentoFinal - momentoInicial) / (1000 * 60 * 60 * 24));
             this.burnUp = this.getChartBurnUp(burnup, total);
           });
@@ -185,12 +184,11 @@ export class SprintComponent implements OnInit {
     let historyPoints2: number[] = [];
     let objetive2: number[] = [];
     let acum: number = 0;
-    console.log("El número de días " + total);
-    for (let x = 0; x <= total; x++) {
+    for (let x = 0; x <= total-1; x++) {
       days2.push("Day " + (x + 1));
-      let div = chartJSON[0].totalHistoryTask / total;
+      let div = chartJSON[0].totalHistoryTask / (total-1);
       acum = acum + div;
-      objetive2.push(acum);
+      objetive2.push(acum - div);
     }
 
     for (let i = 0; i < chartJSON.length; i++) {
@@ -391,7 +389,6 @@ export class SprintComponent implements OnInit {
 
   loadAlerts() {
     if(this.compruebaAdminTeam) {
-      console.log("de puta madre");
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
         this.lanzarPeticion = comp;
         if(this.lanzarPeticion) {
