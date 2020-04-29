@@ -31,4 +31,4 @@ jobs:
 
 notifications:
   email:
-    on_failure: manuelc.p.g@gmail.com
+    on_failure: ezequiel6a@gmail.com
