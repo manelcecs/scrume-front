@@ -5,6 +5,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { Document, Daily, DailyComponent } from "../dominio/document.domain";
 import { UserService } from "../servicio/user.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { User } from '../dominio/user.domain';
 
 @Component({
   selector: "app-my-daily-form",
@@ -29,6 +30,8 @@ export class MyDailyFormComponent implements OnInit {
 
   daily: Daily;
 
+  idUser: number;
+
   constructor(
     public dialogRef: MatDialogRef<MyDailyFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,7 +42,10 @@ export class MyDailyFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.idSprint = this.data.idSprint;
-    this.nombre = this.userService.getUserLogged().username.split("@")[0];
+    this.idUser = this.userService.getUserLogged().idUser;
+    this.userService.getUser(this.idUser).subscribe((user: User) => {
+      this.nombre = user.name;
+    });
 
     //Cambiar a la nueva peticion
     this.documentService

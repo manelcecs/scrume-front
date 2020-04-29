@@ -28,6 +28,7 @@ import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertComponent } from '../alert/alert.component';
 import { UserService } from '../servicio/user.service';
 import { ValidationService } from '../servicio/validation.service';
+import { TeamService } from '../servicio/team.service';
 
 @Component({
   selector: "app-sprint",
@@ -49,6 +50,7 @@ export class SprintComponent implements OnInit {
   validationCreateAlert: boolean;
   validationCanEdit: boolean;
   validationDisplayChart: boolean;
+  compruebaAdminTeam: boolean;
 
   alerts: NotificationAlert[] = [];
 
@@ -65,7 +67,8 @@ export class SprintComponent implements OnInit {
     private http: HttpClient,
     private alertService: AlertService,
     private userService: UserService,
-    private validationService: ValidationService) {
+    private validationService: ValidationService,
+    private teamService: TeamService) {
     this.sprint = this.activatedRoute.snapshot.data.sprint;
     this.idSprint = this.sprint.id;
     this.board = this.activatedRoute.snapshot.data.boards;
@@ -78,6 +81,7 @@ export class SprintComponent implements OnInit {
     if (this.sprint != undefined) {
 
       this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
+       
 
       //validacion
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {
@@ -103,7 +107,6 @@ export class SprintComponent implements OnInit {
             this.burnUp = burnup;
             let momentoFinal = new Date(this.sprint.endDate).getTime();
             let momentoInicial = new Date(this.sprint.startDate).getTime();
-            console.log("La resta es " + (momentoFinal - momentoInicial));
             let total = Math.round((momentoFinal - momentoInicial) / (1000 * 60 * 60 * 24));
             this.burnUp = this.getChartBurnUp(burnup, total);
           });
@@ -111,7 +114,11 @@ export class SprintComponent implements OnInit {
       });
 
       //Carga alertas
-      this.loadAlerts();
+      this.teamService.isAdminByTeam(this.sprint.project.team.id).subscribe((bol: boolean) => {
+        this.compruebaAdminTeam = bol;
+        this.loadAlerts();
+      });
+      
 
     } else {
       this.navigateTo("bienvenida");
@@ -177,12 +184,11 @@ export class SprintComponent implements OnInit {
     let historyPoints2: number[] = [];
     let objetive2: number[] = [];
     let acum: number = 0;
-    console.log("El número de días " + total);
-    for (let x = 0; x <= total; x++) {
+    for (let x = 0; x <= total-1; x++) {
       days2.push("Day " + (x + 1));
-      let div = chartJSON[0].totalHistoryTask / total;
+      let div = chartJSON[0].totalHistoryTask / (total-1);
       acum = acum + div;
-      objetive2.push(acum);
+      objetive2.push(acum - div);
     }
 
     for (let i = 0; i < chartJSON.length; i++) {
@@ -230,7 +236,6 @@ export class SprintComponent implements OnInit {
   private updateValidatorCreateBoard(): void {
     this.validationService.checkNumberOfBoards(this.sprint.project.team.id, this.board.length).subscribe((res: boolean) => {
       this.validationCreateBoard = res;
-      console.log("puedes crear mas?" + this.validationCreateBoard);
     });
   }
 
@@ -383,20 +388,22 @@ export class SprintComponent implements OnInit {
   }
 
   loadAlerts() {
-    this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
-      this.lanzarPeticion = comp;
-      if(this.lanzarPeticion) {
-      this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
-        (alerts: NotificationAlert[]) => {
-          this.alerts = alerts;
-        },
-        (error) => {
-          console.error(error.error);
-        }
-      );
+    if(this.compruebaAdminTeam) {
+      this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
+        this.lanzarPeticion = comp;
+        if(this.lanzarPeticion) {
+        this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+          (alerts: NotificationAlert[]) => {
+            this.alerts = alerts;
+          },
+          (error) => {
+            console.error(error.error);
+          }
+        );
+      }
+      });
     }
-    });
-  }
+    }
 
 }
 

@@ -10,6 +10,7 @@ import { NotificationAlert } from '../dominio/notification.domain';
 import { AlertService } from '../servicio/alerts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';
+import { TeamService } from '../servicio/team.service';
 
 @Component({
   selector: "app-project",
@@ -27,6 +28,7 @@ export class ProjectComponent implements OnInit {
   idTeam: number;
 
   idProject: number;
+  compruebaAdminTeam: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,7 +36,8 @@ export class ProjectComponent implements OnInit {
     private projectService: ProjectService,
     private sprintService: SprintService,
     public dialog: MatDialog,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private teamService: TeamService
   ) {
     this.project = this.activatedRoute.snapshot.data.project;
     this.sprints = this.activatedRoute.snapshot.data.sprints;
@@ -45,7 +48,11 @@ export class ProjectComponent implements OnInit {
 
     }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.teamService.isAdminByTeam(this.project.team.id).subscribe((bol: boolean) => {
+      this.compruebaAdminTeam = bol;
+    });
+  }
   openBacklog(): void {
     this.router.navigate(["backlog"], { queryParams: { idProject: this.project.id, method: "list"} });
   }

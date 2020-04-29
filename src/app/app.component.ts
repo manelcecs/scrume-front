@@ -61,7 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cargarMenu();
 
     timer(0, 10000).subscribe(() => {
-        console.log("Se piden notificaciones");
         this.getNotifications();
         this.getAlerts();
     });

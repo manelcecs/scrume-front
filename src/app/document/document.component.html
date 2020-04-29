@@ -133,7 +133,7 @@
           value="{{ done }}"
           (input)="reviewDone(doneHTML.value)"
           oninput=""
-          placeholder="Elementos de la Lista de Producto se han “Terminado”"
+          placeholder="Qué elementos del product backlog se han “Terminado”"
           matInput
           #doneHTML
         />
@@ -243,7 +243,7 @@
       <div *ngIf="doc.type == 'REVIEW' || doc.type == 'MIDDLE_REVIEW'" class="paper">
         <h3 id="reviewName">{{ nameReview }} | {{ doc.type }}</h3>
         <br />
-        <h5>Elementos de la Lista de Producto se han “Terminado”</h5>
+        <h5>Qué elementos del product backlog se han “Terminado”</h5>
         <p id="reviewDone">{{ done }}</p>
         <br />
 

@@ -1,5 +1,33 @@
 <mat-card>
     <mat-card-header>
+        <mat-card-title><mat-icon>av_timer</mat-icon>¡Cuenta atrás!</mat-card-title>
+        <mat-card-subtitle>Nuestro lanzamiento será en breve...</mat-card-subtitle>
+    </mat-card-header>
+    <mat-content>    
+        <section>
+            <div class="coming-soon">
+                <div class="time-countdown">
+                    <ul>
+                        <li style="min-width: 90px;" class="count-bg-one radius"><span id="days">{{day}}</span>Días</li>
+                        <li style="min-width: 90px;" class="count-bg-two radius"><span id="hours">{{hours}}</span>Horas</li>
+                        <li style="min-width: 90px;" class="count-bg-three radius"><span id="minutes">{{minutes}}</span>Minutos</li>
+                        <li style="min-width: 90px;" class="count-bg-four radius"><span id="seconds">{{seconds}}</span>Segundos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </mat-content>
+    <br><br>
+    <mat-card-header>
+        <mat-card-subtitle>Si quieres conocer más pasate por nuestras redes sociales!</mat-card-subtitle>
+        <img alt="" onclick="location.href = 'https://twitter.com/ScrumeProject';" width="50px" height="30px" style="margin: 1px;" src="../../assets/twitter.webp"/>
+        <img alt="" width="40px" height="30px" style="margin: 1px;" src="../../assets/youtube.webp"/>
+        <img alt="" width="30px" height="30px" style="margin-left: 8px;" src="../../assets/linkedin.webp"/>
+    </mat-card-header>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
         <mat-card-title>
             <mat-icon>web</mat-icon>
             Scrume
@@ -10,7 +38,7 @@
 
         <img alt="" src="../../assets/version.webp">
         <br>
-        <p>Sprint 1: <a href="https://scrume-brand.herokuapp.com/teams">Scrume v1</a></p>
+        <p>Sprint 1: <a href="https://scrume-brand.herokuapp.com">Scrume v1</a></p>
         <p>Sprint 2: <a href="https://scrume-app-s2.herokuapp.com/">Scrume v2</a></p>
         <p>Sprint 3: <a href="https://scrume-app-s3.herokuapp.com/">Scrume v3</a></p>
     </mat-card-content>
@@ -93,24 +121,5 @@
         <mat-icon>email</mat-icon> Email: scrumme.corporation@gmail.com
     </mat-card-content>
 </mat-card>
-<mat-card>
-    <mat-card-header>
-        <mat-card-title><mat-icon>av_timer</mat-icon>¡Cuenta atrás!</mat-card-title>
-        <mat-card-subtitle>Nuestro lanzamiento será en breve...</mat-card-subtitle>
-    </mat-card-header>
-    <mat-content>    
-        <section>
-            <div class="coming-soon">
-                <div class="time-countdown">
-                    <ul>
-                        <li class="count-bg-one radius"><span id="days">{{day}}</span>Días</li>
-                        <li class="count-bg-two radius"><span id="hours">{{hours}}</span>Horas</li>
-                        <li class="count-bg-three radius"><span id="minutes">{{minutes}}</span>Minutos</li>
-                        <li class="count-bg-four radius"><span id="seconds">{{seconds}}</span>Segundos</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </mat-content>
-</mat-card>
+
 

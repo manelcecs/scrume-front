@@ -24,11 +24,12 @@ export class BacklogComponent implements OnInit {
   idProject: number;
   project: ProjectComplete;
   sprints: SprintWorkspace[];
+  compruebaBorrar: boolean;
   searchValue;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
     private projectService: ProjectService, private teamService: TeamService, private dialog: MatDialog,
-    private taskService: TaskService, private bottomSheet: MatBottomSheet) {
+    private taskService: TaskService, private bottomSheet: MatBottomSheet, private _snackBar: MatSnackBar) {
 
     this.idProject = this.activatedRoute.snapshot.data.project.id;
     this.project = this.activatedRoute.snapshot.data.project;
@@ -36,6 +37,9 @@ export class BacklogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.teamService.isAdminByTeam(this.project.team.id).subscribe((bol: boolean) => {
+      this.compruebaBorrar = bol;
+    });
   }
 
   navigateTo(route: string): void {
@@ -67,7 +71,37 @@ export class BacklogComponent implements OnInit {
       this.projectService.getProjectWithTasks(this.idProject).subscribe((project: ProjectComplete) => {
         this.project.tasks = project.tasks;
       });
-    });
+    },(error) => {
+      this.openSnackBar(
+        "Para borrar una tarea debes de ser el administrador del equipo.",
+        "Cerrar",
+        true
+      );
+    },
+    () => {
+      this.openSnackBar(
+        "Se ha borrado correctamente.",
+        "Cerrar",
+        false
+      );
+    }
+  );
+  }
+
+  openSnackBar(message: string, action: string, error: boolean) {
+    if (error) {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      });
+    } else {
+      this._snackBar
+        .open(message, action, {
+          duration: 2000,
+        })
+        .afterDismissed()
+        .subscribe(() => {
+        });
+    }
   }
 
   openCreateTask(): void {
