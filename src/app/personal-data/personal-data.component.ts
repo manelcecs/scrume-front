@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
 
@@ -13,14 +13,14 @@ export class PersonalDataComponent implements OnInit {
   personal: PersonalDataAll;
 
   constructor(private router: Router,
-    private personalService: PersonalService) { }
+    private personalService: PersonalService,
+    private activatedRoute: ActivatedRoute) {
+
+      this.personal = this.activatedRoute.snapshot.data.personal;
+
+     }
 
   ngOnInit(): void {
-
-    this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
-      this.personal = per;
-    })
-
   }
 
   backToProfile(){
