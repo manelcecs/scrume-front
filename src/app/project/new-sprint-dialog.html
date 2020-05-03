@@ -18,7 +18,7 @@
         ></mat-datepicker-toggle>
         <mat-datepicker
           #pickerStar
-          (closed)="beforeTodayDateValidator(startDate);validDatesValidator();"
+          (closed)="beforeTodayDateValidator(startDate);validDatesValidator(); validEndStartDate();"
         ></mat-datepicker>
         <mat-error *ngIf="startDate.invalid"
           >{{ getErrorMessageStartDate() }}</mat-error
