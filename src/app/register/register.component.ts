@@ -3,9 +3,10 @@ import { Validators, FormBuilder, FormGroup, AbstractControl, FormControl } from
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { Box } from '../dominio/box.domain';
 import { UserService } from '../servicio/user.service';
-import {UserRegister} from '../dominio/user.domain';
+import { UserRegister } from '../dominio/user.domain';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CodeService } from '../servicio/code.service';
 
 // El selector es la forma de instanciar al componente desde otro html que no es el que aparece en la línea de abajo.
 // Por ejemplo, en el app.component.ts, el selector es app-root y en index.html es llamado poniendo <app-root></app-root>
@@ -37,18 +38,27 @@ export class RegisterComponent implements OnInit {
   confirmPasswordControl: FormControl = new FormControl('', [Validators.required, this.samePasswordValidator(this.passwordControl)]);
   acceptTerms : FormControl = new FormControl(false, [Validators.requiredTrue]);
 
-  constructor(private _formBuilder: FormBuilder, private userService : UserService, private router : Router, private _snackBar: MatSnackBar) { }
+  codeControl : FormControl = new FormControl('',);
+  codeId : number;
+
+  constructor(private _formBuilder: FormBuilder, 
+    private userService : UserService, private router : Router, 
+    private _snackBar: MatSnackBar, private codeService : CodeService) { }
 
   ngOnInit(): void {
+
     this.userService.getAllBoxes().subscribe((res : Box[]) => {
       this.boxes = res;
     });
+
     this.signUpFormGroup = this._formBuilder.group({
       emailControl: this.emailControl,
       passwordControl: this.passwordControl,
       confirmPasswordControl: this.confirmPasswordControl,
+      codeControl : this.codeControl,
       accetpTerms: this.acceptTerms
     });
+
     this.selectPlanFormGroup = this._formBuilder.group({
     });
 
@@ -68,7 +78,53 @@ export class RegisterComponent implements OnInit {
       } else {
         this.emailControl.updateValueAndValidity();
       }
-    })
+    });
+  }
+  
+  registerWithCode(){
+    let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+    let selectedBox : number = this.boxes.filter(box => box.name == "PRO")[0].id;
+    let user : UserRegister= {
+      id: 0, 
+      box: selectedBox, 
+      expiredDate: expiredDate, 
+      orderId: "DISCOUNT_CODE", 
+      password: this.passwordControl.value, 
+      payerId: "DISCOUNT_CODE", 
+      username: this.emailControl.value,
+      codeId: this.codeId
+    };
+
+    this.userService.registerUser(user).subscribe(() => {
+      this.message = "Se ha registrado con éxito. Ya puede usar Scrume. Será redirigido en 5 segundos.";
+      this.close = "Cerrar";
+      this.openSnackBar(this.message, this.close);
+    });
+
+  }
+
+  validateCode(){
+    this._validateCode(this.codeControl.value);
+  }
+
+
+  private _validateCode(code: string) {
+    this.codeService.validateCode(code).subscribe((idCode : number) =>  {
+      if(idCode === undefined){
+        this.codeId = null;
+        this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+      }else{
+        this.codeControl.updateValueAndValidity();
+        this.codeId = idCode;
+      }
+    }, (error)=>{
+      this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+    });
+
+  }
+
+  getErrorCode() : string {
+    return this.codeControl.hasError('invalid') ? this.codeControl.getError('invalid') : '' ;
   }
 
 
@@ -82,9 +138,6 @@ export class RegisterComponent implements OnInit {
     return this.passwordControl.hasError('required') ? 'Este campo es requerido.':
     this.passwordControl.hasError('minlength') ? 'El tamaño debe ser mayor a 8 caracteres.':
     this.passwordControl.hasError("pattern") ? 'La contraseña debe tener 8 caracteres entre números, mayúsculas y minúsculas.' :'';
-    // this.passwordControl.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
-    // this.passwordControl.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
-    // this.passwordControl.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
   }
 
   getErrorMessageConfirmPassword(){

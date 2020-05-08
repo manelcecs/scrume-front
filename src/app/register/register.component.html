@@ -23,11 +23,18 @@
           <mat-error>{{getErrorMessageConfirmPassword()}}</mat-error>
         </mat-form-field>
 
+        <mat-form-field class="register-input">
+          <mat-label>Código Promocional</mat-label>
+          <input matInput formControlName="codeControl" (change)="validateCode()">
+          <mat-error>{{getErrorCode()}}</mat-error>
+        </mat-form-field>
+
         <mat-checkbox class="example-margin" formControlName="accetpTerms">He leído y acepto los  <a (click)="navigateTo('terms-of-use')" target="_blank" style="color: lightskyblue; cursor: pointer;">términos y condiciones de la plataforma</a></mat-checkbox>
         <mat-error><small>{{getErrorAcceptTerms()}}</small></mat-error>
-
+        
         <div>
-          <button mat-button matStepperNext>Siguiente</button><br/>
+          <button mat-button *ngIf="codeControl.value !== undefined && codeControl.value !== ''" (click)="registerWithCode()">Siguiente</button>
+          <button mat-button matStepperNext *ngIf="codeControl.value === undefined || codeControl.value === ''" >Siguiente</button><br/>
         </div>
       </form>
     </mat-step>

@@ -30,6 +30,7 @@ export interface UserRegister {
   password: string;
   payerId?: string;
   username: string;
+  codeId?: number ;
 }
 
 export interface SimpleUserNick {
