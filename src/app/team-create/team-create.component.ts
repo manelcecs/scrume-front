@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { TeamService } from "../servicio/team.service";
 import { Team, TeamSimple } from "../dominio/team.domain";
@@ -22,6 +22,8 @@ export class TeamCreateComponent implements OnInit {
   displayedColumns: string[] = ['email', 'nickname', 'actions'];
   userLogged: UserLogged;
   numAdmins: number;
+
+  @ViewChild('submit') submitButton;
 
   constructor(
     private router: Router,
@@ -63,7 +65,10 @@ export class TeamCreateComponent implements OnInit {
   }
 
   validForm(): boolean {
-    return this.name.valid;
+    let valid = this.name.valid;
+    if(valid)
+      this.submitButton.focus();
+    return valid;
   }
 
   createTeam(): void {

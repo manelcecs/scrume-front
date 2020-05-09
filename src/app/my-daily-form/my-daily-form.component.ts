@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DocumentService } from "../servicio/document.service";
 import { FormControl, Validators } from "@angular/forms";
@@ -28,6 +28,8 @@ export class MyDailyFormComponent implements OnInit {
   documento: Document;
 
   daily: Daily;
+
+  @ViewChild('submit') submitButton;
 
   constructor(
     public dialogRef: MatDialogRef<MyDailyFormComponent>,
@@ -120,6 +122,9 @@ export class MyDailyFormComponent implements OnInit {
     valid = valid && this.done.valid;
     valid = valid && this.doing.valid;
     valid = valid && this.problems.valid;
+
+    if(valid)
+      this.submitButton.focus();
 
     return valid;
   }

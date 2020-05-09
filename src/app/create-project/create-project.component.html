@@ -19,7 +19,7 @@
             <div id="buttons-project-create">
                 <button *ngIf="action === 'edit'" id="cancel-project-create" mat-flat-button (click)="cancel()">Cancelar</button>
                 <button *ngIf="action === 'create'" id="cancel-project-create" mat-flat-button (click)="navigateTo('teams')">Cancelar</button>
-                <button id="save-project-create" form="form-project-create" mat-flat-button (click)="createProject()">Guardar</button>
+                <button id="save-project-create" form="form-project-create" mat-flat-button (click)="createProject()" #submit>Guardar</button>
             </div>
         </form>
     </section>

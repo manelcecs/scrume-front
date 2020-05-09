@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { NotificationAlert } from "../dominio/notification.domain";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -24,13 +24,15 @@ export class AlertComponent implements OnInit {
 
   alert: NotificationAlert;
 
+  @ViewChild('submit') submitButton;
+
   constructor(
     public dialogRef: MatDialogRef<AlertComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private alertService: AlertService,
     private sprintService: SprintService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idSprint = this.data.idSprint;
@@ -63,7 +65,7 @@ export class AlertComponent implements OnInit {
           title: this.alertTitle.value,
         };
         this.alertService.editAlert(this.alert).subscribe(
-          () => {},
+          () => { },
           (error) => {
             this.openSnackBar(
               "Se ha producido un error al editar la alerta. Intentelo nuevamente.",
@@ -82,7 +84,7 @@ export class AlertComponent implements OnInit {
       } else {
         for (let alert of this.alerts) {
           this.alertService.crateAlert(alert).subscribe(
-            () => {},
+            () => { },
             (error) => {
               this.openSnackBar(
                 "Se ha producido un error al crear la alerta. Intentelo nuevamente.",
@@ -120,7 +122,7 @@ export class AlertComponent implements OnInit {
   beforeTodayDateValidator(date: FormControl) {
     let formControlToTime: number = new Date(date.value).getTime();
     let today: Date = new Date();
-    let tomorrowTime: number = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0, 0).getTime();
+    let tomorrowTime: number = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0, 0).getTime();
     if (formControlToTime < tomorrowTime) {
       this.alertDate.setErrors({ beforeToday: true });
     } else {
@@ -153,8 +155,8 @@ export class AlertComponent implements OnInit {
     return this.alertDate.hasError("beforeToday")
       ? "La fecha seleccionada no puede ser anterior o igual a la fecha actual"
       : this.alertDate.hasError("betweenSprint")
-      ? "La fecha de la alerta debe estar dentro del Sprint"
-      : "";
+        ? "La fecha de la alerta debe estar dentro del Sprint"
+        : "";
   }
 
   //Alert Notificacion
@@ -182,6 +184,7 @@ export class AlertComponent implements OnInit {
     if (this.idAlert == undefined) {
       return this.alerts.length > 0;
     } else {
+      this.submitButton.focus();
       return true;
     }
   }

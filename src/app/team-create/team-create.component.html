@@ -15,7 +15,7 @@
 
       <div id="buttons-team-create">
         <button id="cancel-team-create" (click)="cancelCreateteam()" mat-flat-button>Cancelar</button>
-        <button id="save-team-create" type="submit" (click)="createTeam()" mat-flat-button>Guardar</button>
+        <button id="save-team-create" type="submit" (click)="createTeam()" [disabled]="!validForm()" mat-flat-button #submit>Guardar</button>
       </div>
     </form>
   </section>
