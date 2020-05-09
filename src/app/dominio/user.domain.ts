@@ -30,6 +30,7 @@ export interface UserRegister {
   password: string;
   payerId?: string;
   username: string;
+  codeId?: number ;
 }
 
 export interface SimpleUserNick {
@@ -51,4 +52,5 @@ export interface Renovation {
   id: number;
   orderId?: string;
   payerId?: string;
+  codeId?: number;
 }

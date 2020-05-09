@@ -27,6 +27,7 @@ import { ProfileResolverService } from './servicio/profile.service';
 import { NotesComponent } from './notes/notes.component';
 import { DocumentResolverService } from './servicio/document.service';
 import { PersonalResolverService } from './servicio/personal.service';
+import { CodeResolverService } from './servicio/code.service';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
   {path: 'myTasks', component: MyTasksComponent, resolve:{tasks: TaskResolverService}, canActivate: [CheckExpirationBoxGuard]},
   {path: 'profile', component: ProfileComponent, resolve:{profile: ProfileResolverService}},
   {path: 'personal', component: PersonalDataComponent, resolve:{personal: PersonalResolverService}},
-  {path: 'admin', component: SecurityBreachComponent},
+  {path: 'admin', component: SecurityBreachComponent, resolve:{codes: CodeResolverService}},
   {path: 'notes', component: NotesComponent},
 
 ];

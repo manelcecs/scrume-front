@@ -1,23 +1,56 @@
 <div *ngIf="isAdmin">
-<h2 id="title">Bienvenido a la administración de Scrume</h2>
-<div id="text-1">
-    <p>En esta ventana información acerca de la aplicación</p>
-    <p>y su control sobre la brecha de seguridad.</p>
-</div>
-<div>
-    <p>El aviso sobre la brecha de seguridad está actualmente </p>
-</div>
-<div id="text-2">
-    <p *ngIf="activated; else elseBlock">ACTIVADO</p>
-    <ng-template #elseBlock>DESACTIVADO</ng-template>
-</div>
-<div *ngIf="activated" id="text-3">
-    <p>Mensaje desde base de datos: {{ message }}</p>
-</div>
-<div id="button-admin">
-    <button id="button-active" *ngIf="!activated" (click)="activeBreach()" mat-flat-button>Activar aviso de brecha de
-        seguridad</button>
-    <button id="button-desactive" *ngIf="activated" (click)="activeBreach()" mat-flat-button>Desactivar aviso de brecha
-        de seguridad</button>
-</div>
+    <h2 id="title">Bienvenido a la administración de Scrume</h2>
+    <div id="text-1">
+        <p>En esta ventana información acerca de la aplicación</p>
+        <p>y su control sobre la brecha de seguridad y los códigos de descuentos.</p>
+    </div>
+    <div>
+        <p>El aviso sobre la brecha de seguridad está actualmente </p>
+    </div>
+    <div id="text-2">
+        <p *ngIf="activated; else elseBlock">ACTIVADO</p>
+        <ng-template #elseBlock>DESACTIVADO</ng-template>
+    </div>
+    <div *ngIf="activated" id="text-3">
+        <p>Mensaje desde base de datos: {{ message }}</p>
+    </div>
+    <div id="button-admin">
+        <button id="button-active" *ngIf="!activated" (click)="activeBreach()" mat-flat-button>Activar aviso de brecha de seguridad</button>
+        <button id="button-desactive" *ngIf="activated" (click)="activeBreach()" mat-flat-button>Desactivar aviso de brecha de seguridad</button>
+    </div>
+    <br />
+    <mat-divider></mat-divider>
+    <br />
+    <div id="discount-code">
+
+        <div id="new-code">
+            <h2>Códigos Promocionales</h2>
+            <form>
+                <mat-form-field>
+                    <mat-label>Código Promocional</mat-label>
+                    <input matInput [formControl]="codeControl" (change)="validateCode()">
+                    <mat-error>{{getErrorCode()}}</mat-error>
+                  </mat-form-field>
+                  <br />
+                    <small>La fecha de validez será: {{sendDate.value | date:'dd/MM/yyyy'}}</small>
+                  <br />
+                  <button id="button-desactive" [disabled]="!validForm" (click)="createCode()" mat-flat-button>Crear</button>
+            </form>
+            <br />
+        </div>
+
+        <div id="list-code">
+            <div *ngFor="let code of activeCodes">
+                <div id="code-content">
+                    <span>
+                        <strong>{{code.code}}</strong> - 
+                        <small>Válido hasta: {{code.expiredDate | date:'dd/MM/yyyy'}}</small>
+                        <img src="../assets/bin.webp" width="auto" height="15" class="d-inline-block align-top task-list-buttons" alt="" matTooltip="Borrar Código" (click)="deleteCode(code)">
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
