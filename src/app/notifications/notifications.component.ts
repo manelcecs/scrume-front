@@ -4,7 +4,6 @@ import {
   AnswerInvitation
 } from "../dominio/invitation.domain";
 import { InvitationService } from "../servicio/invitation.service";
-import { UserService } from '../servicio/user.service';
 import { AlertService } from '../servicio/alerts.service';
 import { NotificationAlert } from '../dominio/notification.domain';
 import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';

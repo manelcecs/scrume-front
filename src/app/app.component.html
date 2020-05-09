@@ -1,4 +1,4 @@
-<mat-sidenav-container [hasBackdrop]="false">
+<mat-sidenav-container [hasBackdrop]="true">
 
   <mat-sidenav id="menu-vertical-izquierdo" #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="70">
     <ul class="nav flex-column ul">
@@ -19,7 +19,7 @@
       <div class="username" *ngIf="user == undefined"><a class="access" (click)="navigateTo('register')">Registrarse</a></div>
 
         <a class="access" *ngIf="user == undefined" (click)="openLogin()" >Acceder</a>
-        <img *ngIf="user != undefined" src="../assets/profile.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile()">
+        <img *ngIf="user != undefined" src="../assets/profile.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="openProfile();sidenavnotifications.close(); sidenav.close()">
         <img *ngIf="user != undefined" src="../assets/logout.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="logOut();sidenavnotifications.close()" >
         <img *ngIf="!notifications && !alerts && user != undefined" src="../assets/notification.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()" >
         <img *ngIf="(notifications || alerts) && user != undefined" src="../assets/notification-color.webp" width="auto" height="25" class="d-inline-block align-top" alt="" (click)="sidenavnotifications.toggle(); sidenav.close()">
@@ -29,7 +29,7 @@
     <mat-progress-bar *ngIf="loading" mode="indeterminate" style="width: 100%; height: 5px;">
     </mat-progress-bar>
     <main id="principal">
-      <router-outlet>
+      <router-outlet >
       </router-outlet>
     </main>
   </mat-sidenav-content>
@@ -38,6 +38,5 @@
     <app-notifications [invitations]="invitations" [alerts]="alertsColection" (onAnswerInvitations)="getNotifications(); updateTeams();" (onDiscardNotification)="getAlerts()"></app-notifications>
 
   </mat-sidenav>
-
 
 </mat-sidenav-container>

@@ -93,7 +93,6 @@ export class SprintComponent implements OnInit {
       // Gráficas
       //Validación
       this.validationService.checkCanDisplayGraphics(this.sprint.project.team.id).subscribe((res: boolean) => {
-        let total: number;
         this.sprintService
           .getBurnDown(this.idSprint)
           .subscribe((burnDown: BurnDownDisplay[]) => {
