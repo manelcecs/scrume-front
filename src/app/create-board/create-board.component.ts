@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../servicio/board.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Board, BoardNumber } from '../dominio/board.domain';
@@ -20,9 +20,7 @@ export class CreateBoardComponent implements OnInit {
   boardCreate: BoardNumber;
   boardEdit: BoardNumber;
 
-  @ViewChild('submit') submitButton;
-
-  name: FormControl = new FormControl('',{validators: [Validators.required, Validators.maxLength(150)]});
+  name: FormControl = new FormControl('',{validators: [Validators.required, Validators.maxLength(15)]});
 
   ngOnInit(): void {
 
@@ -56,8 +54,6 @@ export class CreateBoardComponent implements OnInit {
     let valid: boolean = true;
 
     valid = valid && this.name.valid;
-    if(valid)
-      this.submitButton.focus();
     return valid;
 
   }

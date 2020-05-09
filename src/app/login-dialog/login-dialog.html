@@ -4,7 +4,7 @@
     <div>
       <mat-form-field style="width: 100%;">
         <mat-label>Email</mat-label>
-        <input matInput [formControl]="email" (input)="updateValidationInvalidPassword()" cdkFocusInitial/>
+        <input matInput [formControl]="email" (input)="updateValidationInvalidPassword()"/>
         <mat-error *ngIf="email.invalid">{{ getErrorMessageEmail() }}</mat-error>
       </mat-form-field>
     </div>
@@ -21,7 +21,7 @@
       <button id="cancel-dialog" mat-button (click)="cancel()">
         Cancelar
       </button>
-      <button id="save-dialog" mat-button (click)="login()" [disabled]="abled()" #submit>
+      <button id="save-dialog" mat-button (click)="login()" [disabled]="abled()" cdkFocusInitial>
         Acceder
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ProjectService } from '../servicio/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -21,8 +21,6 @@ export class CreateProjectComponent implements OnInit {
 
   name = new FormControl('', { validators: [Validators.required] });
   desc = new FormControl('', { validators: [Validators.required] });
-
-  @ViewChild('submit') submitButton;
 
   constructor(private router: Router, private projectService: ProjectService, private activatedRoute: ActivatedRoute) { }
 
@@ -121,8 +119,6 @@ export class CreateProjectComponent implements OnInit {
     let valid: boolean;
 
     valid = this.name.valid && this.desc.valid;
-    if(valid)
-      this.submitButton.focus();
     return valid;
 
   }

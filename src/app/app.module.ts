@@ -25,6 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { WellcomeComponent } from './wellcome/wellcome.component';
 import { TeamComponent, InvitationDialog } from './team/team.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { ProjectComponent, NewSprintDialog } from './project/project.component';
@@ -41,6 +42,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CreateTaskComponent } from './create-task/create-task.component';
 import { BoardComponent } from './board/board.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NotificationsComponent } from './notifications/notifications.component';
@@ -79,6 +81,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   declarations: [
     AppComponent,
     BienvenidaComponent,
+    WellcomeComponent,
     ProjectComponent,
     CreateProjectComponent,
     TeamComponent,
@@ -89,6 +92,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     FilterPipe,
     SprintComponent,
     EditSprintDialog,
+    CreateTaskComponent,
     NewTaskDialog,
     EditTaskDialog,
     BoardComponent,

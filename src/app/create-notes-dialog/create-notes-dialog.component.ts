@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,8 +19,6 @@ export class CreateNotesDialogComponent implements OnInit {
   });
 
   note: NoteDisplay;
-
-  @ViewChild('submit') submitButton;
 
   constructor(
     public dialogRef: MatDialogRef<CreateNotesDialogComponent>,
@@ -48,8 +46,6 @@ export class CreateNotesDialogComponent implements OnInit {
   validForm() {
     let valid: boolean = true;
     valid = valid && this.content.valid;
-    if(valid)
-      this.submitButton.focus();
     return valid;
   }
 
@@ -57,6 +53,7 @@ export class CreateNotesDialogComponent implements OnInit {
     if (this.validForm()) {
       if (this.idNote > 0) {
         this.note = { content: this.content.value };
+        console.log("La nota que se da es " +  JSON.stringify(this.note));
         this.noteService.updateNote(this.note, this.idNote).subscribe(() => {},
           (error) => {
             this.openSnackBar(
