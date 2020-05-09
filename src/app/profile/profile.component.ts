@@ -15,6 +15,7 @@ import { Box } from '../dominio/box.domain';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { ValidationService } from '../servicio/validation.service';
 import { CodeService } from '../servicio/code.service';
+import { ConfirmationDialogComponent } from '../confirmation/confirmation.component';
 
 
 @Component({
@@ -226,11 +227,23 @@ export class ProfileComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialog, {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "250px",
+      data: "¿Estás seguro que quieres borrar tu perfil? Esto significa que eliminaremos tus datos de la aplicación y por tanto no podrás acceder nunca más con esta cuenta. Esta opción es irreversible."
     });
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if(res){
+        this.personalService.getAnonymize().subscribe(()=> {
+          this.logOut();
+        });
+      }
     });
+  }
+
+  logOut(): void{
+    sessionStorage.setItem("loginToken", "");
+    this.user = undefined;
+    window.location.reload();
   }
 
   //Renovación del plan------------------------------------------------------------------------------------------
@@ -377,55 +390,6 @@ export class ProfileComponent implements OnInit {
       sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();
     });
-  }
-
-}
-
-//Dialog de Confirmation-----------------------------------------------------------------------------------------
-
-@Component({
-  selector: "confirmation",
-  templateUrl: "confirmation.html",
-  styleUrls: ["./confirmation.css"]
-})
-export class ConfirmationDialog implements OnInit {
-
-  routes: Object[] = [];
-  user: User;
-
-  constructor(public dialogRef: MatDialogRef<ConfirmationDialog>, private personalService: PersonalService, private router: Router) {}
-
-  ngOnInit(): void {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  onSaveClick(): void {
-    this.personalService.getAnonymize().subscribe(()=> {
-      this.dialogRef.close();
-      this.logOut();
-    })
-  }
-
-  logOut(): void{
-    sessionStorage.setItem("loginToken", "");
-    this.user = undefined;
-    window.location.reload();
-  }
-
-  navigateTo(route: string, method?: string, id?: number): void{
-    if(method==undefined && id == undefined){
-      this.router.navigate([route]);
-    }else if(method != undefined && id == undefined){
-      this.router.navigate([route], {queryParams:{method: method}});
-    }else if(method == undefined && id != undefined){
-      this.router.navigate([route], {queryParams:{id: id}});
-    }else if(method != undefined && id != undefined){
-      this.router.navigate([route], {queryParams:{method: method, id: id}});
-    }
   }
 
 }

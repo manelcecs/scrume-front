@@ -73,6 +73,7 @@ import { CheckExpirationBoxGuard } from './servicio/expiration-guard.service';
 import { NotesComponent } from './notes/notes.component';
 import { CreateNotesDialogComponent } from './create-notes-dialog/create-notes-dialog.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ConfirmationDialogComponent } from './confirmation/confirmation.component';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     BadgeMinimumBoxComponent,
     NotesComponent,
     CreateNotesDialogComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     MatFormFieldModule,
