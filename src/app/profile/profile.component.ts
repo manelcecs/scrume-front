@@ -14,6 +14,7 @@ import { UserLogged, JWToken } from '../dominio/jwt.domain';
 import { Box } from '../dominio/box.domain';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { ValidationService } from '../servicio/validation.service';
+import { CodeService } from '../servicio/code.service';
 
 
 @Component({
@@ -42,6 +43,9 @@ export class ProfileComponent implements OnInit {
     Validators.pattern(/[A-Z]/),
     Validators.minLength(8)] });
 
+  codeControl: FormControl = new FormControl('',);
+  codeId: number;
+
   newPassword: string;
   showPass: boolean = false;
   showPassLast: boolean = false;
@@ -57,7 +61,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
-    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService ) { 
+    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService,
+    private codeService: CodeService ) { 
 
       
         this.profile = this.activatedRoute.snapshot.data.profile;
@@ -206,7 +211,6 @@ export class ProfileComponent implements OnInit {
   saveAsProject(){
     this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
       this.personal = per;
-      console.log(this.personal);
       let string = JSON.stringify(this.personal);
       //you can enter your own file name and extension
       this.writeContents(string, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');
@@ -235,9 +239,6 @@ export class ProfileComponent implements OnInit {
     let priceSelectedBox : number;
     let selectedBox : number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
     priceSelectedBox = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].price;
-    console.log("Selected",selectedBox);
-    console.log("Price", priceSelectedBox);
-    console.log("FormControl", this.selectBoxFormControl.value);
     let paypal:IPayPalConfig;
     this.payPalConfig = {
     currency: 'EUR',
@@ -302,8 +303,76 @@ export class ProfileComponent implements OnInit {
 
   saveBasicPlan(){
     let selectedBox : number = this.boxes.filter(box => box.name == 'BASIC')[0].id;
-    let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+
+    let expiredDate : string;
+    let today : number = new Date().getTime();
+    if(this.userLogged.endingBoxDate.getTime() > today){
+      expiredDate = new Date(this.userLogged.endingBoxDate.getTime()).toISOString();
+    }else{
+      expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+    }
+    
     let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
+    this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
+      sessionStorage.setItem("loginToken", token.token);
+      this.openSnackBarAndRedirect();
+    });
+  }
+
+  validateCode(){
+    if(this.codeControl.value != undefined && this.codeControl.value.trim() != ''){
+      this._validateCode(this.codeControl.value.trim());
+    }else{
+      this.codeControl.updateValueAndValidity();
+    }
+  }
+
+
+  private _validateCode(code: string) {
+    if ( code != undefined || code.trim() != '' ){
+
+      this.codeService.validateCode(code).subscribe((idCode : number) =>  {
+        
+        if(idCode === undefined){
+          this.codeId = null;
+          this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+        }else{
+          this.codeControl.updateValueAndValidity();
+          this.codeId = idCode;
+        }
+
+      }, (error)=>{
+        this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+      });
+
+    }else{
+      this.codeControl.updateValueAndValidity();
+    }
+    
+  }
+
+  getErrorCode() : string {
+    return this.codeControl.hasError('invalid') ? this.codeControl.getError('invalid') : '' ;
+  }
+
+  savePlanCode(){
+    let selectedBox : number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
+    
+    let expiredDate : string;
+    let today : number = new Date().getTime();
+    if(new Date(this.userLogged.endingBoxDate).getTime() > today){
+      expiredDate = new Date(new Date(this.userLogged.endingBoxDate).getTime()).toISOString();
+    }else{
+      expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+    }
+
+    console.log("Ending Date: "+ new Date(this.userLogged.endingBoxDate).toISOString());
+    console.log("New Ending Date: "+expiredDate);
+
+    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
+
+    console.log("Renovation: ", renovation);
+
     this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
       sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();

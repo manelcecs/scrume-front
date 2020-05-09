@@ -52,4 +52,5 @@ export interface Renovation {
   id: number;
   orderId?: string;
   payerId?: string;
+  codeId?: number;
 }

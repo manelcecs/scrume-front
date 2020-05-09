@@ -88,9 +88,7 @@ export class RegisterComponent implements OnInit {
       id: 0, 
       box: selectedBox, 
       expiredDate: expiredDate, 
-      orderId: "DISCOUNT_CODE", 
       password: this.passwordControl.value, 
-      payerId: "DISCOUNT_CODE", 
       username: this.emailControl.value,
       codeId: this.codeId
     };
@@ -104,23 +102,35 @@ export class RegisterComponent implements OnInit {
   }
 
   validateCode(){
-    this._validateCode(this.codeControl.value);
+    if(this.codeControl.value != undefined && this.codeControl.value.trim() != ''){
+      this._validateCode(this.codeControl.value.trim());
+    }else{
+      this.codeControl.updateValueAndValidity();
+    }
   }
 
 
   private _validateCode(code: string) {
-    this.codeService.validateCode(code).subscribe((idCode : number) =>  {
-      if(idCode === undefined){
-        this.codeId = null;
-        this.codeControl.setErrors({'invalid' : "Este código no es válido."});
-      }else{
-        this.codeControl.updateValueAndValidity();
-        this.codeId = idCode;
-      }
-    }, (error)=>{
-      this.codeControl.setErrors({'invalid' : "Este código no es válido."});
-    });
+    if ( code != undefined || code.trim() != '' ){
 
+      this.codeService.validateCode(code).subscribe((idCode : number) =>  {
+        
+        if(idCode === undefined){
+          this.codeId = null;
+          this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+        }else{
+          this.codeControl.updateValueAndValidity();
+          this.codeId = idCode;
+        }
+
+      }, (error)=>{
+        this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+      });
+
+    }else{
+      this.codeControl.updateValueAndValidity();
+    }
+    
   }
 
   getErrorCode() : string {

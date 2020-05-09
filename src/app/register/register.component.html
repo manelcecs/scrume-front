@@ -28,7 +28,8 @@
           <input matInput formControlName="codeControl" (change)="validateCode()">
           <mat-error>{{getErrorCode()}}</mat-error>
         </mat-form-field>
-
+        <br />
+        
         <mat-checkbox class="example-margin" formControlName="accetpTerms">He leído y acepto los  <a (click)="navigateTo('terms-of-use')" target="_blank" style="color: lightskyblue; cursor: pointer;">términos y condiciones de la plataforma</a></mat-checkbox>
         <mat-error><small>{{getErrorAcceptTerms()}}</small></mat-error>
         
