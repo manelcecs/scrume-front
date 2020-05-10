@@ -455,6 +455,7 @@ export class NewDocumentDialog implements OnInit {
   cont: string;
 
   tipo = new FormControl("", { validators: [Validators.required] });
+  documentNameControl = new FormControl("", {validators: [Validators.required, Validators.maxLength(150)]})
 
   constructor(
     public dialogRef: MatDialogRef<NewDocumentDialog>,
@@ -501,7 +502,7 @@ export class NewDocumentDialog implements OnInit {
 
       this.document = {
         id: 0,
-        name: "Añade aquí el nombre",
+        name: this.documentNameControl.value.trim(),
         content: this.cont,
         sprint: this.idSprint,
         type: select,
@@ -519,6 +520,10 @@ export class NewDocumentDialog implements OnInit {
 
   getTipoErrorMessage(): string {
     return this.tipo.hasError("required") ? "Este campo es obligatorio" : "";
+  }
+
+  getNameErrorMessage(): string {
+    return this.documentNameControl.hasError("required") ? "Este campo es obligatorio" : "";
   }
 }
 
