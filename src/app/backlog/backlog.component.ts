@@ -12,6 +12,7 @@ import { SprintWorkspace, SprintDisplay } from '../dominio/sprint.domain';
 import { SprintService } from '../servicio/sprint.service';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from '../confirmation/confirmation.component';
 
 
 @Component({
@@ -67,25 +68,36 @@ export class BacklogComponent implements OnInit {
   }
 
   deleteTask(task: TaskSimple): void {
-    this.taskService.deleteTask(task.id).subscribe(() => {
-      this.projectService.getProjectWithTasks(this.idProject).subscribe((project: ProjectComplete) => {
-        this.project.tasks = project.tasks;
-      });
-    },(error) => {
-      this.openSnackBar(
-        "Para borrar una tarea debes de ser el administrador del equipo.",
-        "Cerrar",
-        true
-      );
-    },
-    () => {
-      this.openSnackBar(
-        "Se ha borrado correctamente.",
-        "Cerrar",
-        false
-      );
-    }
-  );
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar la tarea. Esta acción es irreversible."
+    });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.taskService.deleteTask(task.id).subscribe(() => {
+          this.projectService.getProjectWithTasks(this.idProject).subscribe((project: ProjectComplete) => {
+            this.project.tasks = project.tasks;
+          });
+        }, (error) => {
+          this.openSnackBar(
+            "Para borrar una tarea debes de ser el administrador del equipo.",
+            "Cerrar",
+            true
+          );
+        },
+          () => {
+            this.openSnackBar(
+              "Se ha borrado correctamente.",
+              "Cerrar",
+              false
+            );
+          }
+        );
+      }
+    });
+
+
   }
 
   openSnackBar(message: string, action: string, error: boolean) {

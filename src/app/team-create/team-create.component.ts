@@ -35,7 +35,7 @@ export class TeamCreateComponent implements OnInit {
   team: Team;
 
   name: FormControl = new FormControl("", {
-    validators: [Validators.required, Validators.maxLength(15)]
+    validators: [Validators.required]
   });
 
   private projects: ProjectDto[] = [];

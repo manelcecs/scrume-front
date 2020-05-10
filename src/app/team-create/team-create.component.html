@@ -9,7 +9,6 @@
     <form id="form-team-create">
       <mat-form-field class="form-field-team-create">
         <input #nameImput matInput placeholder="Nombre" [formControl]="name">
-        <mat-hint>{{ nameImput.value?.length || 0 }}/15</mat-hint>
         <mat-error *ngIf="name.invalid">{{ getErrorMessageName() }}</mat-error>
       </mat-form-field> <br /> <br />
 

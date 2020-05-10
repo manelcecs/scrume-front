@@ -2,6 +2,11 @@
 <h4>Crear documento nuevo</h4>
     <form style="margin-top: 20px;" id="prueba">
         <mat-form-field>
+            <mat-label>Nombre del documento</mat-label>
+            <input [formControl]="documentNameControl" placeholder="Nombre del documento" matInput />
+            <mat-error *ngIf="documentNameControl.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
             <mat-label>Selecciona una opción</mat-label>
             <mat-select [(value)]="selected" [formControl]="tipo">
                 <mat-option value="REVIEW">REVIEW</mat-option>

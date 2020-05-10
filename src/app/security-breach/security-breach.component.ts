@@ -111,9 +111,9 @@ export class SecurityBreachComponent implements OnInit {
       if(this.validForm){
         let code : Code = {code: this.codeControl.value,
           expiredDate:this.sendDate.value};
-          this.codeService.createCode(code).subscribe((code: Code)=>{
+          this.codeService.createCode(code).subscribe((coderes: Code)=>{
             this.openSnackBar("Código creado con éxito.", "Cerrar");
-            this.activeCodes.push(code);
+            this.activeCodes.push(coderes);
           }, (error)=>{
             this.openSnackBar("Se ha producido un error al crear el código.", "Cerrar");
           }, () => {
