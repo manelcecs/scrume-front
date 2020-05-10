@@ -297,7 +297,13 @@ export class ProfileComponent implements OnInit {
       actions.order.get();
     },
     onClientAuthorization: (data) => {
-      let expiredDate : string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+      let expiredDate : string;
+      let today : number = new Date().getTime();
+      if(this.userLogged.endingBoxDate.getTime() > today){
+        expiredDate = new Date(this.userLogged.endingBoxDate.getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+      }else{
+        expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+      }
       let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], payerId: paymentInfo["payerID"]};
       this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
         sessionStorage.setItem("loginToken", token.token);
@@ -322,7 +328,7 @@ export class ProfileComponent implements OnInit {
     let expiredDate : string;
     let today : number = new Date().getTime();
     if(this.userLogged.endingBoxDate.getTime() > today){
-      expiredDate = new Date(this.userLogged.endingBoxDate.getTime()).toISOString();
+      expiredDate = new Date(this.userLogged.endingBoxDate.getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }else{
       expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }
@@ -378,13 +384,10 @@ export class ProfileComponent implements OnInit {
     let expiredDate : string;
     let today : number = new Date().getTime();
     if(new Date(this.userLogged.endingBoxDate).getTime() > today){
-      expiredDate = new Date(new Date(this.userLogged.endingBoxDate).getTime()).toISOString();
+      expiredDate = new Date(new Date(this.userLogged.endingBoxDate).getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }else{
       expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }
-
-    console.log("Ending Date: "+ new Date(this.userLogged.endingBoxDate).toISOString());
-    console.log("New Ending Date: "+expiredDate);
 
     let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
 
