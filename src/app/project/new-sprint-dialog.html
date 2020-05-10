@@ -9,6 +9,7 @@
         <mat-label>Fecha de inicio</mat-label>
         <input
           matInput
+          readonly
           [formControl]="startDate"
           [matDatepicker]="pickerStar"
         />
@@ -29,7 +30,7 @@
     <div>
       <mat-form-field>
         <mat-label>Fecha de fin</mat-label>
-      <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd"/>
+      <input matInput [formControl]="endDate" readonly [matDatepicker]="pickerEnd"/>
         <mat-datepicker-toggle
           matSuffix
           [for]="pickerEnd"
@@ -65,6 +66,7 @@
             <mat-label>Fecha de la Alerta</mat-label>
             <input
               matInput
+              readonly
               [formControl]="alertDate"
               [matDatepicker]="alertPicker"
             />

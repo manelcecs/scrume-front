@@ -6,6 +6,7 @@
         <mat-label>Fecha de inicio</mat-label>
         <input
           matInput
+          readonly
           [formControl]="startDate"
           [matDatepicker]="pickerStar"
         />
@@ -29,6 +30,7 @@
         <input matInput [formControl]="endDate" [matDatepicker]="pickerEnd" />
         <mat-datepicker-toggle
           matSuffix
+          readonly
           [for]="pickerEnd"
         ></mat-datepicker-toggle>
         <mat-datepicker

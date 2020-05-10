@@ -21,7 +21,7 @@
   <div>
     <mat-form-field>
       <mat-label>Fecha de la Alerta</mat-label>
-      <input matInput [formControl]="alertDate" [matDatepicker]="alertPicker" />
+      <input matInput readonly [formControl]="alertDate" [matDatepicker]="alertPicker" />
       <mat-datepicker-toggle
         matSuffix
         [for]="alertPicker"
