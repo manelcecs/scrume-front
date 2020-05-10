@@ -34,7 +34,7 @@
         <mat-error><small>{{getErrorAcceptTerms()}}</small></mat-error>
         
         <div>
-          <button mat-button *ngIf="codeControl.value !== undefined && codeControl.value !== ''" (click)="registerWithCode()" [disabled]="!acceptTerms.value" >Siguiente</button>
+          <button mat-button *ngIf="codeControl.value !== undefined && codeControl.value !== ''" (click)="registerWithCode()" [disabled]="!acceptTerms.value && !codeControl.valid" >Siguiente</button>
           <button mat-button matStepperNext *ngIf="codeControl.value === undefined || codeControl.value === ''" >Siguiente</button><br/>
         </div>
       </form>

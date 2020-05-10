@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
   }
 
   registerWithCode() {
-    if (this.acceptTerms.value) {
+    if (this.acceptTerms.value && this.codeControl.valid) {
       let expiredDate: string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
       let selectedBox: number = this.boxes.filter(box => box.name == "PRO")[0].id;
       let user: UserRegister = {
