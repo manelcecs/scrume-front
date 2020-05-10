@@ -384,16 +384,13 @@ export class ProfileComponent implements OnInit {
     let expiredDate : string;
     let today : number = new Date().getTime();
     if(new Date(this.userLogged.endingBoxDate).getTime() > today){
-      console.log("El plan expira en el futuro.");
       expiredDate = new Date(new Date(this.userLogged.endingBoxDate).getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }else{
-      console.log("El plan ya expiró.");
       expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
     }
 
-    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
+    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, codeId:this.codeId};
 
-    console.log("Renovation: ", renovation);
 
     this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
       sessionStorage.setItem("loginToken", token.token);
