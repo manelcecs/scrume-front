@@ -303,6 +303,8 @@ export class ProfileComponent implements OnInit {
         sessionStorage.setItem("loginToken", token.token);
         this.openSnackBarAndRedirect();
 
+      }, (error) =>{
+        this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
       });
     },
     onCancel: (data, actions) => {
@@ -329,6 +331,8 @@ export class ProfileComponent implements OnInit {
     this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
       sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();
+    }, (error) =>{
+      this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
     });
   }
 
@@ -389,6 +393,8 @@ export class ProfileComponent implements OnInit {
     this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
       sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();
+    }, (error) =>{
+      this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
     });
   }
 
