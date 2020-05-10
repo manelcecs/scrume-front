@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Injectable, ViewChild, } from '@angular/core';
+import { Component, OnDestroy, OnInit, Injectable } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CabeceraService } from './servicio/cabecera.service';
@@ -13,7 +13,6 @@ import { timer } from 'rxjs';
 import { SecurityBreachService } from './servicio/breach.service';
 import { AlertService } from './servicio/alerts.service';
 import { NotificationAlert } from './dominio/notification.domain';
-import { MatSidenav } from '@angular/material/sidenav';
 
 @Injectable({providedIn:'root'})
 

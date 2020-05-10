@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { PersonalService } from '../servicio/personal.service';
 import { PersonalDataAll } from '../dominio/personal.domain';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UserLogged, JWToken } from '../dominio/jwt.domain';
 import { Box } from '../dominio/box.domain';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
