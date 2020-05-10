@@ -130,7 +130,7 @@
                 El plan cambiará, se ajustarán los días restantes al nuevo plan y se añadirán al periodo de validez.
               </div>
 
-              <button mat-flat-button
+              <button mat-flat-button [disabled]="codeControl.invalid"
                 (click)="savePlanCode()" id="update-box-button">Actualizar renovación</button>
 
             </div>

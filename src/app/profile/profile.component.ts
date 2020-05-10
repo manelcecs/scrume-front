@@ -37,14 +37,16 @@ export class ProfileComponent implements OnInit {
   nick: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25), Validators.pattern(/^\S+$/)] });
   surnames: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
   photo: FormControl = new FormControl('', { validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(255), Validators.pattern(/\.(jpeg|jpg|gif|png)$/)] });
-  gitUser: FormControl = new FormControl('', {validators: [Validators.pattern(/^\S+$/)]});
+  gitUser: FormControl = new FormControl('', { validators: [Validators.pattern(/^\S+$/)] });
   lastPass: FormControl = new FormControl('');
-  newPass: FormControl = new FormControl('', { validators: [Validators.pattern(/\d/),
+  newPass: FormControl = new FormControl('', {
+    validators: [Validators.pattern(/\d/),
     Validators.pattern(/[a-z]/),
     Validators.pattern(/[A-Z]/),
-    Validators.minLength(8)] });
+    Validators.minLength(8)]
+  });
 
-  codeControl: FormControl = new FormControl('',);
+  codeControl: FormControl = new FormControl('');
   codeId: number;
 
   newPassword: string;
@@ -56,28 +58,28 @@ export class ProfileComponent implements OnInit {
   userLogged: UserLogged;
   boxesName = ["BASIC", "STANDARD", "PRO"];
   boxes: Box[];
-  selectBoxFormControl: FormControl = new FormControl('',{validators: [Validators.required]});
+  selectBoxFormControl: FormControl = new FormControl('', { validators: [Validators.required] });
   public payPalConfig?: IPayPalConfig;
   isBoxExpired: boolean;
 
   constructor(private userService: UserService, private profileService: ProfileService, private router: Router,
     private _snackBar: MatSnackBar, private _location: Location, private activatedRoute: ActivatedRoute,
-    private personalService: PersonalService,public dialog: MatDialog, private validationService: ValidationService,
-    private codeService: CodeService ) { 
-
-      
-        this.profile = this.activatedRoute.snapshot.data.profile;
-
-        this.preNick = this.profile.nick;
-
-        this.name.setValue(this.profile.name);
-        this.nick.setValue(this.profile.nick);
-        this.surnames.setValue(this.profile.surnames);
-        this.photo.setValue(this.profile.photo);
-        this.gitUser.setValue(this.profile.gitUser);
+    private personalService: PersonalService, public dialog: MatDialog, private validationService: ValidationService,
+    private codeService: CodeService) {
 
 
-    }
+    this.profile = this.activatedRoute.snapshot.data.profile;
+
+    this.preNick = this.profile.nick;
+
+    this.name.setValue(this.profile.name);
+    this.nick.setValue(this.profile.nick);
+    this.surnames.setValue(this.profile.surnames);
+    this.photo.setValue(this.profile.photo);
+    this.gitUser.setValue(this.profile.gitUser);
+
+
+  }
 
   ngOnInit(): void {
 
@@ -92,7 +94,7 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  editProfile(){
+  editProfile() {
 
     this.profile.name = this.name.value;
     this.profile.nick = this.nick.value;
@@ -121,11 +123,11 @@ export class ProfileComponent implements OnInit {
 
 
     }, (error) => {
-      if(error.error.message == "The current password does not match the one stored in the database") {
+      if (error.error.message == "The current password does not match the one stored in the database") {
         this.lastPass.setErrors({ invalid: true });
-      }else if(error.error.message == "The new password must have an uppercase, a lowercase, a number and at least 8 characters"){
+      } else if (error.error.message == "The new password must have an uppercase, a lowercase, a number and at least 8 characters") {
         this.newPass.setErrors({ invalid: true });
-      }else if(error.error.message == "The nick is not unique"){
+      } else if (error.error.message == "The nick is not unique") {
         this.nick.setErrors({ unique: true });
       }
     },
@@ -167,27 +169,27 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  navigateTo(route: string): void{
+  navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 
   getErrorMessageName(): string {
     return this.name.hasError('required') ? 'Este campo es requerido.' :
-    this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
-    this.photo.hasError('pattern') ? 'Debe de ser una imagen que empieza por https y termine en un formato de imagen válido.' :
-    this.photo.hasError('maxlength') ? 'No puede tener más de 256 caracteres.' :
-    this.nick.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
-    this.nick.hasError('pattern') ? 'No puede tener espacios en blanco.' :
-    this.nick.hasError('required') ? 'Este campo es requerido.' :
-    this.nick.hasError('unique') ? 'Este nick ya está en uso. Pruebe otro.' :
-    this.surnames.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
-    this.surnames.hasError('required') ? 'Este campo es requerido.' :
-    this.gitUser.hasError('pattern') ? 'No puede tener espacios en blanco.' :
-    this.newPass.hasError('minlength') ? 'El tamaño debe ser mayor a 8 caracteres.':
-    this.newPass.hasError('invalid') ? 'No puedes ser vacia.' :
-    this.newPass.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
-    this.newPass.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
-    this.newPass.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
+      this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+        this.photo.hasError('pattern') ? 'Debe de ser una imagen que empieza por https y termine en un formato de imagen válido.' :
+          this.photo.hasError('maxlength') ? 'No puede tener más de 256 caracteres.' :
+            this.nick.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+              this.nick.hasError('pattern') ? 'No puede tener espacios en blanco.' :
+                this.nick.hasError('required') ? 'Este campo es requerido.' :
+                  this.nick.hasError('unique') ? 'Este nick ya está en uso. Pruebe otro.' :
+                    this.surnames.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
+                      this.surnames.hasError('required') ? 'Este campo es requerido.' :
+                        this.gitUser.hasError('pattern') ? 'No puede tener espacios en blanco.' :
+                          this.newPass.hasError('minlength') ? 'El tamaño debe ser mayor a 8 caracteres.' :
+                            this.newPass.hasError('invalid') ? 'No puedes ser vacia.' :
+                              this.newPass.getError("pattern")["requiredPattern"] == "/[A-Z]/" ? "Debe tener una mayúscula." :
+                                this.newPass.getError("pattern")["requiredPattern"] == "/[a-z]/" ? "Debe tener una minúscula." :
+                                  this.newPass.getError("pattern")["requiredPattern"] == "/\\d/" ? "Debe tener un dígito." : '';
 
   }
 
@@ -205,22 +207,22 @@ export class ProfileComponent implements OnInit {
 
   //Personal Data
 
-  openPersonalData(){
+  openPersonalData() {
     this.router.navigate(['personal']);
   }
 
-  saveAsProject(){
-    this.personalService.getAllMyData().subscribe((per: PersonalDataAll)=>{
+  saveAsProject() {
+    this.personalService.getAllMyData().subscribe((per: PersonalDataAll) => {
       this.personal = per;
       let string = JSON.stringify(this.personal);
       //you can enter your own file name and extension
-      this.writeContents(string, 'PersonalData '+ this.personal.name +'.txt', 'text/plain');
+      this.writeContents(string, 'PersonalData ' + this.personal.name + '.txt', 'text/plain');
     })
   }
 
   writeContents(content, fileName, contentType) {
     var a = document.createElement('a');
-    var file = new Blob([content], {type: contentType});
+    var file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
@@ -232,15 +234,15 @@ export class ProfileComponent implements OnInit {
       data: "¿Estás seguro que quieres borrar tu perfil? Esto significa que eliminaremos tus datos de la aplicación y por tanto no podrás acceder nunca más con esta cuenta. Esta opción es irreversible."
     });
     dialogRef.afterClosed().subscribe((res: boolean) => {
-      if(res){
-        this.personalService.getAnonymize().subscribe(()=> {
+      if (res) {
+        this.personalService.getAnonymize().subscribe(() => {
           this.logOut();
         });
       }
     });
   }
 
-  logOut(): void{
+  logOut(): void {
     sessionStorage.setItem("loginToken", "");
     this.user = undefined;
     window.location.reload();
@@ -249,155 +251,140 @@ export class ProfileComponent implements OnInit {
   //Renovación del plan------------------------------------------------------------------------------------------
   initConfig(): void {
     let paymentInfo;
-    let priceSelectedBox : number;
-    let selectedBox : number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
+    let priceSelectedBox: number;
+    let selectedBox: number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
     priceSelectedBox = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].price;
-    let paypal:IPayPalConfig;
+    let paypal: IPayPalConfig;
     this.payPalConfig = {
-    currency: 'EUR',
-    clientId: 'AWOURCDQ1p1qNlLYj9Y_hMW2WsNcOSvLQ4MD-iRdJCqohyLebl1W7_V7ONq0wh_UfhpuZCQtFQZ_0mQi',
-    createOrderOnClient: (data) => <ICreateOrderRequest>{
-      intent: 'CAPTURE',
-      purchase_units: [
-        {
-          amount: {
-            currency_code: 'EUR',
-            value: priceSelectedBox.toString(),
-            breakdown: {
-              item_total: {
-                currency_code: 'EUR',
-                value: priceSelectedBox.toString()
+      currency: 'EUR',
+      clientId: 'AWOURCDQ1p1qNlLYj9Y_hMW2WsNcOSvLQ4MD-iRdJCqohyLebl1W7_V7ONq0wh_UfhpuZCQtFQZ_0mQi',
+      createOrderOnClient: (data) => <ICreateOrderRequest>{
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: 'EUR',
+              value: priceSelectedBox.toString(),
+              breakdown: {
+                item_total: {
+                  currency_code: 'EUR',
+                  value: priceSelectedBox.toString()
+                }
               }
-            }
-          },
-          items: [
-            {
-              name: this.selectBoxFormControl + " - Scrume",
-              quantity: '1',
-              category: 'DIGITAL_GOODS',
-              unit_amount: {
-                currency_code: 'EUR',
-                value: priceSelectedBox.toString(),
-              },
-            }
-          ]
-        }
-      ]
-    },
-    advanced: {
-      commit: 'true',
-    },
-    style: {
-      label: 'paypal',
-      layout: "horizontal",
-      size: "responsive"
-    },
-    onApprove: (data, actions) => {
-      paymentInfo = data;
-      actions.order.get();
-    },
-    onClientAuthorization: (data) => {
-      let expiredDate : string;
-      let today : number = new Date().getTime();
-      if(this.userLogged.endingBoxDate.getTime() > today){
-        expiredDate = new Date(this.userLogged.endingBoxDate.getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-      }else{
-        expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-      }
-      let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], payerId: paymentInfo["payerID"]};
-      this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
-        sessionStorage.setItem("loginToken", token.token);
-        this.openSnackBarAndRedirect();
+            },
+            items: [
+              {
+                name: this.selectBoxFormControl + " - Scrume",
+                quantity: '1',
+                category: 'DIGITAL_GOODS',
+                unit_amount: {
+                  currency_code: 'EUR',
+                  value: priceSelectedBox.toString(),
+                },
+              }
+            ]
+          }
+        ]
+      },
+      advanced: {
+        commit: 'true',
+      },
+      style: {
+        label: 'paypal',
+        layout: "horizontal",
+        size: "responsive"
+      },
+      onApprove: (data, actions) => {
+        paymentInfo = data;
+        actions.order.get();
+      },
+      onClientAuthorization: (data) => {
+        let expiredDate: string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+        
+        let renovation: Renovation = { id: 0, box: selectedBox, expiredDate: expiredDate, orderId: paymentInfo["orderID"], payerId: paymentInfo["payerID"] };
+        this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
+          sessionStorage.setItem("loginToken", token.token);
+          this.openSnackBarAndRedirect();
 
-      }, (error) =>{
-        this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
-      });
-    },
-    onCancel: (data, actions) => {
-    },
-    onError: err => {
-    },
-    onClick: (data, actions) => {
-    },
-  };
+        }, (error) => {
+          this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
+        });
+      },
+      onCancel: (data, actions) => {
+      },
+      onError: err => {
+      },
+      onClick: (data, actions) => {
+      },
+    };
   }
 
-  saveBasicPlan(){
-    let selectedBox : number = this.boxes.filter(box => box.name == 'BASIC')[0].id;
+  saveBasicPlan() {
+    let selectedBox: number = this.boxes.filter(box => box.name == 'BASIC')[0].id;
 
-    let expiredDate : string;
-    let today : number = new Date().getTime();
-    if(this.userLogged.endingBoxDate.getTime() > today){
-      expiredDate = new Date(this.userLogged.endingBoxDate.getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-    }else{
-      expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-    }
-    
-    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate};
+    let expiredDate: string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();    
+
+    let renovation: Renovation = { id: 0, box: selectedBox, expiredDate: expiredDate };
     this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
       sessionStorage.setItem("loginToken", token.token);
       this.openSnackBarAndRedirect();
-    }, (error) =>{
+    }, (error) => {
       this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
     });
   }
 
-  validateCode(){
-    if(this.codeControl.value != undefined && this.codeControl.value.trim() != ''){
+  validateCode() {
+    if (this.codeControl.value != undefined && this.codeControl.value.trim() != '') {
       this._validateCode(this.codeControl.value.trim());
-    }else{
+    } else {
       this.codeControl.updateValueAndValidity();
     }
   }
 
 
   private _validateCode(code: string) {
-    if ( code != undefined || code.trim() != '' ){
+    if (code != undefined || code.trim() != '') {
 
-      this.codeService.validateCode(code).subscribe((idCode : number) =>  {
-        
-        if(idCode === undefined){
+      this.codeService.validateCode(code).subscribe((idCode: number) => {
+
+        if (idCode === undefined) {
           this.codeId = null;
-          this.codeControl.setErrors({'invalid' : "Este código no es válido."});
-        }else{
+          this.codeControl.setErrors({ 'invalid': "Este código no es válido." });
+        } else {
           this.codeControl.updateValueAndValidity();
           this.codeId = idCode;
         }
 
-      }, (error)=>{
-        this.codeControl.setErrors({'invalid' : "Este código no es válido."});
+      }, (error) => {
+        this.codeControl.setErrors({ 'invalid': "Este código no es válido." });
       });
 
-    }else{
+    } else {
       this.codeControl.updateValueAndValidity();
     }
-    
+
   }
 
-  getErrorCode() : string {
-    return this.codeControl.hasError('invalid') ? this.codeControl.getError('invalid') : '' ;
+  getErrorCode(): string {
+    return this.codeControl.hasError('invalid') ? this.codeControl.getError('invalid') : '';
   }
 
-  savePlanCode(){
-    let selectedBox : number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
-    
-    let expiredDate : string;
-    let today : number = new Date().getTime();
-    if(new Date(this.userLogged.endingBoxDate).getTime() > today){
-      expiredDate = new Date(new Date(this.userLogged.endingBoxDate).getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
-    }else{
-      expiredDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+  savePlanCode() {
+    if (this.codeControl.valid) {
+      let selectedBox: number = this.boxes.filter(box => box.name == this.selectBoxFormControl.value)[0].id;
+
+      let expiredDate: string = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 30)).toISOString();
+
+      let renovation: Renovation = { id: 0, box: selectedBox, expiredDate: expiredDate, codeId: this.codeId };
+
+
+      this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
+        sessionStorage.setItem("loginToken", token.token);
+        this.openSnackBarAndRedirect();
+      }, (error) => {
+        this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
+      });
     }
-
-    let renovation : Renovation = {id: 0, box: selectedBox, expiredDate: expiredDate, codeId:this.codeId};
-
-
-    this.userService.renovateBox(renovation).subscribe((token: JWToken) => {
-      sessionStorage.setItem("loginToken", token.token);
-      this.openSnackBarAndRedirect();
-    }, (error) =>{
-      this.openSnackBar("Se ha producido un error al actualizar su plan. Pruebe de nuevo.", "Cerrar");
-    });
   }
 
 }
