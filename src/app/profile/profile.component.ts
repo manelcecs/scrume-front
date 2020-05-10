@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
   name: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
   nick: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25), Validators.pattern(/^\S+$/)] });
   surnames: FormControl = new FormControl('', { validators: [Validators.required, Validators.maxLength(25)] });
-  photo: FormControl = new FormControl('', { validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(255)] });
+  photo: FormControl = new FormControl('', { validators: [Validators.pattern(/^(https?:\/\/)/), Validators.maxLength(255), Validators.pattern(/\.(jpeg|jpg|gif|png)$/)] });
   gitUser: FormControl = new FormControl('', {validators: [Validators.pattern(/^\S+$/)]});
   lastPass: FormControl = new FormControl('');
   newPass: FormControl = new FormControl('', { validators: [Validators.pattern(/\d/),
@@ -174,7 +174,7 @@ export class ProfileComponent implements OnInit {
   getErrorMessageName(): string {
     return this.name.hasError('required') ? 'Este campo es requerido.' :
     this.name.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
-    this.photo.hasError('pattern') ? 'Debe de ser una imagen que empieza por http.' :
+    this.photo.hasError('pattern') ? 'Debe de ser una imagen que empieza por https y termine en un formato de imagen válido.' :
     this.photo.hasError('maxlength') ? 'No puede tener más de 256 caracteres.' :
     this.nick.hasError('maxlength') ? 'No puede tener más de 25 caracteres.' :
     this.nick.hasError('pattern') ? 'No puede tener espacios en blanco.' :
