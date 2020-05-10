@@ -10,6 +10,7 @@ import { MyDailyFormComponent } from '../my-daily-form/my-daily-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmationDialogComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: "app-notifications",
@@ -32,7 +33,7 @@ export class NotificationsComponent implements OnInit {
     private alertService: AlertService,
     public dialog: MatDialog,
     public _snackbar: MatSnackBar
-    ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -56,37 +57,55 @@ export class NotificationsComponent implements OnInit {
   }
 
   rejectInvitation(invitation: InvitationDisplay) {
-    this.answerInvitation(invitation, false);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se va a rechazar la invitación. Esta acción es irreversible."
+    });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.answerInvitation(invitation, false);
+      }
+    });
+
   }
 
   // Notifcations Alerts
 
-  deleteNotification(alert: NotificationAlert){
-    this.alertService.deleteAlert(alert.id).subscribe(() => {
-      this.onDiscardNotification.emit(null);
-    }, (error: HttpErrorResponse) => {
-      if (error.status == 401) {
-        this.onDiscardNotification.emit(null);
-        this._snackbar.open("El paquete mínimo del equipo no permite esta acción", "Cerrar", {
-          duration: 5000
-        })
-      }
-
+  deleteNotification(alert: NotificationAlert) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar la notificación. Esta acción es irreversible."
     });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.alertService.deleteAlert(alert.id).subscribe(() => {
+          this.onDiscardNotification.emit(null);
+        }, (error: HttpErrorResponse) => {
+          if (error.status == 401) {
+            this.onDiscardNotification.emit(null);
+            this._snackbar.open("El paquete mínimo del equipo no permite esta acción", "Cerrar", {
+              duration: 5000
+            })
+          }
+
+        });
+      }
+    });
+
   }
 
-   openMyDailyDialog(alert: NotificationAlert, idSprint: number) {
-     const dialogRef = this.dialog.open(MyDailyFormComponent, {
-       width: "250px",
-       data: { idSprint: idSprint },
-     });
+  openMyDailyDialog(alert: NotificationAlert, idSprint: number) {
+    const dialogRef = this.dialog.open(MyDailyFormComponent, {
+      width: "250px",
+      data: { idSprint: idSprint },
+    });
 
-     dialogRef.afterClosed().subscribe((res: boolean) => {
-       this.daily = res;
-       if(this.daily){
-         this.deleteNotification(alert);
-       }
-     });
-   }
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      this.daily = res;
+      if (this.daily) {
+        this.deleteNotification(alert);
+      }
+    });
+  }
 
 }

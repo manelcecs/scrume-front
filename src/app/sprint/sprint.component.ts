@@ -29,6 +29,7 @@ import { AlertComponent } from '../alert/alert.component';
 import { UserService } from '../servicio/user.service';
 import { ValidationService } from '../servicio/validation.service';
 import { TeamService } from '../servicio/team.service';
+import { ConfirmationDialogComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: "app-sprint",
@@ -81,7 +82,7 @@ export class SprintComponent implements OnInit {
     if (this.sprint != undefined) {
 
       this.validationCanEdit = new Date(this.sprint.startDate).getTime() > new Date().getTime();
-       
+
 
       //validacion
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((res: boolean) => {
@@ -117,7 +118,7 @@ export class SprintComponent implements OnInit {
         this.compruebaAdminTeam = bol;
         this.loadAlerts();
       });
-      
+
 
     } else {
       this.navigateTo("bienvenida");
@@ -183,9 +184,9 @@ export class SprintComponent implements OnInit {
     let historyPoints2: number[] = [];
     let objetive2: number[] = [];
     let acum: number = 0;
-    for (let x = 0; x <= total-1; x++) {
+    for (let x = 0; x <= total - 1; x++) {
       days2.push("Day " + (x + 1));
-      let div = chartJSON[0].totalHistoryTask / (total-1);
+      let div = chartJSON[0].totalHistoryTask / (total - 1);
       acum = acum + div;
       objetive2.push(acum - div);
     }
@@ -292,28 +293,37 @@ export class SprintComponent implements OnInit {
   }
 
   deleteBoard(board: BoardNumber): void {
-    this._deleteBoard(board.id).subscribe((board: BoardNumber) => {
-      this.boardDelete = board;
-
-      this.sprintService
-        .getSprint(this.idSprint)
-        .subscribe((sprintDisplay: SprintDisplay) => {
-          this.sprint = sprintDisplay;
-        });
-
-      this.boardService
-        .getBoardBySprint(this.idSprint)
-        .subscribe((board: BoardSimple[]) => {
-          this.board = board;
-          this.updateValidatorCreateBoard();
-        });
-
-      this.documentService
-        .getDocumentsBySprint(this.idSprint)
-        .subscribe((doc: Document[]) => {
-          this.doc = doc;
-        });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar el tablero. Esta acción es irreversible."
     });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this._deleteBoard(board.id).subscribe((board: BoardNumber) => {
+          this.boardDelete = board;
+
+          this.sprintService
+            .getSprint(this.idSprint)
+            .subscribe((sprintDisplay: SprintDisplay) => {
+              this.sprint = sprintDisplay;
+            });
+
+          this.boardService
+            .getBoardBySprint(this.idSprint)
+            .subscribe((board: BoardSimple[]) => {
+              this.board = board;
+              this.updateValidatorCreateBoard();
+            });
+
+          this.documentService
+            .getDocumentsBySprint(this.idSprint)
+            .subscribe((doc: Document[]) => {
+              this.doc = doc;
+            });
+        });
+      }
+    });
+
   }
 
   private _deleteBoard(id: number): Observable<BoardNumber> {
@@ -323,27 +333,36 @@ export class SprintComponent implements OnInit {
   //Document------------------------------------------------------------------------------------------------------------
 
   deleteDoc(id: number): void {
-    this._deleteDoc(id).subscribe((doc: Document) => {
-      this.document = doc;
-
-      this.sprintService
-        .getSprint(this.idSprint)
-        .subscribe((sprintDisplay: SprintDisplay) => {
-          this.sprint = sprintDisplay;
-        });
-
-      this.boardService
-        .getBoardBySprint(this.idSprint)
-        .subscribe((board: BoardSimple[]) => {
-          this.board = board;
-        });
-
-      this.documentService
-        .getDocumentsBySprint(this.idSprint)
-        .subscribe((docSave: Document[]) => {
-          this.doc = docSave;
-        });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar el documento. Esta acción es irreversible."
     });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this._deleteDoc(id).subscribe((doc: Document) => {
+          this.document = doc;
+
+          this.sprintService
+            .getSprint(this.idSprint)
+            .subscribe((sprintDisplay: SprintDisplay) => {
+              this.sprint = sprintDisplay;
+            });
+
+          this.boardService
+            .getBoardBySprint(this.idSprint)
+            .subscribe((board: BoardSimple[]) => {
+              this.board = board;
+            });
+
+          this.documentService
+            .getDocumentsBySprint(this.idSprint)
+            .subscribe((docSave: Document[]) => {
+              this.doc = docSave;
+            });
+        });
+      }
+    });
+
   }
 
   private _deleteDoc(id: number): Observable<Document> {
@@ -381,28 +400,37 @@ export class SprintComponent implements OnInit {
   }
 
   deleteAlert(idAlert: number) {
-    this.alertService.deleteAlert(idAlert).subscribe(() => {
-      this.loadAlerts();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar la alerta del sprint. Esta acción es irreversible."
     });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.alertService.deleteAlert(idAlert).subscribe(() => {
+          this.loadAlerts();
+        });
+      }
+    });
+
   }
 
   loadAlerts() {
-    if(this.compruebaAdminTeam) {
+    if (this.compruebaAdminTeam) {
       this.validationService.checkCanDisplayCreateAlerts(this.sprint.project.team.id).subscribe((comp: boolean) => {
         this.lanzarPeticion = comp;
-        if(this.lanzarPeticion) {
-        this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
-          (alerts: NotificationAlert[]) => {
-            this.alerts = alerts;
-          },
-          (error) => {
-            console.error(error.error);
-          }
-        );
-      }
+        if (this.lanzarPeticion) {
+          this.alertService.getAllAlertsSprint(this.idSprint).subscribe(
+            (alerts: NotificationAlert[]) => {
+              this.alerts = alerts;
+            },
+            (error) => {
+              console.error(error.error);
+            }
+          );
+        }
       });
     }
-    }
+  }
 
 }
 

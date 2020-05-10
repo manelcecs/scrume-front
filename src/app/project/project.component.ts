@@ -11,6 +11,7 @@ import { AlertService } from '../servicio/alerts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationService } from '../servicio/validation.service';
 import { TeamService } from '../servicio/team.service';
+import { ConfirmationDialogComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: "app-project",
@@ -96,11 +97,20 @@ export class ProjectComponent implements OnInit {
   }
 
   deleteProject(idProject: number) {
-    this.projectService
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "250px",
+      data: "Se procede a borrar el proyecto. Esta acción es irreversible."
+    });
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.projectService
       .deleteProject(idProject)
       .subscribe((project: ProjectDto) => {
         this.navigateTo("teams");
       });
+      }
+    });
+    
   }
 
 
