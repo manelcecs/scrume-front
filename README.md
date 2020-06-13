@@ -5,25 +5,39 @@ En este proyecto se verán varios aspectos de la programación en Angular basada
 Se trataran conceptos básicos:
 
 - Generación de componentes
-  -Constructor
-  -OnInit
-  -Alimentar la vista
--Consumos de servicios
-  -Peticiones REST
-  -Dominio e interfaces
-  -Suscribe
--Navegación entre vistas
-  -Navegación simple
-  -Navegación con parámetros
+  - Constructor
+  - OnInit
+  - Alimentar la vista
+- Consumos de servicios
+  - Peticiones REST
+  - Dominio e interfaces
+  - Suscribe
+- Navegación entre vistas
+  - Navegación simple
+  - Navegación con parámetros
 
 Con esta base podremos tratar los siguientes temas:
     
--Navegación con resolvers
--Generación de dialogs
--Consumo de BBDD en navegador
--Gestión de errores
+- Navegación con resolvers
+- Generación de dialogs
+- Consumo de BBDD en navegador
+- Gestión de errores
 
 ## Basics
+
+## 0. Generar un proyecto Angular
+
+Hay que tener Node instalado en tu equipo.
+Abriendo la consola de node, creas una carpeta donde alojar tu proyecto y escribes:
+`npm install -g @angular/cli`
+
+Acabas de instalar angular cli en tu equipo.
+Ahora:<br/>
+`ng mi-primera-aplicacion` <br/>
+`cd mi-primera-aplicacion`<br/>
+`ng serve`<br/>
+
+Y tendras tu aplicacion desplegada en `localhost:4200`
 
 ## 1. Generación de componentes
 
